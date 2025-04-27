@@ -1,0 +1,8 @@
+#pip install language_tool_python
+
+
+
+#cd C:\Users\rschlager\Desktop\LanguageTool-6.6 ODER cd C:\Users\R\Desktop\LanguageTool-6.6
+#java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8081
+
+#java17 to start server
