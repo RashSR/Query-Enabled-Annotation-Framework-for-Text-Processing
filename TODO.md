@@ -15,6 +15,7 @@
 - [&check;] fehlendes Komma bei Infinitivgruppe <!-- ID: KOMMA_INFINITIVGRUPPEN, Message: Wenn es sich hier um eine Infinitivgruppe (‚zu‘ + Grundform) handelt, muss in der Regel ein Komma gesetzt werden. -->
 - [&check;] Umgangssprache <!-- ID: RAN_RUM_RAUF_REIN_RAUS_RUNTER_NEU, Message: ‚rumspielen‘ ist umgangssprachlich. -->
 - [&check;] Nominalisierung <!-- ID: PRAEP_PLUS_VERB, Message: Das Verb „Essen“ scheint hier nominalisiert verwendet zu werden und muss dann großgeschrieben werden. -->
+- ...
 
 
 
@@ -122,4 +123,4 @@
 
 
 
-&cross; Spacy ausprobieren
+&check; Spacy ausprobieren
