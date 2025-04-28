@@ -13,8 +13,8 @@
 - [&check;] fehlendes Anführungszeichen <!-- ID: DE_UNPAIRED_QUOTES, Message: Zeichen ohne sein Gegenstück: ‚"‘ scheint zu fehlen -->
 - [&check;] Kein Pluralapostroph e.g. Handy's <!-- ID: PLURAL_APOSTROPH, Message: Meinten Sie „Handys“ oder „Handy“? Normalerweise wird im Deutschen vor einem Plural-s kein Apostroph gesetzt. -->
 - [&check;] fehlendes Komma bei Infinitivgruppe <!-- ID: KOMMA_INFINITIVGRUPPEN, Message: Wenn es sich hier um eine Infinitivgruppe (‚zu‘ + Grundform) handelt, muss in der Regel ein Komma gesetzt werden. -->
-- [ ] fehlenden Punkt erkennen. 
-
+- [&check;] Umgangssprache <!-- ID: RAN_RUM_RAUF_REIN_RAUS_RUNTER_NEU, Message: ‚rumspielen‘ ist umgangssprachlich. -->
+- [&check;] Nominalisierung <!-- ID: PRAEP_PLUS_VERB, Message: Das Verb „Essen“ scheint hier nominalisiert verwendet zu werden und muss dann großgeschrieben werden. -->
 
 
 
@@ -59,8 +59,8 @@
 <summary>Texterfassung</summary>
 
 - [&check;] Originaltext speichern
-- [] Korrigierten Text erstellen (deutsche Rechtschreibung & Grammatik)
-- [ ] Wortform erfassen *
+- [?] Korrigierten Text erstellen (deutsche Rechtschreibung & Grammatik)
+- [&check;] Wortform erfassen *
 - [ ] Lexem erfassen *:
   - [ ] Einfaches Lexem (z.B. "Buch")
   - [ ] Kompositum (z.B. "Buchreihe")
@@ -79,13 +79,13 @@
   - [ ] Graphemhinzufügung
     - [ ] Typ A
     - [ ] Typ B
-  - [ ] Groß-/Kleinschreibung prüfen:
-    - [ ] Groß- statt Kleinschreibung
-    - [ ] Klein- statt Großschreibung
+  - [&check;] Groß-/Kleinschreibung prüfen:
+    - [&check;] Groß- statt Kleinschreibung
+    - [&check;] Klein- statt Großschreibung
   - [ ] Getrennt-/Zusammenschreibung prüfen:
     - [ ] Getrennt- statt Zusammenschreibung
     - [ ] Zusammen- statt Getrenntschreibung
-- [ ] Interpunktion prüfen
+- [&check;] Interpunktion prüfen
 - [ ] Weitere Fehlerarten ergänzen
 
 </details>
@@ -119,4 +119,7 @@
   - [ ] Gesamtauswertung des Korpus
 
 </details>
-&cross;
+
+
+
+&cross; Spacy ausprobieren

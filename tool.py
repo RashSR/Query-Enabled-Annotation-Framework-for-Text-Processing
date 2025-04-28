@@ -80,3 +80,30 @@ for element in found_ruleIds:
 
 #TODO: if only one replacement is possible -> show it
     
+import spacy
+
+# Load german spaCy model
+nlp = spacy.load("de_core_news_sm")
+
+# Beispieltext
+text = "Ich habe gegessen und gehe jetzt ins Kino."
+
+doc = nlp(text)
+
+# priniting information
+for token in doc:
+    print(f"Wort: {token.text}") #
+    print(f"Lemma: {token.lemma_}") #Grundform
+    print(f"POS-Tag: {token.pos_}") #Wortart 
+    if token.pos_ == "VERB":
+        print(f"Tempus: {token.morph.get('Tense')}")#Zeitform
+    print(f"Kasus: {token.morph.get('Case')}") #Kasus/"Fall"
+    print(f"Zahl: {token.morph.get('Number')}") #Singular/Plural
+    print("---")
+
+#possible values for tempus: 
+#-Präsens (Pres): "Ich gehe", "Ich habe".
+#-Präteritum (Past): "Ich ging", "Ich hatte".
+#-Perfekt (Perf): "Ich bin gegangen", "Ich habe gegessen".
+#-Futur I (Fut): "Ich werde gehen".
+#-Futur II (Fut2): "Ich werde gegangen sein".
