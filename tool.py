@@ -23,7 +23,7 @@ def print_error(match, startPos, endPos):
     fehlertext = text[startPos : endPos]
     print(f"Gefundener Fehler: '{fehlertext}'")
     print(f"Nachricht: {match.message}")
-    if(len(match.replacements) == 0):
+    if(len(match.replacements) > 0):
         print(f"Vorschlag: {match.replacements}")
     print(f"Position: {startPos}-{endPos}")
     print(convert_message(match.ruleId))
@@ -52,6 +52,9 @@ matches = tool.check(text)
 #convert text to a list to change it easily
 text_list = list(text)
 
+#find all different ruleIds
+found_ruleIds = []
+
 #print all found errors
 for match in reversed(matches):
     startPos = match.offset
@@ -59,6 +62,8 @@ for match in reversed(matches):
     fehlertext = text[startPos : endPos]
     print_error(match, startPos, endPos)
     add_error_tags(match.ruleId, fehlertext, startPos, endPos)
+    if not (found_ruleIds.__contains__((match.ruleId, match.message))):
+        found_ruleIds.append((match.ruleId, match.message))
     print("---")
 
 # Den bearbeiteten Text ausgeben
@@ -68,6 +73,10 @@ print("\nBearbeiteter Text:")
 print(modified_text)
 
 print(f"Anzahl gefundener Fehler: {len(matches)}")
+print(f"Anzahl gefundener Fehlerarten: {len(found_ruleIds)}")
+
+for element in found_ruleIds:
+    print(f"ID: {element[0]}, Message: {element[1]}")
 
 #TODO: if only one replacement is possible -> show it
     

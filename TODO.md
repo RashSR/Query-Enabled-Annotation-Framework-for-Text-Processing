@@ -1,6 +1,26 @@
 # TODO-List
 
 <details>
+<summary>Fehlererkennung</summary>
+
+- [&check;] falsch geschriebenes Wort <!-- ID: GERMAN_SPELLER_RULE, Message: Möglicher Tippfehler gefunden. -->
+- [&check;] falsche Großschreibung <!-- ID: DE_CASE, Message: Außer am Satzanfang werden nur Nomen und Eigennamen großgeschrieben. -->
+- [&check;] Wortwiederholung <!-- ID: GERMAN_WORD_REPEAT_RULE, Message: Möglicher Tippfehler: ein Wort wird wiederholt -->
+- [&check;] Doppelte Punktuation <!-- ID: DE_DOUBLE_PUNCTUATION, Message: Zwei aufeinanderfolgende Kommas -->
+- [&check;] Satzanfang mit kleinem Wort <!--  ID: UPPERCASE_SENTENCE_START, Message: Dieser Satz fängt nicht mit einem großgeschriebenen Wort an. -->
+- [&check;] Komma vor indirekter Frage oder Relativsatz <!-- ID: INDIREKTE_FRAGE, Message: Indirekte Fragen und Relativsätze werden mit Komma vom Hauptsatz abgetrennt. -->
+- [&check;] Kleingeschriebenes Nomen <!--  ID: WETTER_SUBST, Message: Das Nomen „Wetter“ wird großgeschrieben. / ID: REGELN_SUBST, Message: Bitte prüfen Sie, ob „Regeln“ hier als Nomen gebraucht wird und daher großgeschrieben werden muss. / ID: ART_KLEINES_NOMEN, Message: Wenn es sich um ein Nomen handelt, muss es großgeschrieben werden. -->
+- [&check;] fehlendes Anführungszeichen <!-- ID: DE_UNPAIRED_QUOTES, Message: Zeichen ohne sein Gegenstück: ‚"‘ scheint zu fehlen -->
+- [&check;] Kein Pluralapostroph e.g. Handy's <!-- ID: PLURAL_APOSTROPH, Message: Meinten Sie „Handys“ oder „Handy“? Normalerweise wird im Deutschen vor einem Plural-s kein Apostroph gesetzt. -->
+- [&check;] fehlendes Komma bei Infinitivgruppe <!-- ID: KOMMA_INFINITIVGRUPPEN, Message: Wenn es sich hier um eine Infinitivgruppe (‚zu‘ + Grundform) handelt, muss in der Regel ein Komma gesetzt werden. -->
+- [ ] fehlenden Punkt erkennen. 
+
+
+
+
+</details>
+
+<details>
 <summary>Autor-Informationen</summary>
 
 - [ ] ID erfassen
