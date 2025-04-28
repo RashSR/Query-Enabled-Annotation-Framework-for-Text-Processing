@@ -1,4 +1,3 @@
-
 #convert the match.messages in a useful description
 def convert_message(lt_message):
     match lt_message:
@@ -33,6 +32,11 @@ def print_error(match, startPos, endPos):
 def add_error_tags(ruleId, fehlertext, startPos, endPos):
     error_tag = f"<error type={ruleId}>{fehlertext}</error>"
     text_list[startPos : endPos] = list(error_tag)
+
+def print_tokennized_word(key, value):
+    if (len(value) != 0):
+        print(f"{key}: {value}")
+
 
 import language_tool_python
 
@@ -83,22 +87,30 @@ for element in found_ruleIds:
 import spacy
 
 # Load german spaCy model
-nlp = spacy.load("de_core_news_sm")
+nlp = spacy.load("de_core_news_sm") #also possible: de_core_news_md, de_core_news_lg (more powerful)
 
 # Beispieltext
-text = "Ich habe gegessen und gehe jetzt ins Kino."
+text = "Der kleine Hund läuft schnell durch den Park. Gestern hatte er einen großen Streit mit einem anderen Hund, aber er ist jetzt wieder friedlich. Der Hund wird oft von seinem Besitzer geführt, der immer freundlich ist. Sie haben ihre Route durch den Park geändert, weil sie den großen Baum, den sie immer bewunderten, gesehen haben. Manchmal kommt der Hund auch an den Teich, um die Enten zu sehen. "
 
 doc = nlp(text)
 
 # priniting information
 for token in doc:
     print(f"Wort: {token.text}") #
-    print(f"Lemma: {token.lemma_}") #Grundform
-    print(f"POS-Tag: {token.pos_}") #Wortart 
+    print(f"Grundform: {token.lemma_}") #Grundform
+    print(f"POS-Tag: {token.pos_}") #Wortart
     if token.pos_ == "VERB":
-        print(f"Tempus: {token.morph.get('Tense')}")#Zeitform
-    print(f"Kasus: {token.morph.get('Case')}") #Kasus/"Fall"
-    print(f"Zahl: {token.morph.get('Number')}") #Singular/Plural
+        print_tokennized_word("Tempus", token.morph.get('Tense')) #Zeitform
+        print_tokennized_word("Person", token.morph.get('Person')) #Person des Verbs
+        print_tokennized_word("VerbForm", token.morph.get('VerbForm')) #Verbform finites Verb, Partizip
+        print_tokennized_word("Stimme", token.morph.get('Voice')) #Aktiv oder Passiv #Aktiv oder Passiv
+    if token.pos_ == "ADJ" or token.pos_ == "ADV":
+        print_tokennized_word("Grad", token.morph.get('Degree')) #Grad der Steigerung
+    print_tokennized_word("Kasus", token.morph.get('Case')) #Kasus/"Fall"
+    print_tokennized_word("Zahl", token.morph.get('Number')) #Singular/Plural
+    print_tokennized_word("Geschlecht", token.morph.get('Gender')) #Geschlecht Fem/Masc
+    print_tokennized_word("Modus", token.morph.get('Mood')) #Indikativ/Konjunktiv
+
     print("---")
 
 #possible values for tempus: 
@@ -107,3 +119,4 @@ for token in doc:
 #-Perfekt (Perf): "Ich bin gegangen", "Ich habe gegessen".
 #-Futur I (Fut): "Ich werde gehen".
 #-Futur II (Fut2): "Ich werde gegangen sein".
+
