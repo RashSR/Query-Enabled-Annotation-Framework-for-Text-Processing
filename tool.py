@@ -80,6 +80,21 @@ modified_text = ''.join(text_list)
 print("\nBearbeiteter Text:")
 print(modified_text)
 
+# Read the template file
+with open("misc/template.html", "r", encoding="utf-8") as f:
+    template = f.read()
+
+# Replace placeholders
+filled_html = template.replace("{{analyzedText}}", modified_text)
+
+# Write to output file
+with open("output.html", "w", encoding="utf-8") as f:
+    f.write(filled_html)
+
+print("Generated 'output.html' successfully.")
+
+
+
 print(f"Anzahl gefundener Fehler: {len(matches)}")
 print(f"Anzahl gefundener Fehlerarten: {len(found_ruleIds)}")
 
