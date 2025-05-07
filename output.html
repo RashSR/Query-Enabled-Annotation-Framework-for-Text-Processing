@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Highlight Errors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        span[data-error] {
+            position: relative;
+            cursor: pointer;
+            color: red;
+        }
+
+        span[data-error]::after {
+            content: attr(data-error);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: black;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: normal;
+            max-width: 200px;
+            word-wrap: break-word;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        span[data-error]:hover::after {
+            opacity: 1;
+        }
+
+        span[data-error][data-tooltip-position="bottom"]::after {
+            top: 100%;
+            margin-top: 15px; /* Adjust this value to move it lower */
+        }
+
+        span[data-error][data-tooltip-position="top"]::after {
+            bottom: 100%;
+            margin-bottom: 10px; /* Adjust this value to move it lower when above */
+        }
+    </style>
+</head>
+<body>
+
+In <span data-error="DE_CASE">In</span> der <span data-error="GERMAN_WORD_REPEAT_RULE">heutigen heutigen</span> <span data-error="GERMAN_SPELLER_RULE">Zei</span> ist es <span data-error="GERMAN_SPELLER_RULE">wichitg</span><span data-error="DE_DOUBLE_PUNCTUATION">,,</span> das man sich mit Technologien auskennt. Viele <span data-error="GERMAN_SPELLER_RULE">Mensche</span> benutzen täglich ihre <span data-error="PLURAL_APOSTROPH">Handy's</span><span data-error="KOMMA_INFINITIVGRUPPEN"> um</span> im Internet zu surfen oder <span data-error="GERMAN_SPELLER_RULE">Nachrichtn</span> zu versenden. Es gibt aber auch <span data-error="GERMAN_SPELLER_RULE">Menschn</span>, die Probleme mit der Benutzung von moderner Technik haben. Diese <span data-error="GERMAN_SPELLER_RULE">Entwicklugn</span> zeigt, wie <span data-error="GERMAN_SPELLER_RULE">bedeutent</span> digitale <span data-error="GERMAN_SPELLER_RULE">Komptenzen</span> geworden sind. 
+<span data-error="GERMAN_SPELLER_RULE">Deshalp</span> <span data-error="GERMAN_SPELLER_RULE">solte</span> die Schule frühzeitig damit beginnen, Kindern den <span data-error="GERMAN_SPELLER_RULE">umgang</span> mit Computern und <span data-error="GERMAN_SPELLER_RULE">Programieren</span> beizubringen. <span data-error="UPPERCASE_SENTENCE_START">ich</span> bin heute im <span data-error="GERMAN_SPELLER_RULE">bÜro</span>.
+<span data-error="DE_UNPAIRED_QUOTES">"</span>Es war ein sehr <span data-error="GERMAN_SPELLER_RULE">interresanter</span> Tag, als ich die <span data-error="ART_KLEINES_NOMEN">schule</span> verlasen habe. Ich bin mit meinem freunden zu der <span data-error="GERMAN_SPELLER_RULE">stadt</span> gegangen, wo wir <span data-error="GERMAN_SPELLER_RULE">viele spass</span> hatten. Wir haben das <span data-error="WETTER_SUBST">wetter</span> <span data-error="GERMAN_SPELLER_RULE">geniesen</span>, und <span data-error="GERMAN_SPELLER_RULE">spass</span> gemacht, was ziemlich toll war. Als wir später dann angekommen sind, haben wir viele <span data-error="GERMAN_SPELLER_RULE">einladungen</span> bekommen, aber keiner von uns wusste<span data-error="INDIREKTE_FRAGE"> was</span> genau wir tun sollen.
+
+Der <span data-error="GERMAN_SPELLER_RULE">hund</span> von Paul, der ist sehr freundlich, aber er läuft immer im park herum. Jedenfalls, ich hab es nicht geschafft mich richtig zu konzentrieren, und mein <span data-error="GERMAN_SPELLER_RULE">computer</span> hat sich abgeschaltet. Wir haben uns auch gestritten, weil ich mich nicht an die <span data-error="REGELN_SUBST">regeln</span> der <span data-error="GERMAN_SPELLER_RULE">arbeit</span> gehalten habe.
+
+Anschließend sind wir ins Kino gegangen, aber der Film war langweilig. Der Titel war irgendwas, mit "Die Abenteuer vom Alex", was keinen <span data-error="GERMAN_SPELLER_RULE">zusammenhang</span> mit der Handlung hatte. Trotzdem haben wir nach dem Kino eine <span data-error="GERMAN_SPELLER_RULE">pizza</span> gegessen. Es war total lecker, aber viel zu fettig. Wir haben noch eine Zeitung gelesen, während wir zurück nachhause fuhren.<span data-error="DE_UNPAIRED_QUOTES">"</span>
+Dieser Satz wird ohne Punkt enden <span data-error="DE_CASE">Die</span> Frau ging durch den Park und sie nahm ihr Hund mit. Der Hund war sehr aktiv und spielte mit einem Ball, aber sie werfe den Ball zu weit. Der Ball rollte unter ein Auto und sie konnte es nicht finden. Die Frau fragte <span data-error="DE_AGREEMENT">eine Passant</span>, ob er den Ball gesehen habe. Er <span data-error="KOMMA_ZWISCHEN_HAUPT_UND_NEBENSATZ_2">sagte dass</span> er den Ball nicht gesehen habe, aber er könnte sich <span data-error="KOMMA_DASS">erinnern das</span> der Ball unter dem Auto lag. Sie war sehr frustriert, aber sie ging nach Hause<span data-error="KOMMA_INFINITIVGRUPPEN"> um</span> den Ball später zu holen. Unterwegs traf sie ihre Freundin, die auch einen Hund hatte. Sie unterhielten sich eine lange Zeit und redeten über den Ball und die Hunderassen.
+
+<script>
+    document.querySelectorAll('span[data-error]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            const rect = el.getBoundingClientRect();
+            const tooltipHeight = 40; // estimate tooltip height
+            const spaceBelow = window.innerHeight - rect.bottom;
+            const spaceAbove = rect.top;
+
+            if (spaceBelow < tooltipHeight && spaceAbove > tooltipHeight) {
+                el.setAttribute('data-tooltip-position', 'top');
+            } else {
+                el.setAttribute('data-tooltip-position', 'bottom');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -41,13 +41,21 @@ def print_tokennized_word(key, value):
     if (len(value) != 0):
         print(f"{key}: {value}")
 
+#generates a html file with simple css
+def generate_html(analyzedText):
+    with open("misc/template.html", "r", encoding="utf-8") as f:
+        template = f.read()
+    filled_html = template.replace("{{analyzedText}}", modified_text)
+    with open("output.html", "w", encoding="utf-8") as f:
+        f.write(filled_html)
+    print("Generated 'output.html' successfully.")
 
 import language_tool_python
 
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
 #load text from a txt file
-with open('texts\longer_text.txt', 'r', encoding='utf-8') as file:
+with open('texts/longer_text.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 
 print("Originaltext:")
@@ -80,20 +88,7 @@ modified_text = ''.join(text_list)
 print("\nBearbeiteter Text:")
 print(modified_text)
 
-# Read the template file
-with open("misc/template.html", "r", encoding="utf-8") as f:
-    template = f.read()
-
-# Replace placeholders
-filled_html = template.replace("{{analyzedText}}", modified_text)
-
-# Write to output file
-with open("output.html", "w", encoding="utf-8") as f:
-    f.write(filled_html)
-
-print("Generated 'output.html' successfully.")
-
-
+generate_html(modified_text)
 
 print(f"Anzahl gefundener Fehler: {len(matches)}")
 print(f"Anzahl gefundener Fehlerarten: {len(found_ruleIds)}")
