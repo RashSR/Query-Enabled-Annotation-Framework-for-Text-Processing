@@ -18,6 +18,7 @@ def convert_message(lt_message):
         case _:
             print("bisher unbekannt")
 
+# print all usefull error informations
 def print_error(match, startPos, endPos):
     fehlertext = text[startPos : endPos]
     print(f"Gefundener Fehler: '{fehlertext}'")
@@ -27,12 +28,15 @@ def print_error(match, startPos, endPos):
     print(f"Position: {startPos}-{endPos}")
     print(convert_message(match.ruleId))
     print(f"Fehlerregel ID: {match.ruleId}")
+    print(f"Kategorie: {match.category}")
+    print(f"RuleIssueType: {match.ruleIssueType}")
 
-
+#add html style tags
 def add_error_tags(ruleId, fehlertext, startPos, endPos):
-    error_tag = f"<error type={ruleId}>{fehlertext}</error>"
+    error_tag = f"<span data-error=\"{ruleId}\">{fehlertext}</span>"
     text_list[startPos : endPos] = list(error_tag)
 
+#useful to print spacy like annotations
 def print_tokennized_word(key, value):
     if (len(value) != 0):
         print(f"{key}: {value}")
