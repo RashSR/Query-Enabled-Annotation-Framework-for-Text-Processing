@@ -47,7 +47,7 @@ import language_tool_python
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
 #load text from a txt file
-with open('longer_text.txt', 'r', encoding='utf-8') as file:
+with open('texts\longer_text.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 
 print("Originaltext:")

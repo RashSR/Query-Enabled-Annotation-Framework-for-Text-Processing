@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Highlight Errors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        span[data-error] {
+            position: relative;
+            cursor: pointer;
+            color: red;
+        }
+
+        span[data-error]::after {
+            content: attr(data-error);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: black;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: normal;
+            max-width: 200px;
+            word-wrap: break-word;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        span[data-error]:hover::after {
+            opacity: 1;
+        }
+
+        span[data-error][data-tooltip-position="bottom"]::after {
+            top: 100%;
+            margin-top: 15px; /* Adjust this value to move it lower */
+        }
+
+        span[data-error][data-tooltip-position="top"]::after {
+            bottom: 100%;
+            margin-bottom: 10px; /* Adjust this value to move it lower when above */
+        }
+    </style>
+</head>
+<body>
+
+{{textToAnalyze}}
+
+<script>
+    document.querySelectorAll('span[data-error]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            const rect = el.getBoundingClientRect();
+            const tooltipHeight = 40; // estimate tooltip height
+            const spaceBelow = window.innerHeight - rect.bottom;
+            const spaceAbove = rect.top;
+
+            if (spaceBelow < tooltipHeight && spaceAbove > tooltipHeight) {
+                el.setAttribute('data-tooltip-position', 'top');
+            } else {
+                el.setAttribute('data-tooltip-position', 'bottom');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
