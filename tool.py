@@ -1,3 +1,5 @@
+from utils import extract_text_from_html 
+
 #convert the match.messages in a useful description
 def convert_message(lt_message):
     match lt_message:
@@ -50,23 +52,6 @@ def generate_html(analyzedText):
         f.write(filled_html)
     print("Generated 'output.html' successfully.")
 
-def extract_original_text_from_html(filePath, withTags=False):
-    from bs4 import BeautifulSoup
-    with open(filePath, 'r', encoding='utf-8') as f:
-        soup = BeautifulSoup(f, 'html.parser')
-    # Find the <body>
-    body = soup.body
-    # Remove all <script> tags inside <body> and its contents
-    for script_tag in body.find_all('script'):
-        script_tag.decompose()
-    #remove all <span> tags
-    if not withTags:
-        for span in body.find_all('span'):
-            span.unwrap()
-    # Get only the inner HTML (without <body> tags)
-    inner_html = body.decode_contents()
-    return inner_html
-
 import language_tool_python
 
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
@@ -106,8 +91,8 @@ print("\nBearbeiteter Text:")
 print(modified_text)
 
 generate_html(modified_text)
-print(extract_original_text_from_html('output.html'))
-print(extract_original_text_from_html('output.html', withTags=True))
+print(extract_text_from_html('output.html'))
+print(extract_text_from_html('output.html', withTags=True))
 
 print(f"Anzahl gefundener Fehler: {len(matches)}")
 print(f"Anzahl gefundener Fehlerarten: {len(found_ruleIds)}")
