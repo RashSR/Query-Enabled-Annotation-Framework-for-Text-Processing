@@ -50,7 +50,7 @@ def generate_html(modified_text, outputPath):
     filled_html = template.replace("{{analyzedText}}", modified_text)
     with open(outputPath, "w", encoding="utf-8") as f:
         f.write(filled_html)
-    print("Generated {outputPath} successfully.")
+    print("Generated " + outputPath + " successfully.")
 
 import language_tool_python
 
@@ -105,7 +105,7 @@ for element in found_ruleIds:
 import spacy
 
 # Load german spaCy model
-nlp = spacy.load("de_core_news_sm") #also possible: de_core_news_md, de_core_news_lg (more powerful)
+nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 
 # Beispieltext
 text = "Der kleine Hund läuft schnell durch den Park. Gestern hatte er einen großen Streit mit einem anderen Hund, aber er ist jetzt wieder friedlich. Der Hund wird oft von seinem Besitzer geführt, der immer freundlich ist. Sie haben ihre Route durch den Park geändert, weil sie den großen Baum, den sie immer bewunderten, gesehen haben. Manchmal kommt der Hund auch an den Teich, um die Enten zu sehen. "
