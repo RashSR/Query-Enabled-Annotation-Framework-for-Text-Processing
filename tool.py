@@ -44,13 +44,13 @@ def print_tokennized_word(key, value):
         print(f"{key}: {value}")
 
 #generates a html file with simple css
-def generate_html(analyzedText):
+def generate_html(modified_text, outputPath):
     with open("misc/template.html", "r", encoding="utf-8") as f:
         template = f.read()
     filled_html = template.replace("{{analyzedText}}", modified_text)
-    with open("output.html", "w", encoding="utf-8") as f:
+    with open(outputPath, "w", encoding="utf-8") as f:
         f.write(filled_html)
-    print("Generated 'output.html' successfully.")
+    print("Generated {outputPath} successfully.")
 
 import language_tool_python
 
@@ -90,7 +90,7 @@ modified_text = ''.join(text_list)
 print("\nBearbeiteter Text:")
 print(modified_text)
 
-generate_html(modified_text)
+generate_html(modified_text, 'output.html')
 print(extract_text_from_html('output.html'))
 print(extract_text_from_html('output.html', withTags=True))
 
@@ -111,10 +111,15 @@ nlp = spacy.load("de_core_news_sm") #also possible: de_core_news_md, de_core_new
 text = "Der kleine Hund läuft schnell durch den Park. Gestern hatte er einen großen Streit mit einem anderen Hund, aber er ist jetzt wieder friedlich. Der Hund wird oft von seinem Besitzer geführt, der immer freundlich ist. Sie haben ihre Route durch den Park geändert, weil sie den großen Baum, den sie immer bewunderten, gesehen haben. Manchmal kommt der Hund auch an den Teich, um die Enten zu sehen. "
 
 doc = nlp(text)
+annotated_text = ""
 
 # priniting information
 for token in doc:
     print(f"Wort: {token.text}") #
+    if not token.pos_ == "PUNCT":
+        annotated_text = annotated_text + " "
+    annotated_token = f"<span data-error=\"{token.lemma_}\">{token.text}</span>"
+    annotated_text = annotated_text + annotated_token
     print(f"Grundform: {token.lemma_}") #Grundform
     print(f"POS-Tag: {token.pos_}") #Wortart
     if token.pos_ == "VERB":
@@ -130,6 +135,9 @@ for token in doc:
     print_tokennized_word("Modus", token.morph.get('Mood')) #Indikativ/Konjunktiv
 
     print("---")
+
+print(annotated_text)
+generate_html(annotated_text, 'output2.html')
 
 #possible values for tempus: 
 #-Präsens (Pres): "Ich gehe", "Ich habe".

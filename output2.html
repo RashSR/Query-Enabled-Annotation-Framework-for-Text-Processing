@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Highlight Errors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        span[data-error] {
+            position: relative;
+            cursor: pointer;
+            color: red;
+        }
+
+        span[data-error]::after {
+            content: attr(data-error);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: black;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: normal;
+            max-width: 200px;
+            word-wrap: break-word;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        span[data-error]:hover::after {
+            opacity: 1;
+        }
+
+        span[data-error][data-tooltip-position="bottom"]::after {
+            top: 100%;
+            margin-top: 15px; /* Adjust this value to move it lower */
+        }
+
+        span[data-error][data-tooltip-position="top"]::after {
+            bottom: 100%;
+            margin-bottom: 10px; /* Adjust this value to move it lower when above */
+        }
+    </style>
+</head>
+<body>
+
+ <span data-error="der">Der</span> <span data-error="klein">kleine</span> <span data-error="Hund">Hund</span> <span data-error="laufen">läuft</span> <span data-error="schnell">schnell</span> <span data-error="durch">durch</span> <span data-error="der">den</span> <span data-error="Park">Park</span><span data-error="--">.</span> <span data-error="gestern">Gestern</span> <span data-error="haben">hatte</span> <span data-error="er">er</span> <span data-error="ein">einen</span> <span data-error="groß">großen</span> <span data-error="Streit">Streit</span> <span data-error="mit">mit</span> <span data-error="ein">einem</span> <span data-error="anderer">anderen</span> <span data-error="Hund">Hund</span><span data-error="--">,</span> <span data-error="aber">aber</span> <span data-error="er">er</span> <span data-error="sein">ist</span> <span data-error="jetzt">jetzt</span> <span data-error="wieder">wieder</span> <span data-error="friedlich">friedlich</span><span data-error="--">.</span> <span data-error="der">Der</span> <span data-error="Hund">Hund</span> <span data-error="werden">wird</span> <span data-error="oft">oft</span> <span data-error="von">von</span> <span data-error="sein">seinem</span> <span data-error="Besitzer">Besitzer</span> <span data-error="führen">geführt</span><span data-error="--">,</span> <span data-error="der">der</span> <span data-error="immer">immer</span> <span data-error="freundlich">freundlich</span> <span data-error="sein">ist</span><span data-error="--">.</span> <span data-error="sie">Sie</span> <span data-error="haben">haben</span> <span data-error="ihr">ihre</span> <span data-error="Route">Route</span> <span data-error="durch">durch</span> <span data-error="der">den</span> <span data-error="Park">Park</span> <span data-error="ändern">geändert</span><span data-error="--">,</span> <span data-error="weil">weil</span> <span data-error="sie">sie</span> <span data-error="der">den</span> <span data-error="groß">großen</span> <span data-error="Baum">Baum</span><span data-error="--">,</span> <span data-error="der">den</span> <span data-error="sie">sie</span> <span data-error="immer">immer</span> <span data-error="bewunderten">bewunderten</span><span data-error="--">,</span> <span data-error="sehen">gesehen</span> <span data-error="haben">haben</span><span data-error="--">.</span> <span data-error="manchmal">Manchmal</span> <span data-error="kommen">kommt</span> <span data-error="der">der</span> <span data-error="Hund">Hund</span> <span data-error="auch">auch</span> <span data-error="an">an</span> <span data-error="der">den</span> <span data-error="Teich">Teich</span><span data-error="--">,</span> <span data-error="um">um</span> <span data-error="der">die</span> <span data-error="Ent">Enten</span> <span data-error="zu">zu</span> <span data-error="sehen">sehen</span><span data-error="--">.</span>
+
+<script>
+    document.querySelectorAll('span[data-error]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            const rect = el.getBoundingClientRect();
+            const tooltipHeight = 40; // estimate tooltip height
+            const spaceBelow = window.innerHeight - rect.bottom;
+            const spaceAbove = rect.top;
+
+            if (spaceBelow < tooltipHeight && spaceAbove > tooltipHeight) {
+                el.setAttribute('data-tooltip-position', 'top');
+            } else {
+                el.setAttribute('data-tooltip-position', 'bottom');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
