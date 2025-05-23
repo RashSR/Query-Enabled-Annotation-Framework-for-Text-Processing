@@ -1,3 +1,7 @@
+from chat import Chat
+from message import Message
+from datetime import datetime
+
 class Author:
     def __init__(self, author_id, name, last_name, age, gender, first_language, languages, region, job):
         self.author_id = author_id
@@ -9,6 +13,10 @@ class Author:
         self.languages = languages
         self.region = region
         self.job = job
+        self.chats = []
+
+    def add_chat(self, chat):
+        self.chats.append(chat)
 
     def __str__(self):
         return (f"Author({self.author_id}): {self.name} {self.last_name}, "
