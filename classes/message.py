@@ -4,7 +4,7 @@ class Message:
     
     #TODO: sender hier notwendig? -> Nur wenn nach einzelnen Nachrichten gesucht werden muss. 
 
-    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type, quoted_message):
+    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type, quoted_message = None):
         self.chat_id = chat_id
         self.message_id = message_id
         self.sender = sender
@@ -29,9 +29,9 @@ class Message:
         return False
 
 if __name__ == "__main__":
-    msg_without_quote = Message(6, 1, 'Alice',  datetime.now(),"Hello what up", "Text", None)
+    msg_without_quote = Message(6, 1, 'Alice',  datetime.now(),"Hello what up", "Text")
     print(msg_without_quote)
-    quote = Message(7, 1, 'Ute', datetime.now(), "Do you want to go outside?", "Text", None)
+    quote = Message(7, 1, 'Ute', datetime.now(), "Do you want to go outside?", "Text")
     msg_with_quote = Message(7, 2, 'Bob', datetime.now(), "This sounds awesome!", "Text", quote)
     print(msg_with_quote)
 
