@@ -1,22 +1,98 @@
-from classes.chat import Chat
-from classes.message import Message
+#from classes.chat import Chat
+#from classes.message import Message
 from datetime import datetime
 
 class Author:
-    def __init__(self, author_id, name, last_name, age, gender, first_language, languages, region, job):
-        self.author_id = author_id
-        self.name = name
-        self.last_name = last_name
-        self.age = age
-        self.gender = gender
-        self.first_language = first_language
-        self.languages = languages
-        self.region = region
-        self.job = job
-        self.chats = []
+    def __init__(self, author_id, name):
+        self._author_id = author_id
+        self._name = name
+        self._last_name = ""
+        self._age = 30
+        self._gender = ""
+        self._first_language = ""
+        self._languages = []
+        self._region = ""
+        self._job = ""
+        self._chats = []
+
+    @property
+    def author_id(self):
+        return self._author_id
+
+    @author_id.setter
+    def author_id(self, value):
+        self._author_id = value
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    @property
+    def last_name(self):
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, value):
+        self._last_name = value
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, value):
+        self._age = value
+
+    @property
+    def gender(self):
+        return self._gender
+
+    @gender.setter
+    def gender(self, value):
+        self._gender = value
+
+    @property
+    def first_language(self):
+        return self._first_language
+
+    @first_language.setter
+    def first_language(self, value):
+        self._first_language = value
+
+    @property
+    def languages(self):
+        return self._languages
+
+    @languages.setter
+    def languages(self, value):
+        self._languages = value
+
+    @property
+    def region(self):
+        return self._region
+
+    @region.setter
+    def region(self, value):
+        self._region = value
+
+    @property
+    def job(self):
+        return self._job
+
+    @job.setter
+    def job(self, value):
+        self._job = value
+
+    @property
+    def chats(self):
+        return self._chats
 
     def add_chat(self, chat):
-        self.chats.append(chat)
+        self._chats.append(chat)
 
     def __str__(self):
         return (f"Author({self.author_id}): {self.name} {self.last_name}, "
@@ -24,8 +100,3 @@ class Author:
                 f"First Language: {self.first_language}, "
                 f"Other Languages: {', '.join(self.languages)}, "
                 f"Region: {self.region}, Job: {self.job}")
-
-
-if __name__ == "__main__":
-        author = Author(1, "Reinhold", "Schlager", 30, "Male", "Deutsch", ["Englisch", "Russisch"], "Bayern", "Softwareentwickler")
-        print(author)

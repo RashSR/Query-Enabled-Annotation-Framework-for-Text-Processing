@@ -36,15 +36,5 @@ class Message:
     @sender.setter
     def sender(self, value):
         self._sender = value
-
-if __name__ == "__main__":
-    msg_without_quote = Message(6, 1, 'Alice',  datetime.now(),"Hello what up", "Text")
-    print(msg_without_quote)
-    quote = Message(7, 1, 'Ute', datetime.now(), "Do you want to go outside?", "Text")
-    msg_with_quote = Message(7, 2, 'Bob', datetime.now(), "This sounds awesome!", "Text", quote)
-    print(msg_with_quote)
-
-    print(f"Has msg1 a quote? -> {msg_without_quote.hasQuote()}")
-    print(f"Has msg2 a quote? -> {msg_with_quote.hasQuote()}")
     
 

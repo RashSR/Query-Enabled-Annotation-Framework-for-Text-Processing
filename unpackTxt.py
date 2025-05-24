@@ -1,6 +1,7 @@
 import re
 from classes.message import Message
 from classes.chat import Chat
+from classes.author import Author
 from datetime import datetime
 
 # Read the file
@@ -13,7 +14,7 @@ pattern = r'\[(\d{1,2}:\d{2}), (\d{1,2}\.\d{1,2}\.\d{4})\] ([^:]+): (.*?)((?=\n\
 # Find all matches
 matches = re.findall(pattern, chat_text, re.DOTALL)
 
-chat_id = 1
+chat_id = 0
 chat = Chat(chat_id)
 msg_id = 0
 
@@ -27,5 +28,11 @@ for time, date, sender, message, _ in matches:
     print(msg)
 
 print(f"Der Chat besteht aus folgenden Teilnehmern: {chat.participants}")
+
+author_id = 0
+for author in chat.participants:
+    aut = Author(author_id, author)
+    author_id = author_id + 1
+    print(aut)
 
 #chat_id, message_id, sender, timestamp, content, message_type, quoted_message = None
