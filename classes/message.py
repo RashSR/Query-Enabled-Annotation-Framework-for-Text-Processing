@@ -1,10 +1,11 @@
 from datetime import datetime
+from classes.messagetype import MessageType
 
 class Message:
     
     #TODO: sender hier notwendig? -> Nur wenn nach einzelnen Nachrichten gesucht werden muss. 
 
-    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = "TEXT", quoted_message = None):
+    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None):
         self.chat_id = chat_id
         self.message_id = message_id
         self.sender = sender
