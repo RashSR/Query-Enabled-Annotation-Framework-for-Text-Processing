@@ -1,5 +1,5 @@
-from chat import Chat
-from message import Message
+from classes.chat import Chat
+from classes.message import Message
 from datetime import datetime
 
 class Author:
