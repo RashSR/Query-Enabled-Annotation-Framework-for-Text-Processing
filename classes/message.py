@@ -28,6 +28,14 @@ class Message:
         if self.quoted_message == None:
             return True
         return False
+    
+    @property
+    def sender(self):
+        return self._sender
+
+    @sender.setter
+    def sender(self, value):
+        self._sender = value
 
 if __name__ == "__main__":
     msg_without_quote = Message(6, 1, 'Alice',  datetime.now(),"Hello what up", "Text")
