@@ -25,7 +25,7 @@ def generate_html(chats, filename="output_html/chats.html"):
 
     for chat in chats:
         html += f"<details open>\n"
-        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} ({len(chat.messages)} messages)</summary>\n"
+        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {chat.participants} ({len(chat.messages)} messages)</summary>\n"
         
         for msg in chat.messages:
             html += "<details class='message-details'>\n"
