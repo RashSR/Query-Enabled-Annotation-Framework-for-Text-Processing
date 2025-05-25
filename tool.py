@@ -90,9 +90,9 @@ modified_text = ''.join(text_list)
 print("\nBearbeiteter Text:")
 print(modified_text)
 
-generate_html(modified_text, 'output.html')
-print(extract_text_from_html('output.html'))
-print(extract_text_from_html('output.html', withTags=True))
+generate_html(modified_text, 'output_html/output.html')
+print(extract_text_from_html('output_html/output.html'))
+print(extract_text_from_html('output_html/output.html', withTags=True))
 
 print(f"Anzahl gefundener Fehler: {len(matches)}")
 print(f"Anzahl gefundener Fehlerarten: {len(found_ruleIds)}")
@@ -137,7 +137,7 @@ for token in doc:
     print("---")
 
 print(annotated_text)
-generate_html(annotated_text, 'output2.html')
+generate_html(annotated_text, 'output_html/output2.html')
 
 #possible values for tempus: 
 #-Präsens (Pres): "Ich gehe", "Ich habe".

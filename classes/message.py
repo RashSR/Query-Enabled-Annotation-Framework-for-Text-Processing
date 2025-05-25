@@ -7,7 +7,7 @@ class Message:
 
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None):
         self.chat_id = chat_id
-        self.message_id = message_id
+        self._message_id = message_id
         self.sender = sender
         self.timestamp = timestamp
         self.content = content
@@ -15,7 +15,7 @@ class Message:
         self.quoted_message = quoted_message
 
     def __str__(self):
-        toString = f"""ChatId: {self.chat_id}, MessageId: {str(self.message_id)}
+        toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
         Sender: {self.sender}
         Timestamp: {self.timestamp}
         Content: {self.content}
@@ -36,5 +36,15 @@ class Message:
     @sender.setter
     def sender(self, value):
         self._sender = value
+
+    @property
+    def message_id(self):
+        return self._message_id
+
+    @message_id.setter
+    def message_id(self, value):
+        self._message_id = value
+
+    
     
 
