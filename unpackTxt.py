@@ -30,9 +30,11 @@ for time, date, sender, message, _ in matches:
 print(f"Der Chat besteht aus folgenden Teilnehmern: {chat.participants}")
 
 author_id = 0
+authors = []
 for author in chat.participants:
-    aut = Author(author_id, author)
+    singleAuthor = Author(author_id, author)
     author_id = author_id + 1
-    print(aut)
+    authors.append(singleAuthor)
 
-#chat_id, message_id, sender, timestamp, content, message_type, quoted_message = None
+for a in authors:
+    print(a)

@@ -3,17 +3,16 @@
 from datetime import datetime
 
 class Author:
-    def __init__(self, author_id, name):
+    def __init__(self, author_id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
         self._author_id = author_id
         self._name = name
-        self._last_name = ""
-        self._age = 30
-        self._gender = ""
-        self._first_language = ""
-        self._languages = []
-        self._region = ""
-        self._job = ""
-        self._chats = []
+        self._age = age
+        self._gender = gender
+        self._first_language = first_language
+        self._languages = languages if languages is not None else []
+        self._region = region
+        self._job = job
+        self._chats = chats if chats is not None else []
 
     @property
     def author_id(self):
@@ -30,14 +29,6 @@ class Author:
     @name.setter
     def name(self, value):
         self._name = value
-
-    @property
-    def last_name(self):
-        return self._last_name
-
-    @last_name.setter
-    def last_name(self, value):
-        self._last_name = value
 
     @property
     def age(self):
@@ -95,7 +86,7 @@ class Author:
         self._chats.append(chat)
 
     def __str__(self):
-        return (f"Author({self.author_id}): {self.name} {self.last_name}, "
+        return (f"Author({self.author_id}): {self.name}, "
                 f"Age: {self.age}, Gender: {self.gender}, "
                 f"First Language: {self.first_language}, "
                 f"Other Languages: {', '.join(self.languages)}, "
