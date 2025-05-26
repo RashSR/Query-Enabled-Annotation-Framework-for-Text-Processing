@@ -3,6 +3,7 @@ from classes.message import Message
 from classes.chat import Chat
 from classes.author import Author
 from datetime import datetime
+import utils
 
 def generate_html_for_author(author, hasOnylAuthorMessages=False, filename="output_html/chats.html"):
     html = f"""
@@ -92,7 +93,6 @@ my_author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"]
 for i in range(1, 3):
 
     file_id = i
-    print("ich habe file_id: " + str(file_id))
     # Read the file
     with open("texts/" + filename + str(file_id) + ".txt", "r", encoding="utf-8") as file:
         chat_text = file.read()
@@ -113,9 +113,9 @@ for i in range(1, 3):
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
         msg = Message(chat_id, msg_id, sender, date_obj, message.strip())
+        #utils.analyze_msg_with_spacy(msg.content)
         chat.add_message(msg)
         msg_id = msg_id + 1
-        print(msg)
 
     print(f"Der Chat besteht aus folgenden Teilnehmern: {chat.participants}")
 
@@ -133,3 +133,4 @@ for i in range(1, 3):
 #print(my_author.get_chats_with_own_messages())
 
 generate_html_for_author(my_author)
+
