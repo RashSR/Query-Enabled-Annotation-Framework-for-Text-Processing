@@ -4,7 +4,7 @@ from classes.chat import Chat
 from classes.author import Author
 from datetime import datetime
 
-def generate_html_for_author(author, hasOtherMessages=False, filename="output_html/chats.html"):
+def generate_html_for_author(author, hasOnylAuthorMessages=False, filename="output_html/chats.html"):
     html = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -17,17 +17,16 @@ def generate_html_for_author(author, hasOtherMessages=False, filename="output_ht
         summary {{ font-weight: bold; cursor: pointer; }}
         .message-details {{ margin-left: 20px; }}
         .chat-summary {{ font-size: 18px; margin-top: 20px; }}
-        .message.own {{ display: block; }}
-        .message.other {{ display: none; }}
+        .message.own, .message.other {{ display: block; }}
     </style>
     <script>
         function toggleMessages() {{
-            const showAll = document.getElementById("toggleMessages").checked;
+            const showOnlyOwn = document.getElementById("toggleMessages").checked;
             const ownMessages = document.querySelectorAll(".message.own");
             const otherMessages = document.querySelectorAll(".message.other");
 
             ownMessages.forEach(m => m.style.display = "block");
-            otherMessages.forEach(m => m.style.display = showAll ? "block" : "none");
+            otherMessages.forEach(m => m.style.display = showOnlyOwn ? "none" : "block");
         }}
         window.onload = () => toggleMessages();
     </script>
@@ -43,8 +42,8 @@ def generate_html_for_author(author, hasOtherMessages=False, filename="output_ht
     <p><strong>Other Languages:</strong> {', '.join(author.languages)}</p>
 
     <label>
-        <input type="checkbox" id="toggleMessages" onchange="toggleMessages()" {'checked' if hasOtherMessages else ''}>
-        Show all messages
+        <input type="checkbox" id="toggleMessages" onchange="toggleMessages()" {'checked' if hasOnylAuthorMessages else ''}>
+        Show only author messages
     </label>
 """
 

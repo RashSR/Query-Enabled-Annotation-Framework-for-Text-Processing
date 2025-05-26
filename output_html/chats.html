@@ -10,17 +10,16 @@
         summary { font-weight: bold; cursor: pointer; }
         .message-details { margin-left: 20px; }
         .chat-summary { font-size: 18px; margin-top: 20px; }
-        .message.own { display: block; }
-        .message.other { display: none; }
+        .message.own, .message.other { display: block; }
     </style>
     <script>
         function toggleMessages() {
-            const showAll = document.getElementById("toggleMessages").checked;
+            const showOnlyOwn = document.getElementById("toggleMessages").checked;
             const ownMessages = document.querySelectorAll(".message.own");
             const otherMessages = document.querySelectorAll(".message.other");
 
             ownMessages.forEach(m => m.style.display = "block");
-            otherMessages.forEach(m => m.style.display = showAll ? "block" : "none");
+            otherMessages.forEach(m => m.style.display = showOnlyOwn ? "none" : "block");
         }
         window.onload = () => toggleMessages();
     </script>
@@ -37,10 +36,10 @@
 
     <label>
         <input type="checkbox" id="toggleMessages" onchange="toggleMessages()" >
-        Show all messages
+        Show only author messages
     </label>
 <details open>
-<summary class='chat-summary'>Chat ID: 1 – Participants: Reinhold, Ben Vector (31 / 52 messages) </summary>
+<summary class='chat-summary'>Chat ID: 1 – Participants: Ben Vector, Reinhold (31 / 52 messages) </summary>
 <div class='message own'>
 <details class='message-details'>
 <summary>Message 0 from Reinhold at 2024-04-22 09:59:00</summary>
@@ -356,7 +355,7 @@ Und ich wollt fragen, ob ihr heut abend zum phil cafe geht? Hab das jetzt als aw
 </div>
 </details>
 <details open>
-<summary class='chat-summary'>Chat ID: 2 – Participants: Reinhold, Johannes Rösner (58 / 127 messages) </summary>
+<summary class='chat-summary'>Chat ID: 2 – Participants: Johannes Rösner, Reinhold (58 / 127 messages) </summary>
 <div class='message own'>
 <details class='message-details'>
 <summary>Message 0 from Reinhold at 2025-03-18 12:34:00</summary>
