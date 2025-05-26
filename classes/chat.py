@@ -43,3 +43,11 @@ class Chat:
     @messages.setter
     def messages(self, value):
         self._messages = value
+
+    def get_message_count_for_author(self, author):
+        count = 0
+        for msg in self.messages:
+            if msg.sender == author:
+                count = count + 1
+
+        return count

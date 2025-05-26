@@ -44,7 +44,5 @@ class Message:
     @message_id.setter
     def message_id(self, value):
         self._message_id = value
-
-    
     
 

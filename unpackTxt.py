@@ -51,7 +51,7 @@ def generate_html_for_author(author, hasOtherMessages=False, filename="output_ht
     for chat in author.chats:
         html += f"<details open>\n"
         participants = ", ".join(set(msg.sender for msg in chat.messages))
-        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {participants} ({len(chat.messages)} messages)</summary>\n"
+        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {participants} ({chat.get_message_count_for_author(author.name)} / {len(chat.messages)} messages) </summary>\n"
 
         for msg in chat.messages:
             message_class = "own" if msg.sender == author.name else "other"
