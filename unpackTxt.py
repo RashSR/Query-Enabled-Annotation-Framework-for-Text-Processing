@@ -24,9 +24,11 @@ def generate_html_for_author(author, hasOnylAuthorMessages=False, filename="outp
             const showOnlyOwn = document.getElementById("toggleMessages").checked;
             const ownMessages = document.querySelectorAll(".message.own");
             const otherMessages = document.querySelectorAll(".message.other");
+            const authorCounts = document.querySelectorAll(".author-count");
 
             ownMessages.forEach(m => m.style.display = "block");
             otherMessages.forEach(m => m.style.display = showOnlyOwn ? "none" : "block");
+            authorCounts.forEach(el => el.style.display = showOnlyOwn ? "inline" : "none");
         }}
         window.onload = () => toggleMessages();
     </script>
@@ -50,7 +52,7 @@ def generate_html_for_author(author, hasOnylAuthorMessages=False, filename="outp
     for chat in author.chats:
         html += f"<details open>\n"
         participants = ", ".join(set(msg.sender for msg in chat.messages))
-        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {participants} ({chat.get_message_count_for_author(author.name)} / {len(chat.messages)} messages) </summary>\n"
+        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {participants} (<span class='author-count'>{chat.get_message_count_for_author(author.name)} / </span>{len(chat.messages)} messages)</summary>\n"
 
         for msg in chat.messages:
             message_class = "own" if msg.sender == author.name else "other"
