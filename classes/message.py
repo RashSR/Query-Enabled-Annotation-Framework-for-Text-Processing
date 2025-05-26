@@ -1,11 +1,12 @@
 from datetime import datetime
 from classes.messagetype import MessageType
+from typing import Dict
 
 class Message:
     
     #TODO: sender hier notwendig? -> Nur wenn nach einzelnen Nachrichten gesucht werden muss. 
 
-    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None):
+    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None):
         self.chat_id = chat_id
         self._message_id = message_id
         self.sender = sender
@@ -13,6 +14,7 @@ class Message:
         self.content = content
         self.message_type = message_type
         self.quoted_message = quoted_message
+        self._error_dict = {}
 
     def __str__(self):
         toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
@@ -21,6 +23,7 @@ class Message:
         Content: {self.content}
         MessageType: {self.message_type}
         quotedMessage: {{ {self.quoted_message } }}
+        ErrorTypes: {len(self.error_dict)}
         """
         return toString
     
@@ -29,6 +32,20 @@ class Message:
             return True
         return False
     
+    def add_to_error_dict(self, error: str):
+        if error in self.error_dict:
+            self.error_dict[error] += 1
+        else:
+            self.error_dict[error] = 1
+
+    @property
+    def error_dict(self):
+        return self._error_dict
+
+    @error_dict.setter
+    def error_dict(self, value):
+        self._error_dict = value
+
     @property
     def sender(self):
         return self._sender
@@ -44,5 +61,6 @@ class Message:
     @message_id.setter
     def message_id(self, value):
         self._message_id = value
+
     
 

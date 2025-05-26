@@ -2,6 +2,7 @@ import re
 from classes.message import Message
 from classes.chat import Chat
 from classes.author import Author
+from classes.messagetype import MessageType
 from datetime import datetime
 import utils
 
@@ -59,7 +60,9 @@ def generate_html_for_author(author, hasOnylAuthorMessages=False, filename="outp
             message_class = "own" if msg.sender == author.name else "other"
             html += f"<div class='message {message_class}'>\n"
             html += "<details class='message-details'>\n"
-            html += f"<summary>Message {msg.message_id} from {msg.sender} at {msg.timestamp}</summary>\n"
+            # Format the error_dict for display (e.g., Spelling: 3, Grammar: 1)
+            error_summary = ", ".join(f"{k}: {v}" for k, v in msg.error_dict.items()) if hasattr(msg, "error_dict") and msg.error_dict else "No errors"
+            html += f"<summary>Message {msg.message_id} from {msg.sender} at {msg.timestamp} — Errors: {error_summary}</summary>\n"
             html += "<div style='margin-left: 20px;'>"
             html += f"ChatId: {msg.chat_id}<br>"
             html += f"MessageId: {msg.message_id}<br>"
@@ -80,10 +83,6 @@ def generate_html_for_author(author, hasOnylAuthorMessages=False, filename="outp
     with open(filename, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"✅ HTML written to {filename}")
-
-
-
-
 
 
 filename = "whatsapp_chat_"
@@ -113,7 +112,9 @@ for i in range(1, 3):
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
         msg = Message(chat_id, msg_id, sender, date_obj, message.strip())
-        #utils.analyze_msg_with_spacy(msg.content)
+        if msg.message_type == MessageType.TEXT:
+            #utils.analyze_msg_with_spacy(msg.content)
+            utils.anaylze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
 
@@ -133,4 +134,3 @@ for i in range(1, 3):
 #print(my_author.get_chats_with_own_messages())
 
 generate_html_for_author(my_author)
-

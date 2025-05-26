@@ -59,8 +59,9 @@ def print_tokennized_word(key, value):
 # endregion 
 
 # region Language Tool
-
-def anaylze_msg_with_language_tool(text):
+from classes.message import Message
+def anaylze_msg_with_language_tool(msg: Message):
+    text = msg.content
     #check the text
     matches = tool.check(text)
 
@@ -75,14 +76,16 @@ def anaylze_msg_with_language_tool(text):
         startPos = match.offset
         endPos = match.offset + match.errorLength
         fehlertext = text[startPos : endPos]
-        print_error(match, startPos, endPos, text)
+        msg.add_to_error_dict(match.category)
+        #print_error(match, startPos, endPos, text)
         add_error_tags(match.ruleId, fehlertext, startPos, endPos, text_list)
         if not (found_ruleIds.__contains__((match.ruleId, match.message))):
             found_ruleIds.append((match.ruleId, match.message))
-        print("---")
+        #print("---")
 
     # Den bearbeiteten Text ausgeben
     modified_text = ''.join(text_list)
+    return modified_text
 
 # print all usefull error informations
 def print_error(match, startPos, endPos, text):
