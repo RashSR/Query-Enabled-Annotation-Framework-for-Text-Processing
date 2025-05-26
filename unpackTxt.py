@@ -4,30 +4,34 @@ from classes.chat import Chat
 from classes.author import Author
 from datetime import datetime
 
-def generate_html(chats, filename="output_html/chats.html"):
-    html = """
+def generate_html_for_author(author, hasOtherMessages=False, filename="output_html/chats.html"):
+    html = f"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chat Export</title>
+    <title>Chat Export for {author.name}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        details { margin-bottom: 10px; }
-        summary { font-weight: bold; cursor: pointer; }
-        .message-details { margin-left: 20px; }
-        .chat-summary { font-size: 18px; margin-top: 20px; }
+        body {{ font-family: Arial, sans-serif; margin: 20px; }}
+        details {{ margin-bottom: 10px; }}
+        summary {{ font-weight: bold; cursor: pointer; }}
+        .message-details {{ margin-left: 20px; }}
+        .chat-summary {{ font-size: 18px; margin-top: 20px; }}
     </style>
 </head>
 <body>
-    <h1>Chat Export</h1>
+    <h1>Messages by {author.name} </h1>
 """
 
-    for chat in chats:
+    for chat in author.chats:
         html += f"<details open>\n"
-        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {chat.participants} ({len(chat.messages)} messages)</summary>\n"
+        participants = ", ".join(set(msg.sender for msg in chat.messages))
+        html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {participants} ({len(chat.messages)} messages)</summary>\n"
         
         for msg in chat.messages:
+            if not hasOtherMessages and msg.sender != author.name:
+                continue  # Skip other people's messages
+
             html += "<details class='message-details'>\n"
             html += f"<summary>Message {msg.message_id} from {msg.sender} at {msg.timestamp}</summary>\n"
             html += "<div style='margin-left: 20px;'>"
@@ -37,7 +41,7 @@ def generate_html(chats, filename="output_html/chats.html"):
             html += f"Timestamp: {msg.timestamp}<br>"
             html += f"Content: {msg.content}<br>"
             html += f"MessageType: {msg.message_type}<br>"
-            quoted = msg.quoted_message if hasattr(msg, "quoted_message") else "None"
+            quoted = msg.quoted_message if hasattr(msg, "quoted_message") and msg.quoted_message else "None"
             html += f"Quoted Message: {{ {quoted} }}<br>"
             html += "</div>\n</details>\n"
 
@@ -101,7 +105,6 @@ for i in range(1, 3):
         print(a)
 
 
-print(my_author.get_chats_with_own_messages())
+#print(my_author.get_chats_with_own_messages())
 
-generate_html(my_author.chats)
-generate_html(my_author.get_chats_with_own_messages())
+generate_html_for_author(my_author)
