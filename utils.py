@@ -1,7 +1,7 @@
 import spacy
 import language_tool_python
 
-# Load german spaCy model and initialize language tool
+# Load german spaCy model and initialize language tool -> only loaded once
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
@@ -21,6 +21,8 @@ def extract_text_from_html(filePath, withTags=False):
     # Get only the inner HTML (without <body> tags)
     inner_html = body.decode_contents()
     return inner_html
+
+# region Spacy
 
 def analyze_msg_with_spacy(text):
     doc = nlp(text)
@@ -53,6 +55,10 @@ def analyze_msg_with_spacy(text):
 def print_tokennized_word(key, value):
     if (len(value) != 0):
         print(f"{key}: {value}")
+
+# endregion 
+
+# region Language Tool
 
 def anaylze_msg_with_language_tool(text):
     #check the text
@@ -115,3 +121,5 @@ def convert_message(lt_message):
 def add_error_tags(ruleId, fehlertext, startPos, endPos, text_list):
     error_tag = f"<span data-error=\"{ruleId}\">{fehlertext}</span>"
     text_list[startPos : endPos] = list(error_tag)
+
+# endregion
