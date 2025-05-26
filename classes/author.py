@@ -1,4 +1,4 @@
-#from classes.chat import Chat
+from classes.chat import Chat
 #from classes.message import Message
 from datetime import datetime
 
@@ -84,6 +84,19 @@ class Author:
 
     def add_chat(self, chat):
         self._chats.append(chat)
+
+    def get_chats_with_own_messages(self):
+        list_of_chats = []
+        for chat in self._chats:
+            new_chat = Chat(chat.chat_id)
+            list_of_chats.append(new_chat)
+            for msg in chat.messages:
+                if msg.sender == self._name:
+                    new_chat.add_message(msg)
+        
+        return list_of_chats
+
+
 
     def __str__(self):
         return (f"Author({self.author_id}): {self.name}, "

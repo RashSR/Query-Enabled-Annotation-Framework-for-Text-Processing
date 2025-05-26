@@ -21,9 +21,25 @@ class Chat:
             print(msg)
 
     @property
+    def chat_id(self):
+        return self._chat_id
+
+    @chat_id.setter
+    def chat_id(self, value):
+        self._chat_id = value
+
+    @property
     def participants(self):
         return self._participants
 
     @participants.setter
     def participants(self, value):
         self._participants = value
+
+    @property
+    def messages(self):
+        return self._messages
+
+    @messages.setter
+    def messages(self, value):
+        self._messages = value

@@ -56,39 +56,51 @@ def generate_html(chats, filename="output_html/chats.html"):
 
 
 
-# Read the file
-with open("texts/whatsapp_chat.txt", "r", encoding="utf-8") as file:
-    chat_text = file.read()
+filename = "whatsapp_chat_"
+list_of_chats = []
+my_author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 
-# Pattern to match each message
-pattern = r'\[(\d{1,2}:\d{2}), (\d{1,2}\.\d{1,2}\.\d{4})\] ([^:]+): (.*?)((?=\n\[\d{1,2}:\d{2}, \d{1,2}\.\d{1,2}\.\d{4}\])|$)'
+for i in range(1, 3):
 
-# Find all matches
-matches = re.findall(pattern, chat_text, re.DOTALL)
+    file_id = i
+    print("ich habe file_id: " + str(file_id))
+    # Read the file
+    with open("texts/" + filename + str(file_id) + ".txt", "r", encoding="utf-8") as file:
+        chat_text = file.read()
 
-chat_id = 0
-chat = Chat(chat_id)
-msg_id = 0
+    # Pattern to match each message
+    pattern = r'\[(\d{1,2}:\d{2}), (\d{1,2}\.\d{1,2}\.\d{4})\] ([^:]+): (.*?)((?=\n\[\d{1,2}:\d{2}, \d{1,2}\.\d{1,2}\.\d{4}\])|$)'
 
-# Iterate and print each message
-for time, date, sender, message, _ in matches:
-    str_date = date + " " + time
-    date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
-    msg = Message(chat_id, msg_id, sender, date_obj, message.strip())
-    chat.add_message(msg)
-    msg_id = msg_id + 1
-    print(msg)
+    # Find all matches
+    matches = re.findall(pattern, chat_text, re.DOTALL)
 
-print(f"Der Chat besteht aus folgenden Teilnehmern: {chat.participants}")
+    chat_id = i
+    chat = Chat(chat_id)
+    my_author.add_chat(chat)
+    msg_id = 0
 
-author_id = 0
-authors = []
-for author in chat.participants:
-    singleAuthor = Author(author_id, author)
-    author_id = author_id + 1
-    authors.append(singleAuthor)
+    # Iterate and print each message
+    for time, date, sender, message, _ in matches:
+        str_date = date + " " + time
+        date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
+        msg = Message(chat_id, msg_id, sender, date_obj, message.strip())
+        chat.add_message(msg)
+        msg_id = msg_id + 1
+        print(msg)
 
-for a in authors:
-    print(a)
+    print(f"Der Chat besteht aus folgenden Teilnehmern: {chat.participants}")
 
-generate_html([chat])
+    author_id = 0
+    authors = []
+    for author in chat.participants:
+        singleAuthor = Author(author_id, author)
+        author_id = author_id + 1
+        authors.append(singleAuthor)
+
+    for a in authors:
+        print(a)
+
+
+print(my_author.get_chats_with_own_messages())
+
+generate_html(my_author.chats)
