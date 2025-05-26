@@ -17,21 +17,45 @@ def generate_html_for_author(author, hasOtherMessages=False, filename="output_ht
         summary {{ font-weight: bold; cursor: pointer; }}
         .message-details {{ margin-left: 20px; }}
         .chat-summary {{ font-size: 18px; margin-top: 20px; }}
+        .message.own {{ display: block; }}
+        .message.other {{ display: none; }}
     </style>
+    <script>
+        function toggleMessages() {{
+            const showAll = document.getElementById("toggleMessages").checked;
+            const ownMessages = document.querySelectorAll(".message.own");
+            const otherMessages = document.querySelectorAll(".message.other");
+
+            ownMessages.forEach(m => m.style.display = "block");
+            otherMessages.forEach(m => m.style.display = showAll ? "block" : "none");
+        }}
+        window.onload = () => toggleMessages();
+    </script>
 </head>
 <body>
-    <h1>Messages by {author.name} </h1>
+    <h1>Messages by {author.name}</h1>
+    <p><strong>Author ID:</strong> {author.author_id}</p>
+    <p><strong>Age:</strong> {author.age}</p>
+    <p><strong>Gender:</strong> {author.gender}</p>
+    <p><strong>Region:</strong> {author.region}</p>
+    <p><strong>Job:</strong> {author.job}</p>
+    <p><strong>First Language:</strong> {author.first_language}</p>
+    <p><strong>Other Languages:</strong> {', '.join(author.languages)}</p>
+
+    <label>
+        <input type="checkbox" id="toggleMessages" onchange="toggleMessages()" {'checked' if hasOtherMessages else ''}>
+        Show all messages
+    </label>
 """
 
     for chat in author.chats:
         html += f"<details open>\n"
         participants = ", ".join(set(msg.sender for msg in chat.messages))
         html += f"<summary class='chat-summary'>Chat ID: {chat.chat_id} – Participants: {participants} ({len(chat.messages)} messages)</summary>\n"
-        
-        for msg in chat.messages:
-            if not hasOtherMessages and msg.sender != author.name:
-                continue  # Skip other people's messages
 
+        for msg in chat.messages:
+            message_class = "own" if msg.sender == author.name else "other"
+            html += f"<div class='message {message_class}'>\n"
             html += "<details class='message-details'>\n"
             html += f"<summary>Message {msg.message_id} from {msg.sender} at {msg.timestamp}</summary>\n"
             html += "<div style='margin-left: 20px;'>"
@@ -43,7 +67,7 @@ def generate_html_for_author(author, hasOtherMessages=False, filename="output_ht
             html += f"MessageType: {msg.message_type}<br>"
             quoted = msg.quoted_message if hasattr(msg, "quoted_message") and msg.quoted_message else "None"
             html += f"Quoted Message: {{ {quoted} }}<br>"
-            html += "</div>\n</details>\n"
+            html += "</div>\n</details>\n</div>\n"
 
         html += "</details>\n"
 
