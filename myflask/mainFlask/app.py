@@ -47,6 +47,6 @@ def chat_view():
 def chat2_view():
     return render_template("chat.html", chat=chat, current_user="Alice")
 
-@app.route("/chat3")
+@app.route("/")
 def chat3_view():
-    return render_template("chat.html", chat=loaded_chat, current_user=chat.participants[0])
+    return render_template("chat.html", chat=loaded_chat, current_user=loaded_chat.participants[0])
