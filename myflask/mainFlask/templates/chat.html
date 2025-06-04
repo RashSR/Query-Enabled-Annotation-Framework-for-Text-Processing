@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h2>Chat with {{ chat.participants | join(', ') }}</h2>
+    <h2>Chat with {{ chat.participants | reject('equalto', current_user) | join(', ') }}</h2>
     <div class="chat-box">
         {% for message in chat.messages %}
             <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
