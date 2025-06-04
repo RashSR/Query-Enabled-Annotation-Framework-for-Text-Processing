@@ -4,6 +4,9 @@ from classes.chat import Chat
 from classes.messagetype import MessageType
 from datetime import datetime
 
+from flask import Flask, render_template
+
+
 app = Flask(__name__)
 
 # Create example chat with your existing classes
@@ -37,6 +40,3 @@ chat.add_message(Message(
 @app.route("/chat")
 def chat_view():
     return render_template("chat.html", chat=chat, current_user="Bob")
-
-if __name__ == "__main__":
-    app.run(debug=True)
