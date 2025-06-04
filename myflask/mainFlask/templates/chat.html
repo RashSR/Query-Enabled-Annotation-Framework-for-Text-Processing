@@ -5,18 +5,18 @@
     <div class="chat-box">
         {% set last_date = None %}
         {% for message in chat.messages %}
-            {% set current_date = message.timestamp.date() %}
-            {% if current_date != last_date %}
+            {% set message_date = message.timestamp.date() %}
+            {% if message_date != last_date %}
                 <div class="date-divider">
-                    {% if current_date == now().date() %}
+                    {% if message_date == now().date() %}
                         Today
-                    {% elif current_date == (now() - timedelta(days=1)).date() %}
+                    {% elif message_date == (now() - timedelta(days=1)).date() %}
                         Yesterday
                     {% else %}
-                        {{ current_date.strftime('%-d %b %Y') }}
+                        {{ message.timestamp.strftime('%b %d, %Y') }}
                     {% endif %}
                 </div>
-                {% set last_date = current_date %}
+                {% set last_date = message_date %}
             {% endif %}
 
             <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
