@@ -9,7 +9,7 @@
                 <div class="quoted">{{ message.quoted_message }}</div>
                 {% endif %}
                 <div class="text">{{ message.content }}</div>
-                <div class="timestamp">{{ message.timestamp }}</div>
+                <div class="timestamp">{{ message.timestamp.strftime('%I:%M %p').lstrip('0') }}</div>
             </div>
         {% endfor %}
     </div>

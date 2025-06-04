@@ -99,3 +99,11 @@ body {
     margin-right: 10px;
     font-size: 0.9em;
 }
+
+.date-divider {
+    text-align: center;
+    margin: 15px 0;
+    color: #888;
+    font-weight: bold;
+    font-size: 0.9em;
+}
