@@ -5,6 +5,10 @@ import language_tool_python
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
+def load_single_chat_from_file(filePath):
+    return None
+
+
 def extract_text_from_html(filePath, withTags=False):
     from bs4 import BeautifulSoup
     with open(filePath, 'r', encoding='utf-8') as f:

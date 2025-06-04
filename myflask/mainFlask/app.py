@@ -40,3 +40,7 @@ chat.add_message(Message(
 @app.route("/chat")
 def chat_view():
     return render_template("chat.html", chat=chat, current_user="Bob")
+
+@app.route("/chat2")
+def chat2_view():
+    return render_template("chat.html", chat=chat, current_user="Alice")
