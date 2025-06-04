@@ -1,10 +1,10 @@
 from flask import Flask, render_template
 from classes.chat import Chat
 from classes.message import Message
-from classes.messagetype import MessageType
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
+app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 
 # Create some chats
 chat1 = Chat(chat_id=1)
