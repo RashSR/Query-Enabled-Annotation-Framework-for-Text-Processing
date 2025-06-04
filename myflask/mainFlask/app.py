@@ -3,9 +3,8 @@ from classes.message import Message
 from classes.chat import Chat
 from classes.messagetype import MessageType
 from datetime import datetime
-
 from flask import Flask, render_template
-
+import utils
 
 app = Flask(__name__)
 
@@ -37,10 +36,17 @@ chat.add_message(Message(
     quoted_message="I'm good, and you?"
 ))
 
+loaded_chat = utils.load_single_chat_from_file(1)
+
 @app.route("/chat")
 def chat_view():
     return render_template("chat.html", chat=chat, current_user="Bob")
 
+
 @app.route("/chat2")
 def chat2_view():
     return render_template("chat.html", chat=chat, current_user="Alice")
+
+@app.route("/chat3")
+def chat3_view():
+    return render_template("chat.html", chat=loaded_chat, current_user=chat.participants[0])

@@ -1,20 +1,25 @@
 import spacy
 import language_tool_python
+import re
+from bs4 import BeautifulSoup
+from classes.message import Message
+from classes.chat import Chat
+from classes.messagetype import MessageType
+from datetime import datetime
 
 # Load german spaCy model and initialize language tool -> only loaded once
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
-tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
+#tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
+tool = None
 
 def load_all_chats_from_files():
     return None
 
-def load_single_chat_from_file(filePath):
-    return None
+def load_single_chat_from_file(id) -> Chat:
     filename = "whatsapp_chat_"
-    list_of_chats = []
 
     # Read the file
-    with open("texts/" + filename + str(file_id) + ".txt", "r", encoding="utf-8") as file:
+    with open("texts/" + filename + str(id) + ".txt", "r", encoding="utf-8") as file:
         chat_text = file.read()
 
     # Pattern to match each message
@@ -23,25 +28,24 @@ def load_single_chat_from_file(filePath):
     # Find all matches
     matches = re.findall(pattern, chat_text, re.DOTALL)
 
-    chat_id = i
-    chat = Chat(chat_id)
-    my_author.add_chat(chat)
+    chat = Chat(id)
     msg_id = 0
 
     # Iterate and print each message
     for time, date, sender, message, _ in matches:
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
-        msg = Message(chat_id, msg_id, sender, date_obj, message.strip())
-        if msg.message_type == MessageType.TEXT:
-            #utils.analyze_msg_with_spacy(msg.content)
-            utils.anaylze_msg_with_language_tool(msg)
+        msg = Message(id, msg_id, sender, date_obj, message.strip())
+        #if msg.message_type == MessageType.TEXT:
+            #analyze_msg_with_spacy(msg.content)
+            #anaylze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
+    
+    return chat
 
 
 def extract_text_from_html(filePath, withTags=False):
-    from bs4 import BeautifulSoup
     with open(filePath, 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f, 'html.parser')
     # Find the <body>
@@ -94,7 +98,6 @@ def print_tokennized_word(key, value):
 # endregion 
 
 # region Language Tool
-from classes.message import Message
 def anaylze_msg_with_language_tool(msg: Message):
     text = msg.content
     #check the text
