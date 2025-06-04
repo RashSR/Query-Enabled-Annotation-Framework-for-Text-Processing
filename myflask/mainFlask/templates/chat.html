@@ -1,31 +1,25 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h2>Chat with {{ chat.participants | reject('equalto', current_user) | join(', ') }}</h2>
-    <div class="chat-box">
-        {% set last_date = None %}
-        {% for message in chat.messages %}
-            {% set message_date = message.timestamp.date() %}
-            {% if message_date != last_date %}
-                <div class="date-divider">
-                    {% if message_date == now().date() %}
-                        Today
-                    {% elif message_date == (now() - timedelta(days=1)).date() %}
-                        Yesterday
-                    {% else %}
-                        {{ message.timestamp.strftime('%b %d, %Y') }}
-                    {% endif %}
-                </div>
-                {% set last_date = message_date %}
-            {% endif %}
-
-            <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
-                {% if message.quoted_message %}
-                <div class="quoted">{{ message.quoted_message }}</div>
-                {% endif %}
-                <div class="text">{{ message.content }}</div>
-                <div class="timestamp">{{ message.timestamp.strftime('%I:%M %p').lstrip('0') }}</div>
+<h2>Chat with {{ chat.participants | reject('equalto', current_user) | join(', ') }}</h2>
+<div class="chat-box">
+    {% set ns = namespace(previous_date=None) %}
+    {% for message in chat.messages %}
+        {% set message_date = message.timestamp.date() %}
+        {% if message_date != ns.previous_date %}
+            <div class="date-divider">
+                {{ message.timestamp.strftime('%A, %B %d, %Y') }}
             </div>
-        {% endfor %}
-    </div>
+            {% set ns.previous_date = message_date %}
+        {% endif %}
+        
+        <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
+            {% if message.quoted_message %}
+            <div class="quoted">{{ message.quoted_message }}</div>
+            {% endif %}
+            <div class="text">{{ message.content }}</div>
+            <div class="timestamp">{{ message.timestamp.strftime('%I:%M %p').lstrip('0') }}</div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
