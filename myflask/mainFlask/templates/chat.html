@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat View</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="chat-wrapper">
+    <div class="chat-header">
+      <h2>Chat with {{ chat.participants | reject('equalto', current_user) | join(', ') }}</h2>
+    </div>
+    <div class="chat-body">
+      {% for msg in chat.messages %}
+        <div class="message {% if msg.sender == current_user %}sent{% else %}received{% endif %}">
+          {% if msg.quoted_message %}
+            <div class="quoted">{{ msg.quoted_message }}</div>
+          {% endif %}
+          <div class="bubble">{{ msg.content }}</div>
+          <div class="time">{{ msg.timestamp.strftime('%I:%M %p') }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
