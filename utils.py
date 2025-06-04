@@ -5,8 +5,39 @@ import language_tool_python
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
+def load_all_chats_from_files():
+    return None
+
 def load_single_chat_from_file(filePath):
     return None
+    filename = "whatsapp_chat_"
+    list_of_chats = []
+
+    # Read the file
+    with open("texts/" + filename + str(file_id) + ".txt", "r", encoding="utf-8") as file:
+        chat_text = file.read()
+
+    # Pattern to match each message
+    pattern = r'\[(\d{1,2}:\d{2}), (\d{1,2}\.\d{1,2}\.\d{4})\] ([^:]+): (.*?)((?=\n\[\d{1,2}:\d{2}, \d{1,2}\.\d{1,2}\.\d{4}\])|$)'
+
+    # Find all matches
+    matches = re.findall(pattern, chat_text, re.DOTALL)
+
+    chat_id = i
+    chat = Chat(chat_id)
+    my_author.add_chat(chat)
+    msg_id = 0
+
+    # Iterate and print each message
+    for time, date, sender, message, _ in matches:
+        str_date = date + " " + time
+        date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
+        msg = Message(chat_id, msg_id, sender, date_obj, message.strip())
+        if msg.message_type == MessageType.TEXT:
+            #utils.analyze_msg_with_spacy(msg.content)
+            utils.anaylze_msg_with_language_tool(msg)
+        chat.add_message(msg)
+        msg_id = msg_id + 1
 
 
 def extract_text_from_html(filePath, withTags=False):
