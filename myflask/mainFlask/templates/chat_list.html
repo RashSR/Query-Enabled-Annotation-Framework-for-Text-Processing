@@ -7,7 +7,7 @@
     <li class="{% if c.chat_id == chat.chat_id %}active{% endif %}">
         <a href="{{ url_for('chat_view', chat_id=c.chat_id) }}" style="display: flex; align-items: center;">
             <div class="avatar">
-                {{ c.participants[0][0] if c.participants else '?' }}
+                {{ (c.participants | reject("equalto", current_user) | list)[0][0] if c.participants|length > 1 else c.participants[0][0] }}
             </div>
             <div style="flex: 1;">
                 <div style="display: flex; justify-content: space-between;">
