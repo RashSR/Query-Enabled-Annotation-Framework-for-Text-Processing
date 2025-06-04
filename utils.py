@@ -12,8 +12,13 @@ nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_ne
 #tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 tool = None
 
-def load_all_chats_from_files():
-    return None
+def load_all_chats_from_files(ids):
+    chats = []
+    for i in ids:
+        chat = load_single_chat_from_file(i)
+        chats.append(chat)
+
+    return chats
 
 def load_single_chat_from_file(id) -> Chat:
     filename = "whatsapp_chat_"
