@@ -1,8 +1,8 @@
 from flask import Flask, render_template
-from classes.chat import Chat
-from classes.message import Message
 from datetime import datetime, timedelta
 import utils
+import locale
+locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 
 app = Flask(__name__)
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
