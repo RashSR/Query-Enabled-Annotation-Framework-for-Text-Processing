@@ -1,0 +1,9 @@
+<ul class="chat-list">
+    {% for c in chats %}
+    <li class="{% if c.chat_id == chat.chat_id %}active{% endif %}">
+        <a href="{{ url_for('chat_view', chat_id=c.chat_id) }}">
+            {{ c.participants | join(', ') }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>

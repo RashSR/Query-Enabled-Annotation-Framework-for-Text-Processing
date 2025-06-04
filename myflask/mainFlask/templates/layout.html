@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WhatsApp Clone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            {% include 'chat_list.html' %}
+        </div>
+        <div class="main">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>
