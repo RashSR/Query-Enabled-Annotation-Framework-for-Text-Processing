@@ -1,7 +1,16 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h2>Chat with {{ chat.participants | reject('equalto', current_user) | join(', ') }}</h2>
+{% set chat_partner = (chat.participants | reject('equalto', current_user) | list)[0] %}
+{% set name_parts = chat_partner.split(' ') %}
+{% set initials = name_parts[0][0] ~ (name_parts[-1][0] if name_parts | length > 1 else '') %}
+
+<div class="chat-header">
+    <div class="avatar">{{ initials }}</div>
+    <div class="chat-partner-info">
+        <strong>{{ chat_partner }}</strong>
+    </div>
+</div>
 <div class="chat-box">
     {% set ns = namespace(previous_date=None) %}
     {% for message in chat.messages %}
