@@ -126,14 +126,24 @@ body {
   transition: background 0.3s ease;
 }
 
+.nav-icon.active {
+    background-color: #25D366;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(37, 211, 102, 0.6);
+}
+
 .nav-icon:hover {
-  background-color: #2a3942;
+  background-color: #25D366;
 }
 
 .nav-icon img {
   width: 32px;
   height: 32px;
   filter: invert(1); /* makes black icons white-ish */
+}
+
+.nav-icon.active img {
+    filter: brightness(5); /* makes the icon look "highlighted" */
 }
 
 .date-divider {

@@ -6,16 +6,16 @@
 </head>
 <body>
     <div class="container">
-    <!-- Left Navigation Bar (like WhatsApp Web) -->
+    <!-- Left Navigation Bar -->
     <div class="left-nav">
-        <div class="nav-icon">
+        <div class="nav-icon {% if request.path == url_for('profile') %}active{% endif %}">
             <a href="{{ url_for('profile') }}">
                 <img src="{{ url_for('static', filename='icons/user.svg') }}" alt="Profile">
             </a>
         </div>
-        <div class="nav-icon">
+        <div class="nav-icon {% if request.path.startswith(url_for('chat_home')) %}active{% endif %}">
             <a href="{{ url_for('chat_home') }}">
-                <img src="{{ url_for('static', filename='icons/chats.svg') }}" alt="Chat">
+                <img src="{{ url_for('static', filename='icons/chats.svg') }}" alt="Chats">
             </a>
         </div>
         <div class="nav-icon">

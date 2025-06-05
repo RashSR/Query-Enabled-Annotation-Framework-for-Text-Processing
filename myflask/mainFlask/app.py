@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from datetime import datetime, timedelta
 from classes.author import Author
 import utils
@@ -12,6 +12,10 @@ chats = utils.load_all_chats_from_files([1, 2])
 author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 author.add_chat(chats[0])
 author.add_chat(chats[1])
+
+@app.context_processor
+def inject_request():
+    return dict(request=request)
 
 @app.route("/profile")
 def profile():
