@@ -1,23 +1,36 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div style="padding: 2rem; font-size: 1.2rem;">
-    <form method="GET" action="{{ url_for('search_view') }}">
-        <input type="text" name="query" placeholder="Suchbegriff eingeben" required>
-        <button type="submit">Suchen</button>
+<div class="search-container" style="padding: 2rem;">
+    <form method="GET" action="{{ url_for('search_view') }}" class="search-bar" style="margin-bottom: 2rem;">
+        <input type="text" name="query" placeholder="Nachricht durchsuchen..." value="{{ request.args.get('query', '') }}" required style="padding: 0.5rem; width: 300px;">
+        <button type="submit" style="padding: 0.5rem 1rem;">Suchen</button>
     </form>
 
     {% if results is defined %}
-        <h2>Ergebnisse:</h2>
-        {% if results %}
-            <ul>
-                {% for msg in results %}
-                    <li><strong>{{ msg.sender }}</strong> ({{ msg.date }}): {{ msg.content }}</li>
+        <div class="chat-box" id="chat-box" style="max-height: 80vh; overflow-y: auto;">
+            {% if results %}
+                {% set ns = namespace(previous_date=None) %}
+                {% for message in results %}
+                    {% set message_date = message.timestamp.date() %}
+                    {% if message_date != ns.previous_date %}
+                        <div class="date-divider" style="text-align: center; margin: 1rem 0; color: #888;">
+                            {{ message.timestamp.strftime('%A, %d. %B %Y') }}
+                        </div>
+                        {% set ns.previous_date = message_date %}
+                    {% endif %}
+
+                    <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
+                        <div class="text">{{ message.content }}</div>
+                        <div class="timestamp" style="text-align: right; font-size: 0.75rem; color: #666;">
+                            {{ message.timestamp.strftime('%H:%M') }}
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
-        {% else %}
-            <p>Keine Nachrichten gefunden.</p>
-        {% endif %}
+            {% else %}
+                <p style="text-align: center; color: #777;">Keine Nachrichten mit diesem Suchbegriff gefunden.</p>
+            {% endif %}
+        </div>
     {% endif %}
 </div>
 {% endblock %}

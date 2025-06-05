@@ -45,6 +45,7 @@ def search_view():
 
     return render_template("search.html", results=results)
 
+
 @app.route("/metrics")
 def metrics_view():
     return render_template('metrics.html')
