@@ -50,7 +50,8 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
         msg = Message(id, msg_id, sender, date_obj, message.strip())
         if isAnalyzing and msg.message_type == MessageType.TEXT:
             #analyze_msg_with_spacy(msg.content)
-            msg.annotated_text = anaylze_msg_with_language_tool(msg)
+            if msg.annotated_text is None:
+                msg.annotated_text = anaylze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
     
