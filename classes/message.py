@@ -69,7 +69,7 @@ class Message:
     
     @annotated_text.setter
     def annotated_text(self, value):
-        self.annotated_text = value
+        self._annotated_text = value
 
     
 

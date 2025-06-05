@@ -11,10 +11,10 @@ from datetime import datetime
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
-def load_all_chats_from_files(ids):
+def load_all_chats_from_files(ids, isAnalyzing = False):
     chats = []
     for i in ids:
-        chat = load_single_chat_from_file(i)
+        chat = load_single_chat_from_file(i, isAnalyzing)
         chats.append(chat)
 
     return chats
@@ -42,7 +42,7 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
         msg = Message(id, msg_id, sender, date_obj, message.strip())
         if isAnalyzing and msg.message_type == MessageType.TEXT:
             #analyze_msg_with_spacy(msg.content)
-            anaylze_msg_with_language_tool(msg)
+            msg.annotated_text = anaylze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
     
