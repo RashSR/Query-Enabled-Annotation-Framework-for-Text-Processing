@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from datetime import datetime, timedelta
 from classes.author import Author
-from classes.message import Message
 import utils
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
@@ -9,12 +8,12 @@ locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows onl
 app = Flask(__name__)
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 
-chats = utils.load_all_chats_from_files([1, 2, 3], True)
+chats = utils.load_all_chats_from_files([1], True)
+#chats = utils.load_all_chats_from_files([1, 2, 3], True)
 author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 author.add_chat(chats[0])
 #author.add_chat(chats[1])
 #author.add_chat(chats[2])
-
 
 @app.context_processor
 def inject_request():

@@ -19,6 +19,12 @@ def load_all_chats_from_files(ids, isAnalyzing = False):
 
     return chats
 
+def print_progress_bar(iteration, total, length=40):
+    percent = (iteration / total)
+    filled_length = int(length * percent)
+    bar = '█' * filled_length + '-' * (length - filled_length)
+    print(f'\rProcessing |{bar}| {percent*100:.1f}% complete', end='')
+
 def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
     filename = "whatsapp_chat_"
 
@@ -35,8 +41,10 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
     chat = Chat(id)
     msg_id = 0
 
+    total = len(matches)
     # Iterate each message
     for time, date, sender, message, _ in matches:
+        print_progress_bar(msg_id + 1, total)
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
         msg = Message(id, msg_id, sender, date_obj, message.strip())
