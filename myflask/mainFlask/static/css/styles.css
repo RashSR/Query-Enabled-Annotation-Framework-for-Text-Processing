@@ -199,3 +199,12 @@ body {
     justify-content: center;
     margin: 0 auto 20px auto;
 }
+
+.no-chat-selected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    font-size: 1.1em;
+}

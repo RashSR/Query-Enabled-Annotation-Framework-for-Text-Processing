@@ -1,34 +1,43 @@
 {% extends "layout.html" %}
 
 {% block content %}
-{% set chat_partner = (chat.participants | reject('equalto', current_user) | list)[0] %}
-{% set name_parts = chat_partner.split(' ') %}
-{% set initials = name_parts[0][0] ~ (name_parts[-1][0] if name_parts | length > 1 else '') %}
+{% if chat %}
+    {% set chat_partner = (chat.participants | reject('equalto', current_user) | list)[0] %}
+    {% set name_parts = chat_partner.split(' ') %}
+    {% set initials = name_parts[0][0] ~ (name_parts[-1][0] if name_parts | length > 1 else '') %}
 
-<div class="chat-header">
-    <div class="avatar">{{ initials }}</div>
-    <div class="chat-partner-info">
-        <strong>{{ chat_partner }}</strong>
-    </div>
-</div>
-<div class="chat-box">
-    {% set ns = namespace(previous_date=None) %}
-    {% for message in chat.messages %}
-        {% set message_date = message.timestamp.date() %}
-        {% if message_date != ns.previous_date %}
-            <div class="date-divider">
-                {{ message.timestamp.strftime('%A, %d. %B %Y') }}
-            </div>
-            {% set ns.previous_date = message_date %}
-        {% endif %}
-        
-        <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
-            {% if message.quoted_message %}
-            <div class="quoted">{{ message.quoted_message }}</div>
-            {% endif %}
-            <div class="text">{{ message.content }}</div>
-            <div class="timestamp">{{ message.timestamp.strftime('%I:%M %p').lstrip('0') }}</div>
+    <div class="chat-header">
+        <div class="avatar">{{ initials }}</div>
+        <div class="chat-partner-info">
+            <strong>{{ chat_partner }}</strong>
         </div>
-    {% endfor %}
-</div>
+    </div>
+
+    <div class="chat-box">
+        {% set ns = namespace(previous_date=None) %}
+        {% for message in chat.messages %}
+            {% set message_date = message.timestamp.date() %}
+            {% if message_date != ns.previous_date %}
+                <div class="date-divider">
+                    {{ message.timestamp.strftime('%A, %d. %B %Y') }}
+                </div>
+                {% set ns.previous_date = message_date %}
+            {% endif %}
+            
+            <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
+                {% if message.quoted_message %}
+                <div class="quoted">{{ message.quoted_message }}</div>
+                {% endif %}
+                <div class="text">{{ message.content }}</div>
+                <div class="timestamp">{{ message.timestamp.strftime('%I:%M %p').lstrip('0') }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="no-chat-selected">
+        <p style="text-align: center; margin-top: 40px; color: #777;">
+            Wähle einen Chat aus der Liste links aus
+        </p>
+    </div>
+{% endif %}
 {% endblock %}

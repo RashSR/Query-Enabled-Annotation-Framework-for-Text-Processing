@@ -17,10 +17,9 @@ author.add_chat(chats[1])
 def profile():
     return render_template("profile.html", author=author)
 
-@app.route('/chats')
-def chat_list():
-    # Load all chats for the current user
-    return render_template('chat_list_only.html', chats=chats)
+@app.route('/chat')
+def chat_home():
+    return render_template('chat.html', chats=chats, chat=None)
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):

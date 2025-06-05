@@ -14,7 +14,9 @@
             </a>
         </div>
         <div class="nav-icon">
-        <img src="/static/icons/chats.svg" alt="Status">
+            <a href="{{ url_for('chat_home') }}">
+                <img src="{{ url_for('static', filename='icons/chats.svg') }}" alt="Chat">
+            </a>
         </div>
         <div class="nav-icon">
         <img src="/static/icons/status.svg" alt="Status">
