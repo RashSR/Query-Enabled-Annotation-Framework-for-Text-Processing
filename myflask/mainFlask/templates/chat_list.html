@@ -1,6 +1,3 @@
-<div style="padding: 10px;">
-    <input type="text" placeholder="Search chats" style="width: 100%; padding: 8px; border-radius: 20px; border: none; background: #3a3f42; color: white;">
-</div>
 <ul class="chat-list">
     {% for c in chats %}
     {% set last_message = c.messages[-1] if c.messages else None %}
