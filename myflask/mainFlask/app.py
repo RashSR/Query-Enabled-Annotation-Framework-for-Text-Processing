@@ -34,16 +34,25 @@ def chat_view(chat_id):
 
 @app.route("/search")
 def search_view():
-    query = request.args.get("query", "").lower()
+    query = request.args.get("query", "").strip().lower()
+    sender = request.args.get("sender", "")
+    all_messages = chats[0].messages
+    all_senders = sorted(set(msg.sender for msg in all_messages))
+
     results = []
 
-    if query:
-        results = [
-            msg for msg in chats[0].messages
-            if query in msg.content.lower()
-        ]
+    if query:  # Only filter if there's an actual query
+        for msg in all_messages:
+            if query in msg.content.lower():
+                if not sender or msg.sender == sender:
+                    results.append(msg)
 
-    return render_template("search.html", results=results)
+    return render_template(
+        "search.html",
+        results=results if query else None,  # send None if no query
+        all_senders=all_senders,
+        selected_sender=sender, current_user="Reinhold"
+    )
 
 
 @app.route("/metrics")
