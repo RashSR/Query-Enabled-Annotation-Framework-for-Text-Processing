@@ -6,7 +6,7 @@ class Message:
     
     #TODO: sender hier notwendig? -> Nur wenn nach einzelnen Nachrichten gesucht werden muss. 
 
-    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None):
+    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None, annotated_text = None):
         self.chat_id = chat_id
         self._message_id = message_id
         self.sender = sender
@@ -15,6 +15,7 @@ class Message:
         self.message_type = message_type
         self.quoted_message = quoted_message
         self._error_dict = {}
+        self._annotated_text = annotated_text
 
     def __str__(self):
         toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
@@ -61,6 +62,14 @@ class Message:
     @message_id.setter
     def message_id(self, value):
         self._message_id = value
+
+    @property
+    def annotated_text(self):
+        return self._annotated_text
+    
+    @annotated_text.setter
+    def annotated_text(self, value):
+        self.annotated_text = value
 
     
 

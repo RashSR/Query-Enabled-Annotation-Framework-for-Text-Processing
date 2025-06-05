@@ -35,13 +35,13 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
     chat = Chat(id)
     msg_id = 0
 
-    # Iterate and print each message
+    # Iterate each message
     for time, date, sender, message, _ in matches:
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
         msg = Message(id, msg_id, sender, date_obj, message.strip())
         if isAnalyzing and msg.message_type == MessageType.TEXT:
-            analyze_msg_with_spacy(msg.content)
+            #analyze_msg_with_spacy(msg.content)
             anaylze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
@@ -119,11 +119,9 @@ def anaylze_msg_with_language_tool(msg: Message):
         endPos = match.offset + match.errorLength
         fehlertext = text[startPos : endPos]
         msg.add_to_error_dict(match.category)
-        #print_error(match, startPos, endPos, text)
         add_error_tags(match.ruleId, fehlertext, startPos, endPos, text_list)
         if not (found_ruleIds.__contains__((match.ruleId, match.message))):
             found_ruleIds.append((match.ruleId, match.message))
-        #print("---")
 
     # Den bearbeiteten Text ausgeben
     modified_text = ''.join(text_list)

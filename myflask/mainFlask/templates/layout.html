@@ -18,6 +18,11 @@
                 <img src="{{ url_for('static', filename='icons/chats.svg') }}" alt="Chats">
             </a>
         </div>
+        <div class="nav-icon {% if request.path.startswith(url_for('search_view')) %}active{% endif %}">
+            <a href="{{ url_for('search_view') }}">
+                <img src="{{ url_for('static', filename='icons/search.svg') }}" alt="Search">
+            </a>
+        </div>
         <div class="nav-icon {% if request.path.startswith(url_for('metrics_view')) %}active{% endif %}">
             <a href="{{ url_for('metrics_view') }}">
                 <img src="{{ url_for('static', filename='icons/metrics.svg') }}" alt="Metrics">

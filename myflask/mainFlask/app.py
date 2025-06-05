@@ -30,6 +30,10 @@ def chat_view(chat_id):
     chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
     return render_template("chat.html", chats=chats, chat=chat, current_user="Reinhold")
 
+@app.route("/search")
+def search_view():
+    return render_template('search.html')
+
 @app.route("/metrics")
 def metrics_view():
     return render_template('metrics.html')
