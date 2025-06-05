@@ -8,7 +8,7 @@ locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows onl
 app = Flask(__name__)
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 
-chats = utils.load_all_chats_from_files([1], True)
+chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], True)
 author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 author.add_chat(chats[0])
