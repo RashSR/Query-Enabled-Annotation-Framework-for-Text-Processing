@@ -39,6 +39,11 @@ body {
     max-width: 70%;
 }
 
+.message.highlighted {
+    background-color: #ffff99 !important;
+    transition: background-color 2s ease;
+}
+
 .sent {
     align-self: flex-end;
     background-color: #dcf8c6;

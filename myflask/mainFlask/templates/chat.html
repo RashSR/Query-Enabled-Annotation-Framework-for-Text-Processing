@@ -23,8 +23,8 @@
                 </div>
                 {% set ns.previous_date = message_date %}
             {% endif %}
-            
-            <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
+
+            <div id="msg-{{ message.message_id }}" class="message {{ 'sent' if message.sender == current_user else 'received' }}">
                 {% if message.quoted_message %}
                 <div class="quoted">{{ message.quoted_message }}</div>
                 {% endif %}
@@ -48,9 +48,25 @@
   window.addEventListener('load', function () {
     const anchor = document.getElementById('scroll-anchor');
     if (anchor) {
-      anchor.scrollIntoView({ behavior: 'auto' }); // or 'smooth'
+      anchor.scrollIntoView({ behavior: 'auto' });
     }
   });
 </script>
+<script>
+window.onload = function () {
+    const anchor = window.location.hash;
+    if (anchor) {
+        const el = document.querySelector(anchor);
+        if (el) {
+            el.classList.add("highlighted");
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
 
+            // Remove highlight after 2 seconds
+            setTimeout(() => {
+                el.classList.remove("highlighted");
+            }, 2000);
+        }
+    }
+};
+</script>
 {% endblock %}
