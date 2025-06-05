@@ -25,7 +25,10 @@ body {
 .chat-box {
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: calc(100vh - 120px); /* Adjust as needed */
 }
+
 .message {
     margin: 5px 0;
     padding: 8px 12px;

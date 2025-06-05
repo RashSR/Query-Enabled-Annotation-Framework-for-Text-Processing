@@ -30,5 +30,13 @@ def chat_view(chat_id):
     chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
     return render_template("chat.html", chats=chats, chat=chat, current_user="Reinhold")
 
+@app.route("/metrics")
+def metrics_view():
+    return render_template('metrics.html')
+
+@app.route("/settings")
+def settings_view():
+    return render_template("settings.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

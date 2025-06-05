@@ -18,11 +18,15 @@
                 <img src="{{ url_for('static', filename='icons/chats.svg') }}" alt="Chats">
             </a>
         </div>
-        <div class="nav-icon">
-        <img src="/static/icons/status.svg" alt="Status">
+        <div class="nav-icon {% if request.path.startswith(url_for('metrics_view')) %}active{% endif %}">
+            <a href="{{ url_for('metrics_view') }}">
+                <img src="{{ url_for('static', filename='icons/metrics.svg') }}" alt="Metrics">
+            </a>
         </div>
-        <div class="nav-icon">
-        <img src="/static/icons/settings.svg" alt="Settings">
+        <div class="nav-icon {% if request.path.startswith(url_for('settings_view')) %}active{% endif %}">
+            <a href="{{ url_for('settings_view') }}">
+                <img src="{{ url_for('static', filename='icons/settings.svg') }}" alt="Settings">
+            </a>
         </div>
     </div>
 
@@ -35,6 +39,8 @@
         {% block content %}{% endblock %}
     </div>
     </div>
+    
+{% block scripts %}{% endblock %}
 </body>
 </html>
 

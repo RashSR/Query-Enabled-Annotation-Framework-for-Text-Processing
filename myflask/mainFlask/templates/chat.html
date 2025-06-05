@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="chat-box">
+    <div class="chat-box" id="chat-box">
         {% set ns = namespace(previous_date=None) %}
         {% for message in chat.messages %}
             {% set message_date = message.timestamp.date() %}
@@ -40,4 +40,19 @@
         </p>
     </div>
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.addEventListener('load', function () {
+    console.log("Scroll script loaded");
+    const chatBox = document.getElementById('chat-box');
+    if (chatBox) {
+      chatBox.scrollTo({
+        top: chatBox.scrollHeight,
+        behavior: 'smooth' // <- smooth scroll!
+      });
+    }
+  });
+</script>
 {% endblock %}
