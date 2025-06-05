@@ -11,10 +11,7 @@
     <p><strong>Region:</strong> {{ author.region or "Nicht angegeben" }}</p>
     <p><strong>Beruf:</strong> {{ author.job or "Nicht angegeben" }}</p>
     <p>
-        <strong>Anzahl Chats:</strong>
-            <a href="{{ url_for('chat_view', chat_id=author.chats[0].chat_id) }}">
-                {{ author.chats | length }}
-            </a>
+        <strong>Anzahl Chats: </strong> {{ author.chats | length }}
     </p>
 </div>
 {% endblock %}

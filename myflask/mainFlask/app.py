@@ -19,7 +19,7 @@ def profile():
 
 @app.route('/chat')
 def chat_home():
-    return render_template('chat.html', chats=chats, chat=None)
+    return render_template('chat.html', chats=chats, chat=None, current_user="Reinhold")
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
