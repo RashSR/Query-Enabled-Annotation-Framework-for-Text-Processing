@@ -41,8 +41,8 @@ def load_single_chat_from_file(id) -> Chat:
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
         msg = Message(id, msg_id, sender, date_obj, message.strip())
-        #if msg.message_type == MessageType.TEXT:
-            #analyze_msg_with_spacy(msg.content)
+        if msg.message_type == MessageType.TEXT:
+            analyze_msg_with_spacy(msg.content)
             #anaylze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
