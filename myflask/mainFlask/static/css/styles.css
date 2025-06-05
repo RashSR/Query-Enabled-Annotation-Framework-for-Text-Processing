@@ -122,7 +122,7 @@ body {
 .chat-header .avatar {
     width: 40px;
     height: 40px;
-    background-color: #25D366; /* WhatsApp light green */
+    background-color: #25D366;
     color: #075E54;
     border-radius: 50%;
     display: flex;
