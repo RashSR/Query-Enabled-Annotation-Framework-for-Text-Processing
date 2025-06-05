@@ -32,6 +32,7 @@
                 <div class="timestamp">{{ message.timestamp.strftime('%I:%M %p').lstrip('0') }}</div>
             </div>
         {% endfor %}
+        <div id="scroll-anchor"></div>
     </div>
 {% else %}
     <div class="no-chat-selected">
@@ -45,14 +46,11 @@
 {% block scripts %}
 <script>
   window.addEventListener('load', function () {
-    console.log("Scroll script loaded");
-    const chatBox = document.getElementById('chat-box');
-    if (chatBox) {
-      chatBox.scrollTo({
-        top: chatBox.scrollHeight,
-        behavior: 'smooth' // <- smooth scroll!
-      });
+    const anchor = document.getElementById('scroll-anchor');
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'auto' }); // or 'smooth'
     }
   });
 </script>
+
 {% endblock %}

@@ -22,11 +22,14 @@ body {
     overflow-y: auto;
     background-color: #e5ddd5;
 }
+
 .chat-box {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    max-height: calc(100vh - 120px); /* Adjust as needed */
+    padding: 10px;
 }
 
 .message {
