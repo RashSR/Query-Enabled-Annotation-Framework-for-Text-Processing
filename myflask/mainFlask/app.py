@@ -34,7 +34,16 @@ def chat_view(chat_id):
 
 @app.route("/search")
 def search_view():
-    return render_template('search.html')
+    query = request.args.get("query", "").lower()
+    results = []
+
+    if query:
+        results = [
+            msg for msg in chats[0].messages
+            if query in msg.content.lower()
+        ]
+
+    return render_template("search.html", results=results)
 
 @app.route("/metrics")
 def metrics_view():

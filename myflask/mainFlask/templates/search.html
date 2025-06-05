@@ -2,6 +2,22 @@
 
 {% block content %}
 <div style="padding: 2rem; font-size: 1.2rem;">
-    Suche folgt bald...
+    <form method="GET" action="{{ url_for('search_view') }}">
+        <input type="text" name="query" placeholder="Suchbegriff eingeben" required>
+        <button type="submit">Suchen</button>
+    </form>
+
+    {% if results is defined %}
+        <h2>Ergebnisse:</h2>
+        {% if results %}
+            <ul>
+                {% for msg in results %}
+                    <li><strong>{{ msg.sender }}</strong> ({{ msg.date }}): {{ msg.content }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Keine Nachrichten gefunden.</p>
+        {% endif %}
+    {% endif %}
 </div>
 {% endblock %}
