@@ -97,8 +97,22 @@ class Author:
         return list_of_chats
 
     def get_all_own_messages(self):
-        return None
+        msg_list = []
+        allChatsWithOwnMessages = self.get_chats_with_own_messages()
+        for chat in allChatsWithOwnMessages:
+            chatMessages = chat.messages
+            for own_message in chatMessages:
+                msg_list.append(own_message)
+        
+        return msg_list
 
+    def get_all_messages(self):
+        msg_list = []
+        for chat in self.chats:
+            for message in chat.messages:
+                msg_list.append(message)
+
+        return msg_list
 
     def __str__(self):
         return (f"Author({self.author_id}): {self.name}, "
