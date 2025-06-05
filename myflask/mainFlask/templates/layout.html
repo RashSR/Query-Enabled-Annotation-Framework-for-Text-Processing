@@ -9,10 +9,12 @@
     <!-- Left Navigation Bar (like WhatsApp Web) -->
     <div class="left-nav">
         <div class="nav-icon">
-        <img src="/static/icons/user.svg" alt="Chats">
+            <a href="{{ url_for('profile') }}">
+                <img src="{{ url_for('static', filename='icons/user.svg') }}" alt="Profile">
+            </a>
         </div>
         <div class="nav-icon">
-        <img src="/static/icons/group.svg" alt="Groups">
+        <img src="/static/icons/chats.svg" alt="Status">
         </div>
         <div class="nav-icon">
         <img src="/static/icons/status.svg" alt="Status">

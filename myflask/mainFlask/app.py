@@ -13,10 +13,14 @@ author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "
 author.add_chat(chats[0])
 author.add_chat(chats[1])
 
-@app.route("/")
+@app.route("/profile")
 def profile():
     return render_template("profile.html", author=author)
 
+@app.route('/chats')
+def chat_list():
+    # Load all chats for the current user
+    return render_template('chat_list_only.html', chats=chats)
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
