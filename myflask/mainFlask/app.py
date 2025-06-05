@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from datetime import datetime, timedelta
 from classes.author import Author
+from markupsafe import Markup, escape
+import re
 import utils
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
@@ -34,24 +36,31 @@ def chat_view(chat_id):
 
 @app.route("/search")
 def search_view():
-    query = request.args.get("query", "").strip().lower()
+    query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
     all_messages = chats[0].messages
     all_senders = sorted(set(msg.sender for msg in all_messages))
-
     results = []
 
-    if query:  # Only filter if there's an actual query
+    if query:
+        pattern = re.compile(re.escape(query), re.IGNORECASE)
+
         for msg in all_messages:
-            if query in msg.content.lower():
+            if pattern.search(msg.content):
                 if not sender or msg.sender == sender:
+                    highlighted = pattern.sub(
+                        lambda m: f'<span class="highlight">{escape(m.group(0))}</span>',
+                        escape(msg.content)
+                    )
+                    msg.highlighted_content = Markup(highlighted)  # Safe HTML
                     results.append(msg)
 
     return render_template(
         "search.html",
-        results=results if query else None,  # send None if no query
+        results=results if query else None,
         all_senders=all_senders,
-        selected_sender=sender, current_user="Reinhold"
+        selected_sender=sender,
+        query=query, current_user="Reinhold"
     )
 
 

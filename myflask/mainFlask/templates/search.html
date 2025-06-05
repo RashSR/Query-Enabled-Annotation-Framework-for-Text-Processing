@@ -28,7 +28,7 @@
                     {% endif %}
 
                     <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
-                        <div class="text">{{ message.content }}</div>
+                        <div class="text">{{ message.highlighted_content | safe }}</div>
                         <div class="timestamp" style="text-align: right; font-size: 0.75rem; color: #666;">
                             {{ message.timestamp.strftime('%H:%M') }}
                         </div>
