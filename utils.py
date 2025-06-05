@@ -9,8 +9,7 @@ from datetime import datetime
 
 # Load german spaCy model and initialize language tool -> only loaded once
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
-#tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
-tool = None
+tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
 def load_all_chats_from_files(ids):
     chats = []
@@ -42,8 +41,8 @@ def load_single_chat_from_file(id) -> Chat:
         date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
         msg = Message(id, msg_id, sender, date_obj, message.strip())
         if msg.message_type == MessageType.TEXT:
-            analyze_msg_with_spacy(msg.content)
-            #anaylze_msg_with_language_tool(msg)
+            #analyze_msg_with_spacy(msg.content)
+            anaylze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
     
