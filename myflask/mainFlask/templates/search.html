@@ -28,12 +28,12 @@
                     {% endif %}
 
                     <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
-                                                <div class="show-link" style="margin-top: 0.5rem;">
-                            <a href="{{ url_for('chat_view', chat_id=message.chat_id) }}#msg-{{ message.message_id }}">
-                                Im vollständigen Chat anzeigen
+                        <div class="text">{{ message.highlighted_content | safe }}</div>
+                        <div class="show-link" style="margin-top: 0.5rem;">
+                            <a href="{{ url_for('chat_view', chat_id=message.chat_id) }}#msg-{{ message.message_id }}" title="Im vollständigen Chat anzeigen">
+                                🔍
                             </a>
                         </div>
-                        <div class="text">{{ message.highlighted_content | safe }}</div>
                         <div class="timestamp" style="text-align: right; font-size: 0.75rem; color: #666;">
                             {{ message.timestamp.strftime('%H:%M') }}
                         </div>

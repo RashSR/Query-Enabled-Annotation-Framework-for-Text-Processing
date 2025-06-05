@@ -96,6 +96,8 @@ class Author:
         
         return list_of_chats
 
+    def get_all_own_messages(self):
+        return None
 
 
     def __str__(self):
