@@ -6,12 +6,34 @@
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
-            {% include 'chat_list.html' %}
+    <!-- Left Navigation Bar (like WhatsApp Web) -->
+    <div class="left-nav">
+        <div class="nav-icon">
+        <img src="/static/icons/chat.svg" alt="Chats">
         </div>
-        <div class="main">
-            {% block content %}{% endblock %}
+        <div class="nav-icon">
+        <img src="/static/icons/group.svg" alt="Groups">
         </div>
+        <div class="nav-icon">
+        <img src="/static/icons/status.svg" alt="Status">
+        </div>
+        <div class="nav-icon">
+        <img src="/static/icons/settings.svg" alt="Settings">
+        </div>
+    </div>
+
+    <!-- Sidebar and Chat Content -->
+    <div class="sidebar">
+        {% include 'chat_list.html' %}
+    </div>
+
+    <div class="main">
+        {% block content %}{% endblock %}
+    </div>
     </div>
 </body>
 </html>
+
+
+
+

@@ -6,12 +6,16 @@ body {
     display: flex;
     height: 100vh;
 }
+
 .sidebar {
-    width: 25%;
-    background-color: #f0f0f0;
-    padding: 10px;
-    overflow-y: auto;
+  width: calc(25% - 60px); /* 25% minus the left nav width */
+  min-width: 280px;
+  background-color: #2a2f32;
+  color: #ffffff;
+  overflow-y: auto;
+  border-right: 1px solid #444;
 }
+
 .main {
     flex: 1;
     padding: 10px;
@@ -47,6 +51,16 @@ body {
     font-size: 0.7em;
     color: gray;
     text-align: right;
+}
+
+.left-nav {
+  width: 60px;
+  background-color: #075E54;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  border-right: 1px solid #2a2f32;
 }
 
 .sidebar {
@@ -98,6 +112,28 @@ body {
     font-weight: bold;
     margin-right: 10px;
     font-size: 0.9em;
+}
+
+.nav-icon {
+  width: 50px;
+  height: 50px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.nav-icon:hover {
+  background-color: #2a3942;
+}
+
+.nav-icon img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1); /* makes black icons white-ish */
 }
 
 .date-divider {

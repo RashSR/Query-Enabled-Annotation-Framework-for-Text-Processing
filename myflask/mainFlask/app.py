@@ -13,7 +13,7 @@ author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "
 author.add_chat(chats[0])
 author.add_chat(chats[1])
 
-@app.route("/profile")
+@app.route("/")
 def profile():
     return render_template("profile.html", author=author)
 
