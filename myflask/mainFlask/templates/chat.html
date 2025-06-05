@@ -60,13 +60,9 @@ window.onload = function () {
         if (el) {
             el.classList.add("highlighted");
             el.scrollIntoView({ behavior: "smooth", block: "center" });
-
-            // Remove highlight after 2 seconds
-            setTimeout(() => {
-                el.classList.remove("highlighted");
-            }, 2000);
         }
     }
 };
 </script>
+
 {% endblock %}
