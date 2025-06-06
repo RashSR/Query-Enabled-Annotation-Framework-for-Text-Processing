@@ -14,6 +14,12 @@
 
         <button type="submit" style="padding: 0.5rem 1rem;">Suchen</button>
     </form>
+
+    <label style="display: block; margin-bottom: 1rem;">
+        <input type="checkbox" id="toggle-annotation" />
+        Annotierte Ansicht anzeigen
+    </label>
+
     {% if results is not none %}
         <div class="chat-box" id="chat-box" style="max-height: 80vh; overflow-y: auto;">
             {% if results %}
@@ -28,7 +34,13 @@
                     {% endif %}
 
                     <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
-                        <div class="text">{{ message.highlighted_content | safe }}</div>
+                        <div class="text message-highlighted" style="display: block;">
+                            {{ message.highlighted_content | safe }}
+                        </div>
+                        <div class="text message-annotated" style="display: none;">
+                            {{ message.annotated_text | safe }}
+                        </div>
+
                         <div class="show-link" style="margin-top: 0.5rem;">
                             <a href="{{ url_for('chat_view', chat_id=message.chat_id) }}#msg-{{ message.message_id }}" title="Im vollständigen Chat anzeigen">
                                 🔗
@@ -47,4 +59,21 @@
         <p style="text-align: center; color: #777;"> Gib einen Suchbegriff ein, um Nachrichten zu durchsuchen.</p>
     {% endif %}
 </div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkbox = document.getElementById("toggle-annotation");
+    const highlightedElems = document.querySelectorAll(".message-highlighted");
+    const annotatedElems = document.querySelectorAll(".message-annotated");
+
+    checkbox.addEventListener("change", function () {
+      const showAnnotated = checkbox.checked;
+      highlightedElems.forEach(el => el.style.display = showAnnotated ? "none" : "block");
+      annotatedElems.forEach(el => el.style.display = showAnnotated ? "block" : "none");
+    });
+  });
+</script>
 {% endblock %}
