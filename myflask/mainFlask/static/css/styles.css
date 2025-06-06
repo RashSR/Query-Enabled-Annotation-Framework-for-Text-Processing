@@ -86,6 +86,47 @@ body {
 }
 
 
+span[data-error] {
+    position: relative;
+    cursor: pointer;
+    color: red;
+}
+
+span[data-error]::after {
+    content: attr(data-error);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: black;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: normal;
+    max-width: 200px;
+    word-wrap: break-word;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+span[data-error]:hover::after {
+    opacity: 1;
+}
+
+span[data-error][data-tooltip-position="bottom"]::after {
+    top: 100%;
+    margin-top: 15px;
+}
+
+span[data-error][data-tooltip-position="top"]::after {
+    bottom: 100%;
+    margin-bottom: 10px;
+}
+
+
 
 
 
