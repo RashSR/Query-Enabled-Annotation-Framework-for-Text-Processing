@@ -114,6 +114,8 @@ body {
 .avatar {
     width: 40px;
     height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     background-color: #575757;
     color: white;
     border-radius: 50%;
@@ -122,7 +124,8 @@ body {
     justify-content: center;
     font-weight: bold;
     margin-right: 10px;
-    font-size: 0.9em;
+    font-size: 0.9em; 
+    flex-shrink: 0;
 }
 
 .nav-icon {
