@@ -10,12 +10,12 @@ locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows onl
 app = Flask(__name__)
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 
-chats = utils.load_all_chats_from_files([0], True)
-#chats = utils.load_all_chats_from_files([1, 2, 3])
+#chats = utils.load_all_chats_from_files([0], True)
+chats = utils.load_all_chats_from_files([1, 2, 3])
 author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 author.add_chat(chats[0])
-#author.add_chat(chats[1])
-#author.add_chat(chats[2])
+author.add_chat(chats[1])
+author.add_chat(chats[2])
 
 @app.context_processor
 def inject_request():
@@ -29,10 +29,12 @@ def profile():
 def chat_home():
     return render_template('chat.html', chats=chats, chat=None, current_user="Reinhold")
 
+beziehung = ["guter Freund", "rein geschäftlich", "loser Bekannter"]
+
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
-    return render_template("chat.html", chats=chats, chat=chat, current_user="Reinhold")
+    return render_template("chat.html", chats=chats, chat=chat, current_user="Reinhold", beziehung=beziehung)
 
 @app.route("/search")
 def search_view():
