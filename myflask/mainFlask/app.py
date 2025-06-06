@@ -29,7 +29,7 @@ def profile():
 def chat_home():
     return render_template('chat.html', chats=chats, chat=None, current_user="Reinhold")
 
-beziehung = ["guter Freund", "rein geschäftlich", "loser Bekannter"]
+beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
