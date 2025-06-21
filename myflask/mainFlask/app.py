@@ -19,8 +19,8 @@ db = SQLAlchemy(app)
 
 author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 #add_authors(db, author)
-with app.app_context():
-    create_tables(db, app)
+#with app.app_context():
+    #create_tables(db, app)
 
 #chats = utils.load_all_chats_from_files([0], True)
 chats = utils.load_all_chats_from_files([1, 2, 3], False)

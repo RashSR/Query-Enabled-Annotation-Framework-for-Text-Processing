@@ -9,7 +9,7 @@
     <!-- Left Navigation Bar -->
     <div class="left-nav">
         <div class="nav-top">
-            <div class="nav-icon {% if request.path == url_for('profile') %}active{% endif %}">
+            <div class="nav-icon {% if request.path.startswith(url_for('profile')) %}active{% endif %}">
                 <a href="{{ url_for('profile') }}">
                     <img src="{{ url_for('static', filename='icons/user.svg') }}" alt="Profile">
                 </a>
