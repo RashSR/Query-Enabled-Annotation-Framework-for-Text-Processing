@@ -1,4 +1,4 @@
-<ul class="chat-list">
+<ul class="elements-list">
     {% for c in author.chats %}
     {% set last_message = c.messages[-1] if c.messages else None %}
     <li class="{% if c.chat_id == chat.chat_id %}active{% endif %}">

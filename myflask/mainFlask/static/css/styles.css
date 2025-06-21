@@ -136,10 +136,6 @@ span[data-error][data-tooltip-position="top"]::after {
     margin-bottom: 10px;
 }
 
-
-
-
-
 .sidebar {
     width: 25%;
     background-color: #2a2f32; /* dark grey */
@@ -149,35 +145,35 @@ span[data-error][data-tooltip-position="top"]::after {
     border-right: 1px solid #444;
 }
 
-.chat-list {
+.elements-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.chat-list li {
+.elements-list li {
     padding: 15px 20px;
     cursor: pointer;
     transition: background 0.2s ease-in-out;
     border-bottom: 1px solid #3a3f42;
 }
 
-.chat-list li:hover {
+.elements-list li:hover {
     background-color: #3a3f42;
 }
 
-.chat-list a {
+.elements-list a {
     text-decoration: none;
     color: inherit;
     display: block;
     font-weight: 500;
 }
 
-.chat-list li.active {
+.elements-list li.active {
     background-color: #005c4b; /* WhatsApp green shade */
 }
 
-.chat-list li a > div {
+.elements-list li a > div {
   min-width: 0; /* Important for flex children */
 }
 
