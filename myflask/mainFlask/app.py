@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, abort
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from classes.author import Author
 from markupsafe import Markup, escape
+from myflask.mainFlask.db_handling import create_tables
 import re
 import utils
 import locale
@@ -9,6 +11,13 @@ locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows onl
 
 app = Flask(__name__)
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
+
+#SQLite 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This creates the DB file
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+create_tables(db, app)
 
 #chats = utils.load_all_chats_from_files([0], True)
 chats = utils.load_all_chats_from_files([1, 2, 3], False)

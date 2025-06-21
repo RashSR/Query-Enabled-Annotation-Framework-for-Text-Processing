@@ -3,9 +3,6 @@ from classes.messagetype import MessageType
 from typing import Dict
 
 class Message:
-    
-    #TODO: sender hier notwendig? -> Nur wenn nach einzelnen Nachrichten gesucht werden muss. 
-
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None, annotated_text = None):
         self.chat_id = chat_id
         self._message_id = message_id

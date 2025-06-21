@@ -6,6 +6,7 @@
 #pip install beautifulsoup4
 #pip install lxml
 #pip isntall flask
+#pip install flask flask_sqlalchemy
 
 
 
