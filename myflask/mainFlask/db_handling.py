@@ -51,7 +51,20 @@ def create_tables(db: SQLAlchemy, app: Flask):
         error_dict_json = db.Column(db.Text)  # Optional: store dict as JSON string
         annotated_text = db.Column(db.Text)
 
-    with app.app_context():
-        db.create_all()
-    
-    print("Created db")
+    new_author = Author(
+        name="Max Mustermann",
+        age=35,
+        gender="Männlich",
+        first_language="Deutsch",
+        languages="Englisch, Spanisch",  # stored as comma-separated string
+        region="München",
+        job="Ingenieur"
+    )
+    db.session.add(new_author)
+    db.session.commit()
+    print(f"Added author with id {new_author.id}")
+
+def add_authors(db: SQLAlchemy, author):
+    db.session.add(author)
+    db.session.commit()
+    print(f"Added author with ID: {author.id}")

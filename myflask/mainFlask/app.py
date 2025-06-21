@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from classes.author import Author
 from markupsafe import Markup, escape
-from myflask.mainFlask.db_handling import create_tables
+from myflask.mainFlask.db_handling import create_tables, add_authors
 import re
 import utils
 import locale
@@ -17,11 +17,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-create_tables(db, app)
+author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
+#add_authors(db, author)
+with app.app_context():
+    create_tables(db, app)
 
 #chats = utils.load_all_chats_from_files([0], True)
 chats = utils.load_all_chats_from_files([1, 2, 3], False)
-author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 author.add_chat(chats[0])
 author.add_chat(chats[1])
 author.add_chat(chats[2])
