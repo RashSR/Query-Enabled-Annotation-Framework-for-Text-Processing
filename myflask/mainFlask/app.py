@@ -62,7 +62,7 @@ def search_view():
         results=results if query else None,
         all_senders=all_senders,
         selected_sender=sender,
-        query=query, current_user=author.name
+        query=query, author=author
     )
 
 

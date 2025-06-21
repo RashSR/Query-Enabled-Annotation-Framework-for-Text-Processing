@@ -33,7 +33,7 @@
                         {% set ns.previous_date = message_date %}
                     {% endif %}
 
-                    <div class="message {{ 'sent' if message.sender == current_user else 'received' }}">
+                    <div class="message {{ 'sent' if message.sender == author.name else 'received' }}">
                         <div class="text message-highlighted" style="display: block;">
                             {{ message.highlighted_content | safe }}
                         </div>
