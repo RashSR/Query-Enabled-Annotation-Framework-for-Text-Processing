@@ -40,10 +40,12 @@
     </div>
 
     <!-- Sidebar and Chat Content -->
-    <div class="sidebar">
-        {% include 'chat_list.html' %}
-    </div>
-
+    {% if request.path.startswith(url_for('chat_home')) %}
+        <div class="sidebar" >
+            {% include 'chat_list.html' %}
+        </div>
+    {% endif %}
+    
     <div class="main">
         {% block content %}{% endblock %}
     </div>
