@@ -23,7 +23,7 @@ def inject_request():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html", author=author, chat=None)
+    return render_template("profile.html", author=author)
 
 @app.route('/chat')
 def chat_home():
@@ -62,13 +62,13 @@ def search_view():
         results=results if query else None,
         all_senders=all_senders,
         selected_sender=sender,
-        query=query, current_user=author.name, author=None
+        query=query, current_user=author.name
     )
 
 
 @app.route("/metrics")
 def metrics_view():
-    return render_template('metrics.html', author=None)
+    return render_template('metrics.html')
 
 @app.route("/settings")
 def settings_view():
