@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, abort
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from datetime import datetime, timedelta
 from classes.author import Author
 from markupsafe import Markup, escape
@@ -23,10 +24,70 @@ author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "
     #create_tables(db, app)
 
 #chats = utils.load_all_chats_from_files([0], True)
-chats = utils.load_all_chats_from_files([1, 2, 3], False)
+chats = utils.load_all_chats_from_files([1, 2, 3], True)
 author.add_chat(chats[0])
 author.add_chat(chats[1])
 author.add_chat(chats[2])
+
+
+with app.app_context():
+    for msgs in chats[0].messages:
+        sender_id = 1
+        if msgs.sender == "Ben Vector":
+            sender_id = 2
+        db.session.execute(
+            text("""
+            INSERT INTO messages (id, chat_id, sender_id, timestamp, content, annotated_text)
+            VALUES (:id, :chat_id, :sender_id, :timestamp, :content, :annotated_text)
+            """),
+            {
+                'id': msgs.message_id,
+                'chat_id': chats[0].chat_id,
+                'sender_id': sender_id,
+                'timestamp': msgs.timestamp,
+                'content': msgs.content,
+                'annotated_text': msgs.annotated_text
+            }
+        )
+        db.session.commit()
+    for msgs in chats[1].messages:
+        sender_id = 1
+        if msgs.sender == "Johannes Rösner":
+            sender_id = 3
+        db.session.execute(
+            text("""
+            INSERT INTO messages (id, chat_id, sender_id, timestamp, content, annotated_text)
+            VALUES (:id, :chat_id, :sender_id, :timestamp, :content, :annotated_text)
+            """),
+            {
+                'id': msgs.message_id,
+                'chat_id': chats[1].chat_id,
+                'sender_id': sender_id,
+                'timestamp': msgs.timestamp,
+                'content': msgs.content,
+                'annotated_text': msgs.annotated_text
+            }
+        )
+        db.session.commit()
+    for msgs in chats[2].messages:
+        sender_id = 1
+        if msgs.sender == "Martina":
+            sender_id = 4
+        db.session.execute(
+            text("""
+            INSERT INTO messages (id, chat_id, sender_id, timestamp, content, annotated_text)
+            VALUES (:id, :chat_id, :sender_id, :timestamp, :content, :annotated_text)
+            """),
+            {
+                'id': msgs.message_id,
+                'chat_id': chats[2].chat_id,
+                'sender_id': sender_id,
+                'timestamp': msgs.timestamp,
+                'content': msgs.content,
+                'annotated_text': msgs.annotated_text
+            }
+        )
+        db.session.commit()
 
 authors = []
 authors.append(author)
