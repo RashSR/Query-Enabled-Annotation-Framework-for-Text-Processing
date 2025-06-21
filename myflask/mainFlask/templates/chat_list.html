@@ -1,14 +1,14 @@
 <ul class="chat-list">
-    {% for c in chats %}
+    {% for c in author.chats %}
     {% set last_message = c.messages[-1] if c.messages else None %}
     <li class="{% if c.chat_id == chat.chat_id %}active{% endif %}">
         <a href="{{ url_for('chat_view', chat_id=c.chat_id) }}" style="display: flex; align-items: center;">
             <div class="avatar">
-                {{ (c.participants | reject("equalto", current_user) | list)[0][0] if c.participants|length > 1 else c.participants[0][0] }}
+                {{ (c.participants | reject("equalto", author.name) | list)[0][0] if c.participants|length > 1 else c.participants[0][0] }}
             </div>
             <div style="flex: 1;">
                 <div style="display: flex; justify-content: space-between;">
-                    {% set participants_str = (c.participants | reject("equalto", current_user)) | join(', ') %}
+                    {% set participants_str = (c.participants | reject("equalto", author.name)) | join(', ') %}
                     <strong>{{ participants_str.rstrip(', ') }}</strong>
                     {% if last_message %}
                     <small style="color: #ccc;">{{ last_message.timestamp.strftime('%H:%M') }}</small>

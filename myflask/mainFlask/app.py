@@ -23,18 +23,18 @@ def inject_request():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html", author=author)
+    return render_template("profile.html", author=author, chat=None)
 
 @app.route('/chat')
 def chat_home():
-    return render_template('chat.html', chats=author.chats, chat=None, current_user=author.name)
+    return render_template('chat.html', chat=None, author=author)
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
-    return render_template("chat.html", chats=author.chats, chat=chat, current_user=author.name, beziehung=beziehung)
+    return render_template("chat.html", chat=chat, beziehung=beziehung, author=author)
 
 @app.route("/search")
 def search_view():
@@ -62,13 +62,13 @@ def search_view():
         results=results if query else None,
         all_senders=all_senders,
         selected_sender=sender,
-        query=query, current_user=author.name
+        query=query, current_user=author.name, author=None
     )
 
 
 @app.route("/metrics")
 def metrics_view():
-    return render_template('metrics.html')
+    return render_template('metrics.html', author=None)
 
 @app.route("/settings")
 def settings_view():

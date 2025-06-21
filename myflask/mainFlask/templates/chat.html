@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if chat %}
-    {% set chat_partner = (chat.participants | reject('equalto', current_user) | list)[0] %}
+    {% set chat_partner = (chat.participants | reject('equalto', author.name) | list)[0] %}
     {% set name_parts = chat_partner.split(' ') %}
     {% set initials = name_parts[0][0] ~ (name_parts[-1][0] if name_parts | length > 1 else '') %}
 
@@ -25,7 +25,7 @@
                 {% set ns.previous_date = message_date %}
             {% endif %}
 
-            <div id="msg-{{ message.message_id }}" class="message {{ 'sent' if message.sender == current_user else 'received' }}">
+            <div id="msg-{{ message.message_id }}" class="message {{ 'sent' if message.sender == author.name else 'received' }}">
                 {% if message.quoted_message %}
                 <div class="quoted">{{ message.quoted_message }}</div>
                 {% endif %}
