@@ -28,7 +28,7 @@ def inject_request():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html", author=author, authors=authors, selected_author=author)
+    return render_template("profile.html", author=None, authors=authors)
 
 @app.route("/profile/<int:author_id>")
 def author_profile(author_id):
@@ -38,7 +38,7 @@ def author_profile(author_id):
         # Handle not found, e.g. 404 or redirect
         abort(404)
 
-    return render_template("profile.html", author=selected_author, authors=authors, selected_author=selected_author)
+    return render_template("profile.html", author=selected_author, authors=authors)
 
 
 @app.route('/chat')

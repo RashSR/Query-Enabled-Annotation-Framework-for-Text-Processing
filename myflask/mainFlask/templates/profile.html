@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
+{% if author %}
 <div class="profile-card">
     <div class="profile-avatar">{{ author.name[0] }}</div>
     <h2>{{ author.name }}</h2>
@@ -14,4 +16,11 @@
         <strong>Anzahl Chats: </strong> {{ author.chats | length }}
     </p>
 </div>
+{% else %}
+    <div class="no-element-selected">
+        <p style="text-align: center; margin-top: 40px; color: #777;">
+            Wähle einen Autor aus der Liste links aus.
+        </p>
+    </div>
+{% endif %}
 {% endblock %}

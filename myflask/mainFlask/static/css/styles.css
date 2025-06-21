@@ -292,7 +292,7 @@ span[data-error][data-tooltip-position="top"]::after {
     margin: 0 auto 20px auto;
 }
 
-.no-chat-selected {
+.no-element-selected {
     display: flex;
     align-items: center;
     justify-content: center;
