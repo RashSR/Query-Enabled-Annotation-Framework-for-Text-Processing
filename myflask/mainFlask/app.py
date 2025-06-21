@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 
 #chats = utils.load_all_chats_from_files([0], True)
-chats = utils.load_all_chats_from_files([1, 2, 3], True)
+chats = utils.load_all_chats_from_files([1, 2, 3], False)
 author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 author.add_chat(chats[0])
 author.add_chat(chats[1])
@@ -27,14 +27,14 @@ def profile():
 
 @app.route('/chat')
 def chat_home():
-    return render_template('chat.html', chats=chats, chat=None, current_user="Reinhold")
+    return render_template('chat.html', chats=chats, chat=None, current_user=author.name)
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
-    return render_template("chat.html", chats=chats, chat=chat, current_user="Reinhold", beziehung=beziehung)
+    return render_template("chat.html", chats=chats, chat=chat, current_user=author.name, beziehung=beziehung)
 
 @app.route("/search")
 def search_view():
@@ -62,7 +62,7 @@ def search_view():
         results=results if query else None,
         all_senders=all_senders,
         selected_sender=sender,
-        query=query, current_user="Reinhold"
+        query=query, current_user=author.name
     )
 
 
