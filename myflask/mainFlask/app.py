@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 from datetime import datetime, timedelta
 from classes.author import Author
 from markupsafe import Markup, escape
@@ -17,13 +17,29 @@ author.add_chat(chats[0])
 author.add_chat(chats[1])
 author.add_chat(chats[2])
 
+authors = []
+authors.append(author)
+author2 = Author(1, "Marc", 34, "Male", "Deutsch", ["English"], "Bayern", "Theaterleiter")
+authors.append(author2)
+
 @app.context_processor
 def inject_request():
     return dict(request=request)
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html", author=author)
+    return render_template("profile.html", author=author, authors=authors, selected_author=author)
+
+@app.route("/profile/<int:author_id>")
+def author_profile(author_id):
+    # Assuming authors is a list or query you have somewhere
+    selected_author = next((a for a in authors if a.author_id == author_id), None)
+    if not selected_author:
+        # Handle not found, e.g. 404 or redirect
+        abort(404)
+
+    return render_template("profile.html", author=selected_author, authors=authors, selected_author=selected_author)
+
 
 @app.route('/chat')
 def chat_home():
