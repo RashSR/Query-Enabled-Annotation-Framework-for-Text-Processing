@@ -27,14 +27,14 @@ def profile():
 
 @app.route('/chat')
 def chat_home():
-    return render_template('chat.html', chats=chats, chat=None, current_user=author.name)
+    return render_template('chat.html', chats=author.chats, chat=None, current_user=author.name)
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
-    return render_template("chat.html", chats=chats, chat=chat, current_user=author.name, beziehung=beziehung)
+    return render_template("chat.html", chats=author.chats, chat=chat, current_user=author.name, beziehung=beziehung)
 
 @app.route("/search")
 def search_view():
