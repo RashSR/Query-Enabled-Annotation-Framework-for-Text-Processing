@@ -42,7 +42,7 @@ def inject_request():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html", author=None, authors=all_authors)
+    return render_template("profile.html", author=get_active_author(session, all_authors), authors=all_authors)
 
 @app.route("/profile/<int:author_id>")
 def author_profile(author_id):
@@ -53,7 +53,7 @@ def author_profile(author_id):
         abort(404)
 
     set_active_author(session, author_id)
-    return render_template("profile.html", author=author, authors=all_authors)
+    return render_template("profile.html", author=get_active_author(session, all_authors), authors=all_authors)
 
 
 @app.route('/chat')
