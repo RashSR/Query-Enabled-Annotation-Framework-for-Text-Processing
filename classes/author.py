@@ -1,6 +1,4 @@
 from classes.chat import Chat
-#from classes.message import Message
-from datetime import datetime
 
 class Author:
     def __init__(self, author_id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
@@ -119,4 +117,5 @@ class Author:
                 f"Age: {self.age}, Gender: {self.gender}, "
                 f"First Language: {self.first_language}, "
                 f"Other Languages: {', '.join(self.languages)}, "
-                f"Region: {self.region}, Job: {self.job}")
+                f"Region: {self.region}, Job: {self.job}, " 
+                f"Chatcount: {len(self.chats)}")

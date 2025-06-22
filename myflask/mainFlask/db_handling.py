@@ -3,6 +3,7 @@ from flask import Flask
 from datetime import datetime
 from sqlalchemy import text
 from classes.author import Author
+from classes.chat import Chat
 
 def create_tables(db: SQLAlchemy, app: Flask):
 
@@ -82,10 +83,19 @@ def get_authors(db: SQLAlchemy, app: Flask):
             gender = row[3]
             first_language = row[4]
             languages = [lang.strip() for lang in row[5].split(',')] #at this time the languages are stored in the DB like 'Language1, Language2, ...'
-            print(languages)
             region = row[6]
             job = row[7]
             loaded_author = Author(author_id, name, age, gender, first_language, languages, region, job)
+            _get_chats_from_author(db, app, loaded_author)
             authors.append(loaded_author)
+            print(loaded_author)
         return authors
-            
+
+def _get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.author_id})
+        for row in result:
+            chat_id = row[0]
+            loaded_chat = Chat(chat_id)
+            author.add_chat(loaded_chat)
+            #TODO: add messages
