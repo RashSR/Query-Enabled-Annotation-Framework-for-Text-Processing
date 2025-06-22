@@ -27,6 +27,8 @@ chats = author.chats
 #author.add_chat(chats[1])
 #author.add_chat(chats[2])
 
+#TODO: change layout of search to indicate who wrote the message to whom.
+
 @app.context_processor
 def inject_request():
     return dict(request=request)
