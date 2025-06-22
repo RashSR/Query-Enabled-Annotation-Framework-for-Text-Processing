@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
-from classes.author import Author
 from markupsafe import Markup, escape
-from myflask.mainFlask.db_handling import create_tables, add_authors, get_authors
+from myflask.mainFlask.db_handling import get_authors
 import re
 import utils
 import locale

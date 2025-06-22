@@ -92,7 +92,6 @@ def _get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author):
             loaded_chat = Chat(chat_id)
             _get_messages_from_chat(db, app, loaded_chat)
             author.add_chat(loaded_chat)
-            #TODO: add messages
 
 def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
     with app.app_context():
