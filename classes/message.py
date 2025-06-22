@@ -1,4 +1,3 @@
-from datetime import datetime
 from classes.messagetype import MessageType
 from typing import Dict
 
@@ -45,6 +44,7 @@ class Message:
     def error_dict(self, value):
         self._error_dict = value
 
+    #return author
     @property
     def sender(self):
         return self._sender
@@ -77,5 +77,14 @@ class Message:
     def chat(self, value):
         self._chat = value
 
+    #TODO: add group functionality 
+    def get_recipient(self):
+        chat_participants : list = self._chat.participants.copy()
+        if self._sender.name in chat_participants:
+            chat_participants.remove(self._sender.name)
+            if len(chat_participants) == 1:
+                return chat_participants[0]
+        
+        
     
 

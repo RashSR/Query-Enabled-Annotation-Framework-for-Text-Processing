@@ -35,7 +35,7 @@
 
                     <div class="message {{ 'sent' if message.sender.name == author.name else 'received' }}">
                         <div style="font-weight: bold; font-size: 0.9rem;">
-                            {{ message.sender.name }} → {{ message.chat.participants }}
+                            {{ message.sender.name }} → {{ message.get_recipient() }}
                         </div>
                         <div class="text message-highlighted" style="display: block;">
                             {{ message.highlighted_content | safe }}

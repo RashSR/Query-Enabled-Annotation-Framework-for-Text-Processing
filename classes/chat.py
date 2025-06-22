@@ -28,8 +28,9 @@ class Chat:
     def chat_id(self, value):
         self._chat_id = value
 
+    #TODO: remove string list and add author list
     @property
-    def participants(self):
+    def participants(self) -> list:
         return self._participants
 
     @participants.setter
