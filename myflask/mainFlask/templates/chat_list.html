@@ -16,7 +16,7 @@
                 </div>
                 {% if last_message %}
                 <div class="truncate">
-                    {{ last_message.sender }}: {{ last_message.content }}
+                    {{ last_message.sender.name }}: {{ last_message.content }}
                 </div>
                 {% endif %}
             </div>

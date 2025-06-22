@@ -16,7 +16,7 @@ class Message:
 
     def __str__(self):
         toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
-        Sender: {self.sender}
+        Sender: {self.sender.name}
         Timestamp: {self.timestamp}
         Content: {self.content}
         MessageType: {self.message_type}

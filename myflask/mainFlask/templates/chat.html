@@ -25,7 +25,7 @@
                 {% set ns.previous_date = message_date %}
             {% endif %}
 
-            <div id="msg-{{ message.message_id }}" class="message {{ 'sent' if message.sender == author.name else 'received' }}">
+            <div id="msg-{{ message.message_id }}" class="message {{ 'sent' if message.sender.name == author.name else 'received' }}">
                 {% if message.quoted_message %}
                 <div class="quoted">{{ message.quoted_message }}</div>
                 {% endif %}

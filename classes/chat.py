@@ -13,8 +13,8 @@ class Chat:
     
     def add_message(self, message):
         self.messages.append(message)
-        if message.sender not in self.participants:
-            self.participants.append(message.sender)
+        if message.sender.name not in self.participants:
+            self.participants.append(message.sender.name)
 
     def show_messages(self):
         for msg in self.messages:
@@ -47,7 +47,7 @@ class Chat:
     def get_message_count_for_author(self, author):
         count = 0
         for msg in self.messages:
-            if msg.sender == author:
+            if msg.sender.name == author.name:
                 count = count + 1
 
         return count
