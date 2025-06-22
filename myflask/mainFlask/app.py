@@ -1,10 +1,9 @@
 from flask import Flask, render_template, request, abort
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
 from datetime import datetime, timedelta
 from classes.author import Author
 from markupsafe import Markup, escape
-from myflask.mainFlask.db_handling import create_tables, add_authors
+from myflask.mainFlask.db_handling import create_tables, add_authors, get_authors
 import re
 import utils
 import locale
@@ -17,6 +16,8 @@ app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This creates the DB file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+get_authors(db, app)
 
 author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
 #add_authors(db, author)
@@ -49,12 +50,15 @@ def author_profile(author_id):
     if not selected_author:
         # Handle not found, e.g. 404 or redirect
         abort(404)
-
-    return render_template("profile.html", author=selected_author, authors=authors)
+    else:
+        author = selected_author
+        print(author)
+    return render_template("profile.html", author=author, authors=authors)
 
 
 @app.route('/chat')
 def chat_home():
+    print("The author is: " + author.__str__())
     return render_template('chat.html', chat=None, author=author)
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]

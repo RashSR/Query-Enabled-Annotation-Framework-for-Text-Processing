@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from datetime import datetime
+from sqlalchemy import text
 
 def create_tables(db: SQLAlchemy, app: Flask):
 
@@ -68,3 +69,10 @@ def add_authors(db: SQLAlchemy, author):
     db.session.add(author)
     db.session.commit()
     print(f"Added author with ID: {author.id}")
+
+def get_authors(db: SQLAlchemy, app: Flask):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM author"))
+        # Option 1: Iterate rows as tuples
+        for row in result:
+            print(row)  # e.g., (1, 'Ben Vector', 32, 'male', ...)
