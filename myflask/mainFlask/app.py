@@ -14,14 +14,14 @@ def set_active_author(session, author_id):
 
 # get stored author
 def get_active_author(session, authors: list):
-    return next((a for a in authors if a.author_id == session['author_id']), None)
+    return next((a for a in authors if a.author_id == session.get('author_id')), None)
 
-
+#Start application
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 
-#SQLite 
+#SQLite path
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This creates the DB file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
