@@ -81,7 +81,7 @@ def get_authors(db: SQLAlchemy, app: Flask):
             age = row[2]
             gender = row[3]
             first_language = row[4]
-            languages = [lang.strip() for lang in row[5].split(',')]
+            languages = [lang.strip() for lang in row[5].split(',')] #at this time the languages are stored in the DB like 'Language1, Language2, ...'
             print(languages)
             region = row[6]
             job = row[7]
