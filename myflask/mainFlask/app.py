@@ -65,7 +65,7 @@ def search_view():
     query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
     all_messages = author.get_all_messages()
-    all_senders = sorted(set(msg.sender for msg in all_messages))
+    all_senders = sorted(set(msg.sender.name for msg in all_messages))
     results = []
 
     if query:
@@ -73,7 +73,7 @@ def search_view():
 
         for msg in all_messages:
             if pattern.search(msg.content):
-                if not sender or msg.sender == sender:
+                if not sender or msg.sender.name == sender:
                     highlighted = pattern.sub(
                         lambda m: f'<span class="highlight">{escape(m.group(0))}</span>',
                         escape(msg.content)
