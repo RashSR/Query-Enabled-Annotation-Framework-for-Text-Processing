@@ -17,23 +17,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-get_authors(db, app)
+authors = get_authors(db, app)
 
-author = Author(0, "Reinhold", 30, "Male", "Deutsch", ["English", "Russisch"], "Bayern", "Softwareentwickler")
-#add_authors(db, author)
-#with app.app_context():
-    #create_tables(db, app)
+author = authors[0]
 
 #chats = utils.load_all_chats_from_files([0], True)
 chats = utils.load_all_chats_from_files([1, 2, 3], False)
 author.add_chat(chats[0])
 author.add_chat(chats[1])
 author.add_chat(chats[2])
-
-authors = []
-authors.append(author)
-author2 = Author(1, "Marc", 34, "Male", "Deutsch", ["English"], "Bayern", "Theaterleiter")
-authors.append(author2)
 
 @app.context_processor
 def inject_request():
