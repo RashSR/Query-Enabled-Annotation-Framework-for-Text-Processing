@@ -109,7 +109,6 @@ def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
             chat.add_message(loaded_message)
         
         #TODO: only load stuff that is not available
-        #TODO: remodel author/message that sender is its id
 
 def _get_author_with_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
