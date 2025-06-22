@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy import text
 from classes.author import Author
 from classes.chat import Chat
+from classes.message import Message
 
 def create_tables(db: SQLAlchemy, app: Flask):
 
@@ -97,5 +98,23 @@ def _get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author):
         for row in result:
             chat_id = row[0]
             loaded_chat = Chat(chat_id)
+            _get_messages_from_chat(db, app, loaded_chat)
             author.add_chat(loaded_chat)
             #TODO: add messages
+
+def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat.chat_id})
+        for row in result:
+            print(row)
+            message_id = row[0]
+            chat_id = row[1]
+            sender_id = row[2]
+            timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
+            content = row[4]
+            annotated_text = row[7]
+            loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender_id, timestamp=timestamp, content=content, annotated_text=annotated_text)
+            chat.add_message(loaded_message)
+        
+        #TODO: only load stuff that is not available
+        #TODO: remodel author/message that sender is its id

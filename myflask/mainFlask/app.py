@@ -20,12 +20,12 @@ db = SQLAlchemy(app)
 authors = get_authors(db, app)
 
 author = authors[0]
-
+chats = author.chats
 #chats = utils.load_all_chats_from_files([0], True)
-chats = utils.load_all_chats_from_files([1, 2, 3], False)
-author.add_chat(chats[0])
-author.add_chat(chats[1])
-author.add_chat(chats[2])
+#chats = utils.load_all_chats_from_files([1, 2, 3], False)
+#author.add_chat(chats[0])
+#author.add_chat(chats[1])
+#author.add_chat(chats[2])
 
 @app.context_processor
 def inject_request():
