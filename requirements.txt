@@ -1,17 +1,18 @@
-#pip install language_tool_python
-#pip install spacy
+language_tool_python==2.9.4
+spacy==3.8.7
+beautifulsoup4==4.13.4
+lxml==5.4.0
+flask==3.1.1
+flask_sqlalchemy==3.1.1
+de_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-3.8.0/de_core_news_sm-3.8.0-py3-none-any.whl
+de_core_news_md @ https://github.com/explosion/spacy-models/releases/download/de_core_news_md-3.8.0/de_core_news_md-3.8.0-py3-none-any.whl
+de_core_news_lg @ https://github.com/explosion/spacy-models/releases/download/de_core_news_lg-3.8.0/de_core_news_lg-3.8.0-py3-none-any.whl
+
+
 #python -m spacy download de_core_news_sm
 #python -m spacy download de_core_news_md
 #python -m spacy download de_core_news_lg
-#pip install beautifulsoup4
-#pip install lxml
-#pip isntall flask
-#pip install flask flask_sqlalchemy
-
-
-
 
 #cd C:\Users\rschlager\Desktop\LanguageTool-6.6 ODER cd C:\Users\R\Desktop\LanguageTool-6.6
 #java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8081
-
 #java17 to start server
