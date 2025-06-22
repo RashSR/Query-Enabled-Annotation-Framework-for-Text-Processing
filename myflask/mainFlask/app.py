@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
@@ -8,7 +8,17 @@ import utils
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 
+# Store author_id in the session
+def set_active_author(session, author_id):
+    session['author_id'] = author_id
+
+# get stored author
+def get_active_author(session, authors: list):
+    return next((a for a in authors if a.author_id == session['author_id']), None)
+
+
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
 
 #SQLite 
@@ -16,9 +26,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-authors = get_authors(db, app)
+all_authors = get_authors(db, app)
 
-author = authors[0]
+author = all_authors[0]
 chats = author.chats
 #chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], False)
@@ -32,32 +42,30 @@ def inject_request():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html", author=None, authors=authors)
+    return render_template("profile.html", author=None, authors=all_authors)
 
 @app.route("/profile/<int:author_id>")
 def author_profile(author_id):
     # Assuming authors is a list or query you have somewhere
-    selected_author = next((a for a in authors if a.author_id == author_id), None)
+    selected_author = next((a for a in all_authors if a.author_id == author_id), None)
     if not selected_author:
         # Handle not found, e.g. 404 or redirect
         abort(404)
-    else:
-        author = selected_author
-        print(author)
-    return render_template("profile.html", author=author, authors=authors)
+
+    set_active_author(session, author_id)
+    return render_template("profile.html", author=author, authors=all_authors)
 
 
 @app.route('/chat')
 def chat_home():
-    print("The author is: " + author.__str__())
-    return render_template('chat.html', chat=None, author=author)
+    return render_template('chat.html', chat=None, author=get_active_author(session, all_authors))
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
-    return render_template("chat.html", chat=chat, beziehung=beziehung, author=author)
+    return render_template("chat.html", chat=chat, beziehung=beziehung, author=get_active_author(session, all_authors))
 
 @app.route("/search")
 def search_view():
