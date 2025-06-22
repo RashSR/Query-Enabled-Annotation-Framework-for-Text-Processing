@@ -66,12 +66,10 @@ def create_tables(db: SQLAlchemy, app: Flask):
     )
     db.session.add(new_author)
     db.session.commit()
-    print(f"Added author with id {new_author.id}")
 
 def add_authors(db: SQLAlchemy, author):
     db.session.add(author)
     db.session.commit()
-    print(f"Added author with ID: {author.id}")
 
 def get_authors(db: SQLAlchemy, app: Flask):
     with app.app_context():
@@ -81,7 +79,6 @@ def get_authors(db: SQLAlchemy, app: Flask):
             loaded_author = _convert_db_row_to_author(row)
             _get_chats_from_author(db, app, loaded_author)
             authors.append(loaded_author)
-            print(loaded_author)
         return authors
 
 def _get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author):
@@ -105,6 +102,7 @@ def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
             content = row[4]
             annotated_text = row[7]
             loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
+            loaded_message.chat = chat
             chat.add_message(loaded_message)
         
         #TODO: only load stuff that is not available

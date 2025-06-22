@@ -3,7 +3,7 @@ from classes.messagetype import MessageType
 from typing import Dict
 
 class Message:
-    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None, annotated_text = None):
+    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None, annotated_text = None, chat = None):
         self.chat_id = chat_id
         self._message_id = message_id
         self.sender = sender
@@ -13,6 +13,7 @@ class Message:
         self.quoted_message = quoted_message
         self._error_dict = {}
         self._annotated_text = annotated_text
+        self._chat = chat
 
     def __str__(self):
         toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
@@ -67,6 +68,14 @@ class Message:
     @annotated_text.setter
     def annotated_text(self, value):
         self._annotated_text = value
+
+    @property
+    def chat(self):
+        return self._chat
+    
+    @chat.setter
+    def chat(self, value):
+        self._chat = value
 
     
 
