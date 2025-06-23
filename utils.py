@@ -7,6 +7,8 @@ from classes.chat import Chat
 from classes.messagetype import MessageType
 from datetime import datetime
 
+#TODO: try nltk also
+
 # Load german spaCy model and initialize language tool -> only loaded once
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
