@@ -96,6 +96,9 @@ def search_view():
         query=query, author=author
     )
 
+@app.route("/konkordanz")
+def konkordanz_view():
+    return render_template('konkordanz.html')
 
 @app.route("/metrics")
 def metrics_view():
