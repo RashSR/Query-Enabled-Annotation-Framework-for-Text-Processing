@@ -113,6 +113,7 @@ def search_view():
         query=query, author=get_active_author(session, all_authors)
     )
 
+#TODO: fix that keyword is correct in the hit list
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
@@ -121,7 +122,7 @@ def konkordanz_view():
     if keyword:
         # Example search logic: You'd normally process your text corpus here
         results = get_keyword_hits(get_active_author(session, all_authors), keyword, case_sensitive)
-    return render_template("konkordanz.html", results=results, keyword=keyword)
+    return render_template("konkordanz.html", results=results, keyword=keyword, case_sensitive=case_sensitive)
 
 @app.route("/metrics")
 def metrics_view():
