@@ -42,7 +42,6 @@ db = SQLAlchemy(app)
 all_authors = get_all_authors(db, app)
 
 author = all_authors[0]
-chats = author.chats
 #chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], False)
 #author.add_chat(chats[0])
@@ -77,8 +76,9 @@ beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
-    chat = next((c for c in chats if c.chat_id == chat_id), chats[0])
-    return render_template("chat.html", chat=chat, beziehung=beziehung, author=get_active_author(session, all_authors))
+    author = get_active_author(session, all_authors)
+    chat = next((c for c in author.chats if c.chat_id == chat_id), None)
+    return render_template("chat.html", chat=chat, beziehung=beziehung, author=author)
 
 @app.route("/search")
 def search_view():
