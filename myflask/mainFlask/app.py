@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
-from myflask.mainFlask.db_handling import get_authors
+from myflask.mainFlask.db_handling import get_all_authors
+from myflask.mainFlask.search_result import SearchResult
 import re
 import utils
 import locale
@@ -16,6 +17,16 @@ def set_active_author(session, author_id):
 def get_active_author(session, authors: list):
     return next((a for a in authors if a.author_id == session.get('author_id')), None)
 
+def get_keyword_hits(active_author, keyword):
+    hit_results = []
+    for chat in active_author.chats:
+        for msg in chat.messages:
+            if keyword in msg.content:
+                sr = SearchResult(msg, keyword)
+                hit_results.append(sr)
+                print(sr)
+
+
 #Start application
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -26,7 +37,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-all_authors = get_authors(db, app)
+all_authors = get_all_authors(db, app)
 
 author = all_authors[0]
 chats = author.chats
@@ -100,9 +111,9 @@ def search_view():
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
     results = []
-
     if keyword:
         # Example search logic: You'd normally process your text corpus here
+        get_keyword_hits(get_active_author(session, all_authors), keyword)
         results = [
             ("It is, however, prompted by", keyword, "of taking moments in context."),
             ("with the Communist Party of Indonesia,", keyword, "of being eliminated by..."),

@@ -6,7 +6,15 @@ from classes.author import Author
 from classes.chat import Chat
 from classes.message import Message
 
-def get_authors(db: SQLAlchemy, app: Flask):
+
+def get_all_messages(db: SQLAlchemy, app: Flask):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM message"))
+        
+    return None
+
+
+def get_all_authors(db: SQLAlchemy, app: Flask):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM author"))
         authors = []
