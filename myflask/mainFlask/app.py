@@ -80,9 +80,10 @@ beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
+    keyword = request.args.get("keyword")
     author = get_active_author(session, all_authors)
     chat = next((c for c in author.chats if c.chat_id == chat_id), None)
-    return render_template("chat.html", chat=chat, beziehung=beziehung, author=author)
+    return render_template("chat.html", chat=chat, beziehung=beziehung, author=author, keyword=keyword)
 
 @app.route("/search")
 def search_view():

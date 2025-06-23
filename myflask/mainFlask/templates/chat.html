@@ -27,9 +27,15 @@
 
             <div id="msg-{{ message.message_id }}" class="message {{ 'sent' if message.sender.name == author.name else 'received' }}">
                 {% if message.quoted_message %}
-                <div class="quoted">{{ message.quoted_message }}</div>
+                    <div class="quoted">{{ message.quoted_message }}</div>
                 {% endif %}
-                <div class="text">{{ message.content }}</div>
+                {% if keyword %}
+                    <div class="text">
+                        {{ message.content | replace(keyword, '<mark>' ~ keyword ~ '</mark>') | safe }}
+                    </div>
+                {% else %}
+                    <div class="text">{{ message.content }}</div>
+                {% endif %}
                 <div class="timestamp">{{ message.timestamp.strftime('%I:%M %p').lstrip('0') }}</div>
             </div>
         {% endfor %}
