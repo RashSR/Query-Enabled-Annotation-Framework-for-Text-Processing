@@ -17,6 +17,7 @@ def set_active_author(session, author_id):
 def get_active_author(session, authors: list):
     return next((a for a in authors if a.author_id == session.get('author_id')), None)
 
+#TODO: check for differnt cases
 def get_keyword_hits(active_author, keyword):
     hit_results = []
     for chat in active_author.chats:
@@ -25,6 +26,7 @@ def get_keyword_hits(active_author, keyword):
                 sr = SearchResult(msg, keyword)
                 hit_results.append(sr)
                 print(sr)
+    return hit_results
 
 
 #Start application

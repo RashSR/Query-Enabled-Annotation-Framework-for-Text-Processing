@@ -13,12 +13,9 @@ class SearchResult:
     
     #at this point we know that the keyword is in the message
     def _calc_left_and_right(self, message, keyword):
-        if keyword in message.content:
-            parts = message.content.split(keyword, 1)
-            self._left = parts[0]
-            self._right = parts[1]
-        else:
-            return None
+        parts = message.content.split(keyword, 1)
+        self._left = parts[0]
+        self._right = parts[1]
 
     @property
     def left(self):
