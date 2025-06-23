@@ -14,9 +14,10 @@
     <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
         <thead>
             <tr>
-                <th style="width: 40%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
+                <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
                 <th style="width: 10%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
-                <th style="width: 40%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
+                <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
+                <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>  <!-- New column -->
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,7 @@
             <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
             <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9;">{{ result.keyword }}</td>
             <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ result.message.get_recipient() }}</td> <!-- recipient here -->
         </tr>
         {% endfor %}
         </tbody>

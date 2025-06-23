@@ -1,6 +1,6 @@
 class SearchResult:
     def __init__(self, message, keyword, case_sensitive=True, left = None, right = None):
-        self.message = message
+        self._message = message
         self.keyword = keyword
         self.case_sensitive = case_sensitive
         if(left == None and right == None):
@@ -43,6 +43,15 @@ class SearchResult:
     @right.setter
     def right(self, value):
         self._right = value
+
+
+    @property
+    def message(self):
+        return self._message
+
+    @message.setter
+    def message(self, value):
+        self._message = value
 
     def __repr__(self):
         return f"search_result(left={self._left!r}, keyword={self.keyword!r}, right={self._right!r})"
