@@ -114,7 +114,7 @@ def search_view():
         query=query, author=get_active_author(session, all_authors)
     )
 
-#TODO: fix that keyword is correct in the hit list
+#TODO: fix that keyword is correct in the hit list, the jump dont highlight case sensitiv, keyword gets multiple highlights
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
