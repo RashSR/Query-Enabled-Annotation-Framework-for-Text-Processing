@@ -49,7 +49,8 @@ all_authors = get_all_authors(db, app)
 
 @app.context_processor
 def inject_request():
-    return dict(request=request)
+    active_author = get_active_author(session, all_authors)
+    return dict(request=request, active_author=active_author)
 
 @app.route("/profile")
 def profile():
@@ -83,7 +84,7 @@ def chat_view(chat_id):
 def search_view():
     query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
-    all_messages = get_active_author(session, all_authors).get_all_messages()
+    all_messages = get_active_author(session, all_authors).get_all_messages() #TODO: only messages from selected author?
     all_senders = sorted(set(msg.sender.name for msg in all_messages))
     results = []
 

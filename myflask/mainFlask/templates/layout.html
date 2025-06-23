@@ -36,6 +36,11 @@
             </div>
         </div>
         <div class="nav-bottom">
+            {% if active_author %}
+            <div class="selected-author" style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: #888;">
+                <div class="avatar" title="{{ active_author.name }}">{{ active_author.name[0] }}</div>
+            </div>
+            {% endif %}
             <div class="nav-icon {% if request.path.startswith(url_for('settings_view')) %}active{% endif %}">
                 <a href="{{ url_for('settings_view') }}">
                     <img src="{{ url_for('static', filename='icons/settings.svg') }}" alt="Settings">
