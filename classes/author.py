@@ -89,7 +89,7 @@ class Author:
             new_chat = Chat(chat.chat_id)
             list_of_chats.append(new_chat)
             for msg in chat.messages:
-                if msg.sender == self._name:
+                if msg.sender.name == self._name:
                     new_chat.add_message(msg)
         
         return list_of_chats

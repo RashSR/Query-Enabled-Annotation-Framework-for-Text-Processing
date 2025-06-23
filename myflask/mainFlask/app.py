@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from markupsafe import Markup, escape
 from myflask.mainFlask.db_handling import get_all_authors
 from myflask.mainFlask.search_result import SearchResult
+from classes.author import Author
 import re
 import utils
 import locale
@@ -17,15 +18,14 @@ def set_active_author(session, author_id):
 def get_active_author(session, authors: list):
     return next((a for a in authors if a.author_id == session.get('author_id')), None)
 
-#TODO: check for differnt cases
-def get_keyword_hits(active_author, keyword):
+#TODO: check for differnt cases, and more than only author messages? maybe optional?
+def get_keyword_hits(active_author : Author, keyword):
     hit_results = []
-    for chat in active_author.chats:
-        for msg in chat.messages:
-            if keyword in msg.content:
-                sr = SearchResult(msg, keyword)
-                hit_results.append(sr)
-                print(sr)
+    for msg in active_author.get_all_own_messages():
+        if keyword in msg.content:
+            sr = SearchResult(msg, keyword)
+            hit_results.append(sr)
+            print(sr)
     return hit_results
 
 
