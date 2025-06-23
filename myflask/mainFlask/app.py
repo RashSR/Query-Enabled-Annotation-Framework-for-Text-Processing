@@ -62,14 +62,17 @@ def profile():
 
 @app.route("/profile/<int:author_id>")
 def author_profile(author_id):
-    # Assuming authors is a list or query you have somewhere
+
     selected_author = next((a for a in all_authors if a.author_id == author_id), None)
+    print(selected_author)
     if not selected_author:
         # Handle not found, e.g. 404 or redirect
         abort(404)
+    if not request.args.get('no_active_change'):
+        set_active_author(session, author_id)
+        selected_author = get_active_author(session, all_authors)
 
-    set_active_author(session, author_id)
-    return render_template("profile.html", author=get_active_author(session, all_authors), authors=all_authors)
+    return render_template("profile.html", author=selected_author, authors=all_authors)
 
 
 @app.route('/chat')
