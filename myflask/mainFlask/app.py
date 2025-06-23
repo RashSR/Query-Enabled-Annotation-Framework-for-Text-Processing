@@ -93,12 +93,22 @@ def search_view():
         results=results if query else None,
         all_senders=all_senders,
         selected_sender=sender,
-        query=query, author=author
+        query=query, author=get_active_author(session, all_authors)
     )
 
 @app.route("/konkordanz")
 def konkordanz_view():
-    return render_template('konkordanz.html')
+    keyword = request.args.get('keyword', '').strip()
+    results = []
+
+    if keyword:
+        # Example search logic: You'd normally process your text corpus here
+        results = [
+            ("It is, however, prompted by", keyword, "of taking moments in context."),
+            ("with the Communist Party of Indonesia,", keyword, "of being eliminated by..."),
+        ]
+
+    return render_template("konkordanz.html", results=results, keyword=keyword)
 
 @app.route("/metrics")
 def metrics_view():

@@ -1,7 +1,46 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div style="padding: 2rem; font-size: 1.2rem;">
-    Konkordanz folgt bald...
+<div style="padding: 2rem; font-size: 1rem;">
+    <h2 style="margin-bottom: 1rem;">
+        <i class="fas fa-align-left"></i> Konkordanzansicht
+    </h2>
+
+    {% if keyword %}
+        <p>Suchergebnisse für: <strong>{{ keyword }}</strong></p>
+    {% endif %}
+
+    {% if results %}
+    <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+        <thead>
+            <tr>
+                <th style="width: 40%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
+                <th style="width: 10%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
+                <th style="width: 40%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for left, hit, right in results %}
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ left }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9;">{{ hit }}</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ right }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% elif keyword %}
+        <p style="margin-top: 1rem; color: #888;">Keine Treffer für "<strong>{{ keyword }}</strong>" gefunden.</p>
+    {% endif %}
+
+    <!-- Search Form at the Bottom -->
+    <form method="get" action="{{ url_for('konkordanz_view') }}" style="margin-top: 2rem;">
+        <label for="keyword">Suchbegriff erneut eingeben:</label>
+        <input type="text" id="keyword" name="keyword" value="{{ keyword or '' }}"
+               style="padding: 0.4rem 0.6rem; margin-left: 0.5rem; font-size: 1rem; width: 250px;" required>
+        <button type="submit" style="padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
+            Suchen
+        </button>
+    </form>
 </div>
 {% endblock %}
