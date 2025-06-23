@@ -115,12 +115,7 @@ def konkordanz_view():
     results = []
     if keyword:
         # Example search logic: You'd normally process your text corpus here
-        get_keyword_hits(get_active_author(session, all_authors), keyword)
-        results = [
-            ("It is, however, prompted by", keyword, "of taking moments in context."),
-            ("with the Communist Party of Indonesia,", keyword, "of being eliminated by..."),
-        ]
-
+        results = get_keyword_hits(get_active_author(session, all_authors), keyword)
     return render_template("konkordanz.html", results=results, keyword=keyword)
 
 @app.route("/metrics")

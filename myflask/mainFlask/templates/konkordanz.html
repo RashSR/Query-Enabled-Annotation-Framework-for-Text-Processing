@@ -20,13 +20,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for left, hit, right in results %}
-            <tr>
-                <td style="border: 1px solid #ddd; padding: 8px;">{{ left }}</td>
-                <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9;">{{ hit }}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">{{ right }}</td>
-            </tr>
-            {% endfor %}
+        {% for result in results %}
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9;">{{ result.keyword }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
     {% elif keyword %}
