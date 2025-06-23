@@ -41,7 +41,6 @@ db = SQLAlchemy(app)
 
 all_authors = get_all_authors(db, app)
 
-author = all_authors[0]
 #chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], False)
 #author.add_chat(chats[0])
@@ -84,7 +83,7 @@ def chat_view(chat_id):
 def search_view():
     query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
-    all_messages = author.get_all_messages()
+    all_messages = get_active_author(session, all_authors).get_all_messages()
     all_senders = sorted(set(msg.sender.name for msg in all_messages))
     results = []
 
