@@ -37,7 +37,15 @@
     <form method="get" action="{{ url_for('konkordanz_view') }}" style="margin-top: 2rem;">
         <label for="keyword">Suchbegriff erneut eingeben:</label>
         <input type="text" id="keyword" name="keyword" value="{{ keyword or '' }}"
-               style="padding: 0.4rem 0.6rem; margin-left: 0.5rem; font-size: 1rem; width: 250px;" required>
+            style="padding: 0.4rem 0.6rem; margin-left: 0.5rem; font-size: 1rem; width: 250px;" required>
+
+        <!-- Case Sensitivity Checkbox -->
+        <label style="margin-left: 1rem; font-size: 0.9rem;">
+            <input type="checkbox" name="case_sensitive" value="1"
+                {% if case_sensitive %}checked{% endif %}>
+            Groß-/Kleinschreibung beachten
+        </label>
+
         <button type="submit" style="padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
             Suchen
         </button>

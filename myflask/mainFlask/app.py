@@ -18,14 +18,18 @@ def set_active_author(session, author_id):
 def get_active_author(session, authors: list):
     return next((a for a in authors if a.author_id == session.get('author_id')), None)
 
-#TODO: check for differnt cases, and more than only author messages? maybe optional?
-def get_keyword_hits(active_author : Author, keyword):
+#TODO: more than only author messages? maybe optional?
+def get_keyword_hits(active_author: Author, keyword: str, case_sensitive: bool):
     hit_results = []
+
+    if not case_sensitive:
+        keyword = keyword.lower()
+
     for msg in active_author.get_all_own_messages():
-        if keyword in msg.content:
-            sr = SearchResult(msg, keyword)
-            hit_results.append(sr)
-            print(sr)
+        content = msg.content if case_sensitive else msg.content.lower()
+        if keyword in content:
+            hit_results.append(SearchResult(msg, keyword, case_sensitive))
+
     return hit_results
 
 
@@ -112,10 +116,11 @@ def search_view():
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
+    case_sensitive = request.args.get('case_sensitive') == '1'
     results = []
     if keyword:
         # Example search logic: You'd normally process your text corpus here
-        results = get_keyword_hits(get_active_author(session, all_authors), keyword)
+        results = get_keyword_hits(get_active_author(session, all_authors), keyword, case_sensitive)
     return render_template("konkordanz.html", results=results, keyword=keyword)
 
 @app.route("/metrics")

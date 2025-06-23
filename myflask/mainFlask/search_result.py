@@ -1,21 +1,32 @@
 class SearchResult:
-    def __init__(self, message, keyword, left = None, right = None):
+    def __init__(self, message, keyword, case_sensitive=True, left = None, right = None):
         self.message = message
         self.keyword = keyword
+        self.case_sensitive = case_sensitive
         if(left == None and right == None):
-            self._calc_left_and_right(message, keyword)
+            self._calc_left_and_right()
         else:
             self._left = left
             self._right = right
-
-    def __repr__(self):
-        return f"search_result(left={self._left!r}, keyword={self.keyword!r}, right={self._right!r})"
     
-    #at this point we know that the keyword is in the message
-    def _calc_left_and_right(self, message, keyword):
-        parts = message.content.split(keyword, 1)
-        self._left = parts[0]
-        self._right = parts[1]
+    def _calc_left_and_right(self):
+        content = self.message.content
+        keyword = self.keyword
+
+        # Case-insensitive match using .lower()
+        if not self.case_sensitive:
+            content_lower = content.lower()
+            keyword_lower = keyword.lower()
+            index = content_lower.find(keyword_lower)
+        else:
+            index = content.find(keyword)
+
+        if index != -1:
+            self._left = content[:index]
+            self._right = content[index + len(keyword):]
+        else:
+            self._left = content
+            self._right = ''
 
     @property
     def left(self):
@@ -32,3 +43,6 @@ class SearchResult:
     @right.setter
     def right(self, value):
         self._right = value
+
+    def __repr__(self):
+        return f"search_result(left={self._left!r}, keyword={self.keyword!r}, right={self._right!r})"
