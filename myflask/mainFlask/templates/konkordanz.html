@@ -27,16 +27,18 @@
             <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9; white-space: nowrap;">
                 {{ result.keyword }}
                 <a href="{{ url_for('chat_view', chat_id=result.message.chat_id, keyword=keyword) }}#msg-{{ result.message.message_id }}"
-                    title="Im vollständigen Chat anzeigen" style="margin-left: 5px; text-decoration: none;">
-                    🔗
+                    title="Im vollständigen Chat anzeigen"
+                    style="margin-left: 5px; text-decoration: none;">
+                    <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
                 </a>
             </td>
             <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
             <td style="border: 1px solid #ddd; padding: 8px;">
                 {{ result.message.get_recipient() }}
                 <a href="{{ url_for('author_profile', author_id=1) }}?no_active_change=1"
-                    title="Im vollständigen Chat anzeigen" style="margin-left: 5px; text-decoration: none;">
-                    🔗
+                    title="Im vollständigen Chat anzeigen"
+                    style="margin-left: 5px; text-decoration: none;">
+                    <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
                 </a>
             </td>
         </tr>
