@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if chat %}
-    {% set chat_partner = (chat.participants | reject('equalto', author.name) | list)[0] %}
+    {% set chat_partner = (chat.get_participant_names() | reject('equalto', author.name) | list)[0] %}
     {% set name_parts = chat_partner.split(' ') %}
     {% set initials = name_parts[0][0] ~ (name_parts[-1][0] if name_parts | length > 1 else '') %}
 

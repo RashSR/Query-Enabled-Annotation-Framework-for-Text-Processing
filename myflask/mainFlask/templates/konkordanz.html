@@ -34,7 +34,7 @@
             </td>
             <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
             <td style="border: 1px solid #ddd; padding: 8px;">
-                {{ result.message.get_recipient() }}
+                {{ result.message.get_recipient().name }}
                 <a href="{{ url_for('author_profile', author_id=1) }}?no_active_change=1"
                     title="Im vollständigen Chat anzeigen"
                     style="margin-left: 5px; text-decoration: none;">

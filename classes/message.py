@@ -79,11 +79,13 @@ class Message:
 
     #TODO: add group functionality 
     def get_recipient(self):
-        chat_participants : list = self._chat.participants.copy()
-        if self._sender.name in chat_participants:
-            chat_participants.remove(self._sender.name)
-            if len(chat_participants) == 1:
-                return chat_participants[0]
+        chat_participants: list = self._chat.participants.copy()
+        chat_participants = [p for p in chat_participants if p.author_id != self._sender.author_id]
+
+        if len(chat_participants) == 1:
+            return chat_participants[0]
+
+        return None
         
         
     

@@ -36,7 +36,7 @@
                     <div class="message {{ 'sent' if message.sender.name == author.name else 'received' }}">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <div style="font-weight: bold; font-size: 0.9rem;">
-                                {{ message.sender.name }} → {{ message.get_recipient() }}
+                                {{ message.sender.name }} → {{ message.get_recipient().name }}
                             </div>
                             <div class="show-link">
                                 <a href="{{ url_for('chat_view', chat_id=message.chat_id) }}#msg-{{ message.message_id }}" title="Im vollständigen Chat anzeigen" style="text-decoration: none;">

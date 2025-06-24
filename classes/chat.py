@@ -13,8 +13,8 @@ class Chat:
     
     def add_message(self, message):
         self.messages.append(message)
-        if message.sender.name not in self.participants:
-            self.participants.append(message.sender.name)
+        if all(participant.author_id != message.sender.author_id for participant in self.participants):
+            self.participants.append(message.sender)
 
     def show_messages(self):
         for msg in self.messages:
@@ -28,7 +28,6 @@ class Chat:
     def chat_id(self, value):
         self._chat_id = value
 
-    #TODO: remove string list and add author list
     @property
     def participants(self) -> list:
         return self._participants
@@ -44,6 +43,13 @@ class Chat:
     @messages.setter
     def messages(self, value):
         self._messages = value
+
+    def get_participant_names(self):
+        name_list = []
+        for a in self._participants:
+            name_list.append(a.name)
+        
+        return name_list
 
     def get_message_count_for_author(self, author):
         count = 0
