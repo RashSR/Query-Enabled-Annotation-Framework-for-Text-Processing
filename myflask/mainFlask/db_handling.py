@@ -6,6 +6,7 @@ from classes.author import Author
 from classes.chat import Chat
 from classes.message import Message
 
+# region GET
 
 def get_all_messages(db: SQLAlchemy, app: Flask):
     with app.app_context():
@@ -38,14 +39,7 @@ def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat.chat_id})
         for row in result:
-            message_id = row[0]
-            chat_id = row[1]
-            sender_id = row[2]
-            sender = _get_author_with_id(db, app, sender_id)
-            timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
-            content = row[4] #TODO: add check for row name maybe?
-            annotated_text = row[7]
-            loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
+            loaded_message = _convert_db_row_to_message(row, db, app)
             loaded_message.chat = chat
             chat.add_message(loaded_message)
         
@@ -57,6 +51,20 @@ def _get_author_with_id(db: SQLAlchemy, app: Flask, id: int):
         for row in result:
             return _convert_db_row_to_author(row)
 
+# endregion
+
+#region Conversion
+
+def _convert_db_row_to_message(row, db: SQLAlchemy, app: Flask):
+            message_id = row[0]
+            chat_id = row[1]
+            sender_id = row[2]
+            sender = _get_author_with_id(db, app, sender_id)
+            timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
+            content = row[4] #TODO: add check for row name maybe?
+            annotated_text = row[7]
+            loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
+            return loaded_message
 
 def _convert_db_row_to_author(row):
     author_id = row[0]
@@ -70,3 +78,4 @@ def _convert_db_row_to_author(row):
     loaded_author = Author(author_id, name, age, gender, first_language, languages, region, job)
     return loaded_author
 
+# endregion

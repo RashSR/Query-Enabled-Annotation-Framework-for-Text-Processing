@@ -43,7 +43,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-all_authors = get_all_authors(db, app, shouldLoadMessages=True)
+all_authors = get_all_authors(db, app, shouldLoadMessages=False)
 
 #chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], False)
@@ -64,7 +64,6 @@ def profile():
 def author_profile(author_id):
 
     selected_author = next((a for a in all_authors if a.author_id == author_id), None)
-    print(selected_author)
     if not selected_author:
         # Handle not found, e.g. 404 or redirect
         abort(404)
@@ -79,7 +78,7 @@ def author_profile(author_id):
 def chat_home():
     return render_template('chat.html', chat=None, author=get_active_author(session, all_authors))
 
-beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"]
+beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"] #TODO: das muss in DB
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
