@@ -2,8 +2,8 @@ from classes.chat import Chat
 from myflask.mainFlask.cachestore import CacheStore
 
 class Author:
-    def __init__(self, author_id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
-        self._author_id = author_id
+    def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
+        self._id = id
         self._name = name
         self._age = age
         self._gender = gender
@@ -12,14 +12,15 @@ class Author:
         self._region = region
         self._job = job
         self._chats = chats if chats is not None else []
+        self._chat_ids = []
 
     @property
-    def author_id(self):
-        return self._author_id
+    def id(self):
+        return self._id
 
-    @author_id.setter
-    def author_id(self, value):
-        self._author_id = value
+    @id.setter
+    def id(self, value):
+        self._id = value
 
     @property
     def name(self):
@@ -114,7 +115,7 @@ class Author:
         return msg_list
 
     def __str__(self):
-        return (f"Author({self.author_id}): {self.name}, "
+        return (f"Author({self._id}): {self.name}, "
                 f"Age: {self.age}, Gender: {self.gender}, "
                 f"First Language: {self.first_language}, "
                 f"Other Languages: {', '.join(self.languages)}, "

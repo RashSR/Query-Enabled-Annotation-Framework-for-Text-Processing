@@ -30,7 +30,7 @@ def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
 
 def get_chats_by_author(db: SQLAlchemy, app: Flask, author: Author, shouldLoadMessages: bool = False):
     with app.app_context():
-        result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.author_id})
+        result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.id})
         for row in result:
             chat_id = row[0]
             loaded_chat = Chat(chat_id)

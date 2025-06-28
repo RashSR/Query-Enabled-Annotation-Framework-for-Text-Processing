@@ -1,5 +1,3 @@
-from classes.message import Message
-from datetime import datetime
 
 class Chat:
 
@@ -13,7 +11,7 @@ class Chat:
     
     def add_message(self, message):
         self.messages.append(message)
-        if all(participant.author_id != message.sender.author_id for participant in self.participants):
+        if all(participant.id != message.sender.id for participant in self.participants):
             self.participants.append(message.sender)
 
     def show_messages(self):

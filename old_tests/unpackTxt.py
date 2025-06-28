@@ -37,7 +37,7 @@ def generate_html_for_author(author, hasOnylAuthorMessages=False, filename="outp
 </head>
 <body>
     <h1>Messages by {author.name}</h1>
-    <p><strong>Author ID:</strong> {author.author_id}</p>
+    <p><strong>Author ID:</strong> {author.id}</p>
     <p><strong>Age:</strong> {author.age}</p>
     <p><strong>Gender:</strong> {author.gender}</p>
     <p><strong>Region:</strong> {author.region}</p>

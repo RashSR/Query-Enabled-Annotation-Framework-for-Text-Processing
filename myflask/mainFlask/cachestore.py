@@ -31,7 +31,7 @@ class CacheStore:
 
         if self._authors is None:
             authors = get_all_authors(self._db, self._app, True)
-            self._authors = {author.author_id: author for author in authors}
+            self._authors = {author.id: author for author in authors}
 
         return list(self._authors.values())
     

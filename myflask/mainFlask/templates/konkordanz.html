@@ -35,7 +35,7 @@
             <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
             <td style="border: 1px solid #ddd; padding: 8px;">
                 {{ result.message.get_recipient().name }}
-                <a href="{{ url_for('author_profile', author_id=result.message.get_recipient().author_id) }}?no_active_change=1"
+                <a href="{{ url_for('author_profile', author_id=result.message.get_recipient().id) }}?no_active_change=1"
                     title="Im vollständigen Chat anzeigen"
                     style="margin-left: 5px; text-decoration: none;">
                     <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
