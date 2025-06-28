@@ -30,7 +30,7 @@ class CacheStore:
         from myflask.mainFlask.db_handling import get_all_authors
 
         if self._authors is None:
-            authors = get_all_authors(self._db, self._app, True)
+            authors = get_all_authors(self._db, self._app)
             self._authors = {author.id: author for author in authors}
 
         return list(self._authors.values())
@@ -43,11 +43,30 @@ class CacheStore:
 
         if id in self._authors:
             return self._authors[id]
-
-        # Otherwise, load from DB and cache it
+        
         author = get_author_by_id(self._db, self._app, id) #db_handling function
         self._authors[id] = author
         return author
-            
+    
+    _chats = None
+
+    def get_chat_by_id(self, id):
+        from myflask.mainFlask.db_handling import get_chat_by_id
+        print("Try to get chat: "+ str(id))
+
+        if self._chats is None:
+            print("Init chat cache")
+            self._chats = {}
+        
+        if id in self._chats:
+            print("return loaded chat: " + str(id))
+            return self._chats[id]
+        
+        chat = get_chat_by_id(self._db, self._app, id)
+        self._chats[id] = chat
+        print("load sql chat: " + str(id))
+        return chat
+
+
         
     

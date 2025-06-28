@@ -1,4 +1,5 @@
 from classes.chat import Chat
+from myflask.mainFlask.cachestore import CacheStore
 
 class Author:
     def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
@@ -84,6 +85,12 @@ class Author:
     def add_chat(self, chat: Chat):
         self._chat_ids.append(chat.chat_id)
         self._chats.append(chat)
+
+    def get_chat_by_id(self, chat_id: int):
+        chat : Chat = CacheStore.Instance().get_chat_by_id(chat_id)
+        return chat
+
+        return None 
 
     def get_chats_with_own_messages(self):
         list_of_chats = []

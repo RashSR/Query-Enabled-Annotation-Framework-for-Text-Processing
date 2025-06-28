@@ -9,6 +9,7 @@ class Chat:
         self._group_name = group_name
         self._messages = []
         self._participants = []
+        self._paricipant_ids = []
     
     def add_message(self, message):
         self.messages.append(message)

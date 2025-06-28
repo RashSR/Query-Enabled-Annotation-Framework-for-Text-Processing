@@ -8,15 +8,25 @@ from classes.message import Message
 
 # region GET
 
-def get_all_authors(db: SQLAlchemy, app: Flask, shouldLoadMessages: bool = False):
+def get_all_authors(db: SQLAlchemy, app: Flask):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM author"))
         authors = []
         for row in result:
             loaded_author = _convert_db_row_to_author(row)
-            get_chats_by_author(db, app, loaded_author, shouldLoadMessages)
+            loaded_author.chat_ids = _get_chat_ids_from_author(db, app, loaded_author.id)
             authors.append(loaded_author)
         return authors
+    
+def _get_chat_ids_from_author(db: SQLAlchemy, app: Flask, author_id: int):
+        with app.app_context():
+            chat_ids = []
+            result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author_id})
+            for row in result:
+                loaded_chat_id = row[0]
+                chat_ids.append(loaded_chat_id)
+            return chat_ids
+
     
 def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
@@ -27,19 +37,6 @@ def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
 
         loaded_author = _convert_db_row_to_author(result_row)
         return loaded_author
-
-def get_chats_by_author(db: SQLAlchemy, app: Flask, author: Author, shouldLoadMessages: bool = False):
-    with app.app_context():
-        result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.id})
-        for row in result:
-            chat_id = row[0]
-            loaded_chat = Chat(chat_id)
-            if shouldLoadMessages:
-                get_messages_from_chat(db, app, loaded_chat)
-            else:
-                loaded_chat.participants = get_participants_from_chat(db, app, loaded_chat)
-
-            author.add_chat(loaded_chat)
 
 def get_participants_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
     with app.app_context():
@@ -59,6 +56,17 @@ def get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
             loaded_message = _convert_db_row_to_message(row, db, app)
             loaded_message.chat = chat
             chat.add_message(loaded_message)
+
+def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat_id})
+        chat = Chat(chat_id)
+        for row in result:
+            loaded_message = _convert_db_row_to_message(row, db, app)
+            loaded_message.chat = chat
+            chat.add_message(loaded_message)
+
+        return chat
 
 def get_all_messages(db: SQLAlchemy, app: Flask):
     with app.app_context():

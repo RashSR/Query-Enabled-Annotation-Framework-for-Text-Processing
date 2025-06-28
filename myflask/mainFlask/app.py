@@ -85,7 +85,7 @@ beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"] #TODO: das m
 def chat_view(chat_id):
     keyword = request.args.get("keyword")
     author = get_active_author(session)
-    chat = next((c for c in author.chats if c.chat_id == chat_id), None)
+    chat = author.get_chat_by_id(chat_id)
     get_messages_from_chat(db, app, chat)
     return render_template("chat.html", chat=chat, beziehung=beziehung, author=author, keyword=keyword)
 

@@ -13,7 +13,7 @@
     <p><strong>Region:</strong> {{ author.region or "Nicht angegeben" }}</p>
     <p><strong>Beruf:</strong> {{ author.job or "Nicht angegeben" }}</p>
     <p>
-        <strong>Anzahl Chats: </strong> {{ author.chats | length }}
+        <strong>Anzahl Chats: </strong> {{ author.chat_ids | length }}
     </p>
 </div>
 {% else %}
