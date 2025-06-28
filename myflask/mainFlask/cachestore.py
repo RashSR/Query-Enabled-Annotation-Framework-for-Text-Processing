@@ -29,7 +29,6 @@ class CacheStore:
         from myflask.mainFlask.db_handling import get_all_authors
         if self._authors is None:
             self._authors = get_all_authors(self._db, self._app, False) 
-            print("nehme geladene liste")
 
         return self._authors
         
