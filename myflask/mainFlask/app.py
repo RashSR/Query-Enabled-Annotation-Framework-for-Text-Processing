@@ -3,10 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
 from myflask.mainFlask.db_handling import get_all_authors, get_messages_from_chat
+from myflask.mainFlask.cachestore import CacheStore
 from myflask.mainFlask.search_result import SearchResult
 from classes.author import Author
 import re
-import utils
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 
@@ -46,26 +46,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-all_authors = get_all_authors(db, app, shouldLoadMessages=False)
-
-#chats = utils.load_all_chats_from_files([0], True)
-#chats = utils.load_all_chats_from_files([1, 2, 3], False)
-#author.add_chat(chats[0])
-#author.add_chat(chats[1])
-#author.add_chat(chats[2])
+#intialize CacheStore
+cache = CacheStore.Instance(db, app)
 
 @app.context_processor
 def inject_request():
+    all_authors = CacheStore.Instance().get_all_authors()
     active_author = get_active_author(session, all_authors)
     return dict(request=request, active_author=active_author)
 
 @app.route("/profile")
 def profile():
+    all_authors = CacheStore.Instance().get_all_authors()
     return render_template("profile.html", author=get_active_author(session, all_authors), authors=all_authors)
 
 @app.route("/profile/<int:author_id>")
 def author_profile(author_id):
 
+    all_authors = CacheStore.Instance().get_all_authors()
     selected_author = next((a for a in all_authors if a.author_id == author_id), None)
     if not selected_author:
         # Handle not found, e.g. 404 or redirect
@@ -80,6 +78,7 @@ def author_profile(author_id):
 
 @app.route('/chat')
 def chat_home():
+    all_authors = CacheStore.Instance().get_all_authors()
     return render_template('chat.html', chat=None, author=get_active_author(session, all_authors))
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"] #TODO: das muss in DB
@@ -87,6 +86,7 @@ beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"] #TODO: das m
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     keyword = request.args.get("keyword")
+    all_authors = CacheStore.Instance().get_all_authors()
     author = get_active_author(session, all_authors)
     chat = next((c for c in author.chats if c.chat_id == chat_id), None)
     get_messages_from_chat(db, app, chat)
@@ -96,6 +96,7 @@ def chat_view(chat_id):
 def search_view():
     query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
+    all_authors = CacheStore.Instance().get_all_authors()
     all_messages = get_active_author(session, all_authors).get_all_messages() #TODO: only messages from selected author?
     all_senders = sorted(set(msg.sender.name for msg in all_messages))
     results = []
@@ -124,6 +125,7 @@ def search_view():
 #TODO: fix that keyword is correct in the hit list, the jump dont highlight case sensitiv, keyword gets multiple highlights
 @app.route("/konkordanz")
 def konkordanz_view():
+    all_authors = CacheStore.Instance().get_all_authors()
     keyword = request.args.get('keyword', '').strip()
     case_sensitive = request.args.get('case_sensitive') == '1'
     results = []

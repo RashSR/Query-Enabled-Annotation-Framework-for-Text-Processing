@@ -1,4 +1,5 @@
 from classes.chat import Chat
+from myflask.mainFlask.cachestore import CacheStore
 
 class Author:
     def __init__(self, author_id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
