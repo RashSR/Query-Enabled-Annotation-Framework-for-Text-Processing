@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
-from myflask.mainFlask.db_handling import get_all_authors, get_messages_from_chat
+from myflask.mainFlask.db_handling import get_messages_from_chat
 from myflask.mainFlask.cachestore import CacheStore
 from myflask.mainFlask.search_result import SearchResult
 from classes.author import Author
@@ -17,8 +17,8 @@ def set_active_author(session, author_id):
     session['author_id'] = author_id
 
 # get stored author
-def get_active_author(session, authors: list):
-    return next((a for a in authors if a.author_id == session.get('author_id')), None)
+def get_active_author(session):
+    return CacheStore.Instance().get_author_by_id(session.get('author_id'))
 
 #TODO: more than only author messages? maybe optional?
 def get_keyword_hits(active_author: Author, keyword: str, case_sensitive: bool):
@@ -51,43 +51,40 @@ cache = CacheStore.Instance(db, app)
 
 @app.context_processor
 def inject_request():
-    all_authors = CacheStore.Instance().get_all_authors()
-    active_author = get_active_author(session, all_authors)
+    active_author = get_active_author(session)
     return dict(request=request, active_author=active_author)
 
 @app.route("/profile")
 def profile():
     all_authors = CacheStore.Instance().get_all_authors()
-    return render_template("profile.html", author=get_active_author(session, all_authors), authors=all_authors)
+    return render_template("profile.html", author=get_active_author(session), authors=all_authors)
 
 @app.route("/profile/<int:author_id>")
 def author_profile(author_id):
 
     all_authors = CacheStore.Instance().get_all_authors()
-    selected_author = next((a for a in all_authors if a.author_id == author_id), None)
+    selected_author = CacheStore.Instance().get_author_by_id(author_id)
     if not selected_author:
         # Handle not found, e.g. 404 or redirect
         abort(404)
     if not request.args.get('no_active_change'):
         
         set_active_author(session, author_id)
-        selected_author = get_active_author(session, all_authors)
+        selected_author = get_active_author(session)
 
     return render_template("profile.html", author=selected_author, authors=all_authors)
 
 
 @app.route('/chat')
 def chat_home():
-    all_authors = CacheStore.Instance().get_all_authors()
-    return render_template('chat.html', chat=None, author=get_active_author(session, all_authors))
+    return render_template('chat.html', chat=None, author=get_active_author(session))
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"] #TODO: das muss in DB
 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     keyword = request.args.get("keyword")
-    all_authors = CacheStore.Instance().get_all_authors()
-    author = get_active_author(session, all_authors)
+    author = get_active_author(session)
     chat = next((c for c in author.chats if c.chat_id == chat_id), None)
     get_messages_from_chat(db, app, chat)
     return render_template("chat.html", chat=chat, beziehung=beziehung, author=author, keyword=keyword)
@@ -96,8 +93,7 @@ def chat_view(chat_id):
 def search_view():
     query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
-    all_authors = CacheStore.Instance().get_all_authors()
-    all_messages = get_active_author(session, all_authors).get_all_messages() #TODO: only messages from selected author?
+    all_messages = get_active_author(session).get_all_messages() #TODO: only messages from selected author?
     all_senders = sorted(set(msg.sender.name for msg in all_messages))
     results = []
 
@@ -119,19 +115,18 @@ def search_view():
         results=results if query else None,
         all_senders=all_senders,
         selected_sender=sender,
-        query=query, author=get_active_author(session, all_authors)
+        query=query, author=get_active_author(session)
     )
 
 #TODO: fix that keyword is correct in the hit list, the jump dont highlight case sensitiv, keyword gets multiple highlights
 @app.route("/konkordanz")
 def konkordanz_view():
-    all_authors = CacheStore.Instance().get_all_authors()
     keyword = request.args.get('keyword', '').strip()
     case_sensitive = request.args.get('case_sensitive') == '1'
     results = []
     if keyword:
         # Example search logic: You'd normally process your text corpus here
-        results = get_keyword_hits(get_active_author(session, all_authors), keyword, case_sensitive)
+        results = get_keyword_hits(get_active_author(session), keyword, case_sensitive)
     return render_template("konkordanz.html", results=results, keyword=keyword, case_sensitive=case_sensitive)
 
 @app.route("/metrics")
