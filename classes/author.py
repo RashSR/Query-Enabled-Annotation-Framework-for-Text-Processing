@@ -83,14 +83,11 @@ class Author:
         return self._chats
 
     def add_chat(self, chat: Chat):
-        self._chat_ids.append(chat.chat_id)
         self._chats.append(chat)
 
     def get_chat_by_id(self, chat_id: int):
         chat : Chat = CacheStore.Instance().get_chat_by_id(chat_id)
         return chat
-
-        return None 
 
     def get_chats_with_own_messages(self):
         list_of_chats = []

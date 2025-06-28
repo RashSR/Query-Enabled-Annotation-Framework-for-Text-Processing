@@ -59,6 +59,7 @@ def get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
 
 def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
     with app.app_context():
+        print("Wie oft bin ihc hier?")
         result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat_id})
         chat = Chat(chat_id)
         for row in result:
