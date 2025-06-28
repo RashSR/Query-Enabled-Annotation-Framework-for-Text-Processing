@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
-from myflask.mainFlask.db_handling import get_all_authors
+from myflask.mainFlask.db_handling import get_all_authors, get_messages_from_chat
 from myflask.mainFlask.search_result import SearchResult
 from classes.author import Author
 import re
@@ -89,6 +89,7 @@ def chat_view(chat_id):
     keyword = request.args.get("keyword")
     author = get_active_author(session, all_authors)
     chat = next((c for c in author.chats if c.chat_id == chat_id), None)
+    get_messages_from_chat(db, app, chat)
     return render_template("chat.html", chat=chat, beziehung=beziehung, author=author, keyword=keyword)
 
 @app.route("/search")

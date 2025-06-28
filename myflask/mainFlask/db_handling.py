@@ -14,7 +14,7 @@ def get_all_authors(db: SQLAlchemy, app: Flask, shouldLoadMessages: bool = False
         authors = []
         for row in result:
             loaded_author = _convert_db_row_to_author(row)
-            get_chats_from_author(db, app, loaded_author, shouldLoadMessages)
+            get_chats_by_author(db, app, loaded_author, shouldLoadMessages)
             authors.append(loaded_author)
         return authors
     
@@ -28,15 +28,17 @@ def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
         loaded_author = _convert_db_row_to_author(result_row)
         return loaded_author
 
-def get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author, shouldLoadMessages: bool = False):
+def get_chats_by_author(db: SQLAlchemy, app: Flask, author: Author, shouldLoadMessages: bool = False):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.author_id})
         for row in result:
             chat_id = row[0]
             loaded_chat = Chat(chat_id)
-            loaded_chat.participants = get_participants_from_chat(db, app, loaded_chat)
             if shouldLoadMessages:
-                _get_messages_from_chat(db, app, loaded_chat)
+                get_messages_from_chat(db, app, loaded_chat)
+            else:
+                loaded_chat.participants = get_participants_from_chat(db, app, loaded_chat)
+
             author.add_chat(loaded_chat)
 
 def get_participants_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
@@ -50,7 +52,7 @@ def get_participants_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
 
         return participants
 
-def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
+def get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat.chat_id})
         for row in result:
