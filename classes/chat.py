@@ -4,10 +4,11 @@ class Chat:
     #TODO: group chats? -> participants + who is admin, title of group chat, creation date
     #other features -> pinned messages, archived?
 
-    def __init__(self, chat_id):
-        self.chat_id = chat_id
-        self.messages = []
-        self.participants = []
+    def __init__(self, chat_id, group_name = None):
+        self._chat_id = chat_id
+        self._group_name = group_name
+        self._messages = []
+        self._participants = []
     
     def add_message(self, message):
         self.messages.append(message)
@@ -27,6 +28,14 @@ class Chat:
         self._chat_id = value
 
     @property
+    def group_name(self):
+        return self._group_name
+
+    @group_name.setter
+    def group_name(self, value):
+        self._group_name = value
+
+    @property
     def participants(self) -> list:
         return self._participants
 
@@ -42,6 +51,12 @@ class Chat:
     def messages(self, value):
         self._messages = value
 
+    def isGroup(self):
+        if self._group_name is None:
+            return False
+        
+        return True
+
     def get_participant_names(self):
         name_list = []
         for a in self._participants:
@@ -51,7 +66,7 @@ class Chat:
 
     def get_message_count_for_author(self, author):
         count = 0
-        for msg in self.messages:
+        for msg in self._messages:
             if msg.sender.name == author.name:
                 count = count + 1
 
