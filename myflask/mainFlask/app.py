@@ -10,6 +10,8 @@ import utils
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 
+#region functions
+
 # Store author_id in the session
 def set_active_author(session, author_id):
     session['author_id'] = author_id
@@ -32,6 +34,7 @@ def get_keyword_hits(active_author: Author, keyword: str, case_sensitive: bool):
 
     return hit_results
 
+# endregion 
 
 #Start application
 app = Flask(__name__)
@@ -43,7 +46,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-all_authors = get_all_authors(db, app, shouldLoadMessages=False)
+all_authors = get_all_authors(db, app, shouldLoadMessages=True)
 
 #chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], False)
