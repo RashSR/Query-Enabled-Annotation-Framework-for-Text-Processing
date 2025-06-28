@@ -8,6 +8,56 @@ from classes.message import Message
 
 # region GET
 
+def get_all_authors(db: SQLAlchemy, app: Flask, shouldLoadMessages: bool = False):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM author"))
+        authors = []
+        for row in result:
+            loaded_author = _convert_db_row_to_author(row)
+            get_chats_from_author(db, app, loaded_author, shouldLoadMessages)
+            authors.append(loaded_author)
+        return authors
+    
+def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
+    with app.app_context():
+        result_row = db.session.execute(
+            text("SELECT * FROM author WHERE id = :id"),
+            {'id': id}
+        ).fetchone()
+
+        loaded_author = _convert_db_row_to_author(result_row)
+        return loaded_author
+
+def get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author, shouldLoadMessages: bool = False):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.author_id})
+        for row in result:
+            chat_id = row[0]
+            loaded_chat = Chat(chat_id)
+            loaded_chat.participants = get_participants_from_chat(db, app, loaded_chat)
+            if shouldLoadMessages:
+                _get_messages_from_chat(db, app, loaded_chat)
+            author.add_chat(loaded_chat)
+
+def get_participants_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
+    with app.app_context():
+        participants = []
+        result = db.session.execute(text("SELECT author_id FROM chat_participants WHERE chat_id = :id"), {'id': chat.chat_id})
+        participant_ids = [row[0] for row in result]
+        for p_id in participant_ids:
+            loaded_author = get_author_by_id(db, app, p_id)
+            participants.append(loaded_author)
+
+        return participants
+
+def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat.chat_id})
+        for row in result:
+            loaded_message = _convert_db_row_to_message(row, db, app)
+            loaded_message.chat = chat
+            chat.add_message(loaded_message)
+
 def get_all_messages(db: SQLAlchemy, app: Flask):
     with app.app_context():
         messages = []
@@ -27,47 +77,8 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
 
         loaded_message = _convert_db_row_to_message(result_row)
         return loaded_message
-
-def get_all_authors(db: SQLAlchemy, app: Flask, shouldLoadMessages: bool = False):
-    with app.app_context():
-        result = db.session.execute(text("SELECT * FROM author"))
-        authors = []
-        for row in result:
-            loaded_author = _convert_db_row_to_author(row)
-            _get_chats_from_author(db, app, loaded_author, shouldLoadMessages)
-            authors.append(loaded_author)
-        return authors
-
-def _get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author, shouldLoadMessages: bool = False):
-    with app.app_context():
-        result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.author_id})
-        for row in result:
-            chat_id = row[0]
-            loaded_chat = Chat(chat_id)
-            if shouldLoadMessages:
-                _get_messages_from_chat(db, app, loaded_chat)
-            author.add_chat(loaded_chat)
-
-def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
-    with app.app_context():
-        result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat.chat_id})
-        for row in result:
-            loaded_message = _convert_db_row_to_message(row, db, app)
-            loaded_message.chat = chat
-            chat.add_message(loaded_message)
         
         #TODO: only load stuff that is not available
-
-def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
-    with app.app_context():
-        result = db.session.execute(text("SELECT * FROM author WHERE id = :id"), {'id': id})
-        result_row = db.session.execute(
-            text("SELECT * FROM author WHERE id = :id"),
-            {'id': id}
-        ).fetchone()
-
-        loaded_author = _convert_db_row_to_author(result_row)
-        return loaded_author
 
 # endregion
 

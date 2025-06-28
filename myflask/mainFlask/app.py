@@ -46,7 +46,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-all_authors = get_all_authors(db, app, shouldLoadMessages=True)
+all_authors = get_all_authors(db, app, shouldLoadMessages=False)
 
 #chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], False)
@@ -71,6 +71,7 @@ def author_profile(author_id):
         # Handle not found, e.g. 404 or redirect
         abort(404)
     if not request.args.get('no_active_change'):
+        
         set_active_author(session, author_id)
         selected_author = get_active_author(session, all_authors)
 
