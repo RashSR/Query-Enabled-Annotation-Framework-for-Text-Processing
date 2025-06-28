@@ -43,7 +43,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-all_authors = get_all_authors(db, app)
+all_authors = get_all_authors(db, app, shouldLoadMessages=True)
 
 #chats = utils.load_all_chats_from_files([0], True)
 #chats = utils.load_all_chats_from_files([1, 2, 3], False)

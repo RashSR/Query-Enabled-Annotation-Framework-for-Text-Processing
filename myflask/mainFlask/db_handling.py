@@ -14,23 +14,24 @@ def get_all_messages(db: SQLAlchemy, app: Flask):
     return None
 
 
-def get_all_authors(db: SQLAlchemy, app: Flask):
+def get_all_authors(db: SQLAlchemy, app: Flask, shouldLoadMessages: bool = False):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM author"))
         authors = []
         for row in result:
             loaded_author = _convert_db_row_to_author(row)
-            _get_chats_from_author(db, app, loaded_author)
+            _get_chats_from_author(db, app, loaded_author, shouldLoadMessages)
             authors.append(loaded_author)
         return authors
 
-def _get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author):
+def _get_chats_from_author(db: SQLAlchemy, app: Flask, author: Author, shouldLoadMessages: bool = False):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author.author_id})
         for row in result:
             chat_id = row[0]
             loaded_chat = Chat(chat_id)
-            _get_messages_from_chat(db, app, loaded_chat)
+            if shouldLoadMessages:
+                _get_messages_from_chat(db, app, loaded_chat)
             author.add_chat(loaded_chat)
 
 def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
@@ -42,7 +43,7 @@ def _get_messages_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
             sender_id = row[2]
             sender = _get_author_with_id(db, app, sender_id)
             timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
-            content = row[4]
+            content = row[4] #TODO: add check for row name maybe?
             annotated_text = row[7]
             loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
             loaded_message.chat = chat
