@@ -1,5 +1,6 @@
 from classes.messagetype import MessageType
 from typing import Dict
+from myflask.mainFlask.cachestore import CacheStore
 
 class Message:
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None, annotated_text = None, chat = None):
@@ -71,6 +72,7 @@ class Message:
 
     @property
     def chat(self):
+        self._chat = CacheStore.Instance().get_chat_by_id(self.chat_id)
         return self._chat
     
     @chat.setter
