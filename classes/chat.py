@@ -4,8 +4,9 @@ class Chat:
     #TODO: group chats? -> participants + who is admin, title of group chat, creation date
     #other features -> pinned messages, archived?
 
-    def __init__(self, chat_id, group_name = None):
+    def __init__(self, chat_id, relation = None, group_name = None):
         self._chat_id = chat_id
+        self._relation = relation
         self._group_name = group_name
         self._messages = [] # are always loaded
         self._participants = [] #this is always filles
@@ -26,6 +27,14 @@ class Chat:
     @chat_id.setter
     def chat_id(self, value):
         self._chat_id = value
+
+    @property
+    def relation(self):
+        return self._relation
+
+    @relation.setter
+    def relation(self, value):
+        self._relation = value
 
     @property
     def group_name(self):
