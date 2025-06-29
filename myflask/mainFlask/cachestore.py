@@ -92,19 +92,15 @@ class CacheStore:
             return None
 
         from myflask.mainFlask.db_handling import get_chat_by_id
-        print("Try to get chat: "+ str(id))
 
         if self._chats is None:
-            print("Init chat cache")
             self._chats = {}
         
         if id in self._chats:
-            print("return loaded chat: " + str(id))
             return self._chats[id]
         
         chat = get_chat_by_id(self._db, self._app, id)
         self._chats[id] = chat
-        print("load sql chat: " + str(id))
         return chat
 
 
