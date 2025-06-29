@@ -36,6 +36,10 @@ class CacheStore:
         return list(self._authors.values())
     
     def get_author_by_id(self, id):
+        
+        if not isinstance(id, int):
+            return None
+
         from myflask.mainFlask.db_handling import get_author_by_id
 
         if self._authors is None:
@@ -51,6 +55,10 @@ class CacheStore:
     _chats = None
 
     def get_chat_by_id(self, id):
+
+        if not isinstance(id, int):
+            return None
+
         from myflask.mainFlask.db_handling import get_chat_by_id
         print("Try to get chat: "+ str(id))
 

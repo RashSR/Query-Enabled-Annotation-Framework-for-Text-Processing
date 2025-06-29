@@ -14,7 +14,7 @@ def get_all_authors(db: SQLAlchemy, app: Flask):
         authors = []
         for row in result:
             loaded_author = _convert_db_row_to_author(row)
-            loaded_author.chat_ids = _get_chat_ids_from_author(db, app, loaded_author.id)
+            loaded_author.chat_ids = _get_chat_ids_from_author(db, app, loaded_author.id) #TODO: maybe create DB view with ids in it
             authors.append(loaded_author)
         return authors
     
