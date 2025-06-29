@@ -78,7 +78,7 @@ class CacheStore:
         if len(not_cached_chat_ids) > 0:
             # Need to load from DB
             from myflask.mainFlask.db_handling import get_chat_by_ids
-            missing_chats = get_chat_by_ids(not_cached_chat_ids)
+            missing_chats = get_chat_by_ids(self._db, self._app, not_cached_chat_ids)
             chats.extend(missing_chats)
             #this could be async -> store loaded chats in cache
             for chat in missing_chats:
