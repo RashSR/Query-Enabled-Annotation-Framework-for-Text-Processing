@@ -39,9 +39,6 @@ def get_chat_by_ids(db: SQLAlchemy, app: Flask, ids: list[int]):
         
         return chats
 
-
-
-
 def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
         result_row = db.session.execute(
@@ -52,17 +49,6 @@ def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
         loaded_author = _convert_db_row_to_author(result_row)
         loaded_author.chat_ids = _get_chat_ids_from_author(db, app, loaded_author.id)
         return loaded_author
-
-def get_participants_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):
-    with app.app_context():
-        participants = []
-        result = db.session.execute(text("SELECT author_id FROM chat_participants WHERE chat_id = :id"), {'id': chat.chat_id})
-        participant_ids = [row[0] for row in result]
-        for p_id in participant_ids:
-            loaded_author = get_author_by_id(db, app, p_id)
-            participants.append(loaded_author)
-
-        return participants
 
 def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
     with app.app_context():
