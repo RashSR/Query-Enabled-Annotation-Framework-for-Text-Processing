@@ -7,9 +7,8 @@ class Chat:
     def __init__(self, chat_id, group_name = None):
         self._chat_id = chat_id
         self._group_name = group_name
-        self._messages = []
-        self._participants = []
-        self._paricipant_ids = []
+        self._messages = [] # are always loaded
+        self._participants = [] #this is always filles
     
     def add_message(self, message):
         self.messages.append(message)

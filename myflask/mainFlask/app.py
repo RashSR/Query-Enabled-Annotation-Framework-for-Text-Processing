@@ -118,6 +118,7 @@ def search_view():
     )
 
 #TODO: fix that keyword is correct in the hit list, the jump dont highlight case sensitiv, keyword gets multiple highlights
+#maybe like in strg+shift+f VS Code with that icons 
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
