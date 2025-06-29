@@ -105,7 +105,7 @@ class Author:
             
         return None
 
-    def get_chats_with_own_messages(self):
+    def get_chats_with_own_messages(self): #TODO: no need to instantiate a new chat!
         list_of_chats = []
         for chat in self._chats:
             new_chat = Chat(chat.chat_id)

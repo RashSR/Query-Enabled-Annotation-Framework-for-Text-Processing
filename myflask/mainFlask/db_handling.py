@@ -5,6 +5,7 @@ from sqlalchemy import text
 from classes.author import Author
 from classes.chat import Chat
 from classes.message import Message
+from myflask.mainFlask.cachestore import CacheStore
 
 # region GET
 
@@ -52,8 +53,12 @@ def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
 
 def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
     with app.app_context():
+        result_row = db.session.execute(
+            text("SELECT * FROM chat WHERE id = :id"),
+            {'id': chat_id}
+        ).fetchone() #TODO reuse this syntax in a function?
+        chat = _convert_db_row_to_chat(result_row)
         result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat_id})
-        chat = Chat(chat_id)
         for row in result:
             loaded_message = _convert_db_row_to_message(row, db, app)
             loaded_message.chat = chat
@@ -87,17 +92,6 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
 
 #region Conversion
 
-def _convert_db_row_to_message(row, db: SQLAlchemy, app: Flask):
-            message_id = row[0]
-            chat_id = row[1]
-            sender_id = row[2]
-            sender = get_author_by_id(db, app, sender_id)
-            timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
-            content = row[4] #TODO: add check for row name maybe?
-            annotated_text = row[7]
-            loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
-            return loaded_message
-
 def _convert_db_row_to_author(row):
     author_id = row[0]
     name = row[1]
@@ -109,5 +103,24 @@ def _convert_db_row_to_author(row):
     job = row[7]
     loaded_author = Author(author_id, name, age, gender, first_language, languages, region, job)
     return loaded_author
+
+def _convert_db_row_to_chat(row):
+    chat_id = row[0]
+    groupname = row[1]
+    relation = row[2]
+    loaded_chat = Chat(chat_id, relation, groupname)
+    return loaded_chat
+
+def _convert_db_row_to_message(row, db: SQLAlchemy, app: Flask):
+    message_id = row[0]
+    chat_id = row[1]
+    sender_id = row[2]
+    sender = CacheStore.Instance().get_author_by_id(sender_id) #TODO: sender does not to be set!
+    timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
+    content = row[4] #TODO: add check for row name maybe?
+    annotated_text = row[7]
+    loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
+    return loaded_message
+
 
 # endregion
