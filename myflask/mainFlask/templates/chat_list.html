@@ -1,14 +1,14 @@
 <ul class="elements-list">
-    {% for c in author.chats %}
-    {% set last_message = c.messages[-1] if c.messages else None %}
-    <li class="{% if c.chat_id == chat.chat_id %}active{% endif %}">
-        <a href="{{ url_for('chat_view', chat_id=c.chat_id) }}" style="display: flex; align-items: center;">
+    {% for singleChat in author.chats %}
+    {% set last_message = singleChat.messages[-1] if singleChat.messages else None %}
+    <li class="{% if singleChat.chat_id == chat.chat_id %}active{% endif %}">
+        <a href="{{ url_for('chat_view', chat_id=singleChat.chat_id) }}" style="display: flex; align-items: center;">
             <div class="avatar">
-                {{ (c.get_participant_names() | reject("equalto", author.name) | list)[0][0] if c.get_participant_names()|length > 1 else c.get_participant_names()[0][0] }}
+                {{ (singleChat.get_participant_names() | reject("equalto", author.name) | list)[0][0] if singleChat.get_participant_names()|length > 1 else singleChat.get_participant_names()[0][0] }}
             </div>
             <div style="flex: 1;">
                 <div style="display: flex; justify-content: space-between;">
-                    {% set participants_str = (c.get_participant_names() | reject("equalto", author.name)) | join(', ') %}
+                    {% set participants_str = (singleChat.get_participant_names() | reject("equalto", author.name)) | join(', ') %}
                     <strong>{{ participants_str.rstrip(', ') }}</strong>
                     {% if last_message %}
                     <small style="color: #ccc;">{{ last_message.timestamp.strftime('%H:%M') }}</small>
