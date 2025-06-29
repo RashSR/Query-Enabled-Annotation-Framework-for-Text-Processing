@@ -73,13 +73,14 @@ def author_profile(author_id):
 
     return render_template("profile.html", author=selected_author, authors=all_authors)
 
-
+#TODO: improvement in the future -> only load needed information and not all chats
 @app.route('/chat')
 def chat_home():
     return render_template('chat.html', chat=None, author=get_active_author(session))
 
 beziehung = ["guter Freund", "rein geschäftlich", "lose Bekannte"] #TODO: das muss in DB
 
+#TODO: improvement in the future -> only load needed chat 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     keyword = request.args.get("keyword")
