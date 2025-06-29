@@ -27,7 +27,21 @@ def _get_chat_ids_from_author(db: SQLAlchemy, app: Flask, author_id: int):
                 chat_ids.append(loaded_chat_id)
             return chat_ids
 
-    
+def get_chat_by_ids(db: SQLAlchemy, app: Flask, ids: list[int]):
+     with app.app_context():
+        #TODO: make one command to get this
+        #sql = text("SELECT * FROM chat WHERE id IN :ids") #for groupname
+        #result = db.session.execute(sql, {'ids': tuple(ids)})
+        chats = []
+        for id in ids:
+            chat = get_chat_by_id(db, app, id)
+            chats.append(chat)
+        
+        return chats
+
+
+
+
 def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
         result_row = db.session.execute(
@@ -36,6 +50,7 @@ def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
         ).fetchone()
 
         loaded_author = _convert_db_row_to_author(result_row)
+        loaded_author.chat_ids = _get_chat_ids_from_author(db, app, loaded_author.id)
         return loaded_author
 
 def get_participants_from_chat(db: SQLAlchemy, app: Flask, chat: Chat):

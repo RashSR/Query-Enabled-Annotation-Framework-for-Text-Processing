@@ -79,8 +79,21 @@ class Author:
         self._job = value
 
     @property
+    def chat_ids(self):
+        return self._chat_ids
+
+    @chat_ids.setter
+    def chat_ids(self, value):
+        self._chat_ids = value
+
+    @property
     def chats(self):
+        self._chats = CacheStore.Instance().get_all_chats_by_author_id(self._id);
         return self._chats
+    
+    @chats.setter
+    def chats(self, value):
+        self._chats = value
 
     def add_chat(self, chat: Chat):
         self._chats.append(chat)
@@ -124,4 +137,4 @@ class Author:
                 f"First Language: {self.first_language}, "
                 f"Other Languages: {', '.join(self.languages)}, "
                 f"Region: {self.region}, Job: {self.job}, " 
-                f"Chatcount: {len(self.chats)}")
+                f"Chatcount: {len(self._chats)}")

@@ -36,7 +36,7 @@ class CacheStore:
         return list(self._authors.values())
     
     def get_author_by_id(self, id):
-        
+
         if not isinstance(id, int):
             return None
 
@@ -54,6 +54,38 @@ class CacheStore:
     
     _chats = None
 
+
+    def get_all_chats_by_author_id(self, author_id):
+        
+        if not isinstance(author_id, int):
+            return None
+        
+        #initialize dictionary
+        if self._chats is None:
+            self._chats = {}
+
+        chat_ids = self.get_author_by_id(author_id).chat_ids;
+        not_cached_chat_ids = []
+        chats = []
+        for c_id in chat_ids:
+            if c_id in self._chats:
+                #append exisitng chat
+                cached_chat = self._chats[c_id]
+                chats.append(cached_chat)
+            else:
+                not_cached_chat_ids.append(c_id)
+
+        if len(not_cached_chat_ids) > 0:
+            # Need to load from DB
+            from myflask.mainFlask.db_handling import get_chat_by_ids
+            missing_chats = get_chat_by_ids(not_cached_chat_ids)
+            chats.extend(missing_chats)
+            #this could be async -> store loaded chats in cache
+            for chat in missing_chats:
+                self._chats[chat.chat_id] = chat
+
+        return chats
+    
     def get_chat_by_id(self, id):
 
         if not isinstance(id, int):
