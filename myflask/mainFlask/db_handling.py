@@ -11,11 +11,10 @@ from myflask.mainFlask.cachestore import CacheStore
 
 def get_all_authors(db: SQLAlchemy, app: Flask):
     with app.app_context():
-        result = db.session.execute(text("SELECT * FROM author"))
+        result = db.session.execute(text("SELECT * FROM author_with_chat_ids")) #specially created view with the chat_ids in it -> only one DB call needed
         authors = []
         for row in result:
             loaded_author = _convert_db_row_to_author(row)
-            loaded_author.chat_ids = _get_chat_ids_from_author(db, app, loaded_author.id) #TODO: maybe create DB view with ids in it
             authors.append(loaded_author)
         return authors
     
@@ -43,7 +42,7 @@ def get_chat_by_ids(db: SQLAlchemy, app: Flask, ids: list[int]):
 def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
         result_row = db.session.execute(
-            text("SELECT * FROM author WHERE id = :id"),
+            text("SELECT * FROM author_with_chat_ids WHERE id = :id"),
             {'id': id}
         ).fetchone()
 
@@ -101,7 +100,9 @@ def _convert_db_row_to_author(row):
     languages = [lang.strip() for lang in row[5].split(',')] #at this time the languages are stored in the DB like 'Language1, Language2, ...'
     region = row[6]
     job = row[7]
+    chat_ids = [chat_id.strip() for chat_id in row[8].split(',')] if row[8] else []
     loaded_author = Author(author_id, name, age, gender, first_language, languages, region, job)
+    loaded_author.chat_ids = chat_ids
     return loaded_author
 
 def _convert_db_row_to_chat(row):
