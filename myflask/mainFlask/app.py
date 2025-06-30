@@ -135,5 +135,4 @@ def metrics_view():
 def settings_view():
     return render_template("settings.html")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+#TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
