@@ -117,15 +117,47 @@ def search_view():
 
 #TODO: fix that keyword is correct in the hit list, the jump dont highlight case sensitiv, keyword gets multiple highlights
 #maybe like in strg+shift+f VS Code with that icons 
+#wenn teilstring gefunden wird -> in Hit sollte das gefundene Wort stehen, aber der gefundene wort gehíghlighted werden
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
     case_sensitive = request.args.get('case_sensitive') == '1'
+    whole_word = request.args.get('whole_word') == '1'
+    use_regex = request.args.get('use_regex') == '1'
+
     results = []
     if keyword:
-        # Example search logic: You'd normally process your text corpus here
-        results = get_keyword_hits(get_active_author(session), keyword, case_sensitive)
-    return render_template("konkordanz.html", results=results, keyword=keyword, case_sensitive=case_sensitive)
+        author = get_active_author(session)
+        all_msgs = author.get_all_own_messages()
+
+        for msg in all_msgs:
+            content = msg.content if case_sensitive else msg.content.lower()
+            query = keyword if case_sensitive else keyword.lower()
+
+            match = False
+            if use_regex:
+                try:
+                    pattern = re.compile(query)
+                    match = pattern.search(content)
+                except re.error:
+                    pass  # Optionally handle invalid regex
+            elif whole_word:
+                pattern = r'\b{}\b'.format(re.escape(query))
+                match = re.search(pattern, content)
+            else:
+                match = query in content
+
+            if match:
+                results.append(SearchResult(msg, keyword, case_sensitive))
+
+    return render_template(
+        "konkordanz.html",
+        results=results,
+        keyword=keyword,
+        case_sensitive=case_sensitive,
+        whole_word=whole_word,
+        use_regex=use_regex
+    )
 
 @app.route("/metrics")
 def metrics_view():

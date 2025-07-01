@@ -42,7 +42,7 @@ def get_chat_by_ids(db: SQLAlchemy, app: Flask, ids: list[int]):
 def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
         result_row = db.session.execute(
-            text("SELECT * FROM author_with_chat_ids WHERE id = :id"),
+            text("SELECT * FROM author_with_chat_ids WHERE author_id = :id"),
             {'id': id}
         ).fetchone()
 

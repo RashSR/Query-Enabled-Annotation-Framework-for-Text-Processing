@@ -51,23 +51,30 @@
 
     <!-- Search Form at the Bottom -->
     <form method="get" action="{{ url_for('konkordanz_view') }}" style="margin-top: 2rem;">
-        <label for="keyword">Suchbegriff erneut eingeben:</label>
+        <label for="keyword">Suchbegriff:</label>
         <input type="text" id="keyword" name="keyword" value="{{ keyword or '' }}"
             style="padding: 0.4rem 0.6rem; margin-left: 0.5rem; font-size: 1rem; width: 250px;" required>
 
-        <!-- Case Sensitivity Checkbox -->
+        <!-- Match Case -->
         <label style="margin-left: 1rem; font-size: 0.9rem;">
             <input type="checkbox" name="case_sensitive" value="1" {% if case_sensitive %}checked{% endif %}>
-            Groß-/Kleinschreibung beachten
+            Aa
         </label>
 
-        <!-- Checkbox for recipient-->
-        <label style="margin-bottom: 1rem; display: inline-block;">
-            <input type="checkbox" id="toggle-recipient" checked>
-            Empfänger anzeigen
+        <!-- Match Whole Word -->
+        <label style="margin-left: 1rem; font-size: 0.9rem;">
+            <input type="checkbox" name="whole_word" value="1" {% if whole_word %}checked{% endif %}>
+            ab<span style="border-left: 1px solid black; padding-left: 3px;">|</span>
         </label>
 
-        <button type="submit" style="padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
+        <!-- Use Regex -->
+        <label style="margin-left: 1rem; font-size: 0.9rem;">
+            <input type="checkbox" name="use_regex" value="1" {% if use_regex %}checked{% endif %}>
+            .*
+        </label>
+
+        <button type="submit"
+            style="padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none; margin-left: 1rem;">
             Suchen
         </button>
     </form>
