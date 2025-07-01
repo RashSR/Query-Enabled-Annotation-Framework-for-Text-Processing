@@ -50,31 +50,30 @@
     {% endif %}
 
     <!-- Search Form at the Bottom -->
-    <form method="get" action="{{ url_for('konkordanz_view') }}" style="margin-top: 2rem;">
-        <label for="keyword">Suchbegriff:</label>
-        <input type="text" id="keyword" name="keyword" value="{{ keyword or '' }}"
-            style="padding: 0.4rem 0.6rem; margin-left: 0.5rem; font-size: 1rem; width: 250px;" required>
+    <form method="get" action="{{ url_for('konkordanz_view') }}">
+        <div class="search-konkordanz-bar">
+            <!-- Search Input -->
+            <input type="text" name="keyword" value="{{ keyword or '' }}" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
 
-        <!-- Match Case -->
-        <label style="margin-left: 1rem; font-size: 0.9rem;">
-            <input type="checkbox" name="case_sensitive" value="1" {% if case_sensitive %}checked{% endif %}>
-            Aa
-        </label>
-
-        <!-- Match Whole Word -->
-        <label style="margin-left: 1rem; font-size: 0.9rem;">
-            <input type="checkbox" name="whole_word" value="1" {% if whole_word %}checked{% endif %}>
-            ab<span style="border-left: 1px solid black; padding-left: 3px;">|</span>
-        </label>
-
-        <!-- Use Regex -->
-        <label style="margin-left: 1rem; font-size: 0.9rem;">
-            <input type="checkbox" name="use_regex" value="1" {% if use_regex %}checked{% endif %}>
-            .*
-        </label>
+            <!-- Option Toggles -->
+            <div class="search-konkordanz-options">
+                <label title="Groß-/Kleinschreibung">
+                    <input type="checkbox" name="case_sensitive" value="1" {% if case_sensitive %}checked{% endif %}>
+                    Aa
+                </label>
+                <label title="Ganzes Wort">
+                    <input type="checkbox" name="whole_word" value="1" {% if whole_word %}checked{% endif %}>
+                    ab<span style="border-left: 1px solid #333; padding-left: 2px;">|</span>
+                </label>
+                <label title="Regulärer Ausdruck">
+                    <input type="checkbox" name="use_regex" value="1" {% if use_regex %}checked{% endif %}>
+                    .*
+                </label>
+            </div>
+        </div>
 
         <button type="submit"
-            style="padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none; margin-left: 1rem;">
+            style="margin-top: 1rem; padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
             Suchen
         </button>
     </form>
