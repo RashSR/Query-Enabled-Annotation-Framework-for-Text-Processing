@@ -118,7 +118,6 @@ def search_view():
 #TODO: the jump dont highlight case sensitiv, keyword gets multiple highlights
 #maybe like in strg+shift+f VS Code with that icons 
 #wenn teilstring gefunden wird -> in Hit sollte das gefundene Wort stehen, aber der gefundene wort gehíghlighted werden
-#refactor regex e.g. for '^Hey' it thinks the keywoard is '^Hey'. 
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
