@@ -115,7 +115,7 @@ def search_view():
         query=query, author=get_active_author(session)
     )
 
-#TODO: fix that keyword is correct in the hit list, the jump dont highlight case sensitiv, keyword gets multiple highlights
+#TODO: the jump dont highlight case sensitiv, keyword gets multiple highlights
 #maybe like in strg+shift+f VS Code with that icons 
 #wenn teilstring gefunden wird -> in Hit sollte das gefundene Wort stehen, aber der gefundene wort gehíghlighted werden
 #refactor regex e.g. for '^Hey' it thinks the keywoard is '^Hey'. 
@@ -132,24 +132,35 @@ def konkordanz_view():
         all_msgs = author.get_all_own_messages()
 
         for msg in all_msgs:
-            content = msg.content if case_sensitive else msg.content.lower()
+            original_content = msg.content
+            content = original_content if case_sensitive else original_content.lower()
             query = keyword if case_sensitive else keyword.lower()
 
-            match = False
+            matches = []
+
             if use_regex:
                 try:
-                    pattern = re.compile(query)
-                    match = pattern.search(content)
+                    pattern = re.compile(query) if case_sensitive else re.compile(query, re.IGNORECASE)
+                    matches = pattern.finditer(original_content)
                 except re.error:
-                    pass  # Optionally handle invalid regex
+                    pass  # optionally handle error
             elif whole_word:
-                pattern = r'\b{}\b'.format(re.escape(query))
-                match = re.search(pattern, content)
+                flags = 0 if case_sensitive else re.IGNORECASE
+                pattern = re.compile(r'\b{}\b'.format(re.escape(query)), flags)
+                matches = pattern.finditer(original_content)
             else:
-                match = query in content
+                # Not regex, not whole word: simple substring
+                index = content.find(query)
+                if index != -1:
+                    matches = [re.Match]  # dummy placeholder
+                    matched_word = original_content[index:index+len(keyword)]
+                    print(matched_word)
+                    results.append(SearchResult(msg, keyword, matched_word))
+                    continue
 
-            if match:
-                results.append(SearchResult(msg, keyword, case_sensitive))
+            for match in matches:
+                matched_word = match.group()
+                results.append(SearchResult(msg, keyword, matched_word))
 
     return render_template(
         "konkordanz.html",

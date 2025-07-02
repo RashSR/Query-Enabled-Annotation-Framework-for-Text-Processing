@@ -25,7 +25,7 @@
         <tr>
             <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
             <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9; white-space: nowrap;">
-                {{ result.keyword }}
+                {{ result.matched_word }}
                 <a href="{{ url_for('chat_view', chat_id=result.message.chat_id, keyword=keyword) }}#msg-{{ result.message.message_id }}"
                     title="Im vollständigen Chat anzeigen"
                     style="margin-left: 5px; text-decoration: none;">

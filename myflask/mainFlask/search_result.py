@@ -1,7 +1,8 @@
 class SearchResult:
-    def __init__(self, message, keyword, case_sensitive=True, left = None, right = None):
+    def __init__(self, message, keyword, matched_word, case_sensitive=True, left = None, right = None):
         self._message = message
         self.keyword = keyword
+        self.matched_word = matched_word
         self.case_sensitive = case_sensitive
         if(left == None and right == None):
             self._calc_left_and_right()
