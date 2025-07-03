@@ -135,15 +135,6 @@ span[data-error][data-tooltip-position="top"]::after {
     margin-bottom: 10px;
 }
 
-.sidebar {
-    width: 25%;
-    background-color: #2a2f32; /* dark grey */
-    color: #ffffff;
-    padding: 10px 0;
-    overflow-y: auto;
-    border-right: 1px solid #444;
-}
-
 .elements-list {
     list-style-type: none;
     padding: 0;
