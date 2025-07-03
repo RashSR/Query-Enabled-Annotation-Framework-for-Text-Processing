@@ -51,6 +51,7 @@
 
     <!-- Search Form -->
     <form method="get" action="{{ url_for('konkordanz_view') }}">
+      <div class="search-container" style="max-width: 600px;"> <!--set max width here!-->
         <div id="primary-search">
             <div class="search-konkordanz-bar">
                 <!-- Search Input -->
@@ -72,7 +73,7 @@
 
         <!-- 🟨 CONTAINER FOR EXTRA SEARCH BARS -->
         <div id="extra-search-fields"></div>
-
+      </div>
         <!-- 🟩 ADD SEARCH BUTTON -->
         <button type="button" id="add-search-btn"
                 style="margin-top:1rem;padding:0.4rem 1rem;background:#6c757d;color:white;border:none;">
@@ -86,38 +87,34 @@
     </form>
 
     <!-- Template for additional search bars -->
-    <template id="search-template">
-        <!-- Flex row containing the bar (left) + dropdown (right) -->
-        <div class="search-group" style="display:flex;align-items:center;gap:0.5rem;margin-top:1rem;">
-            
-            <!-- LEFT: the whole search bar block -->
-            <div class="search-konkordanz-bar"
-                style="flex:1;display:flex;align-items:center;gap:0.5rem;">
-                
-                <input type="text" name="keyword"
-                      class="search-konkordanz-input"
-                      placeholder="Suchbegriff..." required>
+  <template id="search-template">
+      <!-- Wrap in a div with fixed or max width like the main form -->
+      <div class="search-group" style="margin-top:1rem; display: flex; gap: 0.5rem; align-items: center;">
 
-                <div class="search-konkordanz-options">
-                    <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
-                    <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
-                    <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
-                </div>
+          <!-- LEFT: search bar (same styling as main one) -->
+          <div class="search-konkordanz-bar" style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="text" name="keyword" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
 
-                <!-- hidden checkboxes can stay here or be moved; they’re off‑screen -->
-                <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
-                <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
-                <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
-            </div>
+              <div class="search-konkordanz-options">
+                  <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
+                  <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
+                  <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
+              </div>
 
-            <!-- RIGHT: the dropdown, now outside the bar -->
-            <select name="search_scope[]" class="search-konkordanz-dropdown">
-                <option value="all">Alle</option>
-                <option value="titles">Titel</option>
-                <option value="content">Inhalt</option>
-            </select>
-        </div>
-    </template>
+              <!-- Hidden checkboxes -->
+              <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
+              <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
+              <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
+          </div>
+
+          <!-- RIGHT: dropdown next to the bar, not stretching -->
+          <select name="search_scope[]" class="search-konkordanz-dropdown">
+              <option value="all">Alle</option>
+              <option value="titles">Titel</option>
+              <option value="content">Inhalt</option>
+          </select>
+      </div>
+  </template>
 
 
 </div>
