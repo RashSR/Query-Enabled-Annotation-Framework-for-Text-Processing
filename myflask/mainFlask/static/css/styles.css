@@ -2,6 +2,7 @@ body {
     margin: 0;
     font-family: sans-serif;
 }
+
 .container {
     display: flex;
     height: 100vh;
@@ -47,10 +48,12 @@ body {
     align-self: flex-end;
     background-color: #dcf8c6;
 }
+
 .received {
     align-self: flex-start;
     background-color: #fff;
 }
+
 .quoted {
     font-size: 0.85em;
     color: #555;
@@ -58,6 +61,7 @@ body {
     border-left: 3px solid #ccc;
     padding-left: 5px;
 }
+
 .timestamp {
     font-size: 0.7em;
     color: gray;
@@ -83,10 +87,6 @@ body {
   padding: 10px 0;
   border-right: 1px solid #2a2f32;
   justify-content: space-between;
-}
-
-.left-navfhf {
-    height: 100vh;  
 }
 
 .nav-top, .nav-bottom {
@@ -150,7 +150,8 @@ span[data-error][data-tooltip-position="top"]::after {
     margin: 0;
 }
 
-.elements-list li {
+/* defines the <li> */
+.elements-list li { 
     padding: 15px 20px;
     cursor: pointer;
     transition: background 0.2s ease-in-out;
@@ -161,6 +162,7 @@ span[data-error][data-tooltip-position="top"]::after {
     background-color: #3a3f42;
 }
 
+/* defines the <a> */
 .elements-list a {
     text-decoration: none;
     color: inherit;
@@ -353,7 +355,7 @@ span[data-error][data-tooltip-position="top"]::after {
     border-color: #0074D9;
 }
 
-/* Hide the real checkboxes */
+/* Hide the real checkboxes -> targets only <input> elements */
 input.hidden-toggle {
     display: none;
 }

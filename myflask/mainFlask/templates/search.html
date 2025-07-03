@@ -27,7 +27,7 @@
                 {% for message in results %}
                     {% set message_date = message.timestamp.date() %}
                     {% if message_date != ns.previous_date %}
-                        <div class="date-divider" style="text-align: center; margin: 1rem 0; color: #888;">
+                        <div class="date-divider">
                             {{ message.timestamp.strftime('%A, %d. %B %Y') }}
                         </div>
                         {% set ns.previous_date = message_date %}
