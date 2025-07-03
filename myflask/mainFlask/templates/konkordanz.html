@@ -87,11 +87,10 @@
     </form>
 
     <!-- Template for additional search bars -->
-  <template id="search-template">
-      <!-- Wrap in a div with fixed or max width like the main form -->
+    <template id="search-template">
       <div class="search-group" style="margin-top:1rem; display: flex; gap: 0.5rem; align-items: center;">
-
-          <!-- LEFT: search bar (same styling as main one) -->
+          
+          <!-- Search bar -->
           <div class="search-konkordanz-bar" style="display: flex; align-items: center; gap: 0.5rem;">
               <input type="text" name="keyword" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
 
@@ -101,18 +100,22 @@
                   <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
               </div>
 
-              <!-- Hidden checkboxes -->
               <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
               <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
               <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
           </div>
 
-          <!-- RIGHT: dropdown next to the bar, not stretching -->
+          <!-- Dropdown -->
           <select name="search_scope[]" class="search-konkordanz-dropdown">
               <option value="all">Alle</option>
               <option value="titles">Titel</option>
               <option value="content">Inhalt</option>
           </select>
+
+          <!-- 🗑️ Delete button -->
+          <button type="button" class="delete-search-btn" style="padding: 0.3rem 0.6rem; background: #dc3545; color: white; border: none; border-radius: 4px;">
+              ✕
+          </button>
       </div>
   </template>
 
@@ -122,68 +125,61 @@
 
 {% block scripts %}
 <script>
-  document.getElementById('toggle-recipient').addEventListener('change', function() {
-    const displayStyle = this.checked ? '' : 'none';
-    const colIndex = 3; // Recipient column is 4th column, so index 3 (zero-based)
-    
-    document.querySelectorAll(`table th:nth-child(${colIndex + 1})`).forEach(th => {
-      th.style.display = displayStyle;
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ───────────────────────── Hide/show “recipient” column ───────────────────────── */
+  const toggleRecipient = document.getElementById('toggle-recipient');
+  if (toggleRecipient) {
+    toggleRecipient.addEventListener('change', function () {
+      const display = this.checked ? '' : 'none';
+      const col = 3;                                    // 0‑based index
+      document.querySelectorAll(`table th:nth-child(${col + 1}), 
+                                 table td:nth-child(${col + 1})`)
+              .forEach(el => el.style.display = display);
     });
-    document.querySelectorAll(`table td:nth-child(${colIndex + 1})`).forEach(td => {
-      td.style.display = displayStyle;
+  }
+
+  /* ───────────────────────── Add / delete extra search bars ───────────────────────── */
+  const template   = document.getElementById('search-template');
+  const container  = document.getElementById('extra-search-fields');
+  const addBtn     = document.getElementById('add-search-btn');
+
+  let toggleIndex = 1;   // keeps IDs unique across clones
+
+  addBtn.addEventListener('click', () => {
+    const clone = template.content.firstElementChild.cloneNode(true);
+
+    /** give each hidden checkbox a unique ID and wire its button **/
+    const types = ['case_sensitive', 'whole_word', 'use_regex'];
+    clone.querySelectorAll('.hidden-toggle').forEach((cb, i) => {
+      const id = `${types[i]}_${toggleIndex}`;
+      cb.id = id;
+      clone.querySelectorAll('.search-toggle')[i].dataset.toggleId = id;
     });
-  });
-</script>
-<script>
-  // Toggle logic
-  document.querySelectorAll('.search-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const toggleId = btn.dataset.toggleId;
-      const checkbox = document.getElementById(toggleId);
-      checkbox.checked = !checkbox.checked;
-      btn.classList.toggle('active', checkbox.checked);
-    });
-  });
-</script>
-<script>
-(function () {
-  let toggleIndex = 1;
-
-  // Add Search bar logic
-  document.getElementById('add-search-btn').addEventListener('click', () => {
-    const tpl = document.getElementById('search-template');
-    const clone = tpl.content.cloneNode(true);
-
-    // Handle toggle buttons + link them to checkboxes
-    const toggles = clone.querySelectorAll('.search-toggle');
-    const checkboxes = clone.querySelectorAll('.hidden-toggle');
-
-    toggles.forEach((btn, i) => {
-      const type = ['case_sensitive', 'whole_word', 'use_regex'][i];
-      const newId = `${type}_${toggleIndex}`;
-      checkboxes[i].id = newId;
-      btn.dataset.toggleId = newId;
-
-      btn.addEventListener('click', () => {
-        const cb = btn.previousElementSibling;
-        cb.checked = !cb.checked;
-        btn.classList.toggle('active', cb.checked);
-      });
-    });
-
     toggleIndex++;
-    document.getElementById('extra-search-fields').appendChild(clone);
+
+    container.appendChild(clone);
   });
 
-  // First toggle group
-  document.querySelectorAll('.search-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const toggleId = btn.dataset.toggleId;
-      const checkbox = document.getElementById(toggleId);
-      checkbox.checked = !checkbox.checked;
-      btn.classList.toggle('active', checkbox.checked);
-    });
+  /* ───────────────────────── Delegate clicks (toggles & deletes) ─────────────────── */
+  document.addEventListener('click', (e) => {
+    /* delete button */
+    if (e.target.matches('.delete-search-btn')) {
+      e.target.closest('.search-group')?.remove();
+      return;
+    }
+
+    /* toggle buttons */
+    if (e.target.matches('.search-toggle')) {
+      const id = e.target.dataset.toggleId;
+      const cb = document.getElementById(id);
+      if (cb) {
+        cb.checked = !cb.checked;
+        e.target.classList.toggle('active', cb.checked);
+      }
+    }
   });
-})();
+});
 </script>
+
 {% endblock %}

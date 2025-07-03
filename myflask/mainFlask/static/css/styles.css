@@ -95,7 +95,6 @@ body {
     gap: 1rem;
 }
 
-
 span[data-error] {
     position: relative;
     cursor: pointer;
