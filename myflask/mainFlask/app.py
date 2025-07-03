@@ -153,7 +153,6 @@ def konkordanz_view():
                 if index != -1:
                     matches = [re.Match]  # dummy placeholder
                     matched_word = original_content[index:index+len(keyword)]
-                    print(matched_word)
                     results.append(SearchResult(msg, keyword, matched_word))
                     continue
 

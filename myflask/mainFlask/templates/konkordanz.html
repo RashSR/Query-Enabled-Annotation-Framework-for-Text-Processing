@@ -55,21 +55,17 @@
             <!-- Search Input -->
             <input type="text" name="keyword" value="{{ keyword or '' }}" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
 
-            <!-- Option Toggles -->
+            <!-- Icon-style Toggle Buttons -->
             <div class="search-konkordanz-options">
-                <label title="Groß-/Kleinschreibung">
-                    <input type="checkbox" name="case_sensitive" value="1" {% if case_sensitive %}checked{% endif %}>
-                    Aa
-                </label>
-                <label title="Ganzes Wort">
-                    <input type="checkbox" name="whole_word" value="1" {% if whole_word %}checked{% endif %}>
-                    ab<span style="border-left: 1px solid #333; padding-left: 2px;">|</span>
-                </label>
-                <label title="Regulärer Ausdruck">
-                    <input type="checkbox" name="use_regex" value="1" {% if use_regex %}checked{% endif %}>
-                    .*
-                </label>
+                <span class="search-toggle {% if case_sensitive %}active{% endif %}" data-toggle-id="case_sensitive">Aa</span>
+                <span class="search-toggle {% if whole_word %}active{% endif %}" data-toggle-id="whole_word">ab|</span>
+                <span class="search-toggle {% if use_regex %}active{% endif %}" data-toggle-id="use_regex">.*</span>
             </div>
+
+            <!-- Hidden Checkboxes -->
+            <input type="checkbox" class="hidden-toggle" name="case_sensitive" value="1" id="case_sensitive" {% if case_sensitive %}checked{% endif %}>
+            <input type="checkbox" class="hidden-toggle" name="whole_word" value="1" id="whole_word" {% if whole_word %}checked{% endif %}>
+            <input type="checkbox" class="hidden-toggle" name="use_regex" value="1" id="use_regex" {% if use_regex %}checked{% endif %}>
         </div>
 
         <button type="submit"
@@ -91,6 +87,17 @@
     });
     document.querySelectorAll(`table td:nth-child(${colIndex + 1})`).forEach(td => {
       td.style.display = displayStyle;
+    });
+  });
+</script>
+<script>
+  // Toggle logic
+  document.querySelectorAll('.search-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const toggleId = btn.dataset.toggleId;
+      const checkbox = document.getElementById(toggleId);
+      checkbox.checked = !checkbox.checked;
+      btn.classList.toggle('active', checkbox.checked);
     });
   });
 </script>
