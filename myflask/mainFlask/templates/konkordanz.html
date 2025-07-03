@@ -85,11 +85,18 @@
         </button>
     </form>
 
-    <!-- 🔵 TEMPLATE FOR CLONING NEW SEARCH BARS -->
+    <!-- Template for additional search bars -->
     <template id="search-template">
-        <div class="search-group" style="margin-top:1rem;">
-            <div class="search-konkordanz-bar">
-                <input type="text" name="keyword" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
+        <!-- Flex row containing the bar (left) + dropdown (right) -->
+        <div class="search-group" style="display:flex;align-items:center;gap:0.5rem;margin-top:1rem;">
+            
+            <!-- LEFT: the whole search bar block -->
+            <div class="search-konkordanz-bar"
+                style="flex:1;display:flex;align-items:center;gap:0.5rem;">
+                
+                <input type="text" name="keyword"
+                      class="search-konkordanz-input"
+                      placeholder="Suchbegriff..." required>
 
                 <div class="search-konkordanz-options">
                     <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
@@ -97,12 +104,22 @@
                     <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
                 </div>
 
+                <!-- hidden checkboxes can stay here or be moved; they’re off‑screen -->
                 <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
                 <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
                 <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
             </div>
+
+            <!-- RIGHT: the dropdown, now outside the bar -->
+            <select name="search_scope[]" class="search-konkordanz-dropdown">
+                <option value="all">Alle</option>
+                <option value="titles">Titel</option>
+                <option value="content">Inhalt</option>
+            </select>
         </div>
     </template>
+
+
 </div>
 {% endblock %}
 
