@@ -123,8 +123,6 @@ def anaylze_msg_with_language_tool(msg: Message):
 
         modified_text = ''.join(text_list)
         msg.annotated_text = modified_text
-    
-    return msg.annotated_text
 
 # print all usefull error informations
 def print_error(match, startPos, endPos, text):
