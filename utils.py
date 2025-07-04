@@ -59,6 +59,18 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
 
 # region Spacy
 
+#https://spacy.io/usage/linguistic-features -> a lot more features to look at
+#Possible Output for spacy analyzed texts:
+#Text: The original word text.
+#Lemma: The base form of the word.
+#POS: The simple UPOS part-of-speech tag.
+#Tag: The detailed part-of-speech tag.
+#Dep: Syntactic dependency, i.e. the relation between tokens.
+#Shape: The word shape – capitalization, punctuation, digits.
+#is alpha: Is the token an alpha character?
+#is stop: Is the token part of a stop list, i.e. the most common words of the language?
+
+#TODO look up lemmatizer
 def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
     doc = nlp(msg.content)
     annotated_text = ""
@@ -72,6 +84,11 @@ def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
         annotated_text = annotated_text + annotated_token
         print(f"Grundform: {token.lemma_}") #Grundform
         print(f"POS-Tag: {token.pos_}") #Wortart
+        print(f"Tag: {token.tag_}")
+        print(f"Dep: {token.dep}")
+        print(f"Shape: {token.shape}")
+        print(f"isAlpha: {token.is_alpha}")
+        print(f"isStop: {token.is_stop}")
         if token.pos_ == "VERB":
             print_tokennized_word("Tempus", token.morph.get('Tense')) #Zeitform
             print_tokennized_word("Person", token.morph.get('Person')) #Person des Verbs
@@ -83,6 +100,7 @@ def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
         print_tokennized_word("Zahl", token.morph.get('Number')) #Singular/Plural
         print_tokennized_word("Geschlecht", token.morph.get('Gender')) #Geschlecht Fem/Masc
         print_tokennized_word("Modus", token.morph.get('Mood')) #Indikativ/Konjunktiv
+        print_tokennized_word("PronTyp", token.morph.get('PronType'))
 
         print("---")
 

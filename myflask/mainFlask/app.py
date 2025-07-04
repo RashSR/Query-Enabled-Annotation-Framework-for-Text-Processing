@@ -184,7 +184,7 @@ def metrics_view():
 
 #TODO: error dict behalten aber eigene Klasse dafür und mit zu jedem Wort ALLE infos und erst am Ende <span> erzeugen
 # für jeden Chat ein eigenes Error dict bzw für jeden Autor 
-# for msg -> pos 
+# auf message ebene -> pos, wort, und die ganzen types
 # überprüfen lohnt es sich alles mit spacy zu analysieren und jedes einzelen Wort danach noch in Language tool zu packen? bzw anders rum mit langauge tool und falls Fehler -> nicht in spacy 
 # Nur Wert in Dropdown anzeigen die es gibt? 
 
