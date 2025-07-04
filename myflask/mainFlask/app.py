@@ -5,6 +5,9 @@ from markupsafe import Markup, escape
 from myflask.mainFlask.cachestore import CacheStore
 from myflask.mainFlask.search_result import SearchResult
 from classes.author import Author
+from classes.message import Message
+from classes.messagetype import MessageType
+import utils
 import re
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
@@ -171,7 +174,17 @@ def konkordanz_view():
 
 @app.route("/metrics")
 def metrics_view():
+    new_message = Message(8, 1, None, datetime.now(), "Das hier ist ein TestText mit kl FEhler.", MessageType.TEXT)
+    utils.anaylze_msg_with_language_tool(new_message)
+    print(new_message.annotated_text)
+    print(new_message.error_dict)
+    utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
+
+#TODO: error dict behalten aber eigene Klasse dafür und mit zu jedem Wort ALLE infos und erst am Ende <span> erzeugen
+# für jeden Chat ein eigenes Error dict bzw für jeden Autor 
+# for msg -> pos 
+# überprüfen lohnt es sich alles mit spacy zu analysieren und jedes einzelen Wort danach noch in Language tool zu packen? bzw anders rum mit langauge tool und falls Fehler -> nicht in spacy 
 
 @app.route("/settings")
 def settings_view():

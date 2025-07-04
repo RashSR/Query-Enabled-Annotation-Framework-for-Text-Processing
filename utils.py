@@ -59,8 +59,8 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
 
 # region Spacy
 
-def analyze_msg_with_spacy(text):
-    doc = nlp(text)
+def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
+    doc = nlp(msg.content)
     annotated_text = ""
 
     # priniting information
@@ -94,11 +94,13 @@ def print_tokennized_word(key, value):
 # endregion 
 
 # region Language Tool
-def anaylze_msg_with_language_tool(msg: Message):
+
+def anaylze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
 
     if(msg is None):
         return None
     
+    #only analyse if needed
     if(msg.annotated_text is None or msg.annotated_text == ""):
         text = msg.content
 
