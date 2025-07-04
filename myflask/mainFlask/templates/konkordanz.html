@@ -107,9 +107,9 @@
 
           <!-- Dropdown -->
           <select name="search_scope[]" class="search-konkordanz-dropdown">
-              <option value="all">Alle</option>
-              <option value="titles">Titel</option>
-              <option value="content">Inhalt</option>
+              {% for key, label in error_dict.items() %}
+                  <option value="{{ key }}">{{ key }}</option>
+              {% endfor %}
           </select>
 
           <!-- 🗑️ Delete button -->

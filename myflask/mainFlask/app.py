@@ -127,7 +127,7 @@ def konkordanz_view():
     case_sensitive = request.args.get('case_sensitive') == '1'
     whole_word = request.args.get('whole_word') == '1'
     use_regex = request.args.get('use_regex') == '1'
-
+    error_dict = {'PUNCTUATION': 2, 'TYPOS': 3}
     results = []
     if keyword:
         author = get_active_author(session)
@@ -169,12 +169,13 @@ def konkordanz_view():
         keyword=keyword,
         case_sensitive=case_sensitive,
         whole_word=whole_word,
-        use_regex=use_regex
+        use_regex=use_regex,
+        error_dict=error_dict
     )
 
 @app.route("/metrics")
 def metrics_view():
-    new_message = Message(8, 1, None, datetime.now(), "Das hier ist ein TestText mit kl FEhler.", MessageType.TEXT)
+    new_message = Message(8, 1, None, datetime.now(), "Das hier ist ein TestText mit kl FEhler.. Was machst du jtdsd?!", MessageType.TEXT)
     utils.anaylze_msg_with_language_tool(new_message)
     print(new_message.annotated_text)
     print(new_message.error_dict)
@@ -185,6 +186,7 @@ def metrics_view():
 # für jeden Chat ein eigenes Error dict bzw für jeden Autor 
 # for msg -> pos 
 # überprüfen lohnt es sich alles mit spacy zu analysieren und jedes einzelen Wort danach noch in Language tool zu packen? bzw anders rum mit langauge tool und falls Fehler -> nicht in spacy 
+# Nur Wert in Dropdown anzeigen die es gibt? 
 
 @app.route("/settings")
 def settings_view():
