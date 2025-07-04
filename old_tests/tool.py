@@ -1,4 +1,3 @@
-from utils import extract_text_from_html 
 
 #convert the match.messages in a useful description
 def convert_message(lt_message):
@@ -91,8 +90,6 @@ print("\nBearbeiteter Text:")
 print(modified_text)
 
 generate_html(modified_text, 'output_html/output.html')
-print(extract_text_from_html('output_html/output.html'))
-print(extract_text_from_html('output_html/output.html', withTags=True))
 
 print(f"Anzahl gefundener Fehler: {len(matches)}")
 print(f"Anzahl gefundener Fehlerarten: {len(found_ruleIds)}")
