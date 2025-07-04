@@ -85,8 +85,9 @@ def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
         print(f"Grundform: {token.lemma_}") #Grundform
         print(f"POS-Tag: {token.pos_}") #Wortart
         print(f"Tag: {token.tag_}")
-        print(f"Dep: {token.dep}")
-        print(f"Shape: {token.shape}")
+        #just high int value
+        #print(f"Dep: {token.dep}") 
+        #print(f"Shape: {token.shape}")
         print(f"isAlpha: {token.is_alpha}")
         print(f"isStop: {token.is_stop}")
         if token.pos_ == "VERB":
