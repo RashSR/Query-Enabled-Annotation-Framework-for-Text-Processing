@@ -1,7 +1,6 @@
 import spacy
 import language_tool_python
 import re
-from bs4 import BeautifulSoup
 from classes.message import Message
 from classes.chat import Chat
 from classes.messagetype import MessageType
@@ -96,29 +95,36 @@ def print_tokennized_word(key, value):
 
 # region Language Tool
 def anaylze_msg_with_language_tool(msg: Message):
-    text = msg.content
-    #check the text
-    matches = tool.check(text)
 
-    #convert text to a list to change it easily
-    text_list = list(text)
+    if(msg is None):
+        return None
+    
+    if(msg.annotated_text is None or msg.annotated_text == ""):
+        text = msg.content
 
-    #find all different ruleIds
-    found_ruleIds = []
+        #check the text
+        matches = tool.check(text)
 
-    #print all found errors
-    for match in reversed(matches):
-        startPos = match.offset
-        endPos = match.offset + match.errorLength
-        fehlertext = text[startPos : endPos]
-        msg.add_to_error_dict(match.category)
-        add_error_tags(match.ruleId, fehlertext, startPos, endPos, text_list)
-        if not (found_ruleIds.__contains__((match.ruleId, match.message))):
-            found_ruleIds.append((match.ruleId, match.message))
+        #convert text to a list to change it easily
+        text_list = list(text)
 
-    # Den bearbeiteten Text ausgeben
-    modified_text = ''.join(text_list)
-    return modified_text
+        #find all different ruleIds
+        found_ruleIds = []
+
+        #gather all found errors
+        for match in reversed(matches):
+            startPos = match.offset
+            endPos = match.offset + match.errorLength
+            fehlertext = text[startPos : endPos]
+            msg.add_to_error_dict(match.category)
+            add_error_tags(match.ruleId, fehlertext, startPos, endPos, text_list)
+            if not (found_ruleIds.__contains__((match.ruleId, match.message))):
+                found_ruleIds.append((match.ruleId, match.message))
+
+        modified_text = ''.join(text_list)
+        msg.annotated_text = modified_text
+    
+    return msg.annotated_text
 
 # print all usefull error informations
 def print_error(match, startPos, endPos, text):
