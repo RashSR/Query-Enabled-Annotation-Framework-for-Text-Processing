@@ -26,6 +26,7 @@ class CacheStore:
     
     _authors = None #use dict to go from O(n) to O(1)
 
+    #TODO: fix if a couple of authors are already there -> needs something like loaded_all
     def get_all_authors(self):
         from myflask.mainFlask.db_handling import get_all_authors
 

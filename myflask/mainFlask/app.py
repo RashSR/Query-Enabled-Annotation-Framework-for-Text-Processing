@@ -131,7 +131,7 @@ def konkordanz_view():
 
     author = get_active_author(session)
     print(author)
-    author.analyze_all_own_messages(True)
+    author.analyze_all_own_messages(True) #TODO: only works from /konkordanz and not after jump from e.g. profile
     error_categories = author.get_error_categories()
     print(author.get_error_rule_ids())
 
@@ -139,7 +139,7 @@ def konkordanz_view():
     if keyword:
         
         all_msgs = author.get_all_own_messages()
-        
+
         for msg in all_msgs:
             original_content = msg.content
             content = original_content if case_sensitive else original_content.lower()
