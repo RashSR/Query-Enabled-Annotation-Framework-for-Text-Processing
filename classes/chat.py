@@ -81,7 +81,7 @@ class Chat:
 
         return messages
     
-    def get_error_ruleIds(self) -> list[str]:
+    def get_error_rule_ids(self) -> list[str]:
         all_rule_ids = [
             rid
             for msg in self._messages
@@ -89,10 +89,26 @@ class Chat:
         ]
         return sorted(set(all_rule_ids))
     
-    def get_error_ruleIds_by_author(self, author) -> list[str]:
+    def get_error_rule_ids_by_author(self, author) -> list[str]:
         all_rule_ids = [
             rid
             for msg in self.get_messages_by_author(author)
             for rid in msg.get_error_ruleIds()
         ]
         return all_rule_ids
+
+    def get_error_categories(self) -> list[str]:
+        all_categories = [
+            cid
+            for msg in self._messages
+            for cid in msg.get_error_categories()
+        ]
+        return sorted(set(all_categories))
+    
+    def get_error_categories_by_author(self, author) -> list[str]:
+        all_categories = [
+            cid
+            for msg in self.get_messages_by_author(author)
+            for cid in msg.get_error_categories()
+        ]
+        return all_categories

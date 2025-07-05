@@ -188,9 +188,9 @@ def metrics_view():
     new_chat = Chat(5)
     new_chat.add_message(new_message)
     new_chat.add_message(second_message)
-    print(new_chat.get_error_ruleIds())
-    print(new_chat.get_error_ruleIds_by_author(aut1))
-    print(new_chat.get_error_ruleIds_by_author(aut2))
+    print(new_chat.get_error_rule_ids())
+    print(new_chat.get_error_rule_ids_by_author(aut1))
+    print(new_chat.get_error_rule_ids_by_author(aut2))
     #utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
 
@@ -199,6 +199,7 @@ def metrics_view():
 # auf message ebene -> pos, wort, und die ganzen types
 # überprüfen lohnt es sich alles mit spacy zu analysieren und jedes einzelen Wort danach noch in Language tool zu packen? bzw anders rum mit langauge tool und falls Fehler -> nicht in spacy 
 # Nur Wert in Dropdown anzeigen die es gibt? 
+# Wie bei CompOV linke und rechte seite auswählbar
 
 @app.route("/settings")
 def settings_view():

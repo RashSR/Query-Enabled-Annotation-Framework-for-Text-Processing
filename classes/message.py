@@ -49,7 +49,7 @@ class Message:
         return rule_ids
     
     #improves performance with seen. from WC O(n²) to O(n)
-    def get_error_categorys(self) -> list[str]:
+    def get_error_categories(self) -> list[str]:
         seen = set()
         category_ids = []
 
