@@ -5,6 +5,7 @@ from classes.message import Message
 from classes.chat import Chat
 from classes.messagetype import MessageType
 from datetime import datetime
+from myflask.mainFlask.ltmatch import LTMatch
 
 #TODO: try nltk also
 
@@ -138,6 +139,8 @@ def anaylze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
             endPos = match.offset + match.errorLength
             fehlertext = text[startPos : endPos]
             msg.add_to_error_dict(match.category)
+            ltmatch = LTMatch(startPos, endPos, text, match.category, match.ruleId)
+            print(ltmatch)
             add_error_tags(match.ruleId, fehlertext, startPos, endPos, text_list)
             if not (found_ruleIds.__contains__((match.ruleId, match.message))):
                 found_ruleIds.append((match.ruleId, match.message))

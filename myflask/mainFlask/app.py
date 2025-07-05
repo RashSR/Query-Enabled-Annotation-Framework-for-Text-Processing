@@ -179,7 +179,7 @@ def metrics_view():
     utils.anaylze_msg_with_language_tool(new_message)
     print(new_message.annotated_text)
     print(new_message.error_dict)
-    utils.analyze_msg_with_spacy(new_message)
+    #utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
 
 #TODO: error dict behalten aber eigene Klasse dafür und mit zu jedem Wort ALLE infos und erst am Ende <span> erzeugen
