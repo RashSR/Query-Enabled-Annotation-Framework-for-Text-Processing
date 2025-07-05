@@ -195,6 +195,19 @@ def metrics_view():
     print(new_chat.get_error_rule_ids())
     print(new_chat.get_error_rule_ids_by_author(aut1))
     print(new_chat.get_error_rule_ids_by_author(aut2))
+    #TODO this dic needs to be draged from msg to chat to author -> remove all other get_categories and so on
+    cat_to_rules: dict[str, list[str]] = {}
+    for chat in aut1.chats:
+        for msg in chat.messages:
+            for ltm in msg.error_list:
+                if ltm.category not in cat_to_rules:
+                    cat_to_rules[ltm.category] = set()
+                cat_to_rules[ltm.category].add(ltm.rule_id)
+    
+    # 3) Custom format: one category per line
+    for category, rule_ids in cat_to_rules.items():
+        joined = ", ".join(rule_ids)
+        print(f"{category}: {joined}")
     #utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
 

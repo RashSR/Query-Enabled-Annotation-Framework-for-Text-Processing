@@ -1,3 +1,4 @@
+from classes.message import Message
 
 class Chat:
 
@@ -53,7 +54,7 @@ class Chat:
         self._participants = value
 
     @property
-    def messages(self):
+    def messages(self) -> list[Message]:
         return self._messages
 
     @messages.setter
