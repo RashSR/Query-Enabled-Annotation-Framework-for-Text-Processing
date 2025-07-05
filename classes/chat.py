@@ -72,14 +72,6 @@ class Chat:
             name_list.append(a.name)
         
         return name_list
-
-    def get_message_count_for_author(self, author):
-        count = 0
-        for msg in self._messages:
-            if msg.sender.name == author.name:
-                count = count + 1
-
-        return count
     
     def get_messages_by_author(self, author):
         messages = []
