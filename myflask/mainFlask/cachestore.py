@@ -25,14 +25,15 @@ class CacheStore:
     
     
     _authors = None #use dict to go from O(n) to O(1)
+    _loaded_all_authors = False
 
-    #TODO: fix if a couple of authors are already there -> needs something like loaded_all
     def get_all_authors(self):
         from myflask.mainFlask.db_handling import get_all_authors
 
-        if self._authors is None:
+        if self._authors is None or self._loaded_all_authors is False:
             authors = get_all_authors(self._db, self._app)
             self._authors = {author.id: author for author in authors}
+            self._loaded_all_authors = True
 
         return list(self._authors.values())
     
