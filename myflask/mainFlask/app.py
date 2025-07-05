@@ -131,7 +131,7 @@ def konkordanz_view():
 
     author = get_active_author(session)
     print(author)
-    author.analyze_all_own_messages(True) #TODO: only works from /konkordanz and not after jump from e.g. profile
+    author.analyze_all_own_messages(True)
     error_categories = author.get_error_categories()
     print(author.get_error_rule_ids())
 
