@@ -12,6 +12,7 @@ class Message:
         self.message_type = message_type
         self.quoted_message = quoted_message
         self._error_list: list[LTMatch] = []
+        self._ltmatch_ids = []
         self._annotated_text = annotated_text
         self._chat = chat
 
@@ -93,6 +94,14 @@ class Message:
     @annotated_text.setter
     def annotated_text(self, value):
         self._annotated_text = value
+
+    @property
+    def ltmatch_ids(self):
+        return self._ltmatch_ids
+
+    @ltmatch_ids.setter
+    def ltmatch_ids(self, value):
+        self._ltmatch_ids = value
 
     @property
     def chat(self):

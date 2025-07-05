@@ -88,6 +88,9 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         
         #TODO: only load stuff that is not available
 
+def get_ltm_by_id_and_message_id_and_chat_id(db: SQLAlchemy, app: Flask):
+    return None
+
 # endregion
 
 # region CREATE
