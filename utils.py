@@ -130,20 +130,14 @@ def analyze_msg_with_language_tool(msg: Message, force_analyze=False): #TODO: ch
         #convert text to a list to change it easily
         text_list = list(text)
 
-        #find all different ruleIds
-        found_ruleIds = []
-
         #gather all found errors
         for match in reversed(matches):
             startPos = match.offset
             endPos = match.offset + match.errorLength
             errortext = text[startPos : endPos]
             ltmatch = LTMatch(startPos, endPos, errortext, match.category, match.ruleId)
-            print(ltmatch)
             msg.add_error(ltmatch)
             add_error_tags(match.ruleId, errortext, startPos, endPos, text_list)
-            if not (found_ruleIds.__contains__((match.ruleId, match.message))):
-                found_ruleIds.append((match.ruleId, match.message))
 
         modified_text = ''.join(text_list)
         msg.annotated_text = modified_text
