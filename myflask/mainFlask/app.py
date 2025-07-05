@@ -178,7 +178,8 @@ def metrics_view():
     new_message = Message(8, 1, None, datetime.now(), "Das hier ist ein TestText mit kl FEhler.. Was machst du jtdsd?!", MessageType.TEXT)
     utils.anaylze_msg_with_language_tool(new_message)
     print(new_message.annotated_text)
-    print(new_message.error_list)
+    print(new_message.get_error_categorys())
+    print(new_message.get_error_ruleIds())
     #utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
 

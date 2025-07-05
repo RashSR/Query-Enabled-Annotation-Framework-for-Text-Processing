@@ -139,8 +139,7 @@ def anaylze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
             endPos = match.offset + match.errorLength
             errortext = text[startPos : endPos]
             ltmatch = LTMatch(startPos, endPos, errortext, match.category, match.ruleId)
-            msg.add_error(LTMatch)
-            print(ltmatch)
+            msg.add_error(ltmatch)
             add_error_tags(match.ruleId, errortext, startPos, endPos, text_list)
             if not (found_ruleIds.__contains__((match.ruleId, match.message))):
                 found_ruleIds.append((match.ruleId, match.message))

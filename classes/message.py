@@ -11,7 +11,7 @@ class Message:
         self.content = content
         self.message_type = message_type
         self.quoted_message = quoted_message
-        self._error_list = []
+        self._error_list: list[LTMatch] = []
         self._annotated_text = annotated_text
         self._chat = chat
 
@@ -34,8 +34,35 @@ class Message:
     def add_error(self, error: LTMatch):
         self._error_list.append(error)
 
+    #improves performance with seen. from WC O(n²) to O(n)
+    def get_error_ruleIds(self) -> list[str]:
+        seen = set()
+        rule_ids = []
+
+        for ltm in self._error_list:
+            rid = ltm.rule_id
+            if rid not in seen: #because this is O(1) in avg case
+                seen.add(rid)
+                rule_ids.append(rid)
+
+        
+        return rule_ids
+    
+    #improves performance with seen. from WC O(n²) to O(n)
+    def get_error_categorys(self) -> list[str]:
+        seen = set()
+        category_ids = []
+
+        for ltm in self._error_list:
+            cid = ltm.category
+            if cid not in seen: #because this is O(1) in avg case
+                seen.add(cid)
+                category_ids.append(cid)
+
+        return category_ids
+
     @property
-    def error_list(self):
+    def error_list(self) -> list[LTMatch]:
         return self._error_list
 
     @error_list.setter
