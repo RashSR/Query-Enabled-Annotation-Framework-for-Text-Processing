@@ -9,7 +9,7 @@ class Chat:
         self._relation = relation
         self._group_name = group_name
         self._messages = [] # are always loaded
-        self._participants = [] #this is always filles
+        self._participants = [] #this is always filled
     
     def add_message(self, message):
         self.messages.append(message)
@@ -80,3 +80,11 @@ class Chat:
                 count = count + 1
 
         return count
+    
+    def get_error_ruleIds(self) -> list[str]:
+        all_rule_ids = [
+            rid
+            for msg in self._messages
+            for rid in msg.get_error_ruleIds()
+        ]
+        return sorted(set(all_rule_ids))

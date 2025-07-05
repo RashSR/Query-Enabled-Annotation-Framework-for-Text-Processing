@@ -52,7 +52,7 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
         msg = Message(id, msg_id, sender, date_obj, message.strip())
         if isAnalyzing and msg.message_type == MessageType.TEXT:
             #analyze_msg_with_spacy(msg.content)
-            msg.annotated_text = anaylze_msg_with_language_tool(msg)
+            msg.annotated_text = analyze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
     
@@ -115,7 +115,7 @@ def print_tokennized_word(key, value):
 
 # region Language Tool
 
-def anaylze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
+def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
 
     if(msg is None):
         return None

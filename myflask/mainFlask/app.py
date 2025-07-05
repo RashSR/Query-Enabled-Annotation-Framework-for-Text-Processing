@@ -6,6 +6,7 @@ from myflask.mainFlask.cachestore import CacheStore
 from myflask.mainFlask.search_result import SearchResult
 from classes.author import Author
 from classes.message import Message
+from classes.chat import Chat
 from classes.messagetype import MessageType
 import utils
 import re
@@ -175,11 +176,20 @@ def konkordanz_view():
 
 @app.route("/metrics")
 def metrics_view():
-    new_message = Message(8, 1, None, datetime.now(), "Das hier ist ein TestText mit kl FEhler.. Was machst du jtdsd?!", MessageType.TEXT)
-    utils.anaylze_msg_with_language_tool(new_message)
+    aut1 = Author(7, "Max")
+    aut2 = Author(9, "Felix")
+    new_message = Message(5, 1, aut1, datetime.now(), "Das hier ist ein TestText mit kl FEhler. Was machst du jtdsd?!", MessageType.TEXT)
+    second_message = Message(5, 2, aut2, datetime.now(), "dd  dasds Wasd WarUm isst er hier das Budget..", MessageType.TEXT)
+    utils.analyze_msg_with_language_tool(new_message)
+    utils.analyze_msg_with_language_tool(second_message)
     print(new_message.annotated_text)
-    print(new_message.get_error_categorys())
     print(new_message.get_error_ruleIds())
+    print(second_message.get_error_ruleIds())
+    new_chat = Chat(5)
+    new_chat.add_message(new_message)
+    new_chat.add_message(second_message)
+    print(new_chat.get_error_ruleIds())
+
     #utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
 

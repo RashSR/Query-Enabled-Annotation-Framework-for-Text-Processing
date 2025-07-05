@@ -114,7 +114,7 @@ for i in range(1, 3):
         msg = Message(chat_id, msg_id, sender, date_obj, message.strip())
         if msg.message_type == MessageType.TEXT:
             #utils.analyze_msg_with_spacy(msg.content)
-            utils.anaylze_msg_with_language_tool(msg)
+            utils.analyze_msg_with_language_tool(msg)
         chat.add_message(msg)
         msg_id = msg_id + 1
 
