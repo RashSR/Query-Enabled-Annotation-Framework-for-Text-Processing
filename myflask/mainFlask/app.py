@@ -187,7 +187,7 @@ def konkordanz_view():
         errors=errors
     )
 
-#TODO: HTML wird nur generiert wonach auch gesucht wird?
+#TODO: HTML wird nur generiert wonach auch gesucht wird? CSS ein und ausschalten?
 
 @app.route("/metrics")
 def metrics_view():
