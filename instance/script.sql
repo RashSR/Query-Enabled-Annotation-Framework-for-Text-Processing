@@ -50,3 +50,14 @@ INSERT INTO message VALUES ()
 SELECT * FROM message;
 
 DELETE FROM message;
+
+CREATE TABLE lt_match(
+    id INTEGER NOT NULL,
+    message_id INTEGER NOT NULL,
+    start_pos INTEGER NOT NULL,
+    end_pos INTEGER NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    rule_id VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (message_id) REFERENCES message(id)
+);
