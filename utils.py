@@ -6,6 +6,7 @@ from classes.chat import Chat
 from classes.messagetype import MessageType
 from datetime import datetime
 from myflask.mainFlask.ltmatch import LTMatch
+from myflask.mainFlask.cachestore import CacheStore
 
 #TODO: try nltk also
 

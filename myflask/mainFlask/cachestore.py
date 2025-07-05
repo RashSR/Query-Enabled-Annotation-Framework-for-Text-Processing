@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
+from myflask.mainFlask.ltmatch import LTMatch 
 
 class CacheStore:
     _instance = None
@@ -23,7 +24,8 @@ class CacheStore:
     def Instance(cls, db: SQLAlchemy = None, app: Flask = None):
         return cls(db, app)
     
-    
+    #region GET
+
     _authors = None #use dict to go from O(n) to O(1)
     _loaded_all_authors = False
 
@@ -105,6 +107,21 @@ class CacheStore:
         self._chats[id] = chat
         return chat
 
+    # endregion
+
+    #region CREATE 
+
+    def create_lt_match(self, lt_match: LTMatch):
+        if lt_match is None:
+            return None
+        
+        from myflask.mainFlask.db_handling import create_lt_match
+
+        created_lt_match = create_lt_match(self._db, self._app, lt_match)
+        return created_lt_match
+
+
+    # endregion 
 
         
     

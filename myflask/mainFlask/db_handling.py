@@ -6,6 +6,7 @@ from classes.author import Author
 from classes.chat import Chat
 from classes.message import Message
 from myflask.mainFlask.cachestore import CacheStore
+from myflask.mainFlask.ltmatch import LTMatch
 
 # region GET
 
@@ -88,6 +89,19 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         #TODO: only load stuff that is not available
 
 # endregion
+
+# region CREATE
+
+    def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
+        with app.app_context():
+            #PK vllt doch (id, message_id)?, add message id to lt match
+            start_pos = lt_match.start_pos
+            end_pos = lt_match.end_pos
+            #usw
+            result = db.session.execute(text("INSERT INTO lt_match VALUES (:id, :message_id, :start_pos, :end_pos, :category, :rule_id)"), {'start_pos': start_pos})
+
+
+# endregion 
 
 #region Conversion
 
