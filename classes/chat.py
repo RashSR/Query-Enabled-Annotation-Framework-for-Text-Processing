@@ -113,3 +113,18 @@ class Chat:
             for cid in msg.get_error_categories()
         ]
         return all_categories
+    
+
+
+
+
+
+    def get_messages_by_error_category_and_author(self, category, author):
+        msgs = []
+        if category in self.get_error_categories_by_author(author):
+            for msg in self.get_messages_by_author(author):
+                if msg.hasCategory(category):
+                    msgs.append(msg)
+
+        return msgs
+

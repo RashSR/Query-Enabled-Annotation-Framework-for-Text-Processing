@@ -125,6 +125,7 @@ def search_view():
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
+    selected_type = request.args.get('selected_type')
     case_sensitive = request.args.get('case_sensitive') == '1'
     whole_word = request.args.get('whole_word') == '1'
     use_regex = request.args.get('use_regex') == '1'
@@ -132,6 +133,14 @@ def konkordanz_view():
     author = get_active_author(session)
     author.analyze_all_own_messages(True)
     errors = author.get_error_categories()
+
+    if selected_type is not None:
+        found_msgs = author.get_messages_by_error_category(selected_type)
+        for msg in found_msgs:
+            print(msg)
+            for ltm in msg.error_list:
+                print(ltm)
+
 
     results = []
     if keyword:
@@ -177,6 +186,8 @@ def konkordanz_view():
         use_regex=use_regex,
         errors=errors
     )
+
+#TODO: HTML wird nur generiert wonach auch gesucht wird?
 
 @app.route("/metrics")
 def metrics_view():

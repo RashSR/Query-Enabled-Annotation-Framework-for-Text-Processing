@@ -151,3 +151,11 @@ class Author:
             utils.analyze_msg_with_language_tool(msg, force_analyze)
             #TODO: implement afterwards
             #utils.analyze_msg_with_spacy()
+
+    def get_messages_by_error_category(self, category):
+        msgs = []
+        if category in self.get_error_categories():
+            for chat in self.chats:
+                msgs.extend(chat.get_messages_by_error_category_and_author(category, self))
+        
+        return msgs

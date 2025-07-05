@@ -22,7 +22,7 @@ class Message:
         Content: {self.content}
         MessageType: {self.message_type}
         quotedMessage: {{ {self.quoted_message } }}
-        ErrorTypes: {len(self.error_dict)}
+        ErrorTypes: {len(self._error_list)}
         """
         return toString
     
@@ -102,6 +102,12 @@ class Message:
     @chat.setter
     def chat(self, value):
         self._chat = value
+
+    def hasCategory(self, category):
+        if category in self.get_error_categories():
+            return True
+        
+        return False
 
     #TODO: add group functionality 
     def get_recipient(self):
