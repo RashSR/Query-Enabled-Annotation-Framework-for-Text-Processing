@@ -87,7 +87,7 @@ class Author:
         self._chat_ids = value
 
     @property
-    def chats(self):
+    def chats(self) -> list[Chat]:
         self._chats = CacheStore.Instance().get_all_chats_by_author_id(self._id);
         return self._chats
     
@@ -119,6 +119,22 @@ class Author:
             msg_list.extend(chat.messages)
 
         return msg_list
+    
+    def get_error_categories(self):
+        all_categories = {
+            category
+            for chat in self.chats
+            for category in chat.get_error_categories_by_author(self)
+        }
+        return sorted(all_categories)
+
+    def get_error_rule_ids(self):
+        all_rule_ids = {
+            rule_id
+            for chat in self.chats
+            for rule_id in chat.get_error_rule_ids_by_author(self)
+        }
+        return sorted(all_rule_ids)
 
     def __str__(self):
         return (f"Author({self._id}): {self.name}, "
