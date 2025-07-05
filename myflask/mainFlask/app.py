@@ -133,7 +133,7 @@ def konkordanz_view():
     use_regex = request.args.get('use_regex') == '1'
 
     author = get_active_author(session)
-    author.analyze_all_own_messages(True)
+    author.analyze_all_own_messages()
     errors = author.get_error_categories()
 
     if selected_type is not None:
@@ -224,9 +224,7 @@ def metrics_view():
     #utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
 
-#TODO: error dict behalten aber eigene Klasse dafür und mit zu jedem Wort ALLE infos und erst am Ende <span> erzeugen
-# für jeden Chat ein eigenes Error dict bzw für jeden Autor 
-# auf message ebene -> pos, wort, und die ganzen types
+#TODO:
 # überprüfen lohnt es sich alles mit spacy zu analysieren und jedes einzelen Wort danach noch in Language tool zu packen? bzw anders rum mit langauge tool und falls Fehler -> nicht in spacy 
 # Nur Wert in Dropdown anzeigen die es gibt? 
 # Wie bei CompOV linke und rechte seite auswählbar

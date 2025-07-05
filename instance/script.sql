@@ -60,6 +60,6 @@ CREATE TABLE lt_match(
     content VARCHAR(100) NOT NULL,
     category VARCHAR(100) NOT NULL,
     rule_id VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id, message_id),
+    PRIMARY KEY (id, message_id, chat_id),
     FOREIGN KEY (message_id, chat_id) REFERENCES message(id, chat_id)
 );

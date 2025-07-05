@@ -147,8 +147,9 @@ class Author:
                 f"Chatcount: {len(self.chats)}")
 
     def analyze_all_own_messages(self, force_analyze=False):
+        #check if it is already analyzed
         for msg in self.get_all_own_messages():
-            utils.analyze_msg_with_language_tool(msg, force_analyze)
+            utils.analyze_msg_with_language_tool(msg, force_analyze) #TODO: check if it is possible to start with more threads https://stackoverflow.com/questions/72500635/how-to-speed-up-language-tool-python-library-use-case
             #TODO: implement afterwards
             #utils.analyze_msg_with_spacy()
 

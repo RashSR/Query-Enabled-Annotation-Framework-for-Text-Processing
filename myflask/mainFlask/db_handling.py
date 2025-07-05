@@ -60,7 +60,7 @@ def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
         chat = _convert_db_row_to_chat(result_row)
         result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat_id})
         for row in result:
-            loaded_message = _convert_db_row_to_message(row, db, app)
+            loaded_message = _convert_db_row_to_message(row)
             loaded_message.chat = chat
             chat.add_message(loaded_message)
 
@@ -71,7 +71,7 @@ def get_all_messages(db: SQLAlchemy, app: Flask):
         messages = []
         result = db.session.execute(text("SELECT * FROM message"))
         for row in result:
-            loaded_message = _convert_db_row_to_message(row, db, app)
+            loaded_message = _convert_db_row_to_message(row)
             messages.append(loaded_message)
 
     return messages
@@ -142,14 +142,14 @@ def _convert_db_row_to_chat(row):
     loaded_chat = Chat(chat_id, relation, groupname)
     return loaded_chat
 
-def _convert_db_row_to_message(row, db: SQLAlchemy, app: Flask):
+def _convert_db_row_to_message(row):
     message_id = row[0]
     chat_id = row[1]
     sender_id = row[2]
     sender = CacheStore.Instance().get_author_by_id(sender_id) #TODO: sender does not to be set!
     timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
     content = row[4] #TODO: add check for row name maybe?
-    annotated_text = row[7]
+    annotated_text = row[6]
     loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
     return loaded_message
 
