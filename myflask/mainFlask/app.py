@@ -128,12 +128,18 @@ def konkordanz_view():
     case_sensitive = request.args.get('case_sensitive') == '1'
     whole_word = request.args.get('whole_word') == '1'
     use_regex = request.args.get('use_regex') == '1'
-    error_dict = {'PUNCTUATION': 2, 'TYPOS': 3}
+
+    author = get_active_author(session)
+    print(author)
+    author.analyze_all_own_messages(True)
+    error_categories = author.get_error_categories()
+    print(author.get_error_rule_ids())
+
     results = []
     if keyword:
-        author = get_active_author(session)
+        
         all_msgs = author.get_all_own_messages()
-
+        
         for msg in all_msgs:
             original_content = msg.content
             content = original_content if case_sensitive else original_content.lower()
@@ -171,7 +177,7 @@ def konkordanz_view():
         case_sensitive=case_sensitive,
         whole_word=whole_word,
         use_regex=use_regex,
-        error_dict=error_dict
+        error_categories=error_categories
     )
 
 @app.route("/metrics")

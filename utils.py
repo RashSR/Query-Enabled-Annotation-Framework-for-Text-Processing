@@ -115,13 +115,13 @@ def print_tokennized_word(key, value):
 
 # region Language Tool
 
-def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
+def analyze_msg_with_language_tool(msg: Message, force_analyze=False): #TODO: check for MessageType.TEXT
 
     if(msg is None):
         return None
     
     #only analyse if needed
-    if(msg.annotated_text is None or msg.annotated_text == ""):
+    if(force_analyze or (msg.annotated_text is None or msg.annotated_text == "")):
         text = msg.content
 
         #check the text
@@ -139,6 +139,7 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
             endPos = match.offset + match.errorLength
             errortext = text[startPos : endPos]
             ltmatch = LTMatch(startPos, endPos, errortext, match.category, match.ruleId)
+            print(ltmatch)
             msg.add_error(ltmatch)
             add_error_tags(match.ruleId, errortext, startPos, endPos, text_list)
             if not (found_ruleIds.__contains__((match.ruleId, match.message))):

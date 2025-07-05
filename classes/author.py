@@ -1,5 +1,6 @@
 from classes.chat import Chat
 from myflask.mainFlask.cachestore import CacheStore
+import utils
 
 class Author:
     def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
@@ -142,4 +143,10 @@ class Author:
                 f"First Language: {self.first_language}, "
                 f"Other Languages: {', '.join(self.languages)}, "
                 f"Region: {self.region}, Job: {self.job}, " 
-                f"Chatcount: {len(self._chats)}")
+                f"Chatcount: {len(self.chats)}")
+
+    def analyze_all_own_messages(self, force_analyze=False):
+        for msg in self.get_all_own_messages():
+            utils.analyze_msg_with_language_tool(msg, force_analyze)
+            #TODO: implement afterwards
+            #utils.analyze_msg_with_spacy()

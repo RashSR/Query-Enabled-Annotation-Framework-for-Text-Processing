@@ -107,10 +107,10 @@
 
           <!-- Dropdown -->
           <select name="search_scope[]" class="search-konkordanz-dropdown">
-              {% for key, label in error_dict.items() %}
-                  <option value="{{ key }}">{{ key }}</option>
-              {% endfor %}
-          </select>
+            {% for category in error_categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
 
           <!-- 🗑️ Delete button -->
           <button type="button" class="delete-search-btn" style="padding: 0.3rem 0.6rem; background: #dc3545; color: white; border: none; border-radius: 4px;">
