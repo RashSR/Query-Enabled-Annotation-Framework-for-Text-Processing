@@ -81,6 +81,14 @@ class Chat:
 
         return count
     
+    def get_messages_by_author(self, author):
+        messages = []
+        for msg in self._messages:
+            if msg.sender.id == author.id:
+                messages.append(msg)
+
+        return messages
+    
     def get_error_ruleIds(self) -> list[str]:
         all_rule_ids = [
             rid
@@ -88,3 +96,11 @@ class Chat:
             for rid in msg.get_error_ruleIds()
         ]
         return sorted(set(all_rule_ids))
+    
+    def get_error_ruleIds_by_author(self, author) -> list[str]:
+        all_rule_ids = [
+            rid
+            for msg in self.get_messages_by_author(author)
+            for rid in msg.get_error_ruleIds()
+        ]
+        return all_rule_ids

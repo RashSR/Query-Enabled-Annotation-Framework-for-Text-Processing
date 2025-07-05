@@ -130,7 +130,4 @@ for i in range(1, 3):
     for a in authors:
         print(a)
 
-
-#print(my_author.get_chats_with_own_messages())
-
 generate_html_for_author(my_author)

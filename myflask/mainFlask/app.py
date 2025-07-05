@@ -189,7 +189,8 @@ def metrics_view():
     new_chat.add_message(new_message)
     new_chat.add_message(second_message)
     print(new_chat.get_error_ruleIds())
-
+    print(new_chat.get_error_ruleIds_by_author(aut1))
+    print(new_chat.get_error_ruleIds_by_author(aut2))
     #utils.analyze_msg_with_spacy(new_message)
     return render_template('metrics.html')
 

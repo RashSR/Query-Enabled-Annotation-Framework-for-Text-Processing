@@ -105,32 +105,18 @@ class Author:
             
         return None
 
-    def get_chats_with_own_messages(self):
-        list_of_chats = []
-        for chat in self.chats:
-            new_chat = Chat(chat.chat_id)
-            list_of_chats.append(new_chat)
-            for msg in chat.messages:
-                if msg.sender.name == self._name:
-                    new_chat.add_message(msg)
-        
-        return list_of_chats
-
     def get_all_own_messages(self):
         msg_list = []
-        allChatsWithOwnMessages = self.get_chats_with_own_messages()
-        for chat in allChatsWithOwnMessages:
-            chatMessages = chat.messages
-            for own_message in chatMessages:
-                msg_list.append(own_message)
+        for chat in self.chats:
+            own_messages = chat.get_messages_by_author(self)
+            msg_list.extend(own_messages)
         
         return msg_list
 
     def get_all_messages(self):
         msg_list = []
         for chat in self.chats:
-            for message in chat.messages:
-                msg_list.append(message)
+            msg_list.extend(chat.messages)
 
         return msg_list
 
