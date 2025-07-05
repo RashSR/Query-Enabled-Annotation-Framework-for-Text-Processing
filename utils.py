@@ -137,11 +137,11 @@ def anaylze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
         for match in reversed(matches):
             startPos = match.offset
             endPos = match.offset + match.errorLength
-            fehlertext = text[startPos : endPos]
-            msg.add_to_error_dict(match.category)
-            ltmatch = LTMatch(startPos, endPos, text, match.category, match.ruleId)
+            errortext = text[startPos : endPos]
+            ltmatch = LTMatch(startPos, endPos, errortext, match.category, match.ruleId)
+            msg.add_error(LTMatch)
             print(ltmatch)
-            add_error_tags(match.ruleId, fehlertext, startPos, endPos, text_list)
+            add_error_tags(match.ruleId, errortext, startPos, endPos, text_list)
             if not (found_ruleIds.__contains__((match.ruleId, match.message))):
                 found_ruleIds.append((match.ruleId, match.message))
 

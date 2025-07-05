@@ -1,9 +1,9 @@
 from classes.messagetype import MessageType
-from typing import Dict
 from myflask.mainFlask.cachestore import CacheStore
+from myflask.mainFlask.ltmatch import LTMatch
 
 class Message:
-    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, error_dict : Dict[str, int] = None, annotated_text = None, chat = None):
+    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, annotated_text = None, chat = None):
         self.chat_id = chat_id
         self._message_id = message_id
         self.sender = sender
@@ -11,7 +11,7 @@ class Message:
         self.content = content
         self.message_type = message_type
         self.quoted_message = quoted_message
-        self._error_dict = {}
+        self._error_list = []
         self._annotated_text = annotated_text
         self._chat = chat
 
@@ -31,19 +31,16 @@ class Message:
             return True
         return False
     
-    def add_to_error_dict(self, error: str):
-        if error in self.error_dict:
-            self.error_dict[error] += 1
-        else:
-            self.error_dict[error] = 1
+    def add_error(self, error: LTMatch):
+        self._error_list.append(error)
 
     @property
-    def error_dict(self):
-        return self._error_dict
+    def error_list(self):
+        return self._error_list
 
-    @error_dict.setter
-    def error_dict(self, value):
-        self._error_dict = value
+    @error_list.setter
+    def error_list(self, value):
+        self._error_list = value
 
     #return author
     @property
