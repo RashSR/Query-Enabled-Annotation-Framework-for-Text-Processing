@@ -1,7 +1,10 @@
 class LTMatch:
-    def __init__(self, startPos: int, endPos: int, text: str, category: str, rule_id: str):
-        self._startPos = startPos
-        self._endPos = endPos
+    def __init__(self, id: int, message_id: int, chat_id: int, start_pos: int, end_pos: int, text: str, category: str, rule_id: str):
+        self._id = id
+        self._message_id = message_id #TODO: load message
+        self._chat_id = chat_id
+        self._start_pos = start_pos
+        self._end_pos = end_pos
         self._text = text
         self._category = category
         self._rule_id = rule_id
@@ -11,12 +14,40 @@ class LTMatch:
         Category: {self._category}
         RuleId: {self._rule_id}
         text: {self._text}
-        startPos: {self._startPos}
-        endPos: {self._endPos}
+        startPos: {self._start_pos}
+        endPos: {self._end_pos}
+        id: {self._id}
+        message_id: {self._message_id}
+        chat_id: {self._chat_id}
         """
 
         return toString
     
+    @property
+    def id(self) -> int:
+        return self._id
+    
+    @id.setter
+    def id(self, value: int) -> None:
+        self._id = value
+
+    @property
+    def message_id(self) -> int:
+        return self._message_id
+    
+    @message_id.setter
+    def message_id(self, value: int) -> None:
+        self._message_id = value
+
+    #TODO: refactor PK to only have one PK
+    @property
+    def chat_id(self) -> int:
+        return self._chat_id
+    
+    @chat_id.setter
+    def chat_id(self, value: int) -> None:
+        self._chat_id = value
+
     @property
     def start_pos(self) -> int:
         return self._start_pos

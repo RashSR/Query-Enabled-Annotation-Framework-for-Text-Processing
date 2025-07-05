@@ -92,13 +92,29 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
 
 # region CREATE
 
-    def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
-        with app.app_context():
-            #PK vllt doch (id, message_id)?, add message id to lt match
-            start_pos = lt_match.start_pos
-            end_pos = lt_match.end_pos
-            #usw
-            result = db.session.execute(text("INSERT INTO lt_match VALUES (:id, :message_id, :start_pos, :end_pos, :category, :rule_id)"), {'start_pos': start_pos})
+#TODO: Category own DB table? 
+def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
+    with app.app_context():
+        match_id = lt_match.id
+        message_id = lt_match.message_id
+        chat_id = lt_match.chat_id
+        start_pos = lt_match.start_pos
+        end_pos = lt_match.end_pos
+        content = lt_match.text
+        category = lt_match.category
+        rule_id = lt_match.rule_id
+
+        sql_text = text("INSERT INTO lt_match VALUES (:id, :message_id, :chat_id, :start_pos, :end_pos, :content, :category, :rule_id)")
+        prepared_values = {'id': match_id, 'message_id': message_id, 'chat_id': chat_id, 'start_pos': start_pos, 'end_pos': end_pos, 'content': content, 'category': category, 'rule_id': rule_id}
+
+        result = db.session.execute(sql_text, prepared_values)
+        db.session.commit()
+        if result.rowcount == 1:
+            return True
+        
+        return False
+
+        
 
 
 # endregion 

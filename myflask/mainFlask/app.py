@@ -8,6 +8,7 @@ from classes.author import Author
 from classes.message import Message
 from classes.chat import Chat
 from classes.messagetype import MessageType
+from myflask.mainFlask.ltmatch import LTMatch
 import utils
 import re
 import locale
@@ -122,6 +123,7 @@ def search_view():
 #TODO: the jump dont highlight case sensitiv, keyword gets multiple highlights
 #maybe like in strg+shift+f VS Code with that icons 
 #wenn teilstring gefunden wird -> in Hit sollte das gefundene Wort stehen, aber der gefundene wort gehíghlighted werden
+#Dem Nutzer die Möglichkeit geben ob er e.g. Fehler in einer Nachricht suchen mag oder direktes Wort oder Nachfolger/Vorgänger
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()

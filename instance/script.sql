@@ -54,10 +54,12 @@ DELETE FROM message;
 CREATE TABLE lt_match(
     id INTEGER NOT NULL,
     message_id INTEGER NOT NULL,
+    chat_id INTEGER NOT NULL,
     start_pos INTEGER NOT NULL,
     end_pos INTEGER NOT NULL,
+    content VARCHAR(100) NOT NULL,
     category VARCHAR(100) NOT NULL,
     rule_id VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (message_id) REFERENCES message(id)
+    PRIMARY KEY (id, message_id),
+    FOREIGN KEY (message_id, chat_id) REFERENCES message(id, chat_id)
 );
