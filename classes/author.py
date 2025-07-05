@@ -89,7 +89,8 @@ class Author:
 
     @property
     def chats(self) -> list[Chat]:
-        self._chats = CacheStore.Instance().get_all_chats_by_author_id(self._id);
+        if len(self._chats)==0: #TODO only load chat once
+            self._chats = CacheStore.Instance().get_all_chats_by_author_id(self._id);
         return self._chats
     
     @chats.setter
