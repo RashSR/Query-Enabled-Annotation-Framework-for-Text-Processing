@@ -106,7 +106,7 @@
           </div>
 
           <!-- Dropdown -->
-          <select name="search_scope" class="search-konkordanz-dropdown">
+          <select name="selected_type" class="search-konkordanz-dropdown">
             {% for error in errors %}
                 <option value="{{ error }}">{{ error }}</option> <!-- left: this value is submittet to the form, right: text that user sees -->
             {% endfor %}
