@@ -130,10 +130,8 @@ def konkordanz_view():
     use_regex = request.args.get('use_regex') == '1'
 
     author = get_active_author(session)
-    print(author)
     author.analyze_all_own_messages(True)
-    error_categories = author.get_error_categories()
-    print(author.get_error_rule_ids())
+    errors = author.get_error_categories()
 
     results = []
     if keyword:
@@ -177,7 +175,7 @@ def konkordanz_view():
         case_sensitive=case_sensitive,
         whole_word=whole_word,
         use_regex=use_regex,
-        error_categories=error_categories
+        errors=errors
     )
 
 @app.route("/metrics")
