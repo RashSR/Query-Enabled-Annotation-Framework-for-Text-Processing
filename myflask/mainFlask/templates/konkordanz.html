@@ -52,24 +52,6 @@
   <!-- Search Form -->
   <form method="get" action="{{ url_for('konkordanz_view') }}">
     <div class="search-container" style="max-width: 600px;"> <!--set max width here!-->
-      <div id="primary-search">
-        <div class="search-konkordanz-bar">
-          <!-- Search Input -->
-          <input type="text" name="keyword" value="{{ keyword or '' }}" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
-
-          <!-- Icon-style Toggle Buttons -->
-          <div class="search-konkordanz-options">
-            <span class="search-toggle {% if case_sensitive %}active{% endif %}" data-toggle-id="case_sensitive" title="Groß-/Kleinschreibung">Aa</span>
-            <span class="search-toggle {% if whole_word %}active{% endif %}" data-toggle-id="whole_word" title="Nur ganze Wörter suchen">ab|</span>
-            <span class="search-toggle {% if use_regex %}active{% endif %}" data-toggle-id="use_regex" title="Regulären Ausdruck verwenden">.*</span>
-          </div>
-
-          <!-- Hidden Checkboxes -->
-          <input type="checkbox" class="hidden-toggle" name="case_sensitive" value="1" id="case_sensitive" {% if case_sensitive %}checked{% endif %}>
-          <input type="checkbox" class="hidden-toggle" name="whole_word" value="1" id="whole_word" {% if whole_word %}checked{% endif %}>
-          <input type="checkbox" class="hidden-toggle" name="use_regex" value="1" id="use_regex" {% if use_regex %}checked{% endif %}>
-        </div>
-      </div>
 
       <!-- 🟨 CONTAINER FOR EXTRA SEARCH BARS -->
       <div id="extra-search-fields">
