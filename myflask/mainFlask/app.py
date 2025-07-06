@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, session, Blueprint, jsonify
+from flask import Flask, render_template, request, abort, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
@@ -10,7 +10,6 @@ from classes.chat import Chat
 from classes.messagetype import MessageType
 from myflask.mainFlask.filter_node_object import FilterNodeObejct
 from myflask.mainFlask.filter_type import FilterType
-
 import re
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
@@ -140,6 +139,9 @@ def konkordanz_view():
 
     # total bars == how many keyword[i] you received
     total = len([k for k in request.args if k.startswith('keyword[')])
+    
+    fno_list: list[FilterNodeObejct] = []
+    results = []
 
     for i in range(total):
         kw   = request.args.get(f'keyword[{i}]', '')
@@ -151,42 +153,15 @@ def konkordanz_view():
         rg = bool(request.args.get(f'use_regex[{i}]'))
 
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
-        print(fno)
-
-    results = []
-    if keyword:
+        fno_list.append(fno)
         
-        all_msgs = author.get_all_own_messages()
 
-        for msg in all_msgs:
-            original_content = msg.content
-            content = original_content if case_sensitive else original_content.lower()
-            query = keyword if case_sensitive else keyword.lower()
-
-            matches = []
-
-            if use_regex:
-                try:
-                    pattern = re.compile(query) if case_sensitive else re.compile(query, re.IGNORECASE)
-                    matches = pattern.finditer(original_content)
-                except re.error:
-                    pass  # optionally handle error
-            elif whole_word:
-                flags = 0 if case_sensitive else re.IGNORECASE
-                pattern = re.compile(r'\b{}\b'.format(re.escape(query)), flags)
-                matches = pattern.finditer(original_content)
-            else:
-                # Not regex, not whole word: simple substring
-                index = content.find(query)
-                if index != -1:
-                    matches = [re.Match]  # dummy placeholder
-                    matched_word = original_content[index:index+len(keyword)]
-                    results.append(SearchResult(msg, keyword, matched_word))
-                    continue
-
-            for match in matches:
-                matched_word = match.group()
-                results.append(SearchResult(msg, keyword, matched_word))
+        #hier wurden werte gesetzt all fno results zusammen packen
+        for fnObject in fno_list:
+            search_results_from_fno = fnObject.get_result(author)
+            print(len(search_results_from_fno))
+            results.extend(search_results_from_fno)
+    
 
     return render_template(
         "konkordanz.html",
