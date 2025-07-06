@@ -132,10 +132,7 @@ def konkordanz_view():
     author = get_active_author(session)
     author.analyze_all_own_messages()
 
-    keyword = request.args.get('keyword', '').strip()
-    case_sensitive = request.args.get('case_sensitive') == '1'
-    whole_word = request.args.get('whole_word') == '1'
-    use_regex = request.args.get('use_regex') == '1'
+    keyword = None
 
     # total bars == how many keyword[i] you received
     total = len([k for k in request.args if k.startswith('keyword[')])
@@ -154,8 +151,9 @@ def konkordanz_view():
 
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
         fno_list.append(fno)
-        
 
+        keyword = kw
+        
         #hier wurden werte gesetzt all fno results zusammen packen
         for fnObject in fno_list:
             search_results_from_fno = fnObject.get_result(author)
@@ -167,9 +165,6 @@ def konkordanz_view():
         "konkordanz.html",
         results=results,
         keyword=keyword,
-        case_sensitive=case_sensitive,
-        whole_word=whole_word,
-        use_regex=use_regex,
         filter_types=FilterType
     )
 
