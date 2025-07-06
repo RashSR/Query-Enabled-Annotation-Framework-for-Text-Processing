@@ -74,12 +74,12 @@
   <template id="search-template">
     <div class="search-group" style="margin-top:1rem; display:flex; gap:0.5rem; align-items:center;">
 
-      <!-- Left dropdown – fixed choices -->
+      <!-- Left dropdown – values come from the Enum -->
       <select name="selected_type" class="search-konkordanz-dropdown">
         <option value="" selected>— Type —</option>
-        <option value="error-category">Category</option> <!--TODO from enum-->
-        <option value="error-ruleId">RuleId</option>
-        <option value="word">Word</option>
+        {% for ft in filter_types %}
+          <option value="{{ ft.value }}">{{ ft.name.title().replace('_', ' ') }}</option>
+        {% endfor %}
       </select>
 
       <!-- Search bar -->

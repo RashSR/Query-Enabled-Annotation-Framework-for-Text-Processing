@@ -194,7 +194,8 @@ def konkordanz_view():
         keyword=keyword,
         case_sensitive=case_sensitive,
         whole_word=whole_word,
-        use_regex=use_regex
+        use_regex=use_regex,
+        filter_types=FilterType
     )
 
 #TODO: HTML wird nur generiert wonach auch gesucht wird? CSS ein und ausschalten?
