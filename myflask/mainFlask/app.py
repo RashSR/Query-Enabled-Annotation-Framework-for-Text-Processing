@@ -8,8 +8,8 @@ from classes.author import Author
 from classes.message import Message
 from classes.chat import Chat
 from classes.messagetype import MessageType
-from myflask.mainFlask.ltmatch import LTMatch
-import utils
+from myflask.mainFlask.filter_node_object import FilterNodeObejct
+
 import re
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
@@ -144,15 +144,10 @@ def konkordanz_view():
         cs = bool(request.args.get(f'case_sensitive[{i}]'))   # '1' → True, None → False
         ww = bool(request.args.get(f'whole_word[{i}]'))
         rg = bool(request.args.get(f'use_regex[{i}]'))
+
+        fno = FilterNodeObejct(typ, kw, scp, cs, ww, rg)
+        print(fno)
         
-        # ── Pretty‑print this search bar ─────────────────────────────────────────
-        print(f'\n── Search #{i + 1} ──')
-        print(f'  keyword         : {kw}')
-        print(f'  selected_type   : {typ}')
-        print(f'  selected_scope  : {scp}')
-        print(f'  case_sensitive? : {cs}')
-        print(f'  whole_word?     : {ww}')
-        print(f'  use_regex?      : {rg}')
 
     author = get_active_author(session)
     author.analyze_all_own_messages()
