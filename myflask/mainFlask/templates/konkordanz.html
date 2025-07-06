@@ -71,51 +71,49 @@
   </form>
 
   <!-- Template for additional search bars -->
-<template id="search-template">
-  <div class="search-group" style="margin-top:1rem; display:flex; gap:0.5rem; align-items:center;">
+  <template id="search-template">
+    <div class="search-group" style="margin-top:1rem; display:flex; gap:0.5rem; align-items:center;">
 
-    <!-- Left dropdown – fixed choices -->
-    <select name="selected_type" class="search-konkordanz-dropdown">
-      <option value="error-category">Category</option>
-      <option value="error-ruleId">RuleId</option>
-      <option value="word">Word</option>
-    </select>
+      <!-- Left dropdown – fixed choices -->
+      <select name="selected_type" class="search-konkordanz-dropdown">
+        <option value="error-category">Category</option>
+        <option value="error-ruleId">RuleId</option>
+        <option value="word">Word</option>
+      </select>
 
-    <!-- Search bar -->
-    <div class="search-konkordanz-bar" style="display:flex; align-items:center; gap:0.5rem;">
-      <input type="text"
-             name="keyword"
-             class="search-konkordanz-input"
-             placeholder="Suchbegriff...">
+      <!-- Search bar -->
+      <div class="search-konkordanz-bar" style="display:flex; align-items:center; gap:0.5rem;">
+        <input type="text"
+              name="keyword"
+              class="search-konkordanz-input"
+              placeholder="Suchbegriff...">
 
-      <div class="search-konkordanz-options">
-        <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
-        <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
-        <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
+        <div class="search-konkordanz-options">
+          <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
+          <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
+          <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
+        </div>
+
+        <!-- Hidden toggles: keep names with [] so the JS can identify and rename them -->
+        <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
+        <input type="checkbox" class="hidden-toggle" name="whole_word[]"     value="1">
+        <input type="checkbox" class="hidden-toggle" name="use_regex[]"      value="1">
       </div>
 
-      <!-- Hidden toggles: keep names with [] so the JS can identify and rename them -->
-      <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
-      <input type="checkbox" class="hidden-toggle" name="whole_word[]"     value="1">
-      <input type="checkbox" class="hidden-toggle" name="use_regex[]"      value="1">
+      <!-- Right dropdown – dynamic -->
+      <select name="selected_scope" class="search-konkordanz-dropdown">
+        {% for error in errors %}
+            <option value="{{ error }}">{{ error }}</option>
+        {% endfor %}
+      </select>
+
+      <!-- 🗑️ Delete button -->
+      <button type="button" class="delete-search-btn"
+              style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px;">
+        ✕
+      </button>
     </div>
-
-    <!-- Right dropdown – dynamic -->
-    <select name="selected_scope" class="search-konkordanz-dropdown">
-      {% for error in errors %}
-          <option value="{{ error }}">{{ error }}</option>
-      {% endfor %}
-    </select>
-
-    <!-- 🗑️ Delete button -->
-    <button type="button" class="delete-search-btn"
-            style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px;">
-      ✕
-    </button>
-  </div>
-</template>
-
-
+  </template>
 </div>
 {% endblock %}
 

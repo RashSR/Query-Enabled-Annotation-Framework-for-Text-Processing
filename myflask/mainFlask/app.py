@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, session
+from flask import Flask, render_template, request, abort, session, Blueprint, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
@@ -225,3 +225,29 @@ def settings_view():
     return render_template("settings.html")
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
+
+
+
+
+#bp = Blueprint("api", __name__) #TODO make modular
+
+@app.get("/api/filter-values")
+def filter_values():
+
+    raw_type   = request.args.get("type", "")
+    #author_id  = request.args.get("author_id", type=int)
+
+    # validate ----------------------------------------------------------------
+    try:
+        ftype = FilterType(raw_type)   # raises ValueError if bad
+    except ValueError:
+        abort(400, f"Unknown filter type {raw_type!r}")
+
+    author = get_active_author(session)
+    author.analyze_all_own_messages() #TODO sollte nicht nötig sein das aufzurufen!
+
+    # delegate to your staticmethod ------------------------------------------
+    values = FilterNodeObejct.get_values(ftype, author) or []
+    print(len(values))
+
+    return jsonify(values)
