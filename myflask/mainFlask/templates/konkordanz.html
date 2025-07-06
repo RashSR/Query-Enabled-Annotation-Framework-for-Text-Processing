@@ -115,10 +115,10 @@
             </select>
 
             <!-- Result count display -->
-            <span class="result-count {% if n.search_result_list | length > 0 %}positive{% else %}zero{% endif %}">
-              {{ n.search_result_list | length }}
+            <span class="result-label {% if n.search_result_list | length > 0 %}green{% else %}red{% endif %}">
+              <span>Result:</span>
+              <span>{{ n.search_result_list | length }}</span>
             </span>
-
 
             <!-- Delete button -->
             <button type="button" class="delete-search-btn"

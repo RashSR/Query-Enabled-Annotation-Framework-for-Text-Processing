@@ -358,15 +358,24 @@ input.hidden-toggle {
 /* Let the search bar stretch but not the dropdown */
 .search-group { width:100%; }
 
-.result-count {
-margin-left: 0.5rem;
-font-weight: bold;
-font-size: 1rem;
+.result-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: white;
+  margin-left: 0.5rem;
+  gap: 0.3rem;
 }
-.result-count.positive {
-color: green;
+
+.result-label.green {
+  background-color: green;
 }
-.result-count.zero {
-color: red;
+
+.result-label.red {
+  background-color: red;
 }
+
 
