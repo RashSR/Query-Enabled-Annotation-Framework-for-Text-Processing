@@ -1,5 +1,7 @@
+from myflask.mainFlask.filter_type import FilterType
+
 class FilterNodeObejct:
-    def __init__(self, left_side, searchbar, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
+    def __init__(self, left_side: FilterType, searchbar, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
         self._left_side = left_side
         self._searchbar = searchbar
         self._selected_value = selected_value #rigt_side
@@ -67,4 +69,6 @@ class FilterNodeObejct:
         return toString
 
     def get_result(self):
+        
+
         return None

@@ -9,6 +9,7 @@ from classes.message import Message
 from classes.chat import Chat
 from classes.messagetype import MessageType
 from myflask.mainFlask.filter_node_object import FilterNodeObejct
+from myflask.mainFlask.filter_type import FilterType
 
 import re
 import locale
@@ -141,13 +142,11 @@ def konkordanz_view():
         typ  = request.args.get(f'selected_type[{i}]')
         scp  = request.args.get(f'selected_scope[{i}]')
 
-        cs = bool(request.args.get(f'case_sensitive[{i}]'))   # '1' → True, None → False
+        cs = bool(request.args.get(f'case_sensitive[{i}]'))
         ww = bool(request.args.get(f'whole_word[{i}]'))
         rg = bool(request.args.get(f'use_regex[{i}]'))
 
-        fno = FilterNodeObejct(typ, kw, scp, cs, ww, rg)
-        print(fno)
-        
+        fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
 
     author = get_active_author(session)
     author.analyze_all_own_messages()
