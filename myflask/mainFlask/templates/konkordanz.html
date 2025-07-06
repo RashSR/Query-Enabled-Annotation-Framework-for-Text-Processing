@@ -2,78 +2,78 @@
 
 {% block content %}
 <div style="padding: 2rem; font-size: 1rem;">
-    <h2 style="margin-bottom: 1rem;">
-        <i class="fas fa-align-left"></i> Konkordanzansicht
-    </h2>
+  <h2 style="margin-bottom: 1rem;">
+    <i class="fas fa-align-left"></i> Konkordanzansicht
+  </h2>
 
-    {% if keyword %}
-        <p>Suchergebnisse für: <strong>{{ keyword }}</strong></p>
-    {% endif %}
+  {% if keyword %}
+      <p>Suchergebnisse für: <strong>{{ keyword }}</strong></p>
+  {% endif %}
 
-    {% if results %}
-    <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-        <thead>
-            <tr>
-                <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
-                <th style="width: 10%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
-                <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
-                <th style="width: 20%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for result in results %}
-        <tr>
-            <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
-            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9; white-space: nowrap;">
-                {{ result.matched_word }}
-                <a href="{{ url_for('chat_view', chat_id=result.message.chat_id, keyword=keyword) }}#msg-{{ result.message.message_id }}"
-                    title="Im vollständigen Chat anzeigen"
-                    style="margin-left: 5px; text-decoration: none;">
-                    <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
-                </a>
-            </td>
-            <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
-            <td style="border: 1px solid #ddd; padding: 8px;">
-                {{ result.message.get_recipient().name }}
-                <a href="{{ url_for('author_profile', author_id=result.message.get_recipient().id) }}?no_active_change=1"
-                    title="Im vollständigen Chat anzeigen"
-                    style="margin-left: 5px; text-decoration: none;">
-                    <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% elif keyword %}
-        <p style="margin-top: 1rem; color: #888;">Keine Treffer für "<strong>{{ keyword }}</strong>" gefunden.</p>
-    {% endif %}
+  {% if results %}
+  <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+    <thead>
+      <tr>
+        <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
+        <th style="width: 10%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
+        <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
+        <th style="width: 20%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in results %}
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: #0074D9; white-space: nowrap;">
+          {{ result.matched_word }}
+          <a href="{{ url_for('chat_view', chat_id=result.message.chat_id, keyword=keyword) }}#msg-{{ result.message.message_id }}"
+            title="Im vollständigen Chat anzeigen"
+            style="margin-left: 5px; text-decoration: none;">
+            <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
+          </a>
+        </td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">
+          {{ result.message.get_recipient().name }}
+          <a href="{{ url_for('author_profile', author_id=result.message.get_recipient().id) }}?no_active_change=1"
+            title="Im vollständigen Chat anzeigen"
+            style="margin-left: 5px; text-decoration: none;">
+            <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% elif keyword %}
+      <p style="margin-top: 1rem; color: #888;">Keine Treffer für "<strong>{{ keyword }}</strong>" gefunden.</p>
+  {% endif %}
 
-    <!-- Search Form -->
-    <form method="get" action="{{ url_for('konkordanz_view') }}">
-      <div class="search-container" style="max-width: 600px;"> <!--set max width here!-->
-        <div id="primary-search">
-            <div class="search-konkordanz-bar">
-                <!-- Search Input -->
-                <input type="text" name="keyword" value="{{ keyword or '' }}" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
+  <!-- Search Form -->
+  <form method="get" action="{{ url_for('konkordanz_view') }}">
+    <div class="search-container" style="max-width: 600px;"> <!--set max width here!-->
+      <div id="primary-search">
+        <div class="search-konkordanz-bar">
+          <!-- Search Input -->
+          <input type="text" name="keyword" value="{{ keyword or '' }}" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
 
-                <!-- Icon-style Toggle Buttons -->
-                <div class="search-konkordanz-options">
-                    <span class="search-toggle {% if case_sensitive %}active{% endif %}" data-toggle-id="case_sensitive" title="Groß-/Kleinschreibung">Aa</span>
-                    <span class="search-toggle {% if whole_word %}active{% endif %}" data-toggle-id="whole_word" title="Nur ganze Wörter suchen">ab|</span>
-                    <span class="search-toggle {% if use_regex %}active{% endif %}" data-toggle-id="use_regex" title="Regulären Ausdruck verwenden">.*</span>
-                </div>
+          <!-- Icon-style Toggle Buttons -->
+          <div class="search-konkordanz-options">
+            <span class="search-toggle {% if case_sensitive %}active{% endif %}" data-toggle-id="case_sensitive" title="Groß-/Kleinschreibung">Aa</span>
+            <span class="search-toggle {% if whole_word %}active{% endif %}" data-toggle-id="whole_word" title="Nur ganze Wörter suchen">ab|</span>
+            <span class="search-toggle {% if use_regex %}active{% endif %}" data-toggle-id="use_regex" title="Regulären Ausdruck verwenden">.*</span>
+          </div>
 
-                <!-- Hidden Checkboxes -->
-                <input type="checkbox" class="hidden-toggle" name="case_sensitive" value="1" id="case_sensitive" {% if case_sensitive %}checked{% endif %}>
-                <input type="checkbox" class="hidden-toggle" name="whole_word" value="1" id="whole_word" {% if whole_word %}checked{% endif %}>
-                <input type="checkbox" class="hidden-toggle" name="use_regex" value="1" id="use_regex" {% if use_regex %}checked{% endif %}>
-            </div>
+          <!-- Hidden Checkboxes -->
+          <input type="checkbox" class="hidden-toggle" name="case_sensitive" value="1" id="case_sensitive" {% if case_sensitive %}checked{% endif %}>
+          <input type="checkbox" class="hidden-toggle" name="whole_word" value="1" id="whole_word" {% if whole_word %}checked{% endif %}>
+          <input type="checkbox" class="hidden-toggle" name="use_regex" value="1" id="use_regex" {% if use_regex %}checked{% endif %}>
         </div>
-
-        <!-- 🟨 CONTAINER FOR EXTRA SEARCH BARS -->
-        <div id="extra-search-fields"></div>
       </div>
+
+      <!-- 🟨 CONTAINER FOR EXTRA SEARCH BARS -->
+      <div id="extra-search-fields">
+
         <!-- 🟩 ADD SEARCH BUTTON -->
         <button type="button" id="add-search-btn"
                 style="margin-top:1rem;padding:0.4rem 1rem;background:#6c757d;color:white;border:none;">
@@ -84,51 +84,52 @@
             style="margin-top: 1rem; padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
             Suchen
         </button>
-    </form>
+      </div>
+  </form>
 
-    <!-- Template for additional search bars -->
-    <template id="search-template">
-      <div class="search-group" style="margin-top:1rem; display:flex; gap:0.5rem; align-items:center;">
+  <!-- Template for additional search bars -->
+  <template id="search-template">
+    <div class="search-group" style="margin-top:1rem; display:flex; gap:0.5rem; align-items:center;">
 
-        <!-- Left dropdown – fixed choices -->
-        <select name="selected_type" class="search-konkordanz-dropdown">
-          <option value="error-category">Category</option>
-          <option value="error-ruleId">RuleId</option>
-        </select>
+      <!-- Left dropdown – fixed choices -->
+      <select name="selected_type" class="search-konkordanz-dropdown">
+        <option value="error-category">Category</option>
+        <option value="error-ruleId">RuleId</option>
+      </select>
 
-        <!-- Search bar -->
-        <div class="search-konkordanz-bar" style="display:flex; align-items:center; gap:0.5rem;">
-          <input type="text"
-                name="keyword"
-                class="search-konkordanz-input"
-                placeholder="Suchbegriff..."
-                required>
+      <!-- Search bar -->
+      <div class="search-konkordanz-bar" style="display:flex; align-items:center; gap:0.5rem;">
+        <input type="text"
+              name="keyword"
+              class="search-konkordanz-input"
+              placeholder="Suchbegriff..."
+              required>
 
-          <div class="search-konkordanz-options">
-            <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
-            <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
-            <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
-          </div>
-
-          <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
-          <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
-          <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
+        <div class="search-konkordanz-options">
+          <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
+          <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
+          <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
         </div>
 
-        <!-- Right dropdown – dynamic -->
-        <select name="selected_scope" class="search-konkordanz-dropdown">
-          {% for error in errors %}
-              <option value="{{ error }}">{{ error }}</option>
-          {% endfor %}
-        </select>
-
-        <!-- 🗑️ Delete button -->
-        <button type="button" class="delete-search-btn"
-                style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px;">
-          ✕
-        </button>
+        <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
+        <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
+        <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
       </div>
-    </template>
+
+      <!-- Right dropdown – dynamic -->
+      <select name="selected_scope" class="search-konkordanz-dropdown">
+        {% for error in errors %}
+            <option value="{{ error }}">{{ error }}</option>
+        {% endfor %}
+      </select>
+
+      <!-- 🗑️ Delete button -->
+      <button type="button" class="delete-search-btn"
+              style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px;">
+        ✕
+      </button>
+    </div>
+  </template>
 
 
 </div>
