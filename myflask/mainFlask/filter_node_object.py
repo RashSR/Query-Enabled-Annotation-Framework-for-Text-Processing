@@ -128,15 +128,11 @@ class FilterNodeObejct:
                 return None
             case FilterType.CATEGORY:
                 msgs = author.get_messages_by_error_category(self._selected_value) #if selected_value is empty -> give all
-                matches = []
-               #TODO: aus ltmatch matched wort holen
                 for msg in msgs:
                     for error in msg.error_list:
-                        print(error)
                         startPos = error.start_pos
                         endPos = error.end_pos
                         keyword = msg.content[startPos:endPos]
-                        print(keyword)
 
                         original_content = msg.content
                         content = original_content if self._case_sensitive else original_content.lower()
@@ -144,7 +140,6 @@ class FilterNodeObejct:
 
                         index = content.find(query)
                         if index != -1:
-                            matches = [re.Match]  # dummy placeholder
                             matched_word = original_content[index:index+len(keyword)]
                             self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive))
                             continue
