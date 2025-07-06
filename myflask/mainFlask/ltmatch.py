@@ -1,5 +1,6 @@
 class LTMatch:
     def __init__(self, message_id: int, chat_id: int, start_pos: int, end_pos: int, text: str, category: str, rule_id: str):
+        self._id = None
         self._message_id = message_id #TODO: load message
         self._chat_id = chat_id
         self._start_pos = start_pos

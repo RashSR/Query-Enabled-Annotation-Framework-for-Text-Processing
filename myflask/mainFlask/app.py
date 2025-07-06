@@ -212,6 +212,10 @@ def metrics_view():
 
 @app.route("/settings")
 def settings_view():
+    my_ltm = LTMatch(81, 3, 0, 4, 'hihi', 'TestCat', 'TestRule')
+    print(my_ltm)
+    created_ltm = CacheStore.Instance().create_lt_match(my_ltm)
+    print(created_ltm)
     return render_template("settings.html")
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
