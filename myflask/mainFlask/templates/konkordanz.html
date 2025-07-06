@@ -53,20 +53,21 @@
   <form method="get" action="{{ url_for('konkordanz_view') }}">
     <div class="search-container" style="max-width: 600px;"> <!--set max width here!-->
 
-      <!-- 🟨 CONTAINER FOR EXTRA SEARCH BARS -->
+      <!-- CONTAINER FOR EXTRA SEARCH BARS -->
       <div id="extra-search-fields">
-
-        <!-- 🟩 ADD SEARCH BUTTON -->
-        <button type="button" id="add-search-btn"
-                style="margin-top:1rem;padding:0.4rem 1rem;background:#6c757d;color:white;border:none;">
-            + Weitere Suche
-        </button>
-
-        <button type="submit"
-            style="margin-top: 1rem; padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
-            Suchen
-        </button>
+        <!-- all dynamically inserted search bars go here -->
       </div>
+
+      <!-- ADD SEARCH BUTTON -->
+      <button type="button" id="add-search-btn"
+              style="margin-top:1rem;padding:0.4rem 1rem;background:#6c757d;color:white;border:none;">
+          + Weitere Suche
+      </button>
+
+      <button type="submit"
+          style="margin-top: 1rem; padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
+          Suchen
+      </button>
   </form>
 
   <!-- Template for additional search bars -->
