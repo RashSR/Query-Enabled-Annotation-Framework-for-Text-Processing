@@ -357,3 +357,16 @@ input.hidden-toggle {
 
 /* Let the search bar stretch but not the dropdown */
 .search-group { width:100%; }
+
+.result-count {
+margin-left: 0.5rem;
+font-weight: bold;
+font-size: 1rem;
+}
+.result-count.positive {
+color: green;
+}
+.result-count.zero {
+color: red;
+}
+
