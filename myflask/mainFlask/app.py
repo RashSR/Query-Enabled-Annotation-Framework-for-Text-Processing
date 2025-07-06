@@ -135,7 +135,7 @@ def konkordanz_view():
     keyword = None
 
     # total bars == how many keyword[i] you received
-    total = len([k for k in request.args if k.startswith('keyword[')])
+    total = len([k for k in request.args if k.startswith('selected_type[')])
     
     fno_list: list[FilterNodeObejct] = []
     results = []
@@ -148,7 +148,7 @@ def konkordanz_view():
         cs = bool(request.args.get(f'case_sensitive[{i}]'))
         ww = bool(request.args.get(f'whole_word[{i}]'))
         rg = bool(request.args.get(f'use_regex[{i}]'))
-
+        
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
         fno_list.append(fno)
 
