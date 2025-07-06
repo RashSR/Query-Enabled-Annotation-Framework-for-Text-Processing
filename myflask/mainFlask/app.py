@@ -235,7 +235,6 @@ def settings_view():
 def filter_values():
 
     raw_type   = request.args.get("type", "")
-    #author_id  = request.args.get("author_id", type=int)
 
     # validate ----------------------------------------------------------------
     try:
