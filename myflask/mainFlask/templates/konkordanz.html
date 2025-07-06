@@ -78,12 +78,9 @@
                     {% if n.filter_type != filter_types.WORD %}disabled{% endif %}>
 
             <div class="search-konkordanz-options">
-              <span class="search-toggle" title="Groß-/Kleinschreibung"
-                    data-toggle-id="case_sensitive_{{ loop.index0 }}">Aa</span>
-              <span class="search-toggle" title="Nur ganze Wörter suchen"
-                    data-toggle-id="whole_word_{{ loop.index0 }}">ab|</span>
-              <span class="search-toggle" title="Regulären Ausdruck verwenden"
-                    data-toggle-id="use_regex_{{ loop.index0 }}">.*</span>
+              <span class="search-toggle {% if n.case_sensitive %}active{% endif %}" title="Groß-/Kleinschreibung" data-toggle-id="case_sensitive_{{ loop.index0 }}">Aa</span>
+              <span class="search-toggle {% if n.whole_word %}active{% endif %}" title="Nur ganze Wörter suchen" data-toggle-id="whole_word_{{ loop.index0 }}">ab|</span>
+              <span class="search-toggle {% if n.use_regex %}active{% endif %}" title="Regulären Ausdruck verwenden" data-toggle-id="use_regex_{{ loop.index0 }}">.*</span>
             </div>
 
             <!-- Hidden toggles -->
