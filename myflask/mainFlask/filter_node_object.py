@@ -13,6 +13,7 @@ class FilterNodeObejct:
         self._whole_word = whole_word
         self._use_regex = use_regex
         self._result_messages = []
+        self._search_result_list = []
 
     @property
     def filter_type(self):
@@ -70,6 +71,14 @@ class FilterNodeObejct:
     def result_messages(self, value: list[Message]):
         self._result_messages = value
 
+    @property
+    def search_result_list(self):
+        return self._search_result_list
+    
+    @search_result_list.setter
+    def search_result_list(self, value: list[SearchResult]):
+        self._search_result_list = value
+
     def __str__(self):
         toString = f"""left side: {self._filter_type}
         searchbar: {self._searchbar_input}
@@ -84,7 +93,6 @@ class FilterNodeObejct:
     def get_result(self, author: Author) -> list[SearchResult]:
         match self._filter_type:
             case FilterType.WORD:
-                results = []
                 for msg in author.get_all_own_messages():
                     original_content = msg.content
                     content = original_content if self._case_sensitive else original_content.lower()
@@ -108,14 +116,14 @@ class FilterNodeObejct:
                         if index != -1:
                             matches = [re.Match]  # dummy placeholder
                             matched_word = original_content[index:index+len(self._searchbar_input)]
-                            results.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive))
+                            self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive))
                             continue
 
                     for match in matches:
                         matched_word = match.group()
-                        results.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive))
+                        self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive))
 
-                return results
+                return self._search_result_list
             case FilterType.RULE_ID:
                 return None
             case FilterType.CATEGORY:
