@@ -151,6 +151,7 @@ def konkordanz_view():
         rg = bool(request.args.get(f'use_regex[{i}]'))
 
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
+        print(fno)
 
     errors = author.get_error_categories()
 
@@ -226,11 +227,7 @@ def settings_view():
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
 
-
-
-
 #bp = Blueprint("api", __name__) #TODO make modular
-
 @app.get("/api/filter-values")
 def filter_values():
 
@@ -247,6 +244,4 @@ def filter_values():
 
     # delegate to your staticmethod ------------------------------------------
     values = FilterNodeObejct.get_values(ftype, author) or []
-    print(len(values))
-
     return jsonify(values)

@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggleRecipient) {
     toggleRecipient.addEventListener('change', function () {
       const display = this.checked ? '' : 'none';
-      const col = 3;                                    // 0‑based index
+      const col = 3; // 0‑based index
       document.querySelectorAll(`table th:nth-child(${col + 1}), 
                                  table td:nth-child(${col + 1})`)
               .forEach(el => el.style.display = display);
@@ -140,6 +140,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let toggleIndex = 1;   // still for unique checkbox IDs
   let barIndex    = 0;   // NEW: counts <search-group>s for name[index]
+
+  // Function to add empty option to a given <select>
+  function addEmptyOption(select) {
+    if (!select) return;
+    // Check if empty option already exists (avoid duplicates)
+    if (select.querySelector('option[value=""]')) return;
+
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.textContent = "— Please select —";
+    select.insertBefore(emptyOption, select.firstChild);
+    select.value = ""; // ensure empty is selected
+  }
+
+  // Add empty option to all existing selected_scope dropdowns on page load
+  document.querySelectorAll('select[name^="selected_scope"]').forEach(addEmptyOption);
 
   addBtn.addEventListener('click', () => {
     const clone = template.content.firstElementChild.cloneNode(true);
@@ -167,6 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleIndex++;
 
     container.appendChild(clone);
+
+    // Add empty option to the newly appended right dropdown
+    const newRightDropdown = clone.querySelector('select[name^="selected_scope"]');
+    addEmptyOption(newRightDropdown);
   });
 
   /* ───────────────────────── Delegate clicks (toggles & deletes) ─────────────────── */
@@ -207,7 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const items = await resp.json();
 
       right.innerHTML = "";
+      addEmptyOption(right); // re-add empty option after clearing
       right.disabled = items.length === 0;
+
       for (const value of items) {
         const opt = document.createElement("option");
         opt.value = opt.textContent = value;
@@ -221,4 +243,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 </script>
+
 {% endblock %}

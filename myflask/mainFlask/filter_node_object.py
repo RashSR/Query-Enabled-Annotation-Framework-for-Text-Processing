@@ -86,7 +86,7 @@ class FilterNodeObejct:
             case FilterType.RULE_ID:
                 return None
             case FilterType.CATEGORY:
-                return author.get_messages_by_error_category(self._selected_value)
+                return author.get_messages_by_error_category(self._selected_value) #if selected_value is empty -> give all
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_type}")
