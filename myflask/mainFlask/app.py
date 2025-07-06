@@ -139,11 +139,6 @@ def konkordanz_view():
 
     if selected_type is not None:
         found_msgs = author.get_messages_by_error_category(selected_type)
-        for msg in found_msgs:
-            print(msg)
-            for ltm in msg.error_list:
-                print(ltm)
-
 
     results = []
     if keyword:

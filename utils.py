@@ -7,6 +7,8 @@ from classes.messagetype import MessageType
 from datetime import datetime
 from myflask.mainFlask.ltmatch import LTMatch
 from myflask.mainFlask.cachestore import CacheStore
+from itertools import chain
+from collections import Counter
 
 #TODO: try nltk also
 
@@ -184,3 +186,29 @@ def add_error_tags(ruleId, fehlertext, startPos, endPos, text_list):
     text_list[startPos : endPos] = list(error_tag)
 
 # endregion
+
+#return a combined list of all messages without duplicates
+def or_result_messages(lists: list[list[Message]]) -> list[Message]:
+    flat = chain.from_iterable(lists)
+
+    seen_ids = set()
+    unique_messages : list[Message] = []
+    for msg in flat:
+        if msg.message_id not in seen_ids:
+            unique_messages.append(msg)
+            seen_ids.add(msg.message_id)
+
+    return unique_messages
+
+#return a list with messages that are in every given list
+def and_result_messages(lists: list[list[Message]]) -> list[Message]:
+
+    total_lists = len(lists)
+    key=lambda m: m.message_id
+
+    per_list_keys = ( {key(m) for m in lst} for lst in lists )
+    counts = Counter(chain.from_iterable(per_list_keys))
+
+    first = lists[0]
+    return [m for m in first if counts[key(m)] == total_lists]
+    
