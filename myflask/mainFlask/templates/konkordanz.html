@@ -187,7 +187,38 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  /* ───────────────────────── New: update right dropdown on left dropdown change ───────── */
+  container.addEventListener('change', async (ev) => {
+    const left = ev.target.closest('select[name^="selected_type"]');
+    if (!left) return;
+
+    const group = left.closest(".search-group");
+    if (!group) return;
+
+    const right = group.querySelector('select[name^="selected_scope"]');
+    if (!right) return;
+
+    const url = `/api/filter-values?type=${encodeURIComponent(left.value)}`;
+
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(await resp.text());
+      const items = await resp.json();
+
+      right.innerHTML = "";
+      right.disabled = items.length === 0;
+      for (const value of items) {
+        const opt = document.createElement("option");
+        opt.value = opt.textContent = value;
+        right.appendChild(opt);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Fehler beim Laden der Werte");
+    }
+  });
+
 });
 </script>
-
 {% endblock %}
