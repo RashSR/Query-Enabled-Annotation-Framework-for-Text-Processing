@@ -134,8 +134,14 @@ class CacheStore:
         
         from myflask.mainFlask.db_handling import create_lt_match
 
-        created_lt_match = create_lt_match(self._db, self._app, lt_match)
-        return created_lt_match
+        generated_id = create_lt_match(self._db, self._app, lt_match)
+        lt_match.id = generated_id
+
+        if self._ltms is None:
+            self._ltms = {}
+
+        self._ltms[generated_id] = lt_match
+        return lt_match
 
 
     # endregion 

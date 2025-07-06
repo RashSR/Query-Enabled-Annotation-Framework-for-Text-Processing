@@ -64,6 +64,8 @@ class Message:
 
     @property
     def error_list(self) -> list[LTMatch]:
+        if len(self._error_list)==0: #TODO only load errorlist once
+            self._error_list = CacheStore.Instance().get_all_ltms_by_msg_id_and_chat_id(self._message_id, self.chat_id)
         return self._error_list
 
     @error_list.setter

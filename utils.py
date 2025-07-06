@@ -133,13 +133,12 @@ def analyze_msg_with_language_tool(msg: Message, force_analyze=False): #TODO: ch
         match_id = 0
         #gather all found errors
         for match in reversed(matches):
-            match_id = match_id + 1
             startPos = match.offset
             endPos = match.offset + match.errorLength
             errortext = text[startPos : endPos]
-            lt_match = LTMatch(match_id, msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
-            CacheStore.Instance().create_lt_match(lt_match)
-            msg.add_error(lt_match)
+            lt_match = LTMatch(msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
+            created_lt_match = CacheStore.Instance().create_lt_match(lt_match)
+            msg.add_error(created_lt_match)
             add_error_tags(match.ruleId, errortext, startPos, endPos, text_list)
 
         modified_text = ''.join(text_list)

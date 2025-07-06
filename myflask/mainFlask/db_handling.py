@@ -98,7 +98,6 @@ def get_ltm_by_id_and_message_id_and_chat_id(db: SQLAlchemy, app: Flask):
 #TODO: Category own DB table? 
 def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
     with app.app_context():
-        match_id = lt_match.id
         message_id = lt_match.message_id
         chat_id = lt_match.chat_id
         start_pos = lt_match.start_pos
@@ -108,14 +107,14 @@ def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
         rule_id = lt_match.rule_id
 
         sql_text = text("INSERT INTO lt_match VALUES (:id, :message_id, :chat_id, :start_pos, :end_pos, :content, :category, :rule_id)")
-        prepared_values = {'id': match_id, 'message_id': message_id, 'chat_id': chat_id, 'start_pos': start_pos, 'end_pos': end_pos, 'content': content, 'category': category, 'rule_id': rule_id}
+        prepared_values = {'id': None, 'message_id': message_id, 'chat_id': chat_id, 'start_pos': start_pos, 'end_pos': end_pos, 'content': content, 'category': category, 'rule_id': rule_id}
 
         result = db.session.execute(sql_text, prepared_values)
         db.session.commit()
-        if result.rowcount == 1:
-            return True
-        
-        return False
+
+        new_id = result.lastrowid
+        print(f"Inserted match with id = {new_id}") 
+        return new_id
 
         
 
