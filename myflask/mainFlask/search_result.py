@@ -1,5 +1,7 @@
+from classes.message import Message
+
 class SearchResult:
-    def __init__(self, message, keyword, matched_word, case_sensitive=True, left = None, right = None):
+    def __init__(self, message: Message, keyword, matched_word, case_sensitive=True, left = None, right = None):
         self._message = message
         self.keyword = keyword
         self.matched_word = matched_word
@@ -47,11 +49,11 @@ class SearchResult:
 
 
     @property
-    def message(self):
+    def message(self) -> Message:
         return self._message
 
     @message.setter
-    def message(self, value):
+    def message(self, value: Message):
         self._message = value
 
     def __repr__(self):

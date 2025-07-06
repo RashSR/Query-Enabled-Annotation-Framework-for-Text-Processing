@@ -90,4 +90,18 @@ class FilterNodeObejct:
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_type}")
+            
+    @staticmethod
+    def get_values(filter_type: FilterType, author: Author):
+        match filter_type:
+            case FilterType.WORD:
+                return None
+            case FilterType.RULE_ID:
+                return author.get_error_rule_ids()
+            case FilterType.CATEGORY:
+                return author.get_error_categories()
+            case _: 
+                #default case
+                raise ValueError(f"Unknown filter type: {self._filter_type}")
+
 
