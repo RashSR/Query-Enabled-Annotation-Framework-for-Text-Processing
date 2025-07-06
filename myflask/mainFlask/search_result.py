@@ -47,7 +47,6 @@ class SearchResult:
     def right(self, value):
         self._right = value
 
-
     @property
     def message(self) -> Message:
         return self._message

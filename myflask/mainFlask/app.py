@@ -159,10 +159,6 @@ def konkordanz_view():
             search_results_from_fno = fnObject.get_result(author)
             results.extend(search_results_from_fno)
     
-    if fno_list is None:
-        print("no list")
-    else:
-        print(f"Länge: {len(fno_list)}")
     return render_template(
         "konkordanz.html",
         results=results,
