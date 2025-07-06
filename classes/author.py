@@ -149,12 +149,8 @@ class Author:
     #could be improved by analyzing all msgs at once and make it parallel 
     def analyze_all_own_messages(self, force_analyze=False):
         for chat in self.chats:
-            print(f"needs chat {chat.chat_id} analyzing?")
             if not chat.has_analyzed_errors_for_author(self) or force_analyze:
-                print("yes")
                 chat.analyze_messages_from_author(self, force_analyze)
-
-            print("no")
 
 
     def get_messages_by_error_category(self, category):

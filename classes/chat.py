@@ -126,6 +126,8 @@ class Chat:
         
         return True
     
+    #Every item is scanned, even it doesn't need it -> duration: around 1ms -> Is it worth the effort to increase performance here?
+    #could be solved with loading preemptively the lt_match ids
     def analyze_messages_from_author(self, author, force_analyze=False):
         for msg in self.get_messages_by_author(author):
             if not msg.has_analyzed_errors() or force_analyze:
