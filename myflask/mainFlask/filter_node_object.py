@@ -1,21 +1,23 @@
 from myflask.mainFlask.filter_type import FilterType
+from classes.message import Message
 
 class FilterNodeObejct:
-    def __init__(self, left_side: FilterType, searchbar, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
-        self._left_side = left_side
+    def __init__(self, filter_type: FilterType, searchbar, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
+        self._filter_type = filter_type
         self._searchbar = searchbar
         self._selected_value = selected_value #rigt_side
         self._case_sensitive = case_sensitive
         self._whole_word = whole_word
         self._use_regex = use_regex
+        self._result_messages = []
 
     @property
-    def left_side(self):
-        return self._left_side
+    def filter_type(self):
+        return self._filter_type
     
-    @left_side.setter
-    def left_side(self, value: str):
-        self._left_side = value
+    @filter_type.setter
+    def filter_type(self, value: str):
+        self._filter_type = value
 
     @property
     def searchbar(self):
@@ -57,8 +59,16 @@ class FilterNodeObejct:
     def use_regex(self, value: bool) -> None:
         self._use_regex = bool(value)
 
+    @property
+    def result_messages(self) -> list[Message]:
+        return self._result_messages
+    
+    @result_messages.setter
+    def result_messages(self, value: list[Message]):
+        self._result_messages = value
+
     def __str__(self):
-        toString = f"""left side: {self._left_side}
+        toString = f"""left side: {self._filter_type}
         searchbar: {self._searchbar}
         selected value: {self._selected_value}
         case_sensitive: {self._case_sensitive}
@@ -69,6 +79,14 @@ class FilterNodeObejct:
         return toString
 
     def get_result(self):
-        
+        match self._filter_type:
+            case FilterType.WORD:
+                return None
+            case FilterType.RULE_ID:
+                return None
+            case FilterType.CATEGORY:
+                return None
+            case _: 
+                #default case
+                raise ValueError(f"Unknown filter type: {self._filter_type}")
 
-        return None
