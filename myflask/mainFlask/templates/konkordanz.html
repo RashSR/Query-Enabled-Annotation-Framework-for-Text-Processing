@@ -126,53 +126,49 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleRecipient.addEventListener('change', function () {
       const display = this.checked ? '' : 'none';
       const col = 3; // 0‑based index
-      document.querySelectorAll(`table th:nth-child(${col + 1}), 
-                                 table td:nth-child(${col + 1})`)
-              .forEach(el => el.style.display = display);
+      document
+        .querySelectorAll(`table th:nth-child(${col + 1}), table td:nth-child(${col + 1})`)
+        .forEach(el => el.style.display = display);
     });
   }
 
-  /* ───────────────────────── Add / delete extra search bars ───────────────────────── */
+  /* ───────────────────────── References & state ───────────────────────── */
   const template   = document.getElementById('search-template');
   const container  = document.getElementById('extra-search-fields');
   const addBtn     = document.getElementById('add-search-btn');
 
-  let toggleIndex = 1;   // still for unique checkbox IDs
-  let barIndex    = 0;   // NEW: counts <search-group>s for name[index]
+  let toggleIndex = 1;  // unique IDs for hidden checkboxes
+  let barIndex    = 0;  // indexes [] in field names
 
-  // Function to add empty option to a given <select>
+  /* ───────────────────────── Helpers ───────────────────────── */
+
+  // Add / ensure an empty placeholder option at the top of a <select>
   function addEmptyOption(select) {
-    if (!select) return;
-    // Check if empty option already exists (avoid duplicates)
-    if (select.querySelector('option[value=""]')) return;
-
-    const emptyOption = document.createElement("option");
-    emptyOption.value = "";
-    emptyOption.textContent = "— Please select —";
-    select.insertBefore(emptyOption, select.firstChild);
-    select.value = ""; // ensure empty is selected
+    if (!select || select.querySelector('option[value=""]')) return;
+    const empty = document.createElement('option');
+    empty.value = '';
+    empty.textContent = '— Please select —';
+    select.insertBefore(empty, select.firstChild);
+    select.value = '';          // make it selected
+    select.disabled = true;     // keep disabled until we have real choices
   }
 
-  // Add empty option to all existing selected_scope dropdowns on page load
-  document.querySelectorAll('select[name^="selected_scope"]').forEach(addEmptyOption);
-
-  addBtn.addEventListener('click', () => {
+  // Create one new search‑group row
+  function createSearchBar() {
     const clone = template.content.firstElementChild.cloneNode(true);
 
-    /* ── OPTION 1 : give every field a name like xxx[0], xxx[1], … ───────────── */
+    /* give every input/select a name with its own [index] */
     clone.querySelector('input[name="keyword"]').name              = `keyword[${barIndex}]`;
     clone.querySelector('select[name="selected_type"]').name       = `selected_type[${barIndex}]`;
     clone.querySelector('select[name="selected_scope"]').name      = `selected_scope[${barIndex}]`;
 
     clone.querySelectorAll('.hidden-toggle').forEach(cb => {
-      // base name without [] → e.g. "whole_word"
-      const base = cb.name.replace('[]', '');
+      const base = cb.name.replace('[]', '');  // e.g. "whole_word"
       cb.name = `${base}[${barIndex}]`;
     });
-    /* ────────────────────────────────────────────────────────────────────────── */
-    barIndex++;        // ready for next click
+    barIndex++;
 
-    /** keep your existing unique‑ID logic for the toggle buttons **/
+    /* unique IDs for the pretty toggle spans */
     const types = ['case_sensitive', 'whole_word', 'use_regex'];
     clone.querySelectorAll('.hidden-toggle').forEach((cb, i) => {
       const id = `${types[i]}_${toggleIndex}`;
@@ -183,23 +179,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.appendChild(clone);
 
-    // Add empty option to the newly appended right dropdown
-    const newRightDropdown = clone.querySelector('select[name^="selected_scope"]');
-    addEmptyOption(newRightDropdown);
-  });
+    // ensure the new right dropdown starts empty/disabled
+    addEmptyOption(clone.querySelector('select[name^="selected_scope"]'));
+  }
 
-  /* ───────────────────────── Delegate clicks (toggles & deletes) ─────────────────── */
+  /* ───────────────────────── Initial setup ───────────────────────── */
+
+  // add an empty placeholder to any right dropdowns already in the DOM (unlikely, but safe)
+  document.querySelectorAll('select[name^="selected_scope"]').forEach(addEmptyOption);
+
+  // create the first search bar automatically
+  createSearchBar();
+
+  /* ───────────────────────── Event listeners ───────────────────────── */
+
+  // "+" button: add another bar
+  addBtn.addEventListener('click', createSearchBar);
+
+  // delegated clicks: delete buttons & toggle spans
   document.addEventListener('click', (e) => {
-    /* delete button */
     if (e.target.matches('.delete-search-btn')) {
       e.target.closest('.search-group')?.remove();
       return;
     }
-
-    /* toggle buttons */
     if (e.target.matches('.search-toggle')) {
-      const id = e.target.dataset.toggleId;
-      const cb = document.getElementById(id);
+      const cb = document.getElementById(e.target.dataset.toggleId);
       if (cb) {
         cb.checked = !cb.checked;
         e.target.classList.toggle('active', cb.checked);
@@ -207,51 +211,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ───────────────────────── New: update right dropdown on left dropdown change ───────── */
+  // change on any left dropdown: fetch values & update its sibling right dropdown
   container.addEventListener('change', async (ev) => {
     const left = ev.target.closest('select[name^="selected_type"]');
     if (!left) return;
-    
-    // If the placeholder (empty value) is selected, just clear & disable right dropdown
-    if (!left.value) {
-      const group = left.closest('.search-group');
-      const right = group?.querySelector('select[name^="selected_scope"]');
-      if (right) {
-        right.innerHTML = '<option value="" selected>— Please select —</option>';
-        right.disabled = true;
-      }
-      return;                      // ← don’t fetch the API
-    }
 
-    const group = left.closest(".search-group");
-    if (!group) return;
-
-    const right = group.querySelector('select[name^="selected_scope"]');
+    const group = left.closest('.search-group');
+    const right = group?.querySelector('select[name^="selected_scope"]');
     if (!right) return;
 
-    const url = `/api/filter-values?type=${encodeURIComponent(left.value)}`;
+    if (!left.value) {                       // placeholder selected
+      right.innerHTML = '<option value="" selected>— Please select —</option>';
+      right.disabled  = true;
+      return;
+    }
 
     try {
-      const resp = await fetch(url);
+      const resp  = await fetch(`/api/filter-values?type=${encodeURIComponent(left.value)}`);
       if (!resp.ok) throw new Error(await resp.text());
       const items = await resp.json();
 
-      right.innerHTML = "";
-      addEmptyOption(right); // re-add empty option after clearing
+      right.innerHTML = '';                  // clear old options
+      addEmptyOption(right);                 // re‑insert placeholder
       right.disabled = items.length === 0;
 
-      for (const value of items) {
-        const opt = document.createElement("option");
-        opt.value = opt.textContent = value;
+      items.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = opt.textContent = v;
         right.appendChild(opt);
-      }
+      });
     } catch (err) {
       console.error(err);
-      alert("Fehler beim Laden der Werte");
+      alert('Fehler beim Laden der Werte');
     }
   });
 
 });
 </script>
-
 {% endblock %}
