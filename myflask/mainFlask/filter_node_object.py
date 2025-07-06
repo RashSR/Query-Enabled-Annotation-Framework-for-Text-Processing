@@ -27,3 +27,6 @@ class FilterNodeObejct:
     @selected_value.setter
     def selected_value(self, value):
         self._selected_value = value
+
+    def get_result(self):
+        return None
