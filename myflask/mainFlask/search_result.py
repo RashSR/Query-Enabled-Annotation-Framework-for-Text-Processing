@@ -1,7 +1,7 @@
 from classes.message import Message
 
 class SearchResult:
-    def __init__(self, message: Message, keyword, matched_word, case_sensitive=True, left = None, right = None):
+    def __init__(self, message: Message, keyword, matched_word, case_sensitive=False, left = None, right = None):
         self._message = message
         self.keyword = keyword
         self.matched_word = matched_word
