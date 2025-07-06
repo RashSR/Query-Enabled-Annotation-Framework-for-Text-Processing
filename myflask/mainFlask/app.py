@@ -153,8 +153,6 @@ def konkordanz_view():
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
         print(fno)
 
-    errors = author.get_error_categories()
-
     results = []
     if keyword:
         
@@ -196,8 +194,7 @@ def konkordanz_view():
         keyword=keyword,
         case_sensitive=case_sensitive,
         whole_word=whole_word,
-        use_regex=use_regex,
-        errors=errors
+        use_regex=use_regex
     )
 
 #TODO: HTML wird nur generiert wonach auch gesucht wird? CSS ein und ausschalten?
