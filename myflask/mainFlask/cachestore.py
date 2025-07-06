@@ -108,20 +108,21 @@ class CacheStore:
     
     _ltms = None
 
-    def get_ltm_by_id_and_message_id_and_chat_id(self, ltm: LTMatch):
-        if not isinstance(ltm, LTMatch):
+    def get_all_ltms_by_msg_id_and_chat_id(self, msg_id, chat_id):
+        #TODO: is always loaded, maybe look up in store?
+        if not isinstance(msg_id, int) or not isinstance(chat_id, int):
             return None
         
-        from myflask.mainFlask.db_handling import get_ltm_by_id_and_message_id_and_chat_id
-
+        from myflask.mainFlask.db_handling import get_all_ltms_by_msg_id_and_chat_id
+        
         if self._ltms is None:
             self._ltms = {}
 
-        #TODO: fix that id is not unique 
+        ltms: list[LTMatch] = get_all_ltms_by_msg_id_and_chat_id(self._db, self._app, msg_id, chat_id)
+        return ltms
 
-        ltm = get_ltm_by_id_and_message_id_and_chat_id(self._db, self._app)
-        self._ltms[id] = ltm
-        return ltm
+
+
 
 
     # endregion

@@ -212,6 +212,10 @@ def metrics_view():
 
 @app.route("/settings")
 def settings_view():
+    ltms = CacheStore.Instance().get_all_ltms_by_msg_id_and_chat_id(81, 3)
+    for ltm in ltms:
+        print(ltm)
+        
     return render_template("settings.html")
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call

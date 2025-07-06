@@ -88,8 +88,18 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         
         #TODO: only load stuff that is not available
 
-def get_ltm_by_id_and_message_id_and_chat_id(db: SQLAlchemy, app: Flask):
-    return None
+def get_all_ltms_by_msg_id_and_chat_id(db:SQLAlchemy, app: Flask, msg_id: int, chat_id: int):
+    with app.app_context():
+        ltms: list[LTMatch] = []
+        result = db.session.execute(
+            text("SELECT * FROM lt_match WHERE chat_id = :chat_id AND message_id = :msg_id"),
+            {'chat_id': chat_id, 'msg_id': msg_id}
+        )
+        for row in result:
+            loaded_ltm = _convert_db_row_to_ltm(row)
+            ltms.append(loaded_ltm)
+
+        return ltms
 
 # endregion
 
@@ -115,14 +125,11 @@ def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
         new_id = result.lastrowid
         return new_id
 
-        
-
-
 # endregion 
 
 #region Conversion
 
-def _convert_db_row_to_author(row):
+def _convert_db_row_to_author(row) -> Author:
     author_id = row[0]
     name = row[1]
     age = row[2]
@@ -136,14 +143,14 @@ def _convert_db_row_to_author(row):
     loaded_author.chat_ids = chat_ids
     return loaded_author
 
-def _convert_db_row_to_chat(row):
+def _convert_db_row_to_chat(row) -> Chat:
     chat_id = row[0]
     groupname = row[1]
     relation = row[2]
     loaded_chat = Chat(chat_id, relation, groupname)
     return loaded_chat
 
-def _convert_db_row_to_message(row):
+def _convert_db_row_to_message(row) -> Message:
     message_id = row[0]
     chat_id = row[1]
     sender_id = row[2]
@@ -153,6 +160,20 @@ def _convert_db_row_to_message(row):
     annotated_text = row[6]
     loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
     return loaded_message
+
+def _convert_db_row_to_ltm(row) -> LTMatch:
+    id = row[0]
+    message_id = row[1]
+    chat_id = row[2]
+    start_pos = row[3]
+    end_pos = row[4]
+    content = row[5]
+    category = row[6]
+    rule_id = row[7]
+
+    loaded_ltm = LTMatch(message_id, chat_id, start_pos, end_pos, content, category, rule_id)
+    loaded_ltm.id = id
+    return loaded_ltm
 
 
 # endregion

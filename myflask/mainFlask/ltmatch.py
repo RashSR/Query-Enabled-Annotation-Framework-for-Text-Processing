@@ -13,7 +13,6 @@ class LTMatch:
         toString = f"""text: {self._text}
         Category: {self._category}
         RuleId: {self._rule_id}
-        text: {self._text}
         startPos: {self._start_pos}
         endPos: {self._end_pos}
         id: {self._id}
