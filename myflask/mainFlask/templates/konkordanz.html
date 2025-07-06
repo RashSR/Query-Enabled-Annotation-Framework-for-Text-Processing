@@ -76,7 +76,8 @@
 
       <!-- Left dropdown – fixed choices -->
       <select name="selected_type" class="search-konkordanz-dropdown">
-        <option value="error-category">Category</option>
+        <option value="" selected>— Type —</option>
+        <option value="error-category">Category</option> <!--TODO from enum-->
         <option value="error-ruleId">RuleId</option>
         <option value="word">Word</option>
       </select>
@@ -102,7 +103,7 @@
 
       <!-- Right dropdown – dynamic -->
       <select name="selected_scope" class="search-konkordanz-dropdown">
-        
+
       </select>
 
       <!-- 🗑️ Delete button -->
@@ -210,6 +211,17 @@ document.addEventListener('DOMContentLoaded', () => {
   container.addEventListener('change', async (ev) => {
     const left = ev.target.closest('select[name^="selected_type"]');
     if (!left) return;
+    
+    // If the placeholder (empty value) is selected, just clear & disable right dropdown
+    if (!left.value) {
+      const group = left.closest('.search-group');
+      const right = group?.querySelector('select[name^="selected_scope"]');
+      if (right) {
+        right.innerHTML = '<option value="" selected>— Please select —</option>';
+        right.disabled = true;
+      }
+      return;                      // ← don’t fetch the API
+    }
 
     const group = left.closest(".search-group");
     if (!group) return;
