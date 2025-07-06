@@ -133,6 +133,27 @@ def konkordanz_view():
     whole_word = request.args.get('whole_word') == '1'
     use_regex = request.args.get('use_regex') == '1'
 
+    # total bars == how many keyword[i] you received
+    total = len([k for k in request.args if k.startswith('keyword[')])
+
+    for i in range(total):
+        kw   = request.args.get(f'keyword[{i}]', '')
+        typ  = request.args.get(f'selected_type[{i}]')
+        scp  = request.args.get(f'selected_scope[{i}]')
+
+        cs = bool(request.args.get(f'case_sensitive[{i}]'))   # '1' → True, None → False
+        ww = bool(request.args.get(f'whole_word[{i}]'))
+        rg = bool(request.args.get(f'use_regex[{i}]'))
+        
+        # ── Pretty‑print this search bar ─────────────────────────────────────────
+        print(f'\n── Search #{i + 1} ──')
+        print(f'  keyword         : {kw}')
+        print(f'  selected_type   : {typ}')
+        print(f'  selected_scope  : {scp}')
+        print(f'  case_sensitive? : {cs}')
+        print(f'  whole_word?     : {ww}')
+        print(f'  use_regex?      : {rg}')
+
     author = get_active_author(session)
     author.analyze_all_own_messages()
     errors = author.get_error_categories()
