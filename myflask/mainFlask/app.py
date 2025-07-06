@@ -124,6 +124,7 @@ def search_view():
 #maybe like in strg+shift+f VS Code with that icons 
 #wenn teilstring gefunden wird -> in Hit sollte das gefundene Wort stehen, aber der gefundene wort gehíghlighted werden
 #Dem Nutzer die Möglichkeit geben ob er e.g. Fehler in einer Nachricht suchen mag oder direktes Wort oder Nachfolger/Vorgänger
+#check if a author is selected -> show nothing if not
 @app.route("/konkordanz")
 def konkordanz_view():
     keyword = request.args.get('keyword', '').strip()
