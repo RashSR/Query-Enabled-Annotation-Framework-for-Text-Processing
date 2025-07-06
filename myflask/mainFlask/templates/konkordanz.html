@@ -90,34 +90,34 @@
     <template id="search-template">
       <div class="search-group" style="margin-top:1rem; display: flex; gap: 0.5rem; align-items: center;">
           
-          <!-- Search bar -->
-          <div class="search-konkordanz-bar" style="display: flex; align-items: center; gap: 0.5rem;">
-              <input type="text" name="keyword" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
+        <!-- Dropdown - now first -->
+        <select name="selected_type" class="search-konkordanz-dropdown">
+          {% for error in errors %}
+              <option value="{{ error }}">{{ error }}</option>
+          {% endfor %}
+        </select>
 
-              <div class="search-konkordanz-options">
-                  <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
-                  <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
-                  <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
-              </div>
+        <!-- Search bar -->
+        <div class="search-konkordanz-bar" style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="text" name="keyword" class="search-konkordanz-input" placeholder="Suchbegriff..." required>
 
-              <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
-              <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
-              <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
-          </div>
+            <div class="search-konkordanz-options">
+                <span class="search-toggle" title="Groß-/Kleinschreibung">Aa</span>
+                <span class="search-toggle" title="Nur ganze Wörter suchen">ab|</span>
+                <span class="search-toggle" title="Regulären Ausdruck verwenden">.*</span>
+            </div>
 
-          <!-- Dropdown -->
-          <select name="selected_type" class="search-konkordanz-dropdown">
-            {% for error in errors %}
-                <option value="{{ error }}">{{ error }}</option> <!-- left: this value is submittet to the form, right: text that user sees -->
-            {% endfor %}
-          </select>
+            <input type="checkbox" class="hidden-toggle" name="case_sensitive[]" value="1">
+            <input type="checkbox" class="hidden-toggle" name="whole_word[]" value="1">
+            <input type="checkbox" class="hidden-toggle" name="use_regex[]" value="1">
+        </div>
 
-          <!-- 🗑️ Delete button -->
-          <button type="button" class="delete-search-btn" style="padding: 0.3rem 0.6rem; background: #dc3545; color: white; border: none; border-radius: 4px;">
-              ✕
-          </button>
+        <!-- 🗑️ Delete button -->
+        <button type="button" class="delete-search-btn" style="padding: 0.3rem 0.6rem; background: #dc3545; color: white; border: none; border-radius: 4px;">
+            ✕
+        </button>
       </div>
-  </template>
+    </template>
 
 
 </div>
