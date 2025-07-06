@@ -58,7 +58,7 @@ def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
             {'id': chat_id}
         ).fetchone() #TODO reuse this syntax in a function?
         chat = _convert_db_row_to_chat(result_row)
-        result = db.session.execute(text("SELECT * FROM message where chat_id = :id"), {'id': chat_id})
+        result = db.session.execute(text("SELECT * FROM message_with_ltm_ids where chat_id = :id"), {'id': chat_id})
         for row in result:
             loaded_message = _convert_db_row_to_message(row)
             loaded_message.chat = chat
@@ -69,7 +69,7 @@ def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
 def get_all_messages(db: SQLAlchemy, app: Flask):
     with app.app_context():
         messages = []
-        result = db.session.execute(text("SELECT * FROM message"))
+        result = db.session.execute(text("SELECT * FROM message_with_ltm_ids"))
         for row in result:
             loaded_message = _convert_db_row_to_message(row)
             messages.append(loaded_message)
@@ -79,7 +79,7 @@ def get_all_messages(db: SQLAlchemy, app: Flask):
 def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
         result_row = db.session.execute(
-            text("SELECT * FROM message WHERE id = :id"),
+            text("SELECT * FROM message_with_ltm_ids WHERE id = :id"),
             {'id': id}
         ).fetchone()
 
@@ -157,8 +157,11 @@ def _convert_db_row_to_message(row) -> Message:
     sender = CacheStore.Instance().get_author_by_id(sender_id) #TODO: sender does not to be set!
     timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
     content = row[4] #TODO: add check for row name maybe?
+    #quoted_msg is in row[5]
     annotated_text = row[6]
+    ltm_ids = [ltm_id.strip() for ltm_id in row[7].split(',')] if row[7] else []
     loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
+    loaded_message.ltmatch_ids = ltm_ids
     return loaded_message
 
 def _convert_db_row_to_ltm(row) -> LTMatch:
