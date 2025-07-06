@@ -130,6 +130,12 @@ class Message:
 
         return None
     
+    def is_analyzable(self) -> bool:
+        if len(self._ltmatch_ids) == 0:
+            return False
+
+        return True
+
     def has_analyzed_errors(self) -> bool:
         if len(self.error_list) == 0:
             return False
