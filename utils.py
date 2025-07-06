@@ -116,13 +116,14 @@ def print_tokennized_word(key, value):
 
 # region Language Tool
 
-def analyze_msg_with_language_tool(msg: Message, force_analyze=False): #TODO: check for MessageType.TEXT
+#TODO: check if it is possible to start with more threads https://stackoverflow.com/questions/72500635/how-to-speed-up-language-tool-python-library-use-case
+def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
 
     if(msg is None):
         return None
     
-    #only analyse if needed
-    if(force_analyze or (msg.annotated_text is None or msg.annotated_text == "")):
+    #only analyse if needed -> TODO needs rework
+    if(msg.annotated_text is None or msg.annotated_text == ""):
         text = msg.content
 
         #check the text
@@ -130,7 +131,7 @@ def analyze_msg_with_language_tool(msg: Message, force_analyze=False): #TODO: ch
 
         #convert text to a list to change it easily
         text_list = list(text)
-        match_id = 0
+
         #gather all found errors
         for match in reversed(matches):
             startPos = match.offset

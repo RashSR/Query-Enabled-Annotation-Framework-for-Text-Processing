@@ -17,10 +17,6 @@ class Chat:
         if all(participant.id != message.sender.id for participant in self.participants):
             self.participants.append(message.sender)
 
-    def show_messages(self):
-        for msg in self.messages:
-            print(msg)
-
     @property
     def chat_id(self):
         return self._chat_id
@@ -113,11 +109,6 @@ class Chat:
             for cid in msg.get_error_categories()
         ]
         return all_categories
-    
-
-
-
-
 
     def get_messages_by_error_category_and_author(self, category, author):
         msgs = []
@@ -127,4 +118,19 @@ class Chat:
                     msgs.append(msg)
 
         return msgs
+    
+    #TODO: if a author writes perfect this would empty, add this for ruleIds?
+    def has_analyzed_errors_for_author(self, author) -> bool:
+        if len(self.get_error_categories_by_author(author)) == 0:
+            return False
+        
+        return True
+    
+    def analyze_messages_from_author(self, author, force_analyze=False):
+        for msg in self.get_messages_by_author(author):
+            if not msg.has_analyzed_errors() or force_analyze:
+                msg.analyze_errors()
+
+
+
 

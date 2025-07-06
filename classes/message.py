@@ -129,7 +129,17 @@ class Message:
             return chat_participants[0]
 
         return None
+    
+    def has_analyzed_errors(self) -> bool:
+        if len(self.error_list) == 0:
+            return False
         
+        return True
+
+    def analyze_errors(self):
+        import utils
+        utils.analyze_msg_with_language_tool(self)
+
         
     
 
