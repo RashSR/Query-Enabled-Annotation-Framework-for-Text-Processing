@@ -154,11 +154,11 @@ def konkordanz_view():
 
         keyword = kw
         
-        #hier wurden werte gesetzt all fno results zusammen packen
-        for fnObject in fno_list:
-            search_results_from_fno = fnObject.get_result(author)
-            results.extend(search_results_from_fno)
-    
+    #hier wurden werte gesetzt all fno results zusammen packen
+    for fnObject in fno_list:
+        search_results_from_fno = fnObject.get_result(author)
+        results.extend(search_results_from_fno)
+
     return render_template(
         "konkordanz.html",
         results=results,
