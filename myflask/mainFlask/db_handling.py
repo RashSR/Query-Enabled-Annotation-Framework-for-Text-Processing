@@ -113,7 +113,6 @@ def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
         db.session.commit()
 
         new_id = result.lastrowid
-        print(f"Inserted match with id = {new_id}") 
         return new_id
 
         
