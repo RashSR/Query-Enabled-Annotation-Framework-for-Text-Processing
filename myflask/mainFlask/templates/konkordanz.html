@@ -329,6 +329,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  /* ───────── Restore toggle button states on page load ───────── */
+  document.querySelectorAll('.hidden-toggle').forEach(cb => {
+    if (cb.checked) {
+      const toggleSpan = document.querySelector(`.search-toggle[data-toggle-id="${cb.id}"]`);
+      if (toggleSpan) {
+        toggleSpan.classList.add('active');
+      }
+    }
+  });
+
 });
 </script>
 {% endblock %}
+
