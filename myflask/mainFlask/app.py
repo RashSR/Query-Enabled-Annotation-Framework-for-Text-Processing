@@ -150,6 +150,8 @@ def konkordanz_view():
         rg = bool(request.args.get(f'use_regex[{i}]'))
         
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
+        fno.scope_choices = FilterNodeObejct.get_values(fno.filter_type, author) #is needed to keep the selected value
+
         fno_list.append(fno)
 
         keyword = kw

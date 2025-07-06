@@ -153,7 +153,7 @@ class FilterNodeObejct:
     def get_values(filter_type: FilterType, author: Author):
         match filter_type:
             case FilterType.WORD:
-                return None
+                return []
             case FilterType.RULE_ID:
                 return author.get_error_rule_ids()
             case FilterType.CATEGORY:
