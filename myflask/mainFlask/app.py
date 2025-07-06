@@ -157,15 +157,18 @@ def konkordanz_view():
         #hier wurden werte gesetzt all fno results zusammen packen
         for fnObject in fno_list:
             search_results_from_fno = fnObject.get_result(author)
-            print(len(search_results_from_fno))
             results.extend(search_results_from_fno)
     
-
+    if fno_list is None:
+        print("no list")
+    else:
+        print(f"Länge: {len(fno_list)}")
     return render_template(
         "konkordanz.html",
         results=results,
         keyword=keyword,
-        filter_types=FilterType
+        filter_types=FilterType,
+        nodes = fno_list
     )
 
 #TODO: HTML wird nur generiert wonach auch gesucht wird? CSS ein und ausschalten?

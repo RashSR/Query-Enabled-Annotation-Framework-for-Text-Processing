@@ -53,10 +53,75 @@
   <form method="get" action="{{ url_for('konkordanz_view') }}">
     <div class="search-container" style="max-width: 600px;"> <!--set max width here!-->
 
-      <!-- CONTAINER FOR EXTRA SEARCH BARS -->
       <div id="extra-search-fields">
-        <!-- all dynamically inserted search bars go here -->
+        {% for n in nodes %}
+        <div class="search-group" style="margin-top:1rem; display:flex; gap:0.5rem; align-items:center;">
+
+          <!-- Left dropdown -->
+          <select name="selected_type[{{ loop.index0 }}]" class="search-konkordanz-dropdown">
+            <option value="" {% if not n.filter_type %}selected{% endif %}>— Type —</option>
+            {% for ft in filter_types %}
+              <option value="{{ ft.value }}"
+                      {% if ft == n.filter_type %}selected{% endif %}>
+                {{ ft.name.title().replace('_', ' ') }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <!-- Keyword input -->
+          <div class="search-konkordanz-bar" style="display:flex; align-items:center; gap:0.5rem;">
+            <input  type="text"
+                    name="keyword[{{ loop.index0 }}]"
+                    class="search-konkordanz-input"
+                    placeholder="Suchbegriff..."
+                    value="{{ n.searchbar_input }}"
+                    {% if n.filter_type != filter_types.WORD %}disabled{% endif %}>
+
+            <div class="search-konkordanz-options">
+              <span class="search-toggle" title="Groß-/Kleinschreibung"
+                    data-toggle-id="case_sensitive_{{ loop.index0 }}">Aa</span>
+              <span class="search-toggle" title="Nur ganze Wörter suchen"
+                    data-toggle-id="whole_word_{{ loop.index0 }}">ab|</span>
+              <span class="search-toggle" title="Regulären Ausdruck verwenden"
+                    data-toggle-id="use_regex_{{ loop.index0 }}">.*</span>
+            </div>
+
+            <!-- Hidden toggles -->
+            <input type="checkbox" id="case_sensitive_{{ loop.index0 }}"
+                  class="hidden-toggle"
+                  name="case_sensitive[{{ loop.index0 }}]"
+                  value="1" {% if n.case_sensitive %}checked{% endif %}>
+            <input type="checkbox" id="whole_word_{{ loop.index0 }}"
+                  class="hidden-toggle"
+                  name="whole_word[{{ loop.index0 }}]"
+                  value="1" {% if n.whole_word %}checked{% endif %}>
+            <input type="checkbox" id="use_regex_{{ loop.index0 }}"
+                  class="hidden-toggle"
+                  name="use_regex[{{ loop.index0 }}]"
+                  value="1" {% if n.use_regex %}checked{% endif %}>
+          </div>
+
+          <!-- Right dropdown -->
+          <select name="selected_scope[{{ loop.index0 }}]"
+                  class="search-konkordanz-dropdown"
+                  {% if not n.scope_choices %}disabled{% endif %}>
+            <option value="" {% if not n.selected_value %}selected{% endif %}>— Please select —</option>
+            {% for val in n.scope_choices %}
+              <option value="{{ val }}"
+                      {% if val == n.selected_value %}selected{% endif %}>
+                {{ val }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <button type="button" class="delete-search-btn"
+                  style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px;">
+            ✕
+          </button>
+        </div>
+        {% endfor %}
       </div>
+
 
       <!-- ADD SEARCH BUTTON -->
       <button type="button" id="add-search-btn"
@@ -192,7 +257,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ───────── Initial setup ───────── */
-  createSearchBar();                     // one bar on load
+
+  if (!document.querySelector('.search-group')) {
+      createSearchBar();
+  }                   // one bar on load
   addBtn.addEventListener('click', createSearchBar);
 
   /* ───────── Delegated clicks ───────── */
