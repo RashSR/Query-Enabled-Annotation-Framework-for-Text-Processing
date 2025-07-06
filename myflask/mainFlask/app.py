@@ -128,8 +128,12 @@ def search_view():
 #check if a author is selected -> show nothing if not
 @app.route("/konkordanz")
 def konkordanz_view():
+    
+    #All messages should be anlyzed when entering this view
+    author = get_active_author(session)
+    author.analyze_all_own_messages()
+
     keyword = request.args.get('keyword', '').strip()
-    selected_type = request.args.get('selected_type')
     case_sensitive = request.args.get('case_sensitive') == '1'
     whole_word = request.args.get('whole_word') == '1'
     use_regex = request.args.get('use_regex') == '1'
@@ -148,12 +152,7 @@ def konkordanz_view():
 
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
 
-    author = get_active_author(session)
-    author.analyze_all_own_messages()
     errors = author.get_error_categories()
-
-    if selected_type is not None:
-        found_msgs = author.get_messages_by_error_category(selected_type)
 
     results = []
     if keyword:

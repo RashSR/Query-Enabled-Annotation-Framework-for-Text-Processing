@@ -1,5 +1,6 @@
 from myflask.mainFlask.filter_type import FilterType
 from classes.message import Message
+from classes.author import Author
 
 class FilterNodeObejct:
     def __init__(self, filter_type: FilterType, searchbar, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
@@ -78,14 +79,14 @@ class FilterNodeObejct:
 
         return toString
 
-    def get_result(self):
+    def get_result(self, author: Author):
         match self._filter_type:
             case FilterType.WORD:
                 return None
             case FilterType.RULE_ID:
                 return None
             case FilterType.CATEGORY:
-                return None
+                return author.get_messages_by_error_category(self._selected_value)
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_type}")
