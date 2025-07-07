@@ -25,7 +25,7 @@ class CacheStore:
         return cls(db, app)
     
     #region GET
-
+    #TODO: maybe hold active author?
     _authors = None #use dict to go from O(n) to O(1)
     _loaded_all_authors = False
 

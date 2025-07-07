@@ -24,8 +24,8 @@
                     <img src="{{ url_for('static', filename='icons/search.svg') }}" alt="Search">
                 </a>
             </div>
-            <div class="nav-icon {% if request.path.startswith(url_for('konkordanz_view')) %}active{% endif %}">
-                <a href="{{ url_for('konkordanz_view') }}">
+            <div class="nav-icon {% if request.path.startswith(url_for('konkordanz.konkordanz_view')) %}active{% endif %}">
+                <a href="{{ url_for('konkordanz.konkordanz_view') }}">
                     <img src="{{ url_for('static', filename='icons/konkordanz2.svg') }}" alt="Konkordanz">
                 </a>
             </div>
