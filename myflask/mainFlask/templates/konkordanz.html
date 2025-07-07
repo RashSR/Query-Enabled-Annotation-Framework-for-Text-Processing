@@ -101,6 +101,15 @@
                     value="1" {% if n.use_regex %}checked{% endif %}>
             </div>
 
+            <!-- colour swatch -->
+            <label class="color-picker-label">
+              <input type="color"
+                    name="highlight_color[{{ loop.index0 }}]"
+                    value="{{ n.highlight_color or '#ff0000' }}"
+                    class="color-input">
+              <span class="color-picker-text">🎨</span>
+            </label>
+
             <!-- Right dropdown -->
             <select name="selected_scope[{{ loop.index0 }}]"
                     class="search-konkordanz-dropdown"
@@ -172,6 +181,12 @@
         <input type="checkbox" class="hidden-toggle" name="whole_word[]"     value="1">
         <input type="checkbox" class="hidden-toggle" name="use_regex[]"      value="1">
       </div>
+
+      <!-- colour swatch -->
+      <label class="color-picker-label">
+        <input type="color" name="highlight_color" value="#ff0000" class="color-input">
+        <span class="color-picker-text">🎨</span>
+      </label>
 
       <!-- Right dropdown – dynamic -->
       <select name="selected_scope" class="search-konkordanz-dropdown">

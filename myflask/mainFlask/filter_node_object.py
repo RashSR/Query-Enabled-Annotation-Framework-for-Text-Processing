@@ -14,6 +14,7 @@ class FilterNodeObejct:
         self._use_regex = use_regex
         self._result_messages = []
         self._search_result_list = []
+        self._selected_color = None
 
     @property
     def filter_type(self):
@@ -78,6 +79,14 @@ class FilterNodeObejct:
     @search_result_list.setter
     def search_result_list(self, value: list[SearchResult]):
         self._search_result_list = value
+
+    @property
+    def selected_color(self):
+        return self._selected_color
+    
+    @selected_color.setter
+    def selected_color(self, value):
+        self._selected_color = value
 
     def __str__(self):
         toString = f"""left side: {self._filter_type}
