@@ -1,4 +1,5 @@
-from .metrics import metrics_bp
-from .settings import settings_bp
+from .api import api_blueprints
+from .pages.metrics import metrics_bp
+from .pages.settings import settings_bp
 
-blueprints = [metrics_bp, settings_bp]
+blueprints = [*api_blueprints, metrics_bp, settings_bp]

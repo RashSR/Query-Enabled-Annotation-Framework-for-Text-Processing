@@ -16,6 +16,14 @@ from collections import Counter
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
 
+# Store author_id in the session
+def set_active_author(session, author_id):
+    session['author_id'] = author_id
+
+# get stored author
+def get_active_author(session):
+    return CacheStore.Instance().get_author_by_id(session.get('author_id'))
+
 def load_all_chats_from_files(ids, isAnalyzing = False):
     chats = []
     for i in ids:

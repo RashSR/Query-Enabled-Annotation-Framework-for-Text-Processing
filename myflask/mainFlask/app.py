@@ -10,17 +10,10 @@ from myflask.mainFlask.filter_type import FilterType
 from myflask.mainFlask.routes import blueprints
 import re
 import locale
+import utils
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 
 #region functions
-
-# Store author_id in the session
-def set_active_author(session, author_id):
-    session['author_id'] = author_id
-
-# get stored author
-def get_active_author(session):
-    return CacheStore.Instance().get_author_by_id(session.get('author_id'))
 
 #TODO: more than only author messages? maybe optional?
 def get_keyword_hits(active_author: Author, keyword: str, case_sensitive: bool):
@@ -57,13 +50,13 @@ cache = CacheStore.Instance(db, app)
 
 @app.context_processor
 def inject_request():
-    active_author = get_active_author(session)
+    active_author = utils.get_active_author(session)
     return dict(request=request, active_author=active_author)
 
 @app.route("/profile")
 def profile():
     all_authors = CacheStore.Instance().get_all_authors()
-    return render_template("profile.html", author=get_active_author(session), authors=all_authors)
+    return render_template("profile.html", author=utils.get_active_author(session), authors=all_authors)
 
 @app.route("/profile/<int:author_id>")
 def author_profile(author_id):
@@ -75,21 +68,21 @@ def author_profile(author_id):
         abort(404)
     if not request.args.get('no_active_change'):
         
-        set_active_author(session, author_id)
-        selected_author = get_active_author(session)
+        utils.set_active_author(session, author_id)
+        selected_author = utils.get_active_author(session)
 
     return render_template("profile.html", author=selected_author, authors=all_authors)
 
 #TODO: improvement in the future -> only load needed information and not all chats
 @app.route('/chat')
 def chat_home():
-    return render_template('chat.html', chat=None, author=get_active_author(session))
+    return render_template('chat.html', chat=None, author=utils.get_active_author(session))
 
 #TODO: improvement in the future -> only load needed chat 
 @app.route("/chat/<int:chat_id>")
 def chat_view(chat_id):
     keyword = request.args.get("keyword")
-    author = get_active_author(session)
+    author = utils.get_active_author(session)
     chat = author.get_chat_by_id(chat_id)
     return render_template("chat.html", chat=chat, author=author, keyword=keyword)
 
@@ -97,7 +90,7 @@ def chat_view(chat_id):
 def search_view():
     query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
-    all_messages = get_active_author(session).get_all_messages() #TODO: only messages from selected author?
+    all_messages = utils.get_active_author(session).get_all_messages() #TODO: only messages from selected author?
     all_senders = sorted(set(msg.sender.name for msg in all_messages))
     results = []
 
@@ -119,7 +112,7 @@ def search_view():
         results=results if query else None,
         all_senders=all_senders,
         selected_sender=sender,
-        query=query, author=get_active_author(session)
+        query=query, author=utils.get_active_author(session)
     )
 
 #TODO: the jump dont highlight case sensitiv, keyword gets multiple highlights
@@ -131,7 +124,7 @@ def search_view():
 def konkordanz_view():
     
     #All messages should be anlyzed when entering this view
-    author = get_active_author(session)
+    author = utils.get_active_author(session)
     author.analyze_all_own_messages()
 
     keyword = None
@@ -182,24 +175,5 @@ def konkordanz_view():
 
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
-
-#bp = Blueprint("api", __name__) #TODO make modular
-@app.get("/api/filter-values")
-def filter_values():
-
-    raw_type   = request.args.get("type", "")
-
-    # validate ----------------------------------------------------------------
-    try:
-        ftype = FilterType(raw_type)   # raises ValueError if bad
-    except ValueError:
-        abort(400, f"Unknown filter type {raw_type!r}")
-
-    author = get_active_author(session)
-    author.analyze_all_own_messages() #TODO sollte nicht nötig sein das aufzurufen!
-
-    # delegate to your staticmethod ------------------------------------------
-    values = FilterNodeObejct.get_values(ftype, author) or []
-    return jsonify(values)
 
 #TODO: if hit is very long -> link sitzt in right context
