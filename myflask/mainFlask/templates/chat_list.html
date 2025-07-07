@@ -2,7 +2,7 @@
     {% for singleChat in author.chats %}
     {% set last_message = singleChat.messages[-1] if singleChat.messages else None %}
     <li class="{% if singleChat.chat_id == chat.chat_id %}active{% endif %}">
-        <a href="{{ url_for('chat_view', chat_id=singleChat.chat_id) }}" style="display: flex; align-items: center;">
+        <a href="{{ url_for('chat.chat_view', chat_id=singleChat.chat_id) }}" style="display: flex; align-items: center;">
             <div class="avatar">
                 {{ (singleChat.get_participant_names() | reject("equalto", author.name) | list)[0][0] if singleChat.get_participant_names()|length > 1 else singleChat.get_participant_names()[0][0] }}
             </div>

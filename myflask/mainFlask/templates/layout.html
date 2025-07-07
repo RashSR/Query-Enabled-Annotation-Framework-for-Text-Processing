@@ -14,8 +14,8 @@
                     <img src="{{ url_for('static', filename='icons/user.svg') }}" alt="Profile">
                 </a>
             </div>
-            <div class="nav-icon {% if request.path.startswith(url_for('chat_home')) %}active{% endif %}">
-                <a href="{{ url_for('chat_home') }}">
+            <div class="nav-icon {% if request.path.startswith(url_for('chat.chat_home')) %}active{% endif %}">
+                <a href="{{ url_for('chat.chat_home') }}">
                     <img src="{{ url_for('static', filename='icons/chats.svg') }}" alt="Chats">
                 </a>
             </div>
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Sidebar and Chat Content -->
-    {% if request.path.startswith(url_for('chat_home')) %}
+    {% if request.path.startswith(url_for('chat.chat_home')) %}
         <div class="sidebar" >
             {% include 'chat_list.html' %}
         </div>

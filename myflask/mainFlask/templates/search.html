@@ -39,7 +39,7 @@
                                 {{ message.sender.name }} → {{ message.get_recipient().name }}
                             </div>
                             <div class="show-link">
-                                <a href="{{ url_for('chat_view', chat_id=message.chat_id) }}#msg-{{ message.message_id }}" title="Im vollständigen Chat anzeigen" style="text-decoration: none;">
+                                <a href="{{ url_for('chat.chat_view', chat_id=message.chat_id) }}#msg-{{ message.message_id }}" title="Im vollständigen Chat anzeigen" style="text-decoration: none;">
                                 <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
                                 </a>
                             </div>
