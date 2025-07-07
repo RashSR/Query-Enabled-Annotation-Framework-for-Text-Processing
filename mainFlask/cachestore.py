@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from mainFlask.ltmatch import LTMatch 
+from .ltmatch import LTMatch 
 
 class CacheStore:
     _instance = None

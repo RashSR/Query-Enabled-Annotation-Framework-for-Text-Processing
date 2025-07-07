@@ -1,7 +1,7 @@
-from mainFlask.filter_type import FilterType
+from .filter_type import FilterType
 from classes.message import Message
 from classes.author import Author
-from mainFlask.search_result import SearchResult
+from .search_result import SearchResult
 import re
 
 class FilterNodeObejct:
