@@ -104,8 +104,8 @@
             <!-- colour swatch -->
             <label class="color-picker-label">
               <input type="color"
-                    name="highlight_color[{{ loop.index0 }}]"
-                    value="{{ n.highlight_color or '#ff0000' }}"
+                    name="selected_color[{{ loop.index0 }}]"
+                    value="{{ n.selected_color or '#ff0000' }}"
                     class="color-input">
               <span class="color-picker-text">🎨</span>
             </label>
@@ -184,7 +184,7 @@
 
       <!-- colour swatch -->
       <label class="color-picker-label">
-        <input type="color" name="highlight_color" value="#ff0000" class="color-input">
+        <input type="color" name="selected_color[]" value="#ff0000" class="color-input">
         <span class="color-picker-text">🎨</span>
       </label>
 
@@ -255,6 +255,10 @@ document.addEventListener('DOMContentLoaded', () => {
     keywordInput.name = `keyword[${barIndex}]`;
     leftSel.name      = `selected_type[${barIndex}]`;
     rightSel.name     = `selected_scope[${barIndex}]`;
+    const colorInput = clone.querySelector('input[type="color"]');
+      if (colorInput) {
+        colorInput.name = `selected_color[${barIndex}]`;
+      }
 
     clone.querySelectorAll('.hidden-toggle').forEach(cb => {
       const base = cb.name.replace('[]', '');
