@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from myflask.mainFlask.ltmatch import LTMatch 
+from mainFlask.ltmatch import LTMatch 
 
 class CacheStore:
     _instance = None
@@ -30,7 +30,7 @@ class CacheStore:
     _loaded_all_authors = False
 
     def get_all_authors(self):
-        from myflask.mainFlask.db_handling import get_all_authors
+        from mainFlask.db_handling import get_all_authors
 
         if self._authors is None or self._loaded_all_authors is False:
             authors = get_all_authors(self._db, self._app)
@@ -44,7 +44,7 @@ class CacheStore:
         if not isinstance(id, int):
             return None
 
-        from myflask.mainFlask.db_handling import get_author_by_id
+        from mainFlask.db_handling import get_author_by_id
 
         if self._authors is None:
             self._authors = {}
@@ -80,7 +80,7 @@ class CacheStore:
 
         if len(not_cached_chat_ids) > 0:
             # Need to load from DB
-            from myflask.mainFlask.db_handling import get_chat_by_ids
+            from mainFlask.db_handling import get_chat_by_ids
             missing_chats = get_chat_by_ids(self._db, self._app, not_cached_chat_ids)
             chats.extend(missing_chats)
             #this could be async -> store loaded chats in cache
@@ -94,7 +94,7 @@ class CacheStore:
         if not isinstance(id, int):
             return None
 
-        from myflask.mainFlask.db_handling import get_chat_by_id
+        from mainFlask.db_handling import get_chat_by_id
 
         if self._chats is None:
             self._chats = {}
@@ -113,7 +113,7 @@ class CacheStore:
         if not isinstance(msg_id, int) or not isinstance(chat_id, int):
             return None
         
-        from myflask.mainFlask.db_handling import get_all_ltms_by_msg_id_and_chat_id
+        from mainFlask.db_handling import get_all_ltms_by_msg_id_and_chat_id
         
         if self._ltms is None:
             self._ltms = {}
@@ -133,7 +133,7 @@ class CacheStore:
         if lt_match is None:
             return None
         
-        from myflask.mainFlask.db_handling import create_lt_match
+        from mainFlask.db_handling import create_lt_match
 
         generated_id = create_lt_match(self._db, self._app, lt_match)
         lt_match.id = generated_id

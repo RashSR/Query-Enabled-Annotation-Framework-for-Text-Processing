@@ -5,8 +5,8 @@ from sqlalchemy import text
 from classes.author import Author
 from classes.chat import Chat
 from classes.message import Message
-from myflask.mainFlask.cachestore import CacheStore
-from myflask.mainFlask.ltmatch import LTMatch
+from mainFlask.cachestore import CacheStore
+from mainFlask.ltmatch import LTMatch
 
 # region GET
 

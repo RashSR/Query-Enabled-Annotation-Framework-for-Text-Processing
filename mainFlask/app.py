@@ -2,12 +2,12 @@ from flask import Flask, render_template, request, abort, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
-from myflask.mainFlask.cachestore import CacheStore
-from myflask.mainFlask.search_result import SearchResult
+from mainFlask.cachestore import CacheStore
+from mainFlask.search_result import SearchResult
 from classes.author import Author
-from myflask.mainFlask.filter_node_object import FilterNodeObejct
-from myflask.mainFlask.filter_type import FilterType
-from myflask.mainFlask.routes import blueprints
+from mainFlask.filter_node_object import FilterNodeObejct
+from mainFlask.filter_type import FilterType
+from mainFlask.routes import blueprints
 import re
 import locale
 import utils

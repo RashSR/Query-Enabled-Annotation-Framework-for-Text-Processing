@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, abort, session
-from myflask.mainFlask.filter_node_object import FilterNodeObejct
-from myflask.mainFlask.filter_type import FilterType
+from mainFlask.filter_node_object import FilterNodeObejct
+from mainFlask.filter_type import FilterType
 import utils
 
 filter_values_api_bp = Blueprint("filters_api", __name__)

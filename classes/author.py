@@ -1,5 +1,5 @@
 from classes.chat import Chat
-from myflask.mainFlask.cachestore import CacheStore
+from mainFlask.cachestore import CacheStore
 import utils
 
 class Author:
