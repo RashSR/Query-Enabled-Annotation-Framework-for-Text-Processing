@@ -101,15 +101,6 @@
                     value="1" {% if n.use_regex %}checked{% endif %}>
             </div>
 
-            <!-- colour swatch -->
-            <label class="color-picker-label">
-              <input type="color"
-                    name="selected_color[{{ loop.index0 }}]"
-                    value="{{ n.selected_color or '#ff0000' }}"
-                    class="color-input">
-              <span class="color-picker-text">🎨</span>
-            </label>
-
             <!-- Right dropdown -->
             <select name="selected_scope[{{ loop.index0 }}]"
                     class="search-konkordanz-dropdown"
@@ -122,6 +113,15 @@
                 </option>
               {% endfor %}
             </select>
+
+            <!-- colour swatch -->
+            <label class="color-picker-label">
+              <input type="color"
+                    name="selected_color[{{ loop.index0 }}]"
+                    value="{{ n.selected_color or '#ff0000' }}"
+                    class="color-input">
+              <span class="color-picker-text">🎨</span>
+            </label>
 
             <!-- Result count display -->
             <span class="result-label {% if n.search_result_list | length > 0 %}green{% else %}red{% endif %}">
@@ -182,16 +182,16 @@
         <input type="checkbox" class="hidden-toggle" name="use_regex[]"      value="1">
       </div>
 
+      <!-- Right dropdown – dynamic -->
+      <select name="selected_scope" class="search-konkordanz-dropdown">
+
+      </select>
+
       <!-- colour swatch -->
       <label class="color-picker-label">
         <input type="color" name="selected_color[]" value="#ff0000" class="color-input">
         <span class="color-picker-text">🎨</span>
       </label>
-
-      <!-- Right dropdown – dynamic -->
-      <select name="selected_scope" class="search-konkordanz-dropdown">
-
-      </select>
 
       <!-- 🗑️ Delete button -->
       <button type="button" class="delete-search-btn"
