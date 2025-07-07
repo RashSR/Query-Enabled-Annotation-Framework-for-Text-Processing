@@ -145,16 +145,15 @@ def konkordanz_view():
         typ  = request.args.get(f'selected_type[{i}]')
         scp  = request.args.get(f'selected_scope[{i}]')
         color = request.args.get(f'selected_color[{i}]')
-        print(color)
-
+        
         cs = bool(request.args.get(f'case_sensitive[{i}]'))
         ww = bool(request.args.get(f'whole_word[{i}]'))
         rg = bool(request.args.get(f'use_regex[{i}]'))
         
         
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
+        fno.selected_color = color
         fno.scope_choices = FilterNodeObejct.get_values(fno.filter_type, author) #is needed to keep the selected value
-
         fno_list.append(fno)
 
         keyword = kw

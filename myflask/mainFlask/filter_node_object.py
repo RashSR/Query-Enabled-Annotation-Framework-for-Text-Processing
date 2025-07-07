@@ -125,12 +125,12 @@ class FilterNodeObejct:
                         if index != -1:
                             matches = [re.Match]  # dummy placeholder
                             matched_word = original_content[index:index+len(self._searchbar_input)]
-                            self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive))
+                            self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color))
                             continue
 
                     for match in matches:
                         matched_word = match.group()
-                        self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive))
+                        self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color))
 
                 return self._search_result_list
             case FilterType.RULE_ID:
@@ -150,7 +150,7 @@ class FilterNodeObejct:
                         index = content.find(query)
                         if index != -1:
                             matched_word = original_content[index:index+len(keyword)]
-                            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive))
+                            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color))
                             continue
 
                 return self._search_result_list
