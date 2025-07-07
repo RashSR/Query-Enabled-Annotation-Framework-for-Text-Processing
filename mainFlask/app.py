@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, session, jsonify
+from flask import Flask, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
@@ -52,26 +52,6 @@ cache = CacheStore.Instance(db, app)
 def inject_request():
     active_author = utils.get_active_author(session)
     return dict(request=request, active_author=active_author)
-
-@app.route("/profile")
-def profile():
-    all_authors = CacheStore.Instance().get_all_authors()
-    return render_template("profile.html", author=utils.get_active_author(session), authors=all_authors)
-
-@app.route("/profile/<int:author_id>")
-def author_profile(author_id):
-
-    all_authors = CacheStore.Instance().get_all_authors()
-    selected_author = CacheStore.Instance().get_author_by_id(author_id)
-    if not selected_author:
-        # Handle not found, e.g. 404 or redirect
-        abort(404)
-    if not request.args.get('no_active_change'):
-        
-        utils.set_active_author(session, author_id)
-        selected_author = utils.get_active_author(session)
-
-    return render_template("profile.html", author=selected_author, authors=all_authors)
 
 @app.route("/search")
 def search_view():

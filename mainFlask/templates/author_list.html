@@ -1,7 +1,7 @@
 <ul class="elements-list">
   {% for a in authors %}
   <li class="{% if a.id == author.id %}active{% endif %}">
-    <a href="{{ url_for('author_profile', author_id=a.id) }}" style="display: flex; align-items: center;">
+    <a href="{{ url_for('profile.author_profile', author_id=a.id) }}" style="display: flex; align-items: center;">
       <div class="avatar">{{ a.name[0] }}</div>
       <div style="flex: 1;">
         <strong>{{ a.name }}</strong>

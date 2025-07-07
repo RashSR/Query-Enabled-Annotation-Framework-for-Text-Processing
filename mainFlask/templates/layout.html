@@ -9,8 +9,8 @@
     <!-- Left Navigation Bar -->
     <div class="left-nav">
         <div class="nav-top">
-            <div class="nav-icon {% if request.path.startswith(url_for('profile')) %}active{% endif %}">
-                <a href="{{ url_for('profile') }}">
+            <div class="nav-icon {% if request.path.startswith(url_for('profile.profile')) %}active{% endif %}">
+                <a href="{{ url_for('profile.profile') }}">
                     <img src="{{ url_for('static', filename='icons/user.svg') }}" alt="Profile">
                 </a>
             </div>
@@ -57,7 +57,7 @@
     {% endif %}
 
     <!-- Sidebar and Chat Content -->
-    {% if request.path.startswith(url_for('profile')) %}
+    {% if request.path.startswith(url_for('profile.profile')) %}
         <div class="sidebar" >
             {% include 'author_list.html' %}
         </div>
