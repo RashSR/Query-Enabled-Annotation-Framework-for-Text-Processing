@@ -5,11 +5,9 @@ from markupsafe import Markup, escape
 from myflask.mainFlask.cachestore import CacheStore
 from myflask.mainFlask.search_result import SearchResult
 from classes.author import Author
-from classes.message import Message
-from classes.chat import Chat
-from classes.messagetype import MessageType
 from myflask.mainFlask.filter_node_object import FilterNodeObejct
 from myflask.mainFlask.filter_type import FilterType
+from myflask.mainFlask.routes import blueprints
 import re
 import locale
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
@@ -44,6 +42,10 @@ def get_keyword_hits(active_author: Author, keyword: str, case_sensitive: bool):
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
+# Register all blueprints
+for bp in blueprints:
+    print(bp)
+    app.register_blueprint(bp)
 
 #SQLite path
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This creates the DB file
@@ -173,28 +175,11 @@ def konkordanz_view():
 
 #TODO: HTML wird nur generiert wonach auch gesucht wird? CSS ein und ausschalten?
 
-@app.route("/metrics")
-def metrics_view():
-    aut1 = Author(7, "Max")
-    aut2 = Author(9, "Felix")
-    new_message = Message(5, 1, aut1, datetime.now(), "Das hier ist ein TestText mit kl FEhler. Was machst du jtdsd?!", MessageType.TEXT)
-    second_message = Message(5, 2, aut2, datetime.now(), "dd  dasds Wasd WarUm isst er hier das Budget..", MessageType.TEXT)
-
-    new_chat = Chat(5)
-    new_chat.add_message(new_message)
-    new_chat.add_message(second_message)
-    
-    #utils.analyze_msg_with_spacy(new_message)
-    return render_template('metrics.html')
-
 #TODO:
 # überprüfen lohnt es sich alles mit spacy zu analysieren und jedes einzelen Wort danach noch in Language tool zu packen? bzw anders rum mit langauge tool und falls Fehler -> nicht in spacy 
 # Nur Wert in Dropdown anzeigen die es gibt? 
 # Wie bei CompOV linke und rechte seite auswählbar
 
-@app.route("/settings")
-def settings_view():
-    return render_template("settings.html")
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
 

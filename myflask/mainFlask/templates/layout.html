@@ -29,8 +29,8 @@
                     <img src="{{ url_for('static', filename='icons/konkordanz2.svg') }}" alt="Konkordanz">
                 </a>
             </div>
-            <div class="nav-icon {% if request.path.startswith(url_for('metrics_view')) %}active{% endif %}">
-                <a href="{{ url_for('metrics_view') }}">
+            <div class="nav-icon {% if request.path.startswith(url_for('metrics.metrics_view')) %}active{% endif %}">
+                <a href="{{ url_for('metrics.metrics_view') }}">
                     <img src="{{ url_for('static', filename='icons/metrics.svg') }}" alt="Metrics">
                 </a>
             </div>
@@ -41,8 +41,8 @@
                 <div class="avatar" title="{{ active_author.name }}">{{ active_author.name[0] }}</div>
             </div>
             {% endif %}
-            <div class="nav-icon {% if request.path.startswith(url_for('settings_view')) %}active{% endif %}">
-                <a href="{{ url_for('settings_view') }}">
+            <div class="nav-icon {% if request.path.startswith(url_for('settings.settings_view')) %}active{% endif %}">
+                <a href="{{ url_for('settings.settings_view') }}">
                     <img src="{{ url_for('static', filename='icons/settings.svg') }}" alt="Settings">
                 </a>
             </div>
