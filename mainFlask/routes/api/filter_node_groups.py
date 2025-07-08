@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, abort, session
-from mainFlask.filter_node_object import FilterNodeObejct
+from mainFlask.filter_node_object import FilterNodeObject
 from mainFlask.filter_node_group import FilterNodeGroup
 import utils
 
@@ -17,5 +17,5 @@ def filter_node_groups():
     author = utils.get_active_author(session)
     author.analyze_all_own_messages()  # TODO: should be unnecessary
 
-    values = FilterNodeObejct.get_values(ftype, author) or []
+    values = FilterNodeObject.get_values(ftype, author) or []
     return jsonify(values)

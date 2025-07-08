@@ -6,7 +6,7 @@ from classes.author import Author
 from .search_result import SearchResult
 import re
 
-class FilterNodeObejct(FilterNode):
+class FilterNodeObject(FilterNode):
     def __init__(self, filter_node_group: FilterNodeGroup, searchbar_input, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
         super().__init__(FilterType.OBJECT)
         self._filter_node_group = filter_node_group
