@@ -3,10 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
 from .cachestore import CacheStore
+from .settings import Settings
 from .search_result import SearchResult
 from classes.author import Author
-from .filter_node_object import FilterNodeObejct
-from .filter_type import FilterType
 from .routes import blueprints
 import re
 import locale
@@ -45,8 +44,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This create
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-#intialize CacheStore
+#intialize CacheStore and Settings
 cache = CacheStore.Instance(db, app)
+settings = Settings.Instance()
 
 @app.context_processor
 def inject_request():
