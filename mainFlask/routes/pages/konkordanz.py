@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, request
 from mainFlask.filter_node_object import FilterNodeObejct
 from mainFlask.filter_type import FilterType
+from mainFlask.settings import Settings
 import utils
 
 konkordanz_bp = Blueprint('konkordanz', __name__)
@@ -12,6 +13,8 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 #check if a author is selected -> show nothing if not
 @konkordanz_bp.route("/konkordanz")
 def konkordanz_view():
+
+    settings = Settings.Instance()
     
     #All messages should be anlyzed when entering this view
     author = utils.get_active_author(session)
@@ -37,7 +40,7 @@ def konkordanz_view():
         
         
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
-        fno.selected_color = color
+        fno.selected_color = settings.highlight_colors[i]
         fno.scope_choices = FilterNodeObejct.get_values(fno.filter_type, author) #is needed to keep the selected value
         fno_list.append(fno)
 

@@ -15,10 +15,10 @@ class Settings:
         return cls()
     
     highlight_colors = [
-    "#46f0f0",  # Teal
+    "#0074D9",  # Teal
     "#e6194b",  # Red
     "#f58231",  # Orange
-    "#ffe119",  # Yellow
+    "#d4b800",  # Yellow
     "#3cb44b",  # Green
     "#4363d8",  # Blue
     "#911eb4",  # Purple
