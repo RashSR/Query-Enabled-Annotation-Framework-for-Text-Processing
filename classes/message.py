@@ -146,6 +146,21 @@ class Message:
         import utils
         utils.analyze_msg_with_language_tool(self)
 
+    def __eq__(self, other):
+        if not isinstance(other, Message):
+            return NotImplemented
+        return (
+            self.chat_id == other.chat_id and
+            self.message_id == other.message_id and
+            self.timestamp == other.timestamp
+        )
+
+    def __hash__(self):
+        return hash((
+            self.chat_id,
+            self.message_id,
+            self.timestamp
+        ))
         
     
 

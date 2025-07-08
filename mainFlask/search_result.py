@@ -66,3 +66,21 @@ class SearchResult:
 
     def __repr__(self):
         return f"search_result(left={self._left!r}, keyword={self.keyword!r}, right={self._right!r})"
+    
+    def __eq__(self, other):
+        if not isinstance(other, SearchResult):
+            return NotImplemented
+        return (
+            self.message == other.message and
+            self.keyword == other.keyword and
+            self.matched_word == other.matched_word and
+            self.case_sensitive == other.case_sensitive
+        )
+
+    def __hash__(self):
+        return hash((
+            self.message,  # Ensure Message is hashable!
+            self.keyword,
+            self.matched_word,
+            self.case_sensitive
+        ))
