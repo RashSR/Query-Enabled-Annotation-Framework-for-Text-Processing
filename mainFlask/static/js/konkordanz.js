@@ -48,10 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     keywordInput.name = `keyword[${barIndex}]`;
     leftSel.name      = `selected_type[${barIndex}]`;
     rightSel.name     = `selected_scope[${barIndex}]`;
-    const colorInput = clone.querySelector('input[type="color"]');
-      if (colorInput) {
-        colorInput.name = `selected_color[${barIndex}]`;
-      }
 
     clone.querySelectorAll('.hidden-toggle').forEach(cb => {
       const base = cb.name.replace('[]', '');

@@ -32,7 +32,6 @@ def konkordanz_view():
         kw   = request.args.get(f'keyword[{i}]', '')
         typ  = request.args.get(f'selected_type[{i}]')
         scp  = request.args.get(f'selected_scope[{i}]')
-        color = request.args.get(f'selected_color[{i}]')
         
         cs = bool(request.args.get(f'case_sensitive[{i}]'))
         ww = bool(request.args.get(f'whole_word[{i}]'))

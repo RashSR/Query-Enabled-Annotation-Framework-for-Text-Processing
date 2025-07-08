@@ -114,15 +114,6 @@
               {% endfor %}
             </select>
 
-            <!-- colour swatch -->
-            <label class="color-picker-label">
-              <input type="color"
-                    name="selected_color[{{ loop.index0 }}]"
-                    value="{{ n.selected_color or '#ff0000' }}"
-                    class="color-input">
-              <span class="color-picker-text">🎨</span>
-            </label>
-
             <!-- Result count display -->
             <span class="result-label {% if n.search_result_list | length > 0 %}green{% else %}red{% endif %}">
               <span>Result:</span>
@@ -186,12 +177,6 @@
       <select name="selected_scope" class="search-konkordanz-dropdown">
 
       </select>
-
-      <!-- colour swatch -->
-      <label class="color-picker-label">
-        <input type="color" name="selected_color[]" value="#ff0000" class="color-input">
-        <span class="color-picker-text">🎨</span>
-      </label>
 
       <!-- 🗑️ Delete button -->
       <button type="button" class="delete-search-btn"
