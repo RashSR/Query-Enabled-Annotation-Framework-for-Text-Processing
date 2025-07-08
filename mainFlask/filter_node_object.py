@@ -1,11 +1,14 @@
 from .filter_node_group import FilterNodeGroup
+from .filter_node import FilterNode
+from .filter_type import FilterType
 from classes.message import Message
 from classes.author import Author
 from .search_result import SearchResult
 import re
 
-class FilterNodeObejct:
+class FilterNodeObejct(FilterNode):
     def __init__(self, filter_node_group: FilterNodeGroup, searchbar_input, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
+        super().__init__(FilterType.OBJECT)
         self._filter_node_group = filter_node_group
         self._searchbar_input = searchbar_input
         self._selected_value = selected_value #rigt_side
