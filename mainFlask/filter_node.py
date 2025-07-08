@@ -1,6 +1,7 @@
 from .filter_type import FilterType
 from .search_result import SearchResult
 from .filter_node_object import FilterNodeObject
+from functools import reduce
 from __future__ import annotations #is needed so i can use FilterNode in the add_leaf function -> python 3.7+ needed
 
 class FilterNode:
@@ -31,7 +32,7 @@ class FilterNode:
         full_result = []
         match self._filter_type:
             case FilterType.AND:
-                return self.calc_and_result()
+                return self._calc_and_result()
             case FilterType.OR:
                 return full_result
             case FilterType.NOT:
@@ -43,27 +44,24 @@ class FilterNode:
                 #default case
                 return full_result
             
-    def calc_and_result(self):
+    def _calc_and_result(self):
 
-        all_results : list[list[SearchResult]] = []
-        for fn in self._leaves:
-            leaf_result = fn.get_full_result()
-            all_results.append(leaf_result)
+        all_results = self._get_all_search_result_lists()
 
-        
         if len(all_results) == 1:
             return all_results[0]
         
-        conjoined_result = []
-        for search_result_list in all_results:
-            for search_result in search_result_list:
-                isContainedInAllLists: bool = False
-                #foreach(ConcurrentObservableCollection<ComponentEqcViewModel> cmps in eqcLists){
-                #   isContainedInAllLists = IsContainedInAllLists(eqcLists, cmp);
-                #}
-                #if(isContainedInAllLists && !ListContainsEQC(result, cmp)){
-                #   result.Add(cmp);
-                #}
+        #intersects all lists and conjoins them
+        conjoined_result = list(reduce(lambda a, b: a & b, map(set, all_results)))
+
+        return conjoined_result
+    
+    def _get_all_search_result_lists(self) -> list[list[SearchResult]]:
+        all_results : list[list[SearchResult]] = []
+        
+        for fn in self._leaves:
+            leaf_result = fn.get_full_result()
+            all_results.append(leaf_result)
 
         return all_results
 
