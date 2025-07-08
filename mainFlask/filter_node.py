@@ -1,8 +1,9 @@
+from __future__ import annotations #is needed so i can use FilterNode in the add_leaf function -> python 3.7+ needed
 from .filter_type import FilterType
 from .search_result import SearchResult
-from .filter_node_object import FilterNodeObject
 from functools import reduce
-from __future__ import annotations #is needed so i can use FilterNode in the add_leaf function -> python 3.7+ needed
+from classes.author import Author
+
 
 class FilterNode:
     def __init__(self, filter_type: FilterType):
@@ -28,25 +29,25 @@ class FilterNode:
     def add_leaf(self, fn: FilterNode):
         self._leaves.append(fn)
 
-    def get_full_result(self) -> list[SearchResult]:
+    #TODO: don't use author here
+    def get_full_result(self, author: Author) -> list[SearchResult]:
         full_result = []
         match self._filter_type:
             case FilterType.AND:
-                return self._calc_and_result()
+                return self._calc_and_result(author)
             case FilterType.OR:
                 return full_result
             case FilterType.NOT:
                 return full_result
             case FilterType.OBJECT:
-                fno = (FilterNodeObject)(self)
-                return fno.get_result()
+                return self.get_result(author)
             case _: 
                 #default case
                 return full_result
             
-    def _calc_and_result(self):
+    def _calc_and_result(self, author: Author):
 
-        all_results = self._get_all_search_result_lists()
+        all_results = self._get_all_search_result_lists(author)
 
         if len(all_results) == 1:
             return all_results[0]
@@ -56,11 +57,11 @@ class FilterNode:
 
         return conjoined_result
     
-    def _get_all_search_result_lists(self) -> list[list[SearchResult]]:
+    def _get_all_search_result_lists(self, author: Author) -> list[list[SearchResult]]:
         all_results : list[list[SearchResult]] = []
         
         for fn in self._leaves:
-            leaf_result = fn.get_full_result()
+            leaf_result = fn.get_full_result(author)
             all_results.append(leaf_result)
 
         return all_results

@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, session, request
 from mainFlask.filter_node_object import FilterNodeObject
 from mainFlask.filter_node_group import FilterNodeGroup
+from mainFlask.filter_node import FilterNode
+from mainFlask.filter_type import FilterType
 from mainFlask.settings import Settings
 import utils
 
@@ -22,12 +24,12 @@ def konkordanz_view():
 
     keyword = None
 
-    total = len([k for k in request.args if k.startswith('selected_type[')])
-    
-    fno_list: list[FilterNodeObject] = []
+    filter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
+    starting_filter_node  = FilterNode(FilterType.AND)
+
     results = []
 
-    for i in range(total):
+    for i in range(filter_node_object_count):
         kw   = request.args.get(f'keyword[{i}]', '')
         typ  = request.args.get(f'selected_type[{i}]')
         scp  = request.args.get(f'selected_scope[{i}]')
@@ -40,19 +42,17 @@ def konkordanz_view():
         fno = FilterNodeObject(FilterNodeGroup(typ), kw, scp, cs, ww, rg)
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
         fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group, author) #is needed to keep the selected value
-        fno_list.append(fno)
+        starting_filter_node.add_leaf(fno)
 
-        keyword = kw
-        
-    #hier wurden werte gesetzt all fno results zusammen packen
-    for fnObject in fno_list:
-        search_results_from_fno = fnObject.get_result(author)
-        results.extend(search_results_from_fno)
+        keyword = kw #TODO: remove this and give the view a proper header
+    
+    if filter_node_object_count > 0:
+        results = starting_filter_node.get_full_result(author)
 
     return render_template(
         "konkordanz.html",
         results=results,
         keyword=keyword,
         filter_node_groups=FilterNodeGroup,
-        nodes = fno_list
+        nodes = starting_filter_node.leaves
     )
