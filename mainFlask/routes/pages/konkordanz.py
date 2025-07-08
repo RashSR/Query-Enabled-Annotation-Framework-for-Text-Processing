@@ -22,7 +22,6 @@ def konkordanz_view():
 
     keyword = None
 
-    # total bars == how many keyword[i] you received
     total = len([k for k in request.args if k.startswith('selected_type[')])
     
     fno_list: list[FilterNodeObejct] = []
