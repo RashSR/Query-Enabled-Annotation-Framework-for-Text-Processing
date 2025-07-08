@@ -59,10 +59,10 @@
 
             <!-- Left dropdown -->
             <select name="selected_type[{{ loop.index0 }}]" class="search-konkordanz-dropdown">
-              <option value="" {% if not n.filter_type %}selected{% endif %}>— Type —</option>
-              {% for ft in filter_types %}
+              <option value="" {% if not n.filter_node_group %}selected{% endif %}>— Type —</option>
+              {% for ft in filter_node_groups %}
                 <option value="{{ ft.value }}"
-                        {% if ft == n.filter_type %}selected{% endif %}>
+                        {% if ft == n.filter_node_group %}selected{% endif %}>
                   {{ ft.name.title().replace('_', ' ') }}
                 </option>
               {% endfor %}
@@ -75,7 +75,7 @@
                       class="search-konkordanz-input"
                       placeholder="Suchbegriff..."
                       value="{{ n.searchbar_input }}"
-                      {% if n.filter_type != filter_types.WORD %}disabled{% endif %}>
+                      {% if n.filter_node_group != filter_node_groups.WORD %}disabled{% endif %}>
 
               <div class="search-konkordanz-options">
                 <span class="search-toggle" title="Groß-/Kleinschreibung"
@@ -149,7 +149,7 @@
       <!-- Left dropdown – values come from the Enum -->
       <select name="selected_type" class="search-konkordanz-dropdown">
         <option value="" selected>— Type —</option>
-        {% for ft in filter_types %}
+        {% for ft in filter_node_groups %}
           <option value="{{ ft.value }}">{{ ft.name.title().replace('_', ' ') }}</option>
         {% endfor %}
       </select>

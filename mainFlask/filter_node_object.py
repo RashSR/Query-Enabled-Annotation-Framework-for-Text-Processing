@@ -1,12 +1,12 @@
-from .filter_type import FilterType
+from .filter_node_group import FilterNodeGroup
 from classes.message import Message
 from classes.author import Author
 from .search_result import SearchResult
 import re
 
 class FilterNodeObejct:
-    def __init__(self, filter_type: FilterType, searchbar_input, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
-        self._filter_type = filter_type
+    def __init__(self, filter_node_group: FilterNodeGroup, searchbar_input, selected_value: str, case_sensitive = False, whole_word = False, use_regex = False):
+        self._filter_node_group = filter_node_group
         self._searchbar_input = searchbar_input
         self._selected_value = selected_value #rigt_side
         self._case_sensitive = case_sensitive
@@ -17,12 +17,12 @@ class FilterNodeObejct:
         self._selected_color = None
 
     @property
-    def filter_type(self):
-        return self._filter_type
+    def filter_node_group(self):
+        return self._filter_node_group
     
-    @filter_type.setter
-    def filter_type(self, value: str):
-        self._filter_type = value
+    @filter_node_group.setter
+    def filter_node_group(self, value: str):
+        self._filter_node_group = value
 
     @property
     def searchbar_input(self):
@@ -89,7 +89,7 @@ class FilterNodeObejct:
         self._selected_color = value
 
     def __str__(self):
-        toString = f"""left side: {self._filter_type}
+        toString = f"""left side: {self._filter_node_group}
         searchbar: {self._searchbar_input}
         selected value: {self._selected_value}
         case_sensitive: {self._case_sensitive}
@@ -100,8 +100,8 @@ class FilterNodeObejct:
         return toString
 
     def get_result(self, author: Author) -> list[SearchResult]:
-        match self._filter_type:
-            case FilterType.WORD:
+        match self._filter_node_group:
+            case FilterNodeGroup.WORD:
                 for msg in author.get_all_own_messages():
                     original_content = msg.content
                     content = original_content if self._case_sensitive else original_content.lower()
@@ -133,9 +133,9 @@ class FilterNodeObejct:
                         self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color))
 
                 return self._search_result_list
-            case FilterType.RULE_ID:
+            case FilterNodeGroup.RULE_ID:
                 return None
-            case FilterType.CATEGORY:
+            case FilterNodeGroup.CATEGORY:
                 msgs = author.get_messages_by_error_category(self._selected_value) #if selected_value is empty -> give all
                 for msg in msgs:
                     for error in msg.error_list:
@@ -156,19 +156,19 @@ class FilterNodeObejct:
                 return self._search_result_list
             case _: 
                 #default case
-                raise ValueError(f"Unknown filter type: {self._filter_type}")
+                raise ValueError(f"Unknown filter type: {self._filter_node_group}")
             
     @staticmethod
-    def get_values(filter_type: FilterType, author: Author):
-        match filter_type:
-            case FilterType.WORD:
+    def get_values(filter_node_group: FilterNodeGroup, author: Author):
+        match filter_node_group:
+            case FilterNodeGroup.WORD:
                 return []
-            case FilterType.RULE_ID:
+            case FilterNodeGroup.RULE_ID:
                 return author.get_error_rule_ids()
-            case FilterType.CATEGORY:
+            case FilterNodeGroup.CATEGORY:
                 return author.get_error_categories()
             case _: 
                 #default case
-                raise ValueError(f"Unknown filter type: {self._filter_type}")
+                raise ValueError(f"Unknown filter type: {self._filter_node_group}")
 
 

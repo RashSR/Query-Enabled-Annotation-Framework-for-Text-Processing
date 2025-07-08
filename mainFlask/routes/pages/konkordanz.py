@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, request
 from mainFlask.filter_node_object import FilterNodeObejct
-from mainFlask.filter_type import FilterType
+from mainFlask.filter_node_group import FilterNodeGroup
 from mainFlask.settings import Settings
 import utils
 
@@ -37,9 +37,9 @@ def konkordanz_view():
         rg = bool(request.args.get(f'use_regex[{i}]'))
         
         
-        fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
+        fno = FilterNodeObejct(FilterNodeGroup(typ), kw, scp, cs, ww, rg)
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
-        fno.scope_choices = FilterNodeObejct.get_values(fno.filter_type, author) #is needed to keep the selected value
+        fno.scope_choices = FilterNodeObejct.get_values(fno.filter_node_group, author) #is needed to keep the selected value
         fno_list.append(fno)
 
         keyword = kw
@@ -53,6 +53,6 @@ def konkordanz_view():
         "konkordanz.html",
         results=results,
         keyword=keyword,
-        filter_types=FilterType,
+        filter_node_groups=FilterNodeGroup,
         nodes = fno_list
     )
