@@ -15,9 +15,9 @@
     <thead>
       <tr>
         <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
-        <th style="width: 10%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
+        <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
         <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
-        <th style="width: 20%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>
+        <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>
       </tr>
     </thead>
     <tbody>
@@ -25,12 +25,16 @@
       <tr>
         <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
         <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: {{ result.selected_color }}; white-space: nowrap;">
-          {{ result.matched_word }}
-          <a href="{{ url_for('chat.chat_view', chat_id=result.message.chat_id, keyword=keyword) }}#msg-{{ result.message.message_id }}"
-            title="Im vollständigen Chat anzeigen"
-            style="margin-left: 5px; text-decoration: none;">
-            <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
-          </a>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span>{{ result.matched_word }}</span>
+            <a href="{{ url_for('chat.chat_view', chat_id=result.message.chat_id, keyword=keyword) }}#msg-{{ result.message.message_id }}" 
+              title="Im vollständigen Chat anzeigen" 
+              style="text-decoration: none;">
+              <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" 
+                  alt="Arrow icon" 
+                  style="width: 14px; height: 14px;">
+            </a>
+          </div>
         </td>
         <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
         <td style="border: 1px solid #ddd; padding: 8px;">
