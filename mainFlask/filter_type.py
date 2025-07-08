@@ -1,6 +1,6 @@
 from enum import Enum
 
-class FilterMode(Enum):
+class FilterType(Enum):
     NOT = "NOT"
     AND = "AND"
     OR = "OR"

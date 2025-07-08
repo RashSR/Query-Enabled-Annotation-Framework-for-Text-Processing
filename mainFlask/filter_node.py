@@ -1,21 +1,21 @@
-from .filter_mode import FilterMode
+from .filter_type import FilterType
 from .search_result import SearchResult
 
 
 class FilterNode:
-    def __init__(self, filter_mode: FilterMode):
-        self._filter_mode = filter_mode
+    def __init__(self, filter_type: FilterType):
+        self._filter_type = filter_type
         self._filterNodeObjects = []
 
     def get_full_result(self) -> list[SearchResult]:
-        match self._filter_mode:
-            case FilterMode.AND:
+        match self._filter_type:
+            case FilterType.AND:
                 return None
-            case FilterMode.OR:
+            case FilterType.OR:
                 return None
-            case FilterMode.NOT:
+            case FilterType.NOT:
                 return None
-            case FilterMode.OBJECT:
+            case FilterType.OBJECT:
                 return None
             case _: 
                 #default case
