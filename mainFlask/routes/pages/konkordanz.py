@@ -40,7 +40,7 @@ def konkordanz_view():
         
         
         fno = FilterNodeObejct(FilterType(typ), kw, scp, cs, ww, rg)
-        fno.selected_color = settings.highlight_colors[i]
+        fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
         fno.scope_choices = FilterNodeObejct.get_values(fno.filter_type, author) #is needed to keep the selected value
         fno_list.append(fno)
 
