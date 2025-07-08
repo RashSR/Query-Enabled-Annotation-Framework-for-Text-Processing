@@ -25,7 +25,7 @@ def konkordanz_view():
     keyword = None
 
     filter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
-    starting_filter_node  = FilterNode(FilterType.AND)
+    starting_filter_node  = FilterNode(FilterType.OR)
 
     results = []
 
@@ -41,7 +41,7 @@ def konkordanz_view():
         
         fno = FilterNodeObject(FilterNodeGroup(typ), kw, scp, cs, ww, rg)
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
-        fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group, author) #is needed to keep the selected value
+        fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group, author)
         starting_filter_node.add_leaf(fno)
 
         keyword = kw #TODO: remove this and give the view a proper header

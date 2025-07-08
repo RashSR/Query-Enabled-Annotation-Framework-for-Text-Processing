@@ -36,7 +36,7 @@ class FilterNode:
             case FilterType.AND:
                 return self._calc_and_result(author)
             case FilterType.OR:
-                return full_result
+                return self._calc_or_result(author)
             case FilterType.NOT:
                 return full_result
             case FilterType.OBJECT:
@@ -45,18 +45,17 @@ class FilterNode:
                 #default case
                 return full_result
             
-    def _calc_and_result(self, author: Author):
-
+    def _calc_and_result(self, author: Author) -> list[SearchResult]:
         all_results = self._get_all_search_result_lists(author)
-
-        if len(all_results) == 1:
-            return all_results[0]
-        
         #intersects all lists and conjoins them
         conjoined_result = list(reduce(lambda a, b: a & b, map(set, all_results)))
-
         return conjoined_result
     
+    def _calc_or_result(self, author: Author) -> list[SearchResult]:
+        all_results = self._get_all_search_result_lists(author)
+        all_results_without_duplicates = list(set().union(*all_results))
+        return all_results_without_duplicates
+
     def _get_all_search_result_lists(self, author: Author) -> list[list[SearchResult]]:
         all_results : list[list[SearchResult]] = []
         
