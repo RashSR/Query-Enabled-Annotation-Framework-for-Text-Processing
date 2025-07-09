@@ -134,34 +134,12 @@ class FilterNodeObject(FilterNode):
                 return self._search_result_list
             case FilterNodeGroup.RULE_ID:
                 msgs = author.get_messages_by_error_rule_id(self._selected_value)
-                for msg in msgs:
-                    for error in msg.error_list:
-                        startPos = error.start_pos
-                        endPos = error.end_pos
-                        keyword = msg.content[startPos:endPos]
-
-                        original_content = msg.content
-                        content = original_content if self._case_sensitive else original_content.lower()
-                        query = keyword if self._case_sensitive else keyword.lower()
-
-                        if self._try_append_result_substring(msg, content, query, keyword, original_content):
-                            continue
-
+                self._convert_error_to_search_result_from_messages(msgs)
+                
                 return self._search_result_list
             case FilterNodeGroup.CATEGORY:
                 msgs = author.get_messages_by_error_category(self._selected_value) #if selected_value is empty -> give all
-                for msg in msgs:
-                    for error in msg.error_list:
-                        startPos = error.start_pos
-                        endPos = error.end_pos
-                        keyword = msg.content[startPos:endPos]
-
-                        original_content = msg.content
-                        content = original_content if self._case_sensitive else original_content.lower()
-                        query = keyword if self._case_sensitive else keyword.lower()
-
-                        if self._try_append_result_substring(msg, content, query, keyword, original_content):
-                            continue
+                self._convert_error_to_search_result_from_messages(msgs)
 
                 return self._search_result_list
             case _: 
@@ -180,6 +158,21 @@ class FilterNodeObject(FilterNode):
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
+
+
+    def _convert_error_to_search_result_from_messages(self, msgs):
+        for msg in msgs:
+            for error in msg.error_list:
+                startPos = error.start_pos
+                endPos = error.end_pos
+                keyword = msg.content[startPos:endPos]
+
+                original_content = msg.content
+                content = original_content if self._case_sensitive else original_content.lower()
+                query = keyword if self._case_sensitive else keyword.lower()
+
+                if self._try_append_result_substring(msg, content, query, keyword, original_content):
+                    continue
 
 
     def _try_append_result_substring(self, msg, content, query, keyword, original_content):
