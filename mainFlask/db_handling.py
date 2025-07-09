@@ -10,6 +10,8 @@ from .ltmatch import LTMatch
 
 # region GET
 
+#region Author
+
 def get_all_authors(db: SQLAlchemy, app: Flask):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM author_with_chat_ids")) #specially created view with the chat_ids in it -> only one DB call needed
@@ -18,15 +20,20 @@ def get_all_authors(db: SQLAlchemy, app: Flask):
             loaded_author = _convert_db_row_to_author(row)
             authors.append(loaded_author)
         return authors
+
+def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
+    with app.app_context():
+        result_row = db.session.execute(
+            text("SELECT * FROM author_with_chat_ids WHERE author_id = :id"),
+            {'id': id}
+        ).fetchone()
+
+        loaded_author = _convert_db_row_to_author(result_row)
+        return loaded_author
     
-def _get_chat_ids_from_author(db: SQLAlchemy, app: Flask, author_id: int):
-        with app.app_context():
-            chat_ids = []
-            result = db.session.execute(text("SELECT * FROM chat_participants WHERE author_id = :id"), {'id': author_id})
-            for row in result:
-                loaded_chat_id = row[0]
-                chat_ids.append(loaded_chat_id)
-            return chat_ids
+# endregion 
+
+#region Chat
 
 def get_chat_by_ids(db: SQLAlchemy, app: Flask, ids: list[int]):
      with app.app_context():
@@ -39,17 +46,6 @@ def get_chat_by_ids(db: SQLAlchemy, app: Flask, ids: list[int]):
             chats.append(chat)
         
         return chats
-
-def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
-    with app.app_context():
-        result_row = db.session.execute(
-            text("SELECT * FROM author_with_chat_ids WHERE author_id = :id"),
-            {'id': id}
-        ).fetchone()
-
-        loaded_author = _convert_db_row_to_author(result_row)
-        loaded_author.chat_ids = _get_chat_ids_from_author(db, app, loaded_author.id)
-        return loaded_author
 
 def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
     with app.app_context():
@@ -66,6 +62,9 @@ def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
 
         return chat
 
+# endregion
+
+#region Message
 def get_all_messages(db: SQLAlchemy, app: Flask):
     with app.app_context():
         messages = []
@@ -88,6 +87,10 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         
         #TODO: only load stuff that is not available
 
+# endregion
+
+#region LTM
+
 def get_all_ltms_by_msg_id_and_chat_id(db:SQLAlchemy, app: Flask, msg_id: int, chat_id: int):
     with app.app_context():
         ltms: list[LTMatch] = []
@@ -100,6 +103,8 @@ def get_all_ltms_by_msg_id_and_chat_id(db:SQLAlchemy, app: Flask, msg_id: int, c
             ltms.append(loaded_ltm)
 
         return ltms
+    
+# endregion
 
 # endregion
 

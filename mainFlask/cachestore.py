@@ -25,7 +25,9 @@ class CacheStore:
         return cls(db, app)
     
     #region GET
-    #TODO: maybe hold active author?
+    
+    #region Author
+
     _authors = None #use dict to go from O(n) to O(1)
     _loaded_all_authors = False
 
@@ -56,6 +58,10 @@ class CacheStore:
         self._authors[id] = author
         return author
     
+    # endregion
+    
+    # region Chat
+
     _chats = None
 
     def get_all_chats_by_author_id(self, author_id):
@@ -106,6 +112,10 @@ class CacheStore:
         self._chats[id] = chat
         return chat
     
+    # endregion
+
+    #region Message
+    
     _messages = None
     _loaded_all_messages = False
 
@@ -118,7 +128,27 @@ class CacheStore:
             self._loaded_all_messages = True
 
         return list(self._messages.values())
+    
+    def get_message_by_id(self):
 
+        if not isinstance(id, int):
+            return None
+
+        from mainFlask.db_handling import get_message_by_id
+
+        if self._messages is None:
+            self._messages = {}
+
+        if id in self._messages:
+            return self._messages[id]
+        
+        message = get_message_by_id(self._db, self._app, id) #db_handling function
+        self._messages[id] = message
+        return message
+    
+    # endregion
+
+    #region LTM
 
     _ltms = None
 
@@ -134,14 +164,14 @@ class CacheStore:
 
         ltms: list[LTMatch] = get_all_ltms_by_msg_id_and_chat_id(self._db, self._app, msg_id, chat_id)
         return ltms
-
-
-
-
-
+    
+    # endregion
+    
     # endregion
 
     #region CREATE 
+
+    #region LTM
 
     def create_lt_match(self, lt_match: LTMatch):
         if lt_match is None:
@@ -157,6 +187,8 @@ class CacheStore:
 
         self._ltms[generated_id] = lt_match
         return lt_match
+    
+    # endregion
 
 
     # endregion 
