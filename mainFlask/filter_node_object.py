@@ -124,11 +124,7 @@ class FilterNodeObject(FilterNode):
                         matches = pattern.finditer(original_content)
                     else:
                         # Not regex, not whole word: simple substring
-                        index = content.find(query)
-                        if index != -1:
-                            matches = [re.Match]  # dummy placeholder
-                            matched_word = original_content[index:index+len(self._searchbar_input)]
-                            self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color))
+                        if self._try_append_result_substring(msg, content, query, self._searchbar_input, original_content):
                             continue
 
                     for match in matches:
@@ -148,10 +144,7 @@ class FilterNodeObject(FilterNode):
                         content = original_content if self._case_sensitive else original_content.lower()
                         query = keyword if self._case_sensitive else keyword.lower()
 
-                        index = content.find(query)
-                        if index != -1:
-                            matched_word = original_content[index:index+len(keyword)]
-                            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color))
+                        if self._try_append_result_substring(msg, content, query, keyword, original_content):
                             continue
 
                 return self._search_result_list
@@ -167,10 +160,7 @@ class FilterNodeObject(FilterNode):
                         content = original_content if self._case_sensitive else original_content.lower()
                         query = keyword if self._case_sensitive else keyword.lower()
 
-                        index = content.find(query)
-                        if index != -1:
-                            matched_word = original_content[index:index+len(keyword)]
-                            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color))
+                        if self._try_append_result_substring(msg, content, query, keyword, original_content):
                             continue
 
                 return self._search_result_list
@@ -192,3 +182,11 @@ class FilterNodeObject(FilterNode):
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
 
 
+    def _try_append_result_substring(self, msg, content, query, keyword, original_content):
+        index = content.find(query)
+        if index != -1:
+            matched_word = original_content[index:index+len(keyword)]
+            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color))
+            return True
+        
+        return False
