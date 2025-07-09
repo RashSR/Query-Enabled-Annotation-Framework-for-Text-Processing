@@ -155,21 +155,9 @@ class FilterNodeObject(FilterNode):
 
                 return self._search_result_list
             case FilterNodeGroup.RULE_ID:
-                loaded_msgs = CacheStore.Instance().get_message_by_error_rule_id(self._selected_value)
-                for msg in loaded_msgs:
-                    for error in msg.error_list:
-                        if error.rule_id == self._selected_value:
-                            if self._convert_error_to_search_result(error, msg):
-                                continue
-                return self._search_result_list
+                return self._filter_by_error_attr('rule_id')
             case FilterNodeGroup.CATEGORY:
-                loaded_msgs = CacheStore.Instance().get_message_by_error_category(self._selected_value)
-                for msg in loaded_msgs:
-                    for error in msg.error_list:
-                        if error.category == self._selected_value:
-                            if self._convert_error_to_search_result(error, msg):
-                                continue
-                return self._search_result_list
+                return self._filter_by_error_attr('category')
             case FilterNodeGroup.EMOJI:
                 return []
             case FilterNodeGroup.AUTHOR:
@@ -185,21 +173,18 @@ class FilterNodeObject(FilterNode):
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
 
-    def _convert_error_to_search_result(self, error, msg):
-        startPos = error.start_pos
-        endPos = error.end_pos
-        keyword = msg.content[startPos:endPos]
+    def _filter_by_error_attr(self, attr_name):
+        if attr_name == 'rule_id':
+            loaded_msgs = CacheStore.Instance().get_message_by_error_rule_id(self._selected_value)
+        elif attr_name == 'category':
+            loaded_msgs = CacheStore.Instance().get_message_by_error_category(self._selected_value)
+        else:
+            return []
 
-        original_content = msg.content
-        content = original_content if self._case_sensitive else original_content.lower()
-        query = keyword if self._case_sensitive else keyword.lower()
-        return self._try_append_result_substring(msg, content, query, keyword, original_content)
-
-    def _try_append_result_substring(self, msg, content, query, keyword, original_content):
-        index = content.find(query)
-        if index != -1:
-            matched_word = original_content[index:index+len(keyword)]
-            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color))
-            return True
+        for msg in loaded_msgs:
+            for error in msg.error_list:
+                if getattr(error, attr_name) == self._selected_value:
+                    self._convert_error_to_search_result(error, msg)
         
-        return False
+        return self._search_result_list
+
