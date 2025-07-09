@@ -4,6 +4,7 @@ from .filter_type import FilterType
 from classes.message import Message
 from classes.author import Author
 from .search_result import SearchResult
+from .cachestore import CacheStore
 import re
 
 class FilterNodeObject(FilterNode):
@@ -102,6 +103,27 @@ class FilterNodeObject(FilterNode):
 
         return toString
 
+    @staticmethod
+    def get_values(filter_node_group: FilterNodeGroup, author: Author):
+        match filter_node_group:
+            case (FilterNodeGroup.WORD | FilterNodeGroup.EMOJI):
+                #enables textfield
+                return []
+            case FilterNodeGroup.RULE_ID:
+                return author.get_error_rule_ids()
+            case FilterNodeGroup.CATEGORY:
+                return author.get_error_categories()
+            case FilterNodeGroup.AUTHOR:
+                author_names = []
+                all_authors = CacheStore.Instance().get_all_authors()
+                for author in all_authors:
+                    author_names.append(author.name)
+
+                return author_names 
+            case _: 
+                #default case
+                raise ValueError(f"Unknown filter type: {filter_node_group}")
+
     def get_result(self, author: Author) -> list[SearchResult]:
         match self._filter_node_group:
             case FilterNodeGroup.WORD:
@@ -135,30 +157,20 @@ class FilterNodeObject(FilterNode):
             case FilterNodeGroup.RULE_ID:
                 msgs = author.get_messages_by_error_rule_id(self._selected_value)
                 self._convert_error_to_search_result_from_messages(msgs)
-                
+
                 return self._search_result_list
             case FilterNodeGroup.CATEGORY:
                 msgs = author.get_messages_by_error_category(self._selected_value) #if selected_value is empty -> give all
                 self._convert_error_to_search_result_from_messages(msgs)
 
                 return self._search_result_list
-            case _: 
-                #default case
-                raise ValueError(f"Unknown filter type: {self._filter_node_group}")
-            
-    @staticmethod
-    def get_values(filter_node_group: FilterNodeGroup, author: Author):
-        match filter_node_group:
-            case FilterNodeGroup.WORD:
+            case FilterNodeGroup.EMOJI:
                 return []
-            case FilterNodeGroup.RULE_ID:
-                return author.get_error_rule_ids()
-            case FilterNodeGroup.CATEGORY:
-                return author.get_error_categories()
+            case FilterNodeGroup.AUTHOR:
+                return []
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
-
 
     def _convert_error_to_search_result_from_messages(self, msgs):
         for msg in msgs:
