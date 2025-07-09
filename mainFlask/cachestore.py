@@ -170,6 +170,18 @@ class CacheStore:
         messages = get_message_by_error_category(self._db, self._app, category)
         for msg in messages:
             self._messages[msg.message_id] = msg
+
+        return messages
+    
+    def get_message_by_error_rule_id(self, rule_id: str):
+        from mainFlask.db_handling import get_message_by_error_rule_id
+
+        if self._messages is None:
+            self._messages = {}
+        
+        messages = get_message_by_error_rule_id(self._db, self._app, rule_id)
+        for msg in messages:
+            self._messages[msg.message_id] = msg
             
         return messages
 

@@ -109,7 +109,20 @@ def get_message_by_error_category(db: SQLAlchemy, app: Flask, error_category: st
         for row in result:
             msg = _convert_db_row_to_message(row, tableHasChatIds=False)
             messages.append(msg) #TODO liste kann noch duplikat beeinhalten
-            print(msg)
+
+        return messages
+    
+def get_message_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str):
+    with app.app_context():
+        result = db.session.execute(
+            text("SELECT * FROM message_join_lt_match WHERE rule_id = :rule_id"),
+            {'rule_id': error_rule_id}
+        )
+
+        messages = []
+        for row in result:
+            msg = _convert_db_row_to_message(row, tableHasChatIds=False)
+            messages.append(msg) #TODO liste kann noch duplikat beeinhalten
 
         return messages
 
