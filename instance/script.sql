@@ -31,19 +31,18 @@ SELECT * FROM message;
 DROP TABLE message;
 
 CREATE TABLE message (
-    id INTEGER NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     chat_id INTEGER NOT NULL,
     sender_id INTEGER NOT NULL,
     timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
     content TEXT NOT NULL,
     quoted_message_id INTEGER,
-    error_dict_json TEXT,
     annotated_text TEXT,
-    PRIMARY KEY (id, chat_id),
     FOREIGN KEY (chat_id) REFERENCES chat(id),
     FOREIGN KEY (sender_id) REFERENCES author(id),
     FOREIGN KEY (quoted_message_id) REFERENCES message(id)
 );
+
 
 INSERT INTO message VALUES ()
 
