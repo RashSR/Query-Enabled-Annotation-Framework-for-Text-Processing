@@ -15,6 +15,7 @@ class Message:
         self._ltmatch_ids = []
         self._annotated_text = annotated_text
         self._chat = chat
+        self._search_results = []
 
     def __str__(self):
         toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
@@ -72,7 +73,6 @@ class Message:
     def error_list(self, value):
         self._error_list = value
 
-    #return author
     @property
     def sender(self):
         return self._sender
@@ -113,6 +113,14 @@ class Message:
     @chat.setter
     def chat(self, value):
         self._chat = value
+
+    @property
+    def search_results(self):
+        return self._search_results
+    
+    @search_results.setter
+    def search_results(self, value):
+        self._search_results = value
 
     def hasCategory(self, category):
         if category in self.get_error_categories():
