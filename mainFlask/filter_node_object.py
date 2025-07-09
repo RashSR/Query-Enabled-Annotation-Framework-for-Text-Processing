@@ -167,6 +167,9 @@ class FilterNodeObject(FilterNode):
             case FilterNodeGroup.EMOJI:
                 return []
             case FilterNodeGroup.AUTHOR:
+                author = CacheStore.Instance().get_author_by_name(self._selected_value)
+                messages = author.get_all_own_messages()
+                #TODO return as searchresult
                 return []
             case _: 
                 #default case

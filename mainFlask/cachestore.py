@@ -64,7 +64,7 @@ class CacheStore:
         if self._authors is None:
             self._authors = {}
 
-        for author in self._authors:
+        for author in self._authors.values():
             if author.name == name:
                 return author
             
