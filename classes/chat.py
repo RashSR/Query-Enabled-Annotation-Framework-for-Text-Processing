@@ -93,6 +93,15 @@ class Chat:
             for rid in msg.get_error_ruleIds()
         ]
         return all_rule_ids
+    
+    def get_messages_by_error_rule_id_and_author(self, rule_id, author):
+        msgs = []
+        if rule_id in self.get_error_rule_ids_by_author(author):
+            for msg in self.get_messages_by_author(author):
+                if msg.hasRuleId(rule_id):
+                    msgs.append(msg)
+
+        return msgs
 
     def get_error_categories(self) -> list[str]:
         all_categories = [

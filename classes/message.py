@@ -119,6 +119,12 @@ class Message:
             return True
         
         return False
+    
+    def hasRuleId(self, rule_id):
+        if rule_id in self.get_error_ruleIds():
+            return True
+        
+        return False
 
     #TODO: add group functionality 
     def get_recipient(self):

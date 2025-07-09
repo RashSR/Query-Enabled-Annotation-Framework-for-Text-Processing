@@ -1,6 +1,5 @@
 from classes.chat import Chat
 from mainFlask.cachestore import CacheStore
-import utils
 
 class Author:
     def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
@@ -159,4 +158,12 @@ class Author:
             for chat in self.chats:
                 msgs.extend(chat.get_messages_by_error_category_and_author(category, self))
         
+        return msgs
+    
+    def get_messages_by_error_rule_id(self, rule_id):
+        msgs = []
+        if rule_id in self.get_error_rule_ids():
+            for chat in self.chats:
+                msgs.extend(chat.get_messages_by_error_rule_id_and_author(rule_id, self))
+
         return msgs
