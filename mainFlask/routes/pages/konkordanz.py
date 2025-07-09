@@ -45,6 +45,7 @@ def konkordanz_view():
 
         keyword = kw #TODO: remove this and give the view a proper header
     
+    #TODO: get all messages and then only show searchresults
     if filter_node_object_count > 0:
         results = starting_filter_node.get_full_result(author)
 

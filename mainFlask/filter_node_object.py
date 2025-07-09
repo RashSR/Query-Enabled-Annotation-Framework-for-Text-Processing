@@ -169,8 +169,12 @@ class FilterNodeObject(FilterNode):
             case FilterNodeGroup.AUTHOR:
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
                 messages = author.get_all_own_messages()
-                #TODO return as searchresult
-                return []
+                #TODO Maybe change result table? msg jump only works if active author is selected right
+                for msg in messages:
+                    sr = SearchResult(msg, msg.content, "")
+                    sr.left = msg.content
+                    self._search_result_list.append(sr)
+                return self._search_result_list
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
