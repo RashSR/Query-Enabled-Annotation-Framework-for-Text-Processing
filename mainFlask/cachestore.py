@@ -106,6 +106,20 @@ class CacheStore:
         self._chats[id] = chat
         return chat
     
+    _messages = None
+    _loaded_all_messages = False
+
+    def get_all_messages(self):
+        from mainFlask.db_handling import get_all_messages
+
+        if self._messages is None or self._loaded_all_messages is False:
+            messages = get_all_messages(self._db, self._app)
+            self._messages = {message.id: message for message in messages}
+            self._loaded_all_messages = True
+
+        return list(self._messages.values())
+
+
     _ltms = None
 
     def get_all_ltms_by_msg_id_and_chat_id(self, msg_id, chat_id):
