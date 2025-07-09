@@ -38,7 +38,6 @@ def konkordanz_view():
         ww = bool(request.args.get(f'whole_word[{i}]'))
         rg = bool(request.args.get(f'use_regex[{i}]'))
         
-        
         fno = FilterNodeObject(FilterNodeGroup(typ), kw, scp, cs, ww, rg)
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
         fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group, author)

@@ -58,9 +58,24 @@ class CacheStore:
         self._authors[id] = author
         return author
     
+    def get_author_by_name(self, name: str):
+        from mainFlask.db_handling import get_author_by_name 
+
+        if self._authors is None:
+            self._authors = {}
+
+        for author in self._authors:
+            if author.name == name:
+                return author
+            
+        author = get_author_by_name(self._db, self._app, name)
+        self._authors[author.id] = author
+        return author
+        
+    
     # endregion
     
-    # region Chat
+    #region Chat
 
     _chats = None
 
