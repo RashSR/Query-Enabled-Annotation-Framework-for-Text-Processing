@@ -34,14 +34,14 @@ class Message:
         return False
     
     def add_error(self, error: LTMatch):
-        self._error_list.append(error)
+        self.error_list.append(error)
 
     #improves performance with seen. from WC O(n²) to O(n)
     def get_error_ruleIds(self) -> list[str]:
         seen = set()
         rule_ids = []
 
-        for ltm in self._error_list:
+        for ltm in self.error_list:
             rid = ltm.rule_id
             if rid not in seen: #because this is O(1) in avg case
                 seen.add(rid)
@@ -55,7 +55,7 @@ class Message:
         seen = set()
         category_ids = []
 
-        for ltm in self._error_list:
+        for ltm in self.error_list:
             cid = ltm.category
             if cid not in seen: #because this is O(1) in avg case
                 seen.add(cid)

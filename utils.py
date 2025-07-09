@@ -100,6 +100,8 @@ def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
         #just high int value
         #print(f"Dep: {token.dep}") 
         #print(f"Shape: {token.shape}")
+        #print(f"Text: {token.text}, Start: {token.idx}, End: {token.idx + len(token)}") #TODO for dic with positions
+        #Idea for annotation: a class with msg_id start index, end index and comment
         print(f"isAlpha: {token.is_alpha}")
         print(f"isStop: {token.is_stop}")
         if token.pos_ == "VERB":
