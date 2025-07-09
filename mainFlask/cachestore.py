@@ -139,12 +139,12 @@ class CacheStore:
 
         if self._messages is None or self._loaded_all_messages is False:
             messages = get_all_messages(self._db, self._app)
-            self._messages = {message.id: message for message in messages}
+            self._messages = {message.message_id: message for message in messages}
             self._loaded_all_messages = True
 
         return list(self._messages.values())
     
-    def get_message_by_id(self):
+    def get_message_by_id(self, id):
 
         if not isinstance(id, int):
             return None
@@ -161,6 +161,18 @@ class CacheStore:
         self._messages[id] = message
         return message
     
+    def get_message_by_error_category(self, category: str):
+        from mainFlask.db_handling import get_message_by_error_category
+
+        if self._messages is None:
+            self._messages = {}
+        
+        messages = get_message_by_error_category(self._db, self._app, category)
+        for msg in messages:
+            self._messages[msg.message_id] = msg
+            
+        return messages
+
     # endregion
 
     #region LTM

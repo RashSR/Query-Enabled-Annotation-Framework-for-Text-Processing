@@ -136,7 +136,7 @@ class Message:
 
     #TODO: add group functionality 
     def get_recipient(self):
-        chat_participants: list = self._chat.participants.copy()
+        chat_participants: list = self.chat.participants.copy()
         chat_participants = [p for p in chat_participants if p.id != self._sender.id]
 
         if len(chat_participants) == 1:

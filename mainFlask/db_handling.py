@@ -97,6 +97,24 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         
         #TODO: only load stuff that is not available
 
+#TODO: idea -> for get requests add dictionary like [param, value] -> SELECT * FROM message_with_ltm_ids WHERE param = :value
+def get_message_by_error_category(db: SQLAlchemy, app: Flask, error_category: str):
+    with app.app_context():
+        result = db.session.execute(
+            text("SELECT * FROM message_join_lt_match WHERE category = :category"),
+            {'category': error_category}
+        )
+
+        messages = []
+        for row in result:
+            msg = _convert_db_row_to_message(row, tableHasChatIds=False)
+            messages.append(msg) #TODO liste kann noch duplikat beeinhalten
+            print(msg)
+
+        return messages
+
+
+
 # endregion
 
 #region LTM
@@ -165,7 +183,7 @@ def _convert_db_row_to_chat(row) -> Chat:
     loaded_chat = Chat(chat_id, relation, groupname)
     return loaded_chat
 
-def _convert_db_row_to_message(row) -> Message:
+def _convert_db_row_to_message(row, tableHasChatIds: bool = True) -> Message:
     message_id = row[0]
     chat_id = row[1]
     sender_id = row[2]
@@ -174,9 +192,10 @@ def _convert_db_row_to_message(row) -> Message:
     content = row[4] #TODO: add check for row name maybe?
     #quoted_msg is in row[5]
     annotated_text = row[6]
-    ltm_ids = [ltm_id.strip() for ltm_id in row[7].split(',')] if row[7] else []
     loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
-    loaded_message.ltmatch_ids = ltm_ids
+    if tableHasChatIds:
+        ltm_ids = [ltm_id.strip() for ltm_id in row[7].split(',')] if row[7] else []
+        loaded_message.ltmatch_ids = ltm_ids
     return loaded_message
 
 def _convert_db_row_to_ltm(row) -> LTMatch:
