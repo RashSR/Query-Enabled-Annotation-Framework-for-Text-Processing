@@ -98,7 +98,7 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         #TODO: only load stuff that is not available
 
 #TODO: idea -> for get requests add dictionary like [param, value] -> SELECT * FROM message_with_ltm_ids WHERE param = :value
-def get_message_by_error_category(db: SQLAlchemy, app: Flask, error_category: str):
+def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: str):
     with app.app_context():
         result = db.session.execute(
             text("SELECT * FROM message_join_lt_match WHERE category = :category"),
@@ -112,7 +112,7 @@ def get_message_by_error_category(db: SQLAlchemy, app: Flask, error_category: st
 
         return messages
     
-def get_message_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str):
+def get_messages_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str):
     with app.app_context():
         result = db.session.execute(
             text("SELECT * FROM message_join_lt_match WHERE rule_id = :rule_id"),

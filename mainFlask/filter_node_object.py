@@ -175,9 +175,9 @@ class FilterNodeObject(FilterNode):
 
     def _filter_by_error_attr(self, attr_name):
         if attr_name == 'rule_id':
-            loaded_msgs = CacheStore.Instance().get_message_by_error_rule_id(self._selected_value)
+            loaded_msgs = CacheStore.Instance().get_messages_by_error_rule_id(self._selected_value)
         elif attr_name == 'category':
-            loaded_msgs = CacheStore.Instance().get_message_by_error_category(self._selected_value)
+            loaded_msgs = CacheStore.Instance().get_messages_by_error_category(self._selected_value)
         else:
             return []
 
