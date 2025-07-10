@@ -131,12 +131,18 @@ class FilterNodeObject(FilterNode):
                     # Not regex, not whole word: simple substring
                     my_msgs = CacheStore.Instance().get_messages_by_substring_in_content(self._searchbar_input)
                     for msg in my_msgs:
-                        print(msg)
+                        text = msg.content
+                        pattern = self._searchbar_input
+
+                        matches = re.finditer(pattern, text)
+
+                        for match in matches:
+                            print(f"Match at index {match.start()} to {match.end()-1}")
+
                     return []
 
                 for msg in author.get_all_own_messages():
                     original_content = msg.content
-                    content = original_content if self._case_sensitive else original_content.lower()
                     query = self._searchbar_input if self._case_sensitive else self._searchbar_input.lower()
 
                     matches = []
