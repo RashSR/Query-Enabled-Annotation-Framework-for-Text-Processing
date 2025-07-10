@@ -100,13 +100,13 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
 #TODO: idea -> for get requests add dictionary like [param, value] -> SELECT * FROM message_with_ltm_ids WHERE param = :value
 def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: str):
     with app.app_context():
-        result = db.session.execute(
+        results = db.session.execute(
             text("SELECT * FROM message_join_lt_match WHERE category = :category"),
             {'category': error_category}
         )
 
         messages = []
-        for row in result:
+        for row in results:
             msg = _convert_db_row_to_message(row, tableHasChatIds=False)
             messages.append(msg) #TODO liste kann noch duplikat beeinhalten
 
@@ -114,17 +114,33 @@ def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: s
     
 def get_messages_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str):
     with app.app_context():
-        result = db.session.execute(
+        results = db.session.execute(
             text("SELECT * FROM message_join_lt_match WHERE rule_id = :rule_id"),
             {'rule_id': error_rule_id}
         )
 
         messages = []
-        for row in result:
+        for row in results:
             msg = _convert_db_row_to_message(row, tableHasChatIds=False)
             messages.append(msg) #TODO liste kann noch duplikat beeinhalten
 
         return messages
+
+def get_messages_by_substring_in_content(db: SQLAlchemy, app: Flask, search_string: str):
+    with app.app_context():
+        results = db.session.execute(
+            text("SELECT * FROM message_with_ltm_ids WHERE content LIKE :search_string "), #for case_sensitiv -> WHERE content LIKE :search_string COLLATE BINARY
+            {'search_string': f"%{search_string}%"}
+        )
+
+        #TODO: make this call modular
+        messages = []
+        for row in results:
+            msg = _convert_db_row_to_chat(row)
+            messages.append(msg)
+
+        return messages
+
 
 
 

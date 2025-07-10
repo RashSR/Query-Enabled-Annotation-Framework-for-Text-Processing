@@ -184,6 +184,20 @@ class CacheStore:
             self._messages[msg.message_id] = msg
             
         return messages
+    
+    def get_messages_by_substring_in_content(self, search_string: str):
+        from mainFlask import get_messages_by_substring_in_content
+
+        #TODO: make this call modular
+        if self._messages is None:
+            self._messages = {}
+
+        messages = get_messages_by_substring_in_content(self._db, self._app, search_string)
+        #TODO make this call modular
+        for msg in messages:
+            self._messages[msg.message_id] = msg
+        
+        return messages
 
     # endregion
 
