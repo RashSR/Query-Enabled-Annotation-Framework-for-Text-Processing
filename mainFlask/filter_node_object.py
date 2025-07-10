@@ -197,4 +197,18 @@ class FilterNodeObject(FilterNode):
                     self._convert_error_to_search_result(error, msg)
         
         return self._search_result_list
+    
+    def _convert_error_to_search_result(self, error, msg):
+        startPos = error.start_pos
+        endPos = error.end_pos
+        keyword = msg.content[startPos:endPos]
+
+        original_content = msg.content
+        content = original_content
+
+        index = content.find(keyword)
+        if index != -1:
+            matched_word = original_content[index:index+len(keyword)]
+            #TODO only matches first occurrence
+            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color))
 
