@@ -186,7 +186,7 @@ class CacheStore:
         return messages
     
     def get_messages_by_substring_in_content(self, search_string: str):
-        from mainFlask import get_messages_by_substring_in_content
+        from mainFlask.db_handling import get_messages_by_substring_in_content
 
         #TODO: make this call modular
         if self._messages is None:

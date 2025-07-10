@@ -136,7 +136,7 @@ def get_messages_by_substring_in_content(db: SQLAlchemy, app: Flask, search_stri
         #TODO: make this call modular
         messages = []
         for row in results:
-            msg = _convert_db_row_to_chat(row)
+            msg = _convert_db_row_to_message(row)
             messages.append(msg)
 
         return messages

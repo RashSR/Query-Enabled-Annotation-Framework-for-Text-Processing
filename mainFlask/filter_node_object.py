@@ -127,6 +127,13 @@ class FilterNodeObject(FilterNode):
     def get_result(self, author: Author) -> list[SearchResult]:
         match self._filter_node_group:
             case FilterNodeGroup.WORD:
+                if not self._use_regex and not self._case_sensitive and not self._whole_word:
+                    # Not regex, not whole word: simple substring
+                    my_msgs = CacheStore.Instance().get_messages_by_substring_in_content(self._searchbar_input)
+                    for msg in my_msgs:
+                        print(msg)
+                    return []
+
                 for msg in author.get_all_own_messages():
                     original_content = msg.content
                     content = original_content if self._case_sensitive else original_content.lower()
@@ -144,10 +151,7 @@ class FilterNodeObject(FilterNode):
                         flags = 0 if self._case_sensitive else re.IGNORECASE
                         pattern = re.compile(r'\b{}\b'.format(re.escape(query)), flags)
                         matches = pattern.finditer(original_content)
-                    else:
-                        # Not regex, not whole word: simple substring
-                        if self._try_append_result_substring(msg, content, query, self._searchbar_input, original_content):
-                            continue
+                        
 
                     for match in matches:
                         matched_word = match.group()
