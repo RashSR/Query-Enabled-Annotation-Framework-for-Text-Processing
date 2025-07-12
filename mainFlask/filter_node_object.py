@@ -2,7 +2,6 @@ from .filter_node_group import FilterNodeGroup
 from .filter_node import FilterNode
 from .filter_type import FilterType
 from classes.message import Message
-from classes.author import Author
 from .search_result import SearchResult
 from .cachestore import CacheStore
 import re
@@ -95,7 +94,7 @@ class FilterNodeObject(FilterNode):
         return toString
 
     @staticmethod
-    def get_values(filter_node_group: FilterNodeGroup, author: Author):
+    def get_values(filter_node_group: FilterNodeGroup):
         match filter_node_group:
             case (FilterNodeGroup.WORD | FilterNodeGroup.EMOJI):
                 #enables textfield

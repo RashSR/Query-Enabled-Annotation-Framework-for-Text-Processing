@@ -14,8 +14,5 @@ def filter_node_groups():
     except ValueError:
         abort(400, f"Unknown filter type {raw_type!r}")
 
-    author = utils.get_active_author(session)
-    author.analyze_all_own_messages()  # TODO: should be unnecessary
-
-    values = FilterNodeObject.get_values(ftype, author) or []
+    values = FilterNodeObject.get_values(ftype) or []
     return jsonify(values)
