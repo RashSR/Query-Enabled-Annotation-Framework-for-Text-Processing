@@ -9,10 +9,7 @@ import utils
 konkordanz_bp = Blueprint('konkordanz', __name__)
 
 #TODO: the jump dont highlight case sensitiv, keyword gets multiple highlights
-#maybe like in strg+shift+f VS Code with that icons 
-#wenn teilstring gefunden wird -> in Hit sollte das gefundene Wort stehen, aber der gefundene wort gehíghlighted werden
 #Dem Nutzer die Möglichkeit geben ob er e.g. Fehler in einer Nachricht suchen mag oder direktes Wort oder Nachfolger/Vorgänger
-#check if a author is selected -> show nothing if not
 @konkordanz_bp.route("/konkordanz")
 def konkordanz_view():
 
@@ -20,7 +17,6 @@ def konkordanz_view():
     
     #All messages should be anlyzed when entering this view
     author = utils.get_active_author(session)
-    author.analyze_all_own_messages()
 
     keyword = None
 

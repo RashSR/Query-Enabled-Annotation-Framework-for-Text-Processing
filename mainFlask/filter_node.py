@@ -2,7 +2,6 @@ from __future__ import annotations #is needed so i can use FilterNode in the add
 from .filter_type import FilterType
 from .search_result import SearchResult
 from functools import reduce
-from classes.author import Author
 from classes.message import Message
 import utils
 
