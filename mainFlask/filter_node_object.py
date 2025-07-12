@@ -161,7 +161,8 @@ class FilterNodeObject(FilterNode):
 
                     for match in matches:
                         matched_word = match.group()
-                        self._search_result_list.append(SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color))
+                        sr = SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color)
+                        self._add_search_results_messages(sr)
 
                 return self._search_result_list
             case FilterNodeGroup.RULE_ID:
@@ -177,7 +178,7 @@ class FilterNodeObject(FilterNode):
                 for msg in messages:
                     sr = SearchResult(msg, msg.content, "")
                     sr.left = msg.content
-                    self._search_result_list.append(sr)
+                    self._add_search_results_messages(sr)
                 return self._search_result_list
             case _: 
                 #default case
@@ -198,7 +199,7 @@ class FilterNodeObject(FilterNode):
         
         return self._search_result_list
     
-    def _convert_error_to_search_result(self, error, msg):
+    def _convert_error_to_search_result(self, error, msg: Message):
         startPos = error.start_pos
         endPos = error.end_pos
         keyword = msg.content[startPos:endPos]
@@ -210,5 +211,13 @@ class FilterNodeObject(FilterNode):
         if index != -1:
             matched_word = original_content[index:index+len(keyword)]
             #TODO only matches first occurrence
-            self._search_result_list.append(SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color))
+            sr = SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color)
+            self._add_search_results_messages(sr)
+
+    def _add_search_results_messages(self, sr: SearchResult):
+        self._search_result_list.append(sr)
+        sr.message.search_results.append(sr)
+        self._result_messages.append(sr.message)
+
+            
 

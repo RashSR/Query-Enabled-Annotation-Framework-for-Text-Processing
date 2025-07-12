@@ -30,7 +30,7 @@ def konkordanz_view():
     results = []
 
     for i in range(filter_node_object_count):
-        kw   = request.args.get(f'keyword[{i}]', '')
+        searchbar_input   = request.args.get(f'keyword[{i}]', '')
         typ  = request.args.get(f'selected_type[{i}]')
         scp  = request.args.get(f'selected_scope[{i}]')
         
@@ -38,16 +38,19 @@ def konkordanz_view():
         ww = bool(request.args.get(f'whole_word[{i}]'))
         rg = bool(request.args.get(f'use_regex[{i}]'))
         
-        fno = FilterNodeObject(FilterNodeGroup(typ), kw, scp, cs, ww, rg)
+        fno = FilterNodeObject(FilterNodeGroup(typ), searchbar_input, scp, cs, ww, rg)
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
         fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group, author)
         starting_filter_node.add_leaf(fno)
 
-        keyword = kw #TODO: remove this and give the view a proper header
+        keyword = searchbar_input #TODO: remove this and give the view a proper header
     
     #TODO: get all messages and then only then show searchresults that are asked for. Message needs a list[SearchResult]. the jinja iterates over that.
     if filter_node_object_count > 0:
         results = starting_filter_node.get_full_result(author)
+        for fno in starting_filter_node.leaves:
+            for msg in fno.result_messages:
+                print(msg)
 
     return render_template(
         "konkordanz.html",
