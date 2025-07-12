@@ -51,7 +51,7 @@ def konkordanz_view():
         for msg in fno.result_messages:
             for sr in msg.search_results:
                 results.append(sr)
-
+    
     return render_template(
         "konkordanz.html",
         results=results,

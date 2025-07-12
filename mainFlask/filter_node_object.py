@@ -208,7 +208,14 @@ class FilterNodeObject(FilterNode):
     def _add_search_results_messages(self, sr: SearchResult):
         self._search_result_list.append(sr)
         sr.message.search_results.append(sr)
-        self._result_messages.append(sr.message)
+        if not self._is_already_in_result_messages(sr.message):
+            self._result_messages.append(sr.message)
+
+    def _is_already_in_result_messages(self, new_message: Message):
+        for stored_message in self._result_messages:
+            if stored_message.message_id == new_message.message_id:
+                return True
+        return False
 
             
 

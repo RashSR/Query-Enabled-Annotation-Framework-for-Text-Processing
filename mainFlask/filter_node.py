@@ -23,7 +23,7 @@ class FilterNode:
     @property
     def result_messages(self) -> list[Message]:       
         for fn in self._leaves:
-            self.result_messages.extend(fn.result_messages)
+            self._result_messages.extend(fn.result_messages) #TODO: bind length to the correct result count
                 
         return self._result_messages
     
