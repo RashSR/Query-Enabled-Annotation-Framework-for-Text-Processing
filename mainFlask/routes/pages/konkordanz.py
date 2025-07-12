@@ -48,9 +48,8 @@ def konkordanz_view():
     #TODO: get all messages and then only then show searchresults that are asked for. Message needs a list[SearchResult]. the jinja iterates over that.
     if filter_node_object_count > 0:
         results = starting_filter_node.get_full_result(author)
-        for fno in starting_filter_node.leaves:
-            for msg in fno.result_messages:
-                print(msg)
+        for msg in fno.result_messages:
+            print(msg)
 
     return render_template(
         "konkordanz.html",

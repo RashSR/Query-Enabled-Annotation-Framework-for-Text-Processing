@@ -21,7 +21,10 @@ class FilterNode:
         self._filter_type = value
 
     @property
-    def result_messages(self) -> list[Message]:
+    def result_messages(self) -> list[Message]:       
+        for fn in self._leaves:
+            self.result_messages.extend(fn.result_messages)
+                
         return self._result_messages
     
     @result_messages.setter
