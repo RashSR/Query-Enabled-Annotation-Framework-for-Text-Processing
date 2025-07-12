@@ -27,14 +27,15 @@ def konkordanz_view():
 
     for i in range(filter_node_object_count):
         searchbar_input   = request.args.get(f'keyword[{i}]', '')
-        typ  = request.args.get(f'selected_type[{i}]')
-        scp  = request.args.get(f'selected_scope[{i}]')
+        selected_type  = request.args.get(f'selected_type[{i}]')
+        selected_scope  = request.args.get(f'selected_scope[{i}]')
         
-        cs = bool(request.args.get(f'case_sensitive[{i}]'))
-        ww = bool(request.args.get(f'whole_word[{i}]'))
-        rg = bool(request.args.get(f'use_regex[{i}]'))
+        case_sensitive = bool(request.args.get(f'case_sensitive[{i}]'))
+        whole_word = bool(request.args.get(f'whole_word[{i}]'))
+        use_regex = bool(request.args.get(f'use_regex[{i}]'))
         
-        fno = FilterNodeObject(FilterNodeGroup(typ), searchbar_input, scp, cs, ww, rg)
+        fno = FilterNodeObject(FilterNodeGroup(selected_type), searchbar_input, selected_scope, case_sensitive, whole_word, use_regex)
+        #is used to cycle through 10 pre selected colors form the settings singleton
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
         fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group, author)
         starting_filter_node.add_leaf(fno)

@@ -19,27 +19,27 @@ class FilterNodeObject(FilterNode):
         self._selected_color = None
 
     @property
-    def filter_node_group(self):
+    def filter_node_group(self) -> FilterNodeGroup:
         return self._filter_node_group
     
     @filter_node_group.setter
-    def filter_node_group(self, value: str):
+    def filter_node_group(self, value: str) -> None:
         self._filter_node_group = value
 
     @property
-    def searchbar_input(self):
+    def searchbar_input(self) -> str:
         return self._searchbar_input
     
     @searchbar_input.setter
-    def searchbar_input(self, value: str):
+    def searchbar_input(self, value: str) -> None:
         self._searchbar_input = value
 
     @property
-    def selected_value(self):
+    def selected_value(self) -> str:
         return self._selected_value
     
     @selected_value.setter
-    def selected_value(self, value):
+    def selected_value(self, value: str) -> None:
         self._selected_value = value
 
     @property
@@ -67,19 +67,19 @@ class FilterNodeObject(FilterNode):
         self._use_regex = bool(value)
 
     @property
-    def search_result_list(self):
+    def search_result_list(self) -> list[SearchResult]:
         return self._search_result_list
     
     @search_result_list.setter
-    def search_result_list(self, value: list[SearchResult]):
+    def search_result_list(self, value: list[SearchResult]) -> None:
         self._search_result_list = value
 
     @property
-    def selected_color(self):
+    def selected_color(self) -> str:
         return self._selected_color
     
     @selected_color.setter
-    def selected_color(self, value):
+    def selected_color(self, value: str) -> None:
         self._selected_color = value
 
     def __str__(self):
