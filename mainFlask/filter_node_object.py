@@ -128,8 +128,10 @@ class FilterNodeObject(FilterNode):
                         matches = re.finditer(pattern, text)
 
                         for match in matches:
-                            print(f"Match at index {match.start()} to {match.end()-1}")
-
+                            matched_word = match.group()
+                            #print(f"Match at index {match.start()} to {match.end()-1}") #TODO: somehow show that the second match is needed
+                            sr = SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color)
+                            self._add_search_results_messages(sr)
                     return []
 
                 for msg in CacheStore.Instance().get_all_messages():
