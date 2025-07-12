@@ -4,7 +4,7 @@ from .search_result import SearchResult
 from functools import reduce
 from classes.author import Author
 from classes.message import Message
-
+import utils
 
 class FilterNode:
     def __init__(self, filter_type: FilterType):
@@ -21,10 +21,22 @@ class FilterNode:
         self._filter_type = value
 
     @property
-    def result_messages(self) -> list[Message]:       
+    def result_messages(self) -> list[Message]:
+        result_message_lists = []       
         for fn in self._leaves:
-            self._result_messages.extend(fn.result_messages) #TODO: bind length to the correct result count
-                
+            result_message_lists.append(fn.result_messages)
+
+        match self._filter_type:
+            case FilterType.OR:
+                self._result_messages = utils.or_result_messages(result_message_lists)
+            case FilterType.AND:
+                self._result_messages = utils.and_result_messages(result_message_lists)
+            case FilterType.OBJECT:
+                return self._result_messages
+            case _: 
+                #default case
+                return []
+
         return self._result_messages
     
     @result_messages.setter
@@ -47,9 +59,9 @@ class FilterNode:
         full_result = []
         match self._filter_type:
             case FilterType.AND:
-                return self._calc_and_result(author)
+                self._calc_and_result(author)
             case FilterType.OR:
-                return self._calc_or_result(author)
+                self._calc_or_result(author)
             case FilterType.NOT:
                 return full_result
             case FilterType.OBJECT:
@@ -57,7 +69,18 @@ class FilterNode:
             case _: 
                 #default case
                 return full_result
-            
+        
+        return self._gather_search_results()
+    
+    def _gather_search_results(self) -> list[SearchResult]:
+        search_result_list = []
+        for msg in self.result_messages:
+            for search_result in msg.search_results:
+                search_result_list.append(search_result)
+        
+        return search_result_list
+
+
     def _calc_and_result(self, author: Author) -> list[SearchResult]:
         all_results = self._get_all_search_result_lists(author)
         #intersects all lists and conjoins them
