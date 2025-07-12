@@ -170,6 +170,16 @@ def get_all_distinct_categories_from_ltms(db:SQLAlchemy, app: Flask):
             categories.append(category)
 
         return categories
+    
+def get_all_distinct_rule_ids_from_ltms(db:SQLAlchemy, app: Flask):
+    with app.app_context():
+        rule_ids: list[str] = []
+        result = db.session.execute(text("SELECT DISTINCT rule_id FROM lt_match"))
+        for row in result:
+            rule_id = row[0]
+            rule_ids.append(rule_id)
+
+        return rule_ids
 
 # endregion
 

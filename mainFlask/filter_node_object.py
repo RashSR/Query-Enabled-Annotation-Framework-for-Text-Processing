@@ -101,7 +101,7 @@ class FilterNodeObject(FilterNode):
                 #enables textfield
                 return []
             case FilterNodeGroup.RULE_ID:
-                return author.get_error_rule_ids() #TODO: get from DB
+                return CacheStore.Instance().get_all_distinct_rule_ids_from_ltms()
             case FilterNodeGroup.CATEGORY:
                 return CacheStore.Instance().get_all_distinct_categories_from_ltms()
             case FilterNodeGroup.AUTHOR:

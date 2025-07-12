@@ -222,6 +222,11 @@ class CacheStore:
         from mainFlask.db_handling import get_all_distinct_categories_from_ltms
         categories = get_all_distinct_categories_from_ltms(self._db, self._app)
         return categories
+
+    def get_all_distinct_rule_ids_from_ltms(self):
+        from mainFlask.db_handling import get_all_distinct_rule_ids_from_ltms
+        rule_ids = get_all_distinct_rule_ids_from_ltms(self._db, self._app)
+        return rule_ids
     
     # endregion
     
