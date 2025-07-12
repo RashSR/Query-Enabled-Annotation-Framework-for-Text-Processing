@@ -3,12 +3,14 @@ from .filter_type import FilterType
 from .search_result import SearchResult
 from functools import reduce
 from classes.author import Author
+from classes.message import Message
 
 
 class FilterNode:
     def __init__(self, filter_type: FilterType):
         self._filter_type = filter_type
         self._leaves : list[FilterNode] = []
+        self._result_messages = []
 
     @property
     def filter_type(self) -> FilterType:
@@ -17,6 +19,14 @@ class FilterNode:
     @filter_type.setter
     def filter_type(self, value: FilterType):
         self._filter_type = value
+
+    @property
+    def result_messages(self) -> list[Message]:
+        return self._result_messages
+    
+    @result_messages.setter
+    def result_messages(self, value: list[Message]):
+        self._result_messages = value
 
     @property
     def leaves(self) -> list[FilterNode]:

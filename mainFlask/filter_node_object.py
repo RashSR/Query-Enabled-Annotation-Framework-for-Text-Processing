@@ -16,7 +16,6 @@ class FilterNodeObject(FilterNode):
         self._case_sensitive = case_sensitive
         self._whole_word = whole_word
         self._use_regex = use_regex
-        self._result_messages = []
         self._search_result_list = []
         self._selected_color = None
 
@@ -67,14 +66,6 @@ class FilterNodeObject(FilterNode):
     @use_regex.setter
     def use_regex(self, value: bool) -> None:
         self._use_regex = bool(value)
-
-    @property
-    def result_messages(self) -> list[Message]:
-        return self._result_messages
-    
-    @result_messages.setter
-    def result_messages(self, value: list[Message]):
-        self._result_messages = value
 
     @property
     def search_result_list(self):
