@@ -218,6 +218,11 @@ class CacheStore:
         ltms: list[LTMatch] = get_all_ltms_by_msg_id_and_chat_id(self._db, self._app, msg_id, chat_id)
         return ltms
     
+    def get_all_distinct_categories_from_ltms(self):
+        from mainFlask.db_handling import get_all_distinct_categories_from_ltms
+        categories = get_all_distinct_categories_from_ltms(self._db, self._app)
+        return categories
+    
     # endregion
     
     # endregion

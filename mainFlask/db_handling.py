@@ -160,7 +160,17 @@ def get_all_ltms_by_msg_id_and_chat_id(db:SQLAlchemy, app: Flask, msg_id: int, c
             ltms.append(loaded_ltm)
 
         return ltms
-    
+
+def get_all_distinct_categories_from_ltms(db:SQLAlchemy, app: Flask):
+    with app.app_context():
+        categories: list[str] = []
+        result = db.session.execute(text("SELECT DISTINCT category FROM lt_match"))
+        for row in result:
+            category = row[0]
+            categories.append(category)
+
+        return categories
+
 # endregion
 
 # endregion

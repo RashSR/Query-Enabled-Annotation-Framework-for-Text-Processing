@@ -103,7 +103,7 @@ class FilterNodeObject(FilterNode):
             case FilterNodeGroup.RULE_ID:
                 return author.get_error_rule_ids() #TODO: get from DB
             case FilterNodeGroup.CATEGORY:
-                return author.get_error_categories() #TODO: get from DB
+                return CacheStore.Instance().get_all_distinct_categories_from_ltms()
             case FilterNodeGroup.AUTHOR:
                 author_names = []
                 all_authors = CacheStore.Instance().get_all_authors()
