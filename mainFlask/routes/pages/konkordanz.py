@@ -46,7 +46,7 @@ def konkordanz_view():
         keyword = searchbar_input #TODO: remove this and give the view a proper header
     
     if filter_node_object_count > 0:
-        results = starting_filter_node.get_full_result()
+        results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
     
     return render_template(
         "konkordanz.html",
