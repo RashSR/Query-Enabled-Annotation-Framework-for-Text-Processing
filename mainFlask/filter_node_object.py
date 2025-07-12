@@ -101,9 +101,9 @@ class FilterNodeObject(FilterNode):
                 #enables textfield
                 return []
             case FilterNodeGroup.RULE_ID:
-                return author.get_error_rule_ids()
+                return author.get_error_rule_ids() #TODO: get from DB
             case FilterNodeGroup.CATEGORY:
-                return author.get_error_categories()
+                return author.get_error_categories() #TODO: get from DB
             case FilterNodeGroup.AUTHOR:
                 author_names = []
                 all_authors = CacheStore.Instance().get_all_authors()
@@ -115,7 +115,7 @@ class FilterNodeObject(FilterNode):
                 #default case
                 raise ValueError(f"Unknown filter type: {filter_node_group}")
 
-    def get_result(self, author: Author) -> list[SearchResult]:
+    def get_result(self) -> list[SearchResult]:
         match self._filter_node_group:
             case FilterNodeGroup.WORD:
                 if not self._use_regex and not self._case_sensitive and not self._whole_word:
@@ -132,7 +132,7 @@ class FilterNodeObject(FilterNode):
 
                     return []
 
-                for msg in author.get_all_own_messages():
+                for msg in CacheStore.Instance().get_all_messages():
                     original_content = msg.content
                     query = self._searchbar_input if self._case_sensitive else self._searchbar_input.lower()
 

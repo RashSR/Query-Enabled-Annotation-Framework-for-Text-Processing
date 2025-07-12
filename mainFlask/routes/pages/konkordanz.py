@@ -25,7 +25,7 @@ def konkordanz_view():
     keyword = None
 
     filter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
-    starting_filter_node  = FilterNode(FilterType.OR)
+    starting_filter_node  = FilterNode(FilterType.AND)
 
     results = []
 
@@ -45,9 +45,8 @@ def konkordanz_view():
 
         keyword = searchbar_input #TODO: remove this and give the view a proper header
     
-    #TODO: get all messages and then only then show searchresults that are asked for. Message needs a list[SearchResult]. the jinja iterates over that.
     if filter_node_object_count > 0:
-        results = starting_filter_node.get_full_result(author)
+        results = starting_filter_node.get_full_result()
     
     return render_template(
         "konkordanz.html",
