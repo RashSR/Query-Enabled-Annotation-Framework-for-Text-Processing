@@ -18,8 +18,6 @@ def konkordanz_view():
     #All messages should be anlyzed when entering this view
     author = utils.get_active_author(session)
 
-    keyword = None
-
     filter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
     starting_filter_node  = FilterNode(FilterType.AND)
 
@@ -37,10 +35,8 @@ def konkordanz_view():
         fno = FilterNodeObject(FilterNodeGroup(selected_type), searchbar_input, selected_scope, case_sensitive, whole_word, use_regex)
         #is used to cycle through 10 pre selected colors form the settings singleton
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
-        fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group, author)
+        fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group)
         starting_filter_node.add_leaf(fno)
-
-        keyword = searchbar_input #TODO: remove this and give the view a proper header
     
     if filter_node_object_count > 0:
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
@@ -48,7 +44,6 @@ def konkordanz_view():
     return render_template(
         "konkordanz.html",
         results=results,
-        keyword=keyword,
         filter_node_groups=FilterNodeGroup,
         nodes = starting_filter_node.leaves
     )

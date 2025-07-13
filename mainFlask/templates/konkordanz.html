@@ -6,11 +6,8 @@
     <i class="fas fa-align-left"></i> Konkordanzansicht
   </h2>
 
-  {% if keyword %}
-      <p>Suchergebnisse für: <strong>{{ keyword }}</strong></p>
-  {% endif %}
-
   {% if results %}
+  <p>Suchergebnisse: </p>
   <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
     <thead>
       <tr>
@@ -27,7 +24,7 @@
         <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: {{ result.selected_color }}; white-space: nowrap;">
           <div style="display: flex; align-items: center; gap: 6px;">
             <span>{{ result.matched_word }}</span>
-            <a href="{{ url_for('chat.chat_view', chat_id=result.message.chat_id, keyword=keyword) }}#msg-{{ result.message.message_id }}" 
+            <a href="{{ url_for('chat.chat_view', chat_id=result.message.chat_id) }}#msg-{{ result.message.message_id }}" 
               title="Im vollständigen Chat anzeigen" 
               style="text-decoration: none;">
               <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" 
@@ -49,8 +46,8 @@
       {% endfor %}
     </tbody>
   </table>
-  {% elif keyword %}
-      <p style="margin-top: 1rem; color: #888;">Keine Treffer für "<strong>{{ keyword }}</strong>" gefunden.</p>
+  {% else %}
+      <p style="margin-top: 1rem; color: #888;">Keine Treffer gefunden.</p>
   {% endif %}
 
   <!-- Search Form -->
