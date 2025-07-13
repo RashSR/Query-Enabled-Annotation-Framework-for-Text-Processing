@@ -4,7 +4,6 @@ from mainFlask.filter_node_group import FilterNodeGroup
 from mainFlask.filter_node import FilterNode
 from mainFlask.filter_type import FilterType
 from mainFlask.settings import Settings
-import utils
 
 konkordanz_bp = Blueprint('konkordanz', __name__)
 
@@ -14,9 +13,6 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 def konkordanz_view():
 
     settings = Settings.Instance()
-    
-    #All messages should be anlyzed when entering this view
-    author = utils.get_active_author(session)
 
     filter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
     starting_filter_node  = FilterNode(FilterType.AND)
