@@ -206,9 +206,12 @@ class FilterNodeObject(FilterNode):
             sr = SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color)
             self._add_search_results_messages(sr)
 
+    #TODO: maybe needs rework?
     def _add_search_results_messages(self, sr: SearchResult):
-        self._search_result_list.append(sr)
-        sr.message.search_results.append(sr)
+        if not sr in self._search_result_list:
+            self._search_result_list.append(sr)
+        if not sr in sr.message.search_results:
+            sr.message.search_results.append(sr)
         if not self._is_already_in_result_messages(sr.message):
             self._result_messages.append(sr.message)
 
