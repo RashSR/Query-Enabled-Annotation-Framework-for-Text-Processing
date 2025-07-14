@@ -14,14 +14,15 @@ def konkordanz_view():
 
     settings = Settings.Instance()
 
+    starting_filter_node  = FilterNode(FilterType.AND)
+    
     # Print all hierarchical query params for debugging
     print('--- Hierarchical Query Params ---')
     for k, v in request.args.items():
         print(f'{k}: {v}')
+    
 
-    print('-------------------------------')
     filter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
-    starting_filter_node  = FilterNode(FilterType.AND)
 
     results = []
 
@@ -46,3 +47,6 @@ def konkordanz_view():
         filter_node_groups=FilterNodeGroup,
         nodes = starting_filter_node.leaves
     )
+
+def _create_filter_nodes():
+    return None
