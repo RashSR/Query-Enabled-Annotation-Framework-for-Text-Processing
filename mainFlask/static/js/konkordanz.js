@@ -14,11 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ───────── References & state ───────── */
   const template  = document.getElementById('search-template');
+  const complexTemplate = document.getElementById('complex-search-template');
   const container = document.getElementById('extra-search-fields');
-  const addBtn    = document.getElementById('add-search-btn');
+  // Use global add buttons
+  const globalAddBtn    = document.getElementById('global-add-search-btn');
+  const globalAddComplexBtn = document.getElementById('global-add-complex-search-btn');
 
   let toggleIndex = 1;
-  let barIndex    = 0;
+let nodeCounter = 0;
+
+  // Track complex search groups
+  // No longer needed: complexGroups
 
   /* ───────── Helpers ───────── */
 
@@ -44,16 +50,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- keyword input (grab ONCE!) ---
     const keywordInput = clone.querySelector('input[name="keyword"]');
 
-    /* index field names */
-    keywordInput.name = `keyword[${barIndex}]`;
-    leftSel.name      = `selected_type[${barIndex}]`;
-    rightSel.name     = `selected_scope[${barIndex}]`;
+    // Hierarchical index logic
+    let parentIndex = '';
+    if (arguments.length && arguments[0]) {
+      const parent = arguments[0];
+      parentIndex = parent.dataset.nodeIndex;
+    }
+    // Find next child index for this parent
+    let childNum = 0;
+    if (parentIndex) {
+      // Count children for this parent
+      const groupContainer = arguments[0].querySelector('.grouped-searches');
+      childNum = groupContainer ? groupContainer.children.length : 0;
+    } else {
+      // Root level
+      childNum = container.querySelectorAll('.search-group').length;
+    }
+    let nodeIndex = parentIndex ? `${parentIndex}.${childNum}` : `${childNum}`;
+    clone.dataset.nodeIndex = nodeIndex;
+
+    // Use nodeIndex for field names
+    keywordInput.name = `keyword[${nodeIndex}]`;
+    leftSel.name      = `selected_type[${nodeIndex}]`;
+    rightSel.name     = `selected_scope[${nodeIndex}]`;
 
     clone.querySelectorAll('.hidden-toggle').forEach(cb => {
       const base = cb.name.replace('[]', '');
-      cb.name = `${base}[${barIndex}]`;
+      cb.name = `${base}[${nodeIndex}]`;
     });
-    barIndex++;
 
     /* keyword starts disabled */
     keywordInput.disabled = true;
@@ -68,20 +92,80 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleIndex++;
 
     addEmptyOption(rightSel);
-    container.appendChild(clone);
+    // If called with a parent, add to its grouped-searches and indent
+    if (arguments.length && arguments[0]) {
+      const parent = arguments[0];
+      let groupContainer = parent.querySelector('.grouped-searches');
+      clone.style.marginLeft = '2rem';
+      groupContainer.appendChild(clone);
+    } else {
+      container.appendChild(clone);
+    }
   }
 
   /* ───────── Initial setup ───────── */
 
-  if (!document.querySelector('.search-group')) {
-      createSearchBar();
-  }                   // one bar on load
-  addBtn.addEventListener('click', createSearchBar);
+  // Add complex search bar logic
+  function createComplexSearchBar(parent) {
+    const frag = complexTemplate.content.cloneNode(true);
+    const clone = frag.querySelector('.complex-search-group');
+    if (!clone) return console.error('Template missing .complex-search-group');
+    // Hierarchical index logic
+    let parentIndex = '';
+    if (parent) {
+      parentIndex = parent.dataset.nodeIndex;
+    }
+    // Find next child index for this parent
+    let childNum = 0;
+    if (parentIndex) {
+      const groupContainer = parent.querySelector('.grouped-searches');
+      childNum = groupContainer ? groupContainer.children.length : 0;
+    } else {
+      childNum = container.querySelectorAll('.complex-search-group').length;
+    }
+    let nodeIndex = parentIndex ? `${parentIndex}.${childNum}` : `${childNum}`;
+    clone.dataset.nodeIndex = nodeIndex;
+
+    // Set field name for logic operator
+    const logicSel = clone.querySelector('select[name="logic_operator"]');
+    logicSel.name = `logic_operator[${nodeIndex}]`;
+
+    if (parent) {
+      let groupContainer = parent.querySelector('.grouped-searches');
+      clone.style.marginLeft = '2rem';
+      groupContainer.appendChild(clone);
+    } else {
+      container.appendChild(clone);
+      clone.style.marginLeft = '0';
+    }
+  }
 
   /* ───────── Delegated clicks ───────── */
+  let selectedNode = null;
+
+  // Selection logic
   document.addEventListener('click', (e) => {
-    if (e.target.matches('.delete-search-btn')) {
-      e.target.closest('.search-group')?.remove();
+    // Select only complex search node on click
+    if (e.target.closest('.complex-search-group') && !e.target.classList.contains('delete-complex-search-btn')) {
+      selectNode(e.target.closest('.complex-search-group'));
+      return;
+    }
+    // Delete logic (match button or child elements)
+    if (e.target.closest('.delete-search-btn')) {
+      const btn = e.target.closest('.delete-search-btn');
+      const searchBar = btn.closest('.search-group');
+      if (searchBar) {
+        searchBar.remove();
+      }
+      return;
+    }
+    if (e.target.closest('.delete-complex-search-btn')) {
+      const btn = e.target.closest('.delete-complex-search-btn');
+      const complexBar = btn.closest('.complex-search-group');
+      if (complexBar) {
+        complexBar.remove();
+        if (selectedNode && !document.body.contains(selectedNode)) selectedNode = null;
+      }
       return;
     }
     if (e.target.matches('.search-toggle')) {
@@ -90,6 +174,43 @@ document.addEventListener('DOMContentLoaded', () => {
         cb.checked = !cb.checked;
         e.target.classList.toggle('active', cb.checked);
       }
+    }
+  });
+
+  function selectNode(node) {
+    if (selectedNode) selectedNode.classList.remove('selected');
+    selectedNode = node;
+    selectedNode.classList.add('selected');
+  }
+
+  // Global add buttons
+  globalAddBtn.addEventListener('click', () => {
+    if (selectedNode) {
+      // Add normal search as child of selected node
+      if (selectedNode.classList.contains('complex-search-group')) {
+        createSearchBar(selectedNode);
+      } else if (selectedNode.classList.contains('search-group')) {
+        // Add as sibling (same parent)
+        const parent = selectedNode.parentElement.closest('.complex-search-group');
+        if (parent) createSearchBar(parent);
+        else createSearchBar();
+      }
+    } else {
+      // No selection: add at root
+      createSearchBar();
+    }
+  });
+  globalAddComplexBtn.addEventListener('click', () => {
+    if (selectedNode) {
+      if (selectedNode.classList.contains('complex-search-group')) {
+        createComplexSearchBar(selectedNode);
+      } else if (selectedNode.classList.contains('search-group')) {
+        const parent = selectedNode.parentElement.closest('.complex-search-group');
+        if (parent) createComplexSearchBar(parent);
+        else createComplexSearchBar();
+      }
+    } else {
+      createComplexSearchBar();
     }
   });
 

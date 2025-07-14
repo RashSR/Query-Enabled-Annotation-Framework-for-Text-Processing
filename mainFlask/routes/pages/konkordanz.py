@@ -14,6 +14,11 @@ def konkordanz_view():
 
     settings = Settings.Instance()
 
+    # Print all hierarchical query params for debugging
+    print('--- Hierarchical Query Params ---')
+    for k, v in request.args.items():
+        print(f'{k}: {v}')
+    print('-------------------------------')
     filter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
     starting_filter_node  = FilterNode(FilterType.AND)
 
@@ -23,20 +28,17 @@ def konkordanz_view():
         searchbar_input   = request.args.get(f'keyword[{i}]', '')
         selected_type  = request.args.get(f'selected_type[{i}]')
         selected_scope  = request.args.get(f'selected_scope[{i}]')
-        
         case_sensitive = bool(request.args.get(f'case_sensitive[{i}]'))
         whole_word = bool(request.args.get(f'whole_word[{i}]'))
         use_regex = bool(request.args.get(f'use_regex[{i}]'))
-        
         fno = FilterNodeObject(FilterNodeGroup(selected_type), searchbar_input, selected_scope, case_sensitive, whole_word, use_regex)
-        #is used to cycle through 10 pre selected colors form the settings singleton
         fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
         fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group)
         starting_filter_node.add_leaf(fno)
-    
+
     if filter_node_object_count > 0:
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
-    
+
     return render_template(
         "konkordanz.html",
         results=results,

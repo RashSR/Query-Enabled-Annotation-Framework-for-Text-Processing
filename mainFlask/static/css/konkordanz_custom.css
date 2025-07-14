@@ -1,0 +1,9 @@
+/* Highlight on hover and selection for search nodes */
+.complex-search-group:hover {
+  background: #e9ecef;
+  cursor: pointer;
+}
+.complex-search-group.selected {
+  background: #b3d7ff;
+  border: 2px solid #0074D9;
+}

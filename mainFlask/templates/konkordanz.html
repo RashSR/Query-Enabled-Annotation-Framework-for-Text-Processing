@@ -132,10 +132,20 @@
 
 
       <!-- ADD SEARCH BUTTON -->
-      <button type="button" id="add-search-btn"
-              style="margin-top:1rem;padding:0.4rem 1rem;background:#6c757d;color:white;border:none;">
-          + Weitere einfache Suche
-      </button>
+
+      <!-- ADD SEARCH BUTTONS -->
+
+      <!-- GLOBAL ADD BUTTONS -->
+      <div id="global-add-buttons" style="margin-top:2rem; display:flex; gap:0.5rem;">
+        <button type="button" id="global-add-search-btn"
+                style="padding:0.4rem 1rem;background:#6c757d;color:white;border:none;">
+            + Weitere einfache Suche
+        </button>
+        <button type="button" id="global-add-complex-search-btn"
+                style="padding:0.4rem 1rem;background:#343a40;color:white;border:none;">
+            + Komplexe Suche (AND/OR/NOT)
+        </button>
+      </div>
 
       <button type="submit"
           style="margin-top: 1rem; padding: 0.4rem 1rem; font-size: 1rem; background-color: #0074D9; color: white; border: none;">
@@ -186,10 +196,31 @@
       </button>
     </div>
   </template>
+
+<!-- Template for complex search bar -->
+<template id="complex-search-template">
+  <div class="complex-search-group" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; padding:0.5rem 0.5rem; border-radius:6px; border:1px solid #e0e0e0;">
+    <div style="display:flex; gap:0.5rem; align-items:center;">
+      <label for="logic-operator" style="font-weight:bold;">Logik:</label>
+      <select name="logic_operator" class="logic-operator-dropdown">
+        <option value="AND">AND</option>
+        <option value="OR">OR</option>
+        <option value="NOT">NOT</option>
+      </select>
+      <button type="button" class="delete-complex-search-btn"
+              style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px;">
+        ✕
+      </button>
+    </div>
+    <!-- Child container for tree view -->
+    <div class="grouped-searches"></div>
+  </div>
+</template>
 </div>
 {% endblock %}
 
 {% block scripts %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/konkordanz_custom.css') }}">
   <script src="{{ url_for('static', filename='js/konkordanz.js') }}"></script>
 {% endblock %}
 
