@@ -1,9 +1,17 @@
 /* Highlight on hover and selection for search nodes */
+
+.complex-search-group {
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  vertical-align: top;
+}
 .complex-search-group:hover {
-  background: #e9ecef;
+  background: #e0e0e0;
   cursor: pointer;
 }
 .complex-search-group.selected {
-  background: #b3d7ff;
-  border: 2px solid #0074D9;
+  background: #d1d1d1;
+  border: 2px solid #888;
 }
