@@ -145,12 +145,7 @@ let nodeCounter = 0;
 
   // Selection logic
   document.addEventListener('click', (e) => {
-    // Select only complex search node on click
-    if (e.target.closest('.complex-search-group') && !e.target.classList.contains('delete-complex-search-btn')) {
-      selectNode(e.target.closest('.complex-search-group'));
-      return;
-    }
-    // Delete logic (match button or child elements)
+    // Delete logic (match button or child elements) FIRST
     if (e.target.closest('.delete-search-btn')) {
       const btn = e.target.closest('.delete-search-btn');
       const searchBar = btn.closest('.search-group');
@@ -174,6 +169,12 @@ let nodeCounter = 0;
         cb.checked = !cb.checked;
         e.target.classList.toggle('active', cb.checked);
       }
+      return;
+    }
+    // Select only complex search node on click (after delete/icon logic)
+    if (e.target.closest('.complex-search-group')) {
+      selectNode(e.target.closest('.complex-search-group'));
+      return;
     }
   });
 
