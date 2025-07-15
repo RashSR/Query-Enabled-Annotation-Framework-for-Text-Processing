@@ -79,7 +79,6 @@ class FilterNode:
         
         return search_result_list
 
-
     def _calc_and_result(self) -> list[SearchResult]:
         all_results = self._get_all_search_result_lists()
         #intersects all lists and conjoins them
@@ -99,6 +98,10 @@ class FilterNode:
             all_results.append(leaf_result)
 
         return all_results
+    
+    def __str__(self):
+        toString = f"Type: {self._filter_type}, Leaves: {len(self._leaves)}"
+        return toString
 
     
 

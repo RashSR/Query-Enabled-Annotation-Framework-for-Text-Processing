@@ -80,7 +80,9 @@ def _convert_tree_to_filter_node(tree_dict: dict, level: int = 0):
     for key, value in tree_dict.items():
         print(f"{_make_indents(level)}+Key: {key}, Value: {value}")
         if key == 'logic_operator':
-            print("I FOUND LOGIC: " + value)
+            new_filter_node = FilterNode(FilterType(value))
+            print(new_filter_node)
+            #auf ebene von von hier hat man immer noch 
 
         if isinstance(value, dict):
             _convert_tree_to_filter_node(value, level+1)
