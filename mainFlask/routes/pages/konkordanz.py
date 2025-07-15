@@ -63,7 +63,6 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
     use_regex = None
 
     for key, value in tree_dict.items():
-        print(f"{_make_indents(level)}+Key: {key}, Value: {value}")
         match key:
             case 'logic_operator':
                 new_filter_node = FilterNode(FilterType(value)) #muss als parent object übergeben werden
@@ -99,10 +98,3 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
                 _convert_tree_to_filter_node(value, parent, level+1)
             else:
                 _convert_tree_to_filter_node(value, new_filter_node, level+1)
-
-def _make_indents(indents: int) -> str:
-    return_string = ""
-    for i in range(indents):
-        return_string = return_string + "---"
-
-    return return_string
