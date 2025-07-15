@@ -221,6 +221,10 @@ class FilterNodeObject(FilterNode):
             if stored_message.message_id == new_message.message_id:
                 return True
         return False
+    
+    def __str__(self):
+        toString = f"filter_node_group: {self._filter_node_group}, input: {self._searchbar_input}, selected_value: {self._selected_value}"
+        return toString
 
             
 

@@ -11,6 +11,7 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 @konkordanz_bp.route("/konkordanz")
 def konkordanz_view():
 
+
     #create a filter node that is not visible to the user -> all nodes are under this
     starting_filter_node  = FilterNode(FilterType.OR)
     tree = parse_query_tree(request.args)
@@ -20,6 +21,7 @@ def konkordanz_view():
 
     #TODO: bug: if i search for e.g. 'ah' as whole_word AND case_sensitive -> i get two results of the same message and the same hit! 
     if len(starting_filter_node.leaves) > 0:
+        starting_filter_node.print_leave_structure()
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
 
     return render_template(
@@ -53,11 +55,13 @@ def parse_query_tree(args):
     return tree.get('children', {})
 
 def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int = 0):
+    indent = _make_indents(level)
     new_filter_node = None
     leaf_data = {'selected_type': None, 'selected_scope': None, 'keyword': None,
         'case_sensitive': None, 'whole_word': None, 'use_regex': None }
 
     for i, (key, value) in enumerate(tree_dict.items()):
+        print(f"{indent}+Key: {key}, Value: {value}")
         match key:
             case 'logic_operator':
                 new_filter_node = FilterNode(FilterType(value))
@@ -65,7 +69,7 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
             case 'selected_type' | 'selected_scope' | 'keyword' | 'case_sensitive' | 'whole_word' | 'use_regex':
                 leaf_data[key] = value
 
-        #if last index is reached and left dropdown is selected -> create new fno
+        #if last index is reached and left dropdown is selected -> create new fno 
         if i == len(tree_dict) - 1 and leaf_data['selected_type']:
             node_object = FilterNodeObject(
                 FilterNodeGroup(leaf_data['selected_type']),
@@ -81,3 +85,6 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
         if isinstance(value, dict):
             child_parent = new_filter_node if new_filter_node else parent
             _convert_tree_to_filter_node(value, child_parent, level + 1)
+
+def _make_indents(indents: int) -> str:
+    return "---" * indents

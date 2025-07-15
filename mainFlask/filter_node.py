@@ -105,6 +105,17 @@ class FilterNode:
     
     def __repr__(self):
         return f"FilterNode(type={self._filter_type}, leaves={len(self._leaves)})"
+    
+    def print_leave_structure(self, level = 0):
+        indent = self._make_indents(level)
+        print(f"{indent}+{self}")
+        for fn in self._leaves:
+            fn.print_leave_structure(level+1)
+
+    def _make_indents(self, indents: int) -> str:
+        return "---" * indents
+
+
 
     
 
