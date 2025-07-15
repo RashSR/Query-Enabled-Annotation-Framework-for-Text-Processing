@@ -17,8 +17,8 @@ def konkordanz_view():
 
     results = []
 
+    #TODO: bug: if i search for e.g. 'ah' as whole_word AND case_sensitive -> i get two results of the same message and the same hit! 
     if len(starting_filter_node.leaves) > 0:
-        print("i want to print the results")
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
 
     return render_template(
@@ -30,10 +30,6 @@ def konkordanz_view():
 
 
 def parse_query_tree(args):
-    """
-    Parses hierarchical query params (e.g. selected_type[0.1.2]) into a nested tree structure.
-    Returns a nested dict representing the tree.
-    """
     # Collect all indices for all relevant fields
     fields = [
         'logic_operator', 'selected_type', 'selected_scope',
@@ -78,9 +74,6 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
                 selected_type = value
             case 'selected_scope':
                 selected_scope = value
-                new_filter_node = FilterNodeObject(FilterNodeGroup(selected_type), keyword, selected_scope, case_sensitive, whole_word, use_regex)
-                parent.add_leaf(new_filter_node)
-                continue
             case 'keyword':
                 keyword = value
             case 'case_sensitive':
@@ -92,12 +85,16 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
             case _: 
                 #default case
                 print("default")
+
+        if key == list(tree_dict.keys())[-1]:
+            if not selected_type is None:
+                new_filter_node_object = FilterNodeObject(FilterNodeGroup(selected_type), keyword, selected_scope, case_sensitive, whole_word, use_regex)
+                parent.add_leaf(new_filter_node_object)
+                continue
+
         
         #continue recursion
         if isinstance(value, dict):
-            if not parent is None and not new_filter_node is None:
-                parent.add_leaf(new_filter_node)
-
             if new_filter_node is None:
                 _convert_tree_to_filter_node(value, parent, level+1)
             else:
