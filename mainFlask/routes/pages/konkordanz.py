@@ -11,6 +11,7 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 @konkordanz_bp.route("/konkordanz")
 def konkordanz_view():
 
+    #create a filter node that is not visible to the user -> all nodes are under this
     starting_filter_node  = FilterNode(FilterType.OR)
     tree = parse_query_tree(request.args)
     _convert_tree_to_filter_node(tree, starting_filter_node)
@@ -39,9 +40,9 @@ def parse_query_tree(args):
     for key, value in args.items():
         for field in fields:
             if key.startswith(f'{field}['):
-                idx = key[len(field)+1:-1]  # e.g. '0.1.2'
+                idx = key[len(field)+1:-1]  #e.g. '0.1.2'
                 nodes.setdefault(idx, {})[field] = value
-    # Build tree
+
     tree = {}
     for idx in sorted(nodes.keys(), key=lambda x: [int(i) for i in x.split('.')]):
         parts = idx.split('.')
@@ -53,48 +54,30 @@ def parse_query_tree(args):
 
 def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int = 0):
     new_filter_node = None
-    selected_type = None #left dropdown
-    selected_scope = None
+    leaf_data = {'selected_type': None, 'selected_scope': None, 'keyword': None,
+        'case_sensitive': None, 'whole_word': None, 'use_regex': None }
 
-    #only if selected type == 'word'
-    keyword = None #searchbar input
-    case_sensitive = None
-    whole_word = None
-    use_regex = None
-
-    for key, value in tree_dict.items():
+    for i, (key, value) in enumerate(tree_dict.items()):
         match key:
             case 'logic_operator':
-                new_filter_node = FilterNode(FilterType(value)) #muss als parent object übergeben werden
+                new_filter_node = FilterNode(FilterType(value))
                 parent.add_leaf(new_filter_node)
-            case 'children':
-                print("They are children!")
-            case 'selected_type':
-                selected_type = value
-            case 'selected_scope':
-                selected_scope = value
-            case 'keyword':
-                keyword = value
-            case 'case_sensitive':
-                case_sensitive = value
-            case 'whole_word':
-                whole_word = value    
-            case 'use_regex':
-                use_regex = value
-            case _: 
-                #default case
-                print("default")
+            case 'selected_type' | 'selected_scope' | 'keyword' | 'case_sensitive' | 'whole_word' | 'use_regex':
+                leaf_data[key] = value
 
-        if key == list(tree_dict.keys())[-1]:
-            if not selected_type is None:
-                new_filter_node_object = FilterNodeObject(FilterNodeGroup(selected_type), keyword, selected_scope, case_sensitive, whole_word, use_regex)
-                parent.add_leaf(new_filter_node_object)
-                continue
-
+        #if last index is reached and left dropdown is selected -> create new fno
+        if i == len(tree_dict) - 1 and leaf_data['selected_type']:
+            node_object = FilterNodeObject(
+                FilterNodeGroup(leaf_data['selected_type']),
+                leaf_data['keyword'],
+                leaf_data['selected_scope'],
+                leaf_data['case_sensitive'],
+                leaf_data['whole_word'],
+                leaf_data['use_regex']
+            )
+            parent.add_leaf(node_object)
         
         #continue recursion
         if isinstance(value, dict):
-            if new_filter_node is None:
-                _convert_tree_to_filter_node(value, parent, level+1)
-            else:
-                _convert_tree_to_filter_node(value, new_filter_node, level+1)
+            child_parent = new_filter_node if new_filter_node else parent
+            _convert_tree_to_filter_node(value, child_parent, level + 1)
