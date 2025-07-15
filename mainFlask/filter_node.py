@@ -10,7 +10,7 @@ class FilterNode:
         self._filter_type = filter_type
         self._leaves : list[FilterNode] = []
         self._result_messages = []
-
+    
     @property
     def filter_type(self) -> FilterType:
         return self._filter_type
@@ -102,6 +102,9 @@ class FilterNode:
     def __str__(self):
         toString = f"Type: {self._filter_type}, Leaves: {len(self._leaves)}"
         return toString
+    
+    def __repr__(self):
+        return f"FilterNode(type={self._filter_type}, leaves={len(self._leaves)})"
 
     
 

@@ -4,6 +4,7 @@ from .filter_type import FilterType
 from classes.message import Message
 from .search_result import SearchResult
 from .cachestore import CacheStore
+from .settings import Settings
 import re
 
 class FilterNodeObject(FilterNode):
@@ -16,7 +17,8 @@ class FilterNodeObject(FilterNode):
         self._whole_word = whole_word
         self._use_regex = use_regex
         self._search_result_list = []
-        self._selected_color = None
+        self._selected_color = Settings.Instance()._get_next_color()
+        print(self._selected_color)
 
     @property
     def filter_node_group(self) -> FilterNodeGroup:

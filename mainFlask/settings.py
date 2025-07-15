@@ -26,5 +26,12 @@ class Settings:
     "#f032e6",  # Pink
     "#9A6324",  # Brown
     "#808080",  # Gray
-]
+    ]
+
+    _color_index = 0
+
+    def _get_next_color(self):
+        cycled_color = self.highlight_colors[self._color_index % len(self.highlight_colors)]
+        self._color_index = self._color_index + 1
+        return cycled_color
     

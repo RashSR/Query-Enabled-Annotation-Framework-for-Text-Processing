@@ -1,9 +1,8 @@
-from flask import Blueprint, render_template, session, request
+from flask import Blueprint, render_template, request
 from mainFlask.filter_node_object import FilterNodeObject
 from mainFlask.filter_node_group import FilterNodeGroup
 from mainFlask.filter_node import FilterNode
 from mainFlask.filter_type import FilterType
-from mainFlask.settings import Settings
 
 konkordanz_bp = Blueprint('konkordanz', __name__)
 
@@ -12,35 +11,15 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 @konkordanz_bp.route("/konkordanz")
 def konkordanz_view():
 
-    settings = Settings.Instance()
-
-    starting_filter_node  = FilterNode(FilterType.AND)
+    starting_filter_node  = FilterNode(FilterType.OR)
     tree = parse_query_tree(request.args)
-    _convert_tree_to_filter_node(tree)
-    # Print all hierarchical query params for debugging
-    
-    #print('--- Hierarchical Query Params ---')
-    #for k, v in request.args.items():
-        #print(f'{k}: {v}')
-
-    #sfilter_node_object_count = len([k for k in request.args if k.startswith('selected_type[')])
+    _convert_tree_to_filter_node(tree, starting_filter_node)
 
     results = []
-    if False:
-        for i in range(filter_node_object_count):
-            searchbar_input   = request.args.get(f'keyword[{i}]', '')
-            selected_type  = request.args.get(f'selected_type[{i}]')
-            selected_scope  = request.args.get(f'selected_scope[{i}]')
-            case_sensitive = bool(request.args.get(f'case_sensitive[{i}]'))
-            whole_word = bool(request.args.get(f'whole_word[{i}]'))
-            use_regex = bool(request.args.get(f'use_regex[{i}]'))
-            fno = FilterNodeObject(FilterNodeGroup(selected_type), searchbar_input, selected_scope, case_sensitive, whole_word, use_regex)
-            fno.selected_color = settings.highlight_colors[i % len(settings.highlight_colors)]
-            fno.scope_choices = FilterNodeObject.get_values(fno.filter_node_group)
-            starting_filter_node.add_leaf(fno)
 
-        if filter_node_object_count > 0:
-            results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
+    if len(starting_filter_node.leaves) > 0:
+        print("i want to print the results")
+        results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
 
     return render_template(
         "konkordanz.html",
@@ -76,16 +55,53 @@ def parse_query_tree(args):
         cur.setdefault('children', {})[parts[-1]] = nodes[idx]
     return tree.get('children', {})
 
-def _convert_tree_to_filter_node(tree_dict: dict, level: int = 0):
+def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int = 0):
+    new_filter_node = None
+    selected_type = None #left dropdown
+    selected_scope = None
+
+    #only if selected type == 'word'
+    keyword = None #searchbar input
+    case_sensitive = None
+    whole_word = None
+    use_regex = None
+
     for key, value in tree_dict.items():
         print(f"{_make_indents(level)}+Key: {key}, Value: {value}")
-        if key == 'logic_operator':
-            new_filter_node = FilterNode(FilterType(value))
-            print(new_filter_node)
-            #auf ebene von von hier hat man immer noch 
-
+        match key:
+            case 'logic_operator':
+                new_filter_node = FilterNode(FilterType(value)) #muss als parent object übergeben werden
+                parent.add_leaf(new_filter_node)
+            case 'children':
+                print("They are children!")
+            case 'selected_type':
+                selected_type = value
+            case 'selected_scope':
+                selected_scope = value
+                new_filter_node = FilterNodeObject(FilterNodeGroup(selected_type), keyword, selected_scope, case_sensitive, whole_word, use_regex)
+                parent.add_leaf(new_filter_node)
+                continue
+            case 'keyword':
+                keyword = value
+            case 'case_sensitive':
+                case_sensitive = value
+            case 'whole_word':
+                whole_word = value    
+            case 'use_regex':
+                use_regex = value
+            case _: 
+                #default case
+                print("default")
+        
+        #continue recursion
         if isinstance(value, dict):
-            _convert_tree_to_filter_node(value, level+1)
+            if not parent is None and not new_filter_node is None:
+                parent.add_leaf(new_filter_node)
+
+            if new_filter_node is None:
+                _convert_tree_to_filter_node(value, parent, level+1)
+            else:
+                _convert_tree_to_filter_node(value, new_filter_node, level+1)
 
 def _make_indents(indents: int) -> str:
     return_string = ""
@@ -93,21 +109,3 @@ def _make_indents(indents: int) -> str:
         return_string = return_string + "---"
 
     return return_string
-
-
-#       public static void printMyTree(Node root) {
-#           if (root.getRoot() == null) {
-#               root.printNode();
-#           }
-#
-#           if (root.getLeafCount() > 0 && root != null) {
-#               Iterator var1 = root.getLeafs().iterator();
-#
-#               while(var1.hasNext()) {
-#                    Node leaf = (Node)var1.next();
-#                   leaf.printNode();
-#                   printMyTree(leaf);
-#               }
-#           }
-#       }
-#
