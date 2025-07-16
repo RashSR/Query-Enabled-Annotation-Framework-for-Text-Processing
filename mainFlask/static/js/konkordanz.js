@@ -28,6 +28,48 @@ let nodeCounter = 0;
 
   /* ───────── Helpers ───────── */
 
+  // --- On page load, re-enable right dropdowns if left dropdown has a value ---
+  async function restoreRightDropdowns() {
+    document.querySelectorAll('.search-group').forEach(async group => {
+      const left = group.querySelector('select[name^="selected_type"]');
+      const right = group.querySelector('select[name^="selected_scope"]');
+      // Save the current value before repopulating
+      const prevValue = right ? right.value : null;
+      if (left && right && left.value) {
+        try {
+          const resp = await fetch(`/api/filter-values?type=${encodeURIComponent(left.value)}`);
+          if (!resp.ok) throw new Error(await resp.text());
+          const items = await resp.json();
+          right.innerHTML = '';
+          addEmptyOption(right);
+          right.disabled = items.length === 0;
+          items.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = opt.textContent = v;
+            right.appendChild(opt);
+          });
+          // Restore the previous value if present in the new options
+          if (prevValue && Array.from(right.options).some(opt => opt.value === prevValue)) {
+            right.value = prevValue;
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
+  }
+
+  // Store selected value in data attribute before form submit
+  document.querySelector('form')?.addEventListener('submit', () => {
+    document.querySelectorAll('.search-group').forEach(group => {
+      const right = group.querySelector('select[name^="selected_scope"]');
+      if (right) right.dataset.selectedValue = right.value;
+    });
+  });
+
+  // Call restore on page load
+  restoreRightDropdowns();
+
   function addEmptyOption(select) {
     if (!select || select.querySelector('option[value=""]')) return;
     const empty = document.createElement('option');
