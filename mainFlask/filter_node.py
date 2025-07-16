@@ -10,7 +10,16 @@ class FilterNode:
         self._filter_type = filter_type
         self._leaves : list[FilterNode] = []
         self._result_messages = []
+        self._search_results = []
     
+    @property
+    def search_results(self) -> list[SearchResult]:
+        return self._search_results
+    
+    @search_results.setter
+    def search_results(self, value: list[SearchResult]) -> None:
+        self._search_results = value
+
     @property
     def filter_type(self) -> FilterType:
         return self._filter_type
@@ -69,7 +78,9 @@ class FilterNode:
                 #default case
                 return full_result
         
-        return self._gather_search_results()
+        full_result = self._gather_search_results()
+        self._search_results = full_result
+        return full_result
     
     def _gather_search_results(self) -> list[SearchResult]:
         search_result_list = []

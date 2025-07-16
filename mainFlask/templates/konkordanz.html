@@ -60,18 +60,7 @@
         {# Logic node (AND/OR/NOT) #}
         {% if n.filter_type %}
           {% set total_results = 0 %}
-          {% macro count_results(node) %}
-            {% if node.search_result_list is defined %}
-              {{ node.search_result_list|length }}
-            {% elif node.children is defined %}
-              {% set ns = namespace(total=0) %}
-              {% for c in node.children %}
-                {% set ns.total = ns.total + (count_results(c)|int) %}
-              {% endfor %}
-              {{ ns.total }}
-            {% else %}0{% endif %}
-          {% endmacro %}
-          {% set total_results = count_results(n) %}
+          {% set total_results = n.search_results|length %}
           <div class="complex-search-group" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; padding:0.5rem 0.5rem; border-radius:6px; border:1px solid #e0e0e0;">
             <div style="display:flex; gap:0.5rem; align-items:center;">
               <label style="font-weight:bold;">Logik:</label>

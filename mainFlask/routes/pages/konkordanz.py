@@ -53,6 +53,8 @@ def konkordanz_view():
     if len(starting_filter_node.leaves) > 0:
         starting_filter_node.print_leave_structure()
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
+        print(f"Results: {len(results)}")
+
 
     def serialize_node(node):
         # FilterNodeObject (leaf)
@@ -66,13 +68,15 @@ def konkordanz_view():
                 'whole_word': getattr(node, 'whole_word', False),
                 'use_regex': getattr(node, 'use_regex', False),
                 'search_result_list': getattr(node, 'search_result_list', []),
+                'search_results': getattr(node, 'search_result_list', []),
                 'children': None
             }
         # FilterNode (logic node)
         elif hasattr(node, 'leaves'):
             return {
                 'filter_type': getattr(node, 'filter_type', None),
-                'children': [serialize_node(child) for child in node.leaves]
+                'children': [serialize_node(child) for child in node.leaves],
+                'search_results': getattr(node, 'search_results', []),
             }
         return {}
 
