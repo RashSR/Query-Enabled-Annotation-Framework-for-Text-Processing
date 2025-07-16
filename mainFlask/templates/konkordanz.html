@@ -128,14 +128,15 @@
             <!-- Right dropdown -->
             <select name="selected_scope[{{ idx }}]"
                     class="search-konkordanz-dropdown"
-                    {% if not n.scope_choices %}disabled{% endif %}>
+                    {% if n.scope_choices is defined and n.scope_choices|length == 0 %}disabled{% endif %}>
               <option value="" {% if not n.selected_value %}selected{% endif %}>— Please select —</option>
-              {% for val in n.scope_choices %}
-                <option value="{{ val }}"
-                        {% if val == n.selected_value %}selected{% endif %}>
-                  {{ val }}
-                </option>
-              {% endfor %}
+              {% if n.scope_choices is defined and n.scope_choices|length > 0 %}
+                {% for val in n.scope_choices %}
+                  <option value="{{ val }}" {% if val == n.selected_value %}selected{% endif %}>{{ val }}</option>
+                {% endfor %}
+              {% elif n.selected_value %}
+                <option value="{{ n.selected_value }}" selected>{{ n.selected_value }}</option>
+              {% endif %}
             </select>
 
             <!-- Result count display -->
