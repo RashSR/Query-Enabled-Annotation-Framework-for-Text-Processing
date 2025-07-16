@@ -54,11 +54,36 @@ def konkordanz_view():
         starting_filter_node.print_leave_structure()
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
 
+    def serialize_node(node):
+        # FilterNodeObject (leaf)
+        if hasattr(node, 'filter_node_group'):
+            return {
+                'filter_node_group': node.filter_node_group,
+                'searchbar_input': getattr(node, 'searchbar_input', None),
+                'selected_value': getattr(node, 'selected_value', None),
+                'scope_choices': getattr(node, 'scope_choices', []),
+                'case_sensitive': getattr(node, 'case_sensitive', False),
+                'whole_word': getattr(node, 'whole_word', False),
+                'use_regex': getattr(node, 'use_regex', False),
+                'search_result_list': getattr(node, 'search_result_list', []),
+                'children': None
+            }
+        # FilterNode (logic node)
+        elif hasattr(node, 'leaves'):
+            return {
+                'filter_type': getattr(node, 'filter_type', None),
+                'children': [serialize_node(child) for child in node.leaves]
+            }
+        return {}
+
+    # Only pass top-level nodes (children of invisible root), but keep their structure
+    nodes = [serialize_node(child) for child in getattr(starting_filter_node, 'leaves', [])]
+
     return render_template(
         "konkordanz.html",
         results=results,
         filter_node_groups=FilterNodeGroup,
-        nodes = starting_filter_node.leaves
+        nodes=nodes
     )
 
 
