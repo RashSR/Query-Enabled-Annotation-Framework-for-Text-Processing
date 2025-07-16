@@ -196,7 +196,10 @@ let nodeCounter = 0;
   // --- Enable/disable global add buttons based on selection and state ---
   let restrictToComplex = false;
   function updateGlobalAddButtons() {
-    if (!restrictToComplex) {
+    const numSimple = container.querySelectorAll('.search-group').length;
+    const numComplex = container.querySelectorAll('.complex-search-group').length;
+    // If no simple and no complex, both enabled
+    if (numSimple === 0 && numComplex === 0) {
       globalAddBtn.disabled = false;
       globalAddComplexBtn.disabled = false;
       globalAddBtn.classList.remove('disabled');
@@ -205,18 +208,11 @@ let nodeCounter = 0;
       globalAddComplexBtn.style.opacity = '';
       globalAddBtn.style.cursor = '';
       globalAddComplexBtn.style.cursor = '';
+      restrictToComplex = false;
       return;
     }
-    if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
-      globalAddBtn.disabled = false;
-      globalAddComplexBtn.disabled = false;
-      globalAddBtn.classList.remove('disabled');
-      globalAddComplexBtn.classList.remove('disabled');
-      globalAddBtn.style.opacity = '1';
-      globalAddComplexBtn.style.opacity = '1';
-      globalAddBtn.style.cursor = 'pointer';
-      globalAddComplexBtn.style.cursor = 'pointer';
-    } else {
+    // If only one simple at root, disable both
+    if (numSimple === 1 && numComplex === 0) {
       globalAddBtn.disabled = true;
       globalAddComplexBtn.disabled = true;
       globalAddBtn.classList.add('disabled');
@@ -225,7 +221,43 @@ let nodeCounter = 0;
       globalAddComplexBtn.style.opacity = '0.5';
       globalAddBtn.style.cursor = 'not-allowed';
       globalAddComplexBtn.style.cursor = 'not-allowed';
+      restrictToComplex = false;
+      return;
     }
+    // If restrictToComplex is not set, but a complex node exists, set it
+    if (numComplex > 0 && !restrictToComplex) restrictToComplex = true;
+    // If restrictToComplex, use the previous logic
+    if (restrictToComplex) {
+      if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
+        globalAddBtn.disabled = false;
+        globalAddComplexBtn.disabled = false;
+        globalAddBtn.classList.remove('disabled');
+        globalAddComplexBtn.classList.remove('disabled');
+        globalAddBtn.style.opacity = '1';
+        globalAddComplexBtn.style.opacity = '1';
+        globalAddBtn.style.cursor = 'pointer';
+        globalAddComplexBtn.style.cursor = 'pointer';
+      } else {
+        globalAddBtn.disabled = true;
+        globalAddComplexBtn.disabled = true;
+        globalAddBtn.classList.add('disabled');
+        globalAddComplexBtn.classList.add('disabled');
+        globalAddBtn.style.opacity = '0.5';
+        globalAddComplexBtn.style.opacity = '0.5';
+        globalAddBtn.style.cursor = 'not-allowed';
+        globalAddComplexBtn.style.cursor = 'not-allowed';
+      }
+      return;
+    }
+    // Fallback: disable both
+    globalAddBtn.disabled = true;
+    globalAddComplexBtn.disabled = true;
+    globalAddBtn.classList.add('disabled');
+    globalAddComplexBtn.classList.add('disabled');
+    globalAddBtn.style.opacity = '0.5';
+    globalAddComplexBtn.style.opacity = '0.5';
+    globalAddBtn.style.cursor = 'not-allowed';
+    globalAddComplexBtn.style.cursor = 'not-allowed';
   }
 
   // Initial state: enabled
@@ -233,8 +265,15 @@ let nodeCounter = 0;
 
   // Global add buttons
   globalAddBtn.addEventListener('click', () => {
-    if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
+    // Only allow at root if no simple/complex exists
+    const numSimple = container.querySelectorAll('.search-group').length;
+    const numComplex = container.querySelectorAll('.complex-search-group').length;
+    if (numSimple === 0 && numComplex === 0) {
+      createSearchBar();
+      updateGlobalAddButtons();
+    } else if (restrictToComplex && selectedNode && selectedNode.classList.contains('complex-search-group')) {
       createSearchBar(selectedNode);
+      updateGlobalAddButtons();
     }
   });
   globalAddComplexBtn.addEventListener('click', () => {
