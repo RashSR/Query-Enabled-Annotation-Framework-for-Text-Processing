@@ -138,6 +138,8 @@ let nodeCounter = 0;
       container.appendChild(clone);
       clone.style.marginLeft = '0';
     }
+    // Auto-select the new complex node
+    setTimeout(() => selectNode(clone), 0);
   }
 
   /* ───────── Delegated clicks ───────── */
@@ -184,34 +186,87 @@ let nodeCounter = 0;
     selectedNode.classList.add('selected');
   }
 
+
+
+  // --- Enable/disable global add buttons based on selection and state ---
+  let restrictToComplex = false;
+  function updateGlobalAddButtons() {
+    if (!restrictToComplex) {
+      globalAddBtn.disabled = false;
+      globalAddComplexBtn.disabled = false;
+      globalAddBtn.classList.remove('disabled');
+      globalAddComplexBtn.classList.remove('disabled');
+      globalAddBtn.style.opacity = '';
+      globalAddComplexBtn.style.opacity = '';
+      globalAddBtn.style.cursor = '';
+      globalAddComplexBtn.style.cursor = '';
+      return;
+    }
+    if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
+      globalAddBtn.disabled = false;
+      globalAddComplexBtn.disabled = false;
+      globalAddBtn.classList.remove('disabled');
+      globalAddComplexBtn.classList.remove('disabled');
+      globalAddBtn.style.opacity = '1';
+      globalAddComplexBtn.style.opacity = '1';
+      globalAddBtn.style.cursor = 'pointer';
+      globalAddComplexBtn.style.cursor = 'pointer';
+    } else {
+      globalAddBtn.disabled = true;
+      globalAddComplexBtn.disabled = true;
+      globalAddBtn.classList.add('disabled');
+      globalAddComplexBtn.classList.add('disabled');
+      globalAddBtn.style.opacity = '0.5';
+      globalAddComplexBtn.style.opacity = '0.5';
+      globalAddBtn.style.cursor = 'not-allowed';
+      globalAddComplexBtn.style.cursor = 'not-allowed';
+    }
+  }
+
+  // Initial state: enabled
+  updateGlobalAddButtons();
+
   // Global add buttons
   globalAddBtn.addEventListener('click', () => {
-    if (selectedNode) {
-      // Add normal search as child of selected node
-      if (selectedNode.classList.contains('complex-search-group')) {
-        createSearchBar(selectedNode);
-      } else if (selectedNode.classList.contains('search-group')) {
-        // Add as sibling (same parent)
-        const parent = selectedNode.parentElement.closest('.complex-search-group');
-        if (parent) createSearchBar(parent);
-        else createSearchBar();
-      }
-    } else {
-      // No selection: add at root
-      createSearchBar();
+    if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
+      createSearchBar(selectedNode);
     }
   });
   globalAddComplexBtn.addEventListener('click', () => {
-    if (selectedNode) {
-      if (selectedNode.classList.contains('complex-search-group')) {
+    // If restrictToComplex is false, allow adding at root or as child
+    if (!restrictToComplex) {
+      if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
         createComplexSearchBar(selectedNode);
-      } else if (selectedNode.classList.contains('search-group')) {
-        const parent = selectedNode.parentElement.closest('.complex-search-group');
-        if (parent) createComplexSearchBar(parent);
-        else createComplexSearchBar();
+      } else {
+        createComplexSearchBar();
       }
-    } else {
-      createComplexSearchBar();
+      // After first complex node is created, restrict further adds
+      restrictToComplex = true;
+      updateGlobalAddButtons();
+      return;
+    }
+    // If restrictToComplex is true, only allow as child of complex node
+    if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
+      createComplexSearchBar(selectedNode);
+    }
+  });
+
+  // Update buttons on node selection
+  function selectNode(node) {
+    if (selectedNode) selectedNode.classList.remove('selected');
+    selectedNode = node;
+    selectedNode.classList.add('selected');
+    updateGlobalAddButtons();
+  }
+
+  // Also update on click outside (deselect), but ignore clicks on global add buttons
+  document.addEventListener('click', (e) => {
+    const isAddBtn = e.target.closest('#global-add-search-btn') || e.target.closest('#global-add-complex-search-btn');
+    if (isAddBtn) return;
+    if (!e.target.closest('.complex-search-group') && !e.target.closest('.search-group')) {
+      if (selectedNode) selectedNode.classList.remove('selected');
+      selectedNode = null;
+      updateGlobalAddButtons();
     }
   });
 
