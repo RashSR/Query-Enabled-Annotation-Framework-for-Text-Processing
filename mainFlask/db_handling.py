@@ -32,11 +32,11 @@ def get_author_by_id(db: SQLAlchemy, app: Flask, id: int):
         return loaded_author
     
 def get_author_by_name(db: SQLAlchemy, app: Flask, name: str):
-    with app.context():
-        result_row = db.session.execute(text("SELECT * FROM author_with_chat_ids WHERE name = :name"), {'name': name})
-        
-        if len(result_row) > 1: #more than one author with the same name
-            return None
+    with app.app_context():
+        result_row = db.session.execute(
+            text("SELECT * FROM author_with_chat_ids WHERE name = :name"), 
+            {'name': name}
+        ).fetchone()
         
         loaded_author = _convert_db_row_to_author(result_row)
         return loaded_author

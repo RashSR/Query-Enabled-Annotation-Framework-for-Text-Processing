@@ -14,6 +14,7 @@
         <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
         <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
         <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
+        <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Sender</th>
         <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>
       </tr>
     </thead>
@@ -35,9 +36,17 @@
         </td>
         <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
         <td style="border: 1px solid #ddd; padding: 8px;">
+          {{ result.message.sender.name }}
+          <a href="{{ url_for('profile.author_profile', author_id=result.message.sender.id) }}?no_active_change=1"
+            title="Autorinformation anzeigen"
+            style="margin-left: 5px; text-decoration: none;">
+            <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
+          </a>
+        </td>
+        <td style="border: 1px solid #ddd; padding: 8px;">
           {{ result.message.get_recipient().name }}
           <a href="{{ url_for('profile.author_profile', author_id=result.message.get_recipient().id) }}?no_active_change=1"
-            title="Im vollständigen Chat anzeigen"
+            title="Autorinformation anzeigen"
             style="margin-left: 5px; text-decoration: none;">
             <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
           </a>

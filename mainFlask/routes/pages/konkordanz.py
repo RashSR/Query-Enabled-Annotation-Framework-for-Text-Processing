@@ -20,10 +20,7 @@ def konkordanz_view():
 
     #TODO: bug: if i search for e.g. 'ah' as whole_word AND case_sensitive -> i get two results of the same message and the same hit! 
     if len(starting_filter_node.leaves) > 0:
-        starting_filter_node.print_leave_structure()
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
-        print(f"Results: {len(results)}")
-
 
     def serialize_node(node):
         # FilterNodeObject (leaf)
@@ -59,7 +56,6 @@ def konkordanz_view():
         nodes=nodes
     )
 
-
 def parse_query_tree(args):
     # Collect all indices for all relevant fields
     fields = [
@@ -82,14 +78,12 @@ def parse_query_tree(args):
         cur.setdefault('children', {})[parts[-1]] = nodes[idx]
     return tree.get('children', {})
 
-def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int = 0):
-    indent = _make_indents(level)
+def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode):
     new_filter_node = None
     leaf_data = {'selected_type': None, 'selected_scope': None, 'keyword': None,
         'case_sensitive': None, 'whole_word': None, 'use_regex': None }
 
     for i, (key, value) in enumerate(tree_dict.items()):
-        print(f"{indent}+Key: {key}, Value: {value}")
         match key:
             case 'logic_operator':
                 new_filter_node = FilterNode(FilterType(value))
@@ -112,7 +106,4 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
         #continue recursion
         if isinstance(value, dict):
             child_parent = new_filter_node if new_filter_node else parent
-            _convert_tree_to_filter_node(value, child_parent, level + 1)
-
-def _make_indents(indents: int) -> str:
-    return "---" * indents
+            _convert_tree_to_filter_node(value, child_parent)
