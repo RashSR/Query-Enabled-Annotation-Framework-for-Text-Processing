@@ -5,3 +5,4 @@
 /mainFlask/routes/__pycache__
 /mainFlask/routes/api/__pycache__
 /mainFlask/routes/pages/__pycache__
+/.vscode
