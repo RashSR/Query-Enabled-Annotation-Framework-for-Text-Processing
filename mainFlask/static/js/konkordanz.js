@@ -121,8 +121,11 @@ let nodeCounter = 0;
       cb.name = `${base}[${nodeIndex}]`;
     });
 
+
     /* keyword starts disabled */
     keywordInput.disabled = true;
+    // Also visually disable the icons
+    clone.querySelectorAll('.search-toggle').forEach(t => t.classList.add('disabled-toggle'));
 
     /* unique IDs for toggle spans */
     const types = ['case_sensitive', 'whole_word', 'use_regex'];
@@ -224,7 +227,10 @@ let nodeCounter = 0;
     }
     if (e.target.matches('.search-toggle')) {
       const cb = document.getElementById(e.target.dataset.toggleId);
-      if (cb) {
+      // Find the associated input (keyword textbox) in the same .search-group
+      const searchGroup = e.target.closest('.search-group');
+      const input = searchGroup ? searchGroup.querySelector('input[name^="keyword"]') : null;
+      if (cb && input && !input.disabled) {
         cb.checked = !cb.checked;
         e.target.classList.toggle('active', cb.checked);
       }
@@ -376,12 +382,15 @@ let nodeCounter = 0;
     const input = group?.querySelector('input[name^="keyword"]');
     if (!right || !input) return;
 
-    /* enable/disable keyword input */
+    /* enable/disable keyword input and toggle icon style */
+    const toggles = group.querySelectorAll('.search-toggle');
     if (left.value === 'word') {
       input.disabled = false;
+      toggles.forEach(t => t.classList.remove('disabled-toggle'));
     } else {
       input.value = '';
       input.disabled = true;
+      toggles.forEach(t => t.classList.add('disabled-toggle'));
     }
 
     if (!left.value) {
