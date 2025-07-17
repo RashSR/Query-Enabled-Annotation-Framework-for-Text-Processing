@@ -194,7 +194,13 @@ let nodeCounter = 0;
       const btn = e.target.closest('.delete-search-btn');
       const searchBar = btn.closest('.search-group');
       if (searchBar) {
+        // If the deleted node is selected, clear selection
+        if (selectedNode === searchBar) {
+          selectedNode.classList.remove('selected');
+          selectedNode = null;
+        }
         searchBar.remove();
+        updateGlobalAddButtons();
       }
       return;
     }
@@ -202,13 +208,17 @@ let nodeCounter = 0;
       const btn = e.target.closest('.delete-complex-search-btn');
       const complexBar = btn.closest('.complex-search-group');
       if (complexBar) {
+        // If the deleted node is selected, clear selection
+        if (selectedNode === complexBar) {
+          selectedNode.classList.remove('selected');
+          selectedNode = null;
+        }
         complexBar.remove();
-        if (selectedNode && !document.body.contains(selectedNode)) selectedNode = null;
         // If no complex nodes remain, re-enable global add buttons
         if (document.querySelectorAll('.complex-search-group').length === 0) {
           restrictToComplex = false;
-          updateGlobalAddButtons();
         }
+        updateGlobalAddButtons();
       }
       return;
     }
