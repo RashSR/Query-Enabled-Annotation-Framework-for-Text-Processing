@@ -3,31 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
 from .cachestore import CacheStore
-from .search_result import SearchResult
-from classes.author import Author
 from .routes import blueprints
 import re
 import locale
 import utils
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
-
-#region functions
-
-#TODO: more than only author messages? maybe optional?
-def get_keyword_hits(active_author: Author, keyword: str, case_sensitive: bool):
-    hit_results = []
-
-    if not case_sensitive:
-        keyword = keyword.lower()
-
-    for msg in active_author.get_all_own_messages():
-        content = msg.content if case_sensitive else msg.content.lower()
-        if keyword in content:
-            hit_results.append(SearchResult(msg, keyword, case_sensitive))
-
-    return hit_results
-
-# endregion 
 
 #Start application
 app = Flask(__name__)
