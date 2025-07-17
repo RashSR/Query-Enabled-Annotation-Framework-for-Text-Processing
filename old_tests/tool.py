@@ -96,8 +96,6 @@ print(f"Anzahl gefundener Fehlerarten: {len(found_ruleIds)}")
 
 for element in found_ruleIds:
     print(f"ID: {element[0]}, Message: {element[1]}")
-
-#TODO: if only one replacement is possible -> show it
     
 import spacy
 
