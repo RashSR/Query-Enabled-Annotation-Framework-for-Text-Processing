@@ -238,7 +238,7 @@ def _convert_db_row_to_message(row, tableHasChatIds: bool = True) -> Message:
     sender_id = row[2]
     sender = CacheStore.Instance().get_author_by_id(sender_id) #TODO: sender does not to be set!
     timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
-    content = row[4] #TODO: add check for row name maybe?
+    content = row[4]
     #quoted_msg is in row[5]
     annotated_text = row[6]
     loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)

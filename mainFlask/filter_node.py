@@ -62,7 +62,6 @@ class FilterNode:
     def add_leaf(self, fn: FilterNode):
         self._leaves.append(fn)
 
-    #TODO: don't use author here
     def get_full_result(self) -> list[SearchResult]:
         full_result = []
         match self._filter_type:

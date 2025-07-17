@@ -89,5 +89,3 @@ def search_view():
 
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
-
-#TODO: if hit is very long -> link sitzt in right context
