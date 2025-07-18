@@ -1,7 +1,6 @@
 from __future__ import annotations #is needed so i can use FilterNode in the add_leaf function -> python 3.7+ needed
 from .filter_type import FilterType
 from .search_result import SearchResult
-from functools import reduce
 from .message import Message
 import utils
 from collections import defaultdict
@@ -97,8 +96,9 @@ class FilterNode:
         conjoined_search_results_without_just_messages = self._clean_conjoined_messages(conjoined_search_results)
         return conjoined_search_results_without_just_messages
     
+    #for AND, we only care about results inside messages — normal messages are not needed
     def _clean_conjoined_messages(self, conjoined_search_results: list[SearchResult]):
-        #first step remove search_results that are just messages
+        #remove search_results that are just messages
         to_remove = []
         for search_result in conjoined_search_results:
             if search_result.is_just_message():
