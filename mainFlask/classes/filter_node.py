@@ -93,8 +93,23 @@ class FilterNode:
 
     def _calc_and_result(self) -> list[SearchResult]:
         all_results = self._get_all_search_result_lists()
-        return self.common_search_results(all_results) #TODO: remove duplicates and just messages
+        conjoined_search_results = self.common_search_results(all_results)
+        conjoined_search_results_without_just_messages = self._clean_conjoined_messages(conjoined_search_results)
+        return conjoined_search_results_without_just_messages
     
+    def _clean_conjoined_messages(self, conjoined_search_results: list[SearchResult]):
+        #first step remove search_results that are just messages
+        to_remove = []
+        for search_result in conjoined_search_results:
+            if search_result.is_just_message():
+                to_remove.append(search_result)
+        for sr in to_remove:
+            conjoined_search_results.remove(sr)
+
+        #remove duplicates
+        duplicate_free_list = list(set(conjoined_search_results))
+        return duplicate_free_list
+
     def common_search_results(self, nested: list[list[SearchResult]]) -> list[SearchResult]:
         if not nested:
             return []

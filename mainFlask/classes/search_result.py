@@ -88,6 +88,12 @@ class SearchResult:
     def selected_color(self, value):
         self._selected_color = value
 
+    def is_just_message(self):
+        if self._left == self.message.content and self._right == "":
+            return True
+        
+        return False
+
     def __repr__(self):
         return f"search_result(left={self._left!r}, keyword={self.keyword!r}, right={self._right!r})"
 
