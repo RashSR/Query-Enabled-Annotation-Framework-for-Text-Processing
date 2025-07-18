@@ -133,7 +133,6 @@ if elastic_instance.ping():
         beruf="Softwareentwickler"
     )
 
-    #TODOs
     #texttype e.g. whatsapp, e-mail 
     #input e.g. touch/keyboard/swype
     #autocorrect on/off

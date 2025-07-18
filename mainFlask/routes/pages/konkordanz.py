@@ -11,37 +11,6 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 @konkordanz_bp.route("/konkordanz")
 def konkordanz_view():
 
-    #build starting node with two FNOs
-    starting_test_node = FilterNode(FilterType.OR)
-    categoryNode = FilterNodeObject(FilterNodeGroup("error-category"), None, "CASING")
-    authorNode = FilterNodeObject(FilterNodeGroup('author'), None, 'Ben Vector')
-    starting_test_node.add_leaf(categoryNode)
-    starting_test_node.add_leaf(authorNode)
-
-    #build sub node with 1 FNO
-    sub_and_node = FilterNode(FilterType.AND)
-    rule_id_node = FilterNodeObject(FilterNodeGroup("error-ruleId"), None, 'PFEILE')
-    sub_and_node.add_leaf(rule_id_node)
-
-    #add sub node to root note
-    starting_test_node.add_leaf(sub_and_node)
-
-    #confirm with print
-    starting_test_node.print_leave_structure()
-
-    #to get this structure:
-    #+Type: FilterType.AND, Leaves: 3
-    #---+filter_node_group: FilterNodeGroup.CATEGORY, input: None, selected_value: CASING
-    #---+filter_node_group: FilterNodeGroup.AUTHOR, input: None, selected_value: Ben Vector
-    #---+Type: FilterType.AND, Leaves: 1
-    #------+filter_node_group: FilterNodeGroup.RULE_ID, input: None, selected_value: PFEILE
-
-    #getting result
-    test_result = starting_test_node.get_full_result()
-    print(len(test_result))
-
-
-
     #create a filter node that is not visible to the user -> all nodes are under this
     starting_filter_node  = FilterNode(FilterType.OR)
     tree = parse_query_tree(request.args)
@@ -51,10 +20,7 @@ def konkordanz_view():
 
     #TODO: bug: if i search for e.g. 'ah' as whole_word AND case_sensitive -> i get two results of the same message and the same hit! 
     if len(starting_filter_node.leaves) > 0:
-        starting_filter_node.print_leave_structure()
         results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
-        print(f"Results: {len(results)}")
-
 
     def serialize_node(node):
         # FilterNodeObject (leaf)
@@ -90,7 +56,6 @@ def konkordanz_view():
         nodes=nodes
     )
 
-
 def parse_query_tree(args):
     # Collect all indices for all relevant fields
     fields = [
@@ -113,14 +78,12 @@ def parse_query_tree(args):
         cur.setdefault('children', {})[parts[-1]] = nodes[idx]
     return tree.get('children', {})
 
-def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int = 0):
-    indent = _make_indents(level)
+def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode):
     new_filter_node = None
     leaf_data = {'selected_type': None, 'selected_scope': None, 'keyword': None,
         'case_sensitive': None, 'whole_word': None, 'use_regex': None }
 
     for i, (key, value) in enumerate(tree_dict.items()):
-        print(f"{indent}+Key: {key}, Value: {value}")
         match key:
             case 'logic_operator':
                 new_filter_node = FilterNode(FilterType(value))
@@ -143,7 +106,4 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode, level: int
         #continue recursion
         if isinstance(value, dict):
             child_parent = new_filter_node if new_filter_node else parent
-            _convert_tree_to_filter_node(value, child_parent, level + 1)
-
-def _make_indents(indents: int) -> str:
-    return "---" * indents
+            _convert_tree_to_filter_node(value, child_parent)

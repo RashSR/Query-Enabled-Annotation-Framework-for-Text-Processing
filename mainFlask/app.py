@@ -11,24 +11,6 @@ import locale
 import utils
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 
-#region functions
-
-#TODO: more than only author messages? maybe optional?
-def get_keyword_hits(active_author: Author, keyword: str, case_sensitive: bool):
-    hit_results = []
-
-    if not case_sensitive:
-        keyword = keyword.lower()
-
-    for msg in active_author.get_all_own_messages():
-        content = msg.content if case_sensitive else msg.content.lower()
-        if keyword in content:
-            hit_results.append(SearchResult(msg, keyword, case_sensitive))
-
-    return hit_results
-
-# endregion 
-
 #Start application
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -89,5 +71,3 @@ def search_view():
 
 
 #TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call
-
-#TODO: if hit is very long -> link sitzt in right context

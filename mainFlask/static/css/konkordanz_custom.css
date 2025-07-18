@@ -1,3 +1,9 @@
+/* Make search-toggle icons look non-clickable when disabled */
+.search-toggle.disabled-toggle {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 /* Highlight on hover and selection for search nodes */
 
 .complex-search-group {
