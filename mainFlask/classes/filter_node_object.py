@@ -164,25 +164,25 @@ class FilterNodeObject(FilterNode):
             case FilterNodeGroup.EMOJI:
                 return []
             case FilterNodeGroup.AUTHOR:
+                #TODO Maybe change result table? msg jump only works if active author is selected right
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
                 messages = author.get_all_own_messages()
-                #TODO Maybe change result table? msg jump only works if active author is selected right
-                for msg in messages:
-                    sr = SearchResult(msg, msg.content, "")
-                    sr.left = msg.content
-                    self._add_search_results_messages(sr)
+                self._convert_messages_into_search_results(messages)
                 return self._search_result_list
             case FilterNodeGroup.RECIPIENT:
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
                 messages = CacheStore.Instance().get_messages_by_recipient_id(author.id)
-                for msg in messages:
-                    sr = SearchResult(msg, msg.content, "")
-                    sr.left = msg.content
-                    self._add_search_results_messages(sr)
+                self._convert_messages_into_search_results(messages)
                 return self._search_result_list
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
+
+    def _convert_messages_into_search_results(self, messages):
+        for msg in messages:
+            sr = SearchResult(msg, msg.content, "")
+            sr.left = msg.content
+            self._add_search_results_messages(sr)
 
     def _filter_by_error_attr(self, attr_name):
         if attr_name == 'rule_id':
@@ -215,7 +215,7 @@ class FilterNodeObject(FilterNode):
                 
             self._add_search_results_messages(sr)
 
-    #TODO: maybe needs rework?
+    #TODO: ONLY USE REFERENCES FROM CacheStore for each message
     def _add_search_results_messages(self, sr: SearchResult):
         if not sr in self._search_result_list:
             self._search_result_list.append(sr)
@@ -233,6 +233,5 @@ class FilterNodeObject(FilterNode):
     def __str__(self):
         toString = f"filter_node_group: {self._filter_node_group}, input: {self._searchbar_input}, selected_value: {self._selected_value}"
         return toString
-
             
 

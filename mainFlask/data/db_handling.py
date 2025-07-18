@@ -111,7 +111,6 @@ def get_messages_by_recipient_id(db: SQLAlchemy, app: Flask, recipient_id: int):
             for msg in chat.messages:
                 if msg.sender.id != recipient_id:
                     messages.append(msg)
-                    print(msg)
         
         return messages
 
