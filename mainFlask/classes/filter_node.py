@@ -4,6 +4,7 @@ from .search_result import SearchResult
 from functools import reduce
 from .message import Message
 import utils
+from collections import defaultdict
 
 class FilterNode:
     def __init__(self, filter_type: FilterType):
@@ -66,7 +67,7 @@ class FilterNode:
         full_result = []
         match self._filter_type:
             case FilterType.AND:
-                self._calc_and_result()
+                return self._calc_and_result()
             case FilterType.OR:
                 self._calc_or_result()
             case FilterType.NOT:
@@ -91,9 +92,28 @@ class FilterNode:
 
     def _calc_and_result(self) -> list[SearchResult]:
         all_results = self._get_all_search_result_lists()
-        #intersects all lists and conjoins them
-        conjoined_result = list(reduce(lambda a, b: a & b, map(set, all_results)))
-        return conjoined_result
+        return self.common_search_results(all_results) #TODO: remove duplicates and just messages
+    
+    def common_search_results(self, nested: list[list[SearchResult]]) -> list[SearchResult]:
+        if not nested:
+            return []
+
+        num_lists = len(nested)
+
+        # Step 1: Count how many lists each message_id appears in
+        message_id_counts = defaultdict(int)
+        for sublist in nested:
+            unique_ids = set(result.message.message_id for result in sublist)
+            for message_id in unique_ids:
+                message_id_counts[message_id] += 1
+
+        # Step 2: Determine which message_ids are common to all lists
+        common_ids = {message_id for message_id, count in message_id_counts.items() if count == num_lists}
+
+        # Step 3: Collect all SearchResults with common message_ids
+        result = [res for sublist in nested for res in sublist if res.message.message_id in common_ids]
+
+        return result
     
     def _calc_or_result(self) -> list[SearchResult]:
         all_results = self._get_all_search_result_lists()

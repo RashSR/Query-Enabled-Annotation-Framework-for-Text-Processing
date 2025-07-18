@@ -93,7 +93,7 @@ class SearchResult:
 
     def __eq__(self, other):
         if not isinstance(other, SearchResult):
-            return NotImplemented
+            return False
         return (
             self.message.message_id == other.message.message_id and
             self.keyword == other.keyword and
@@ -114,3 +114,5 @@ class SearchResult:
             self.start_pos,
             self.end_pos
         ))
+        
+

@@ -12,7 +12,7 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 def konkordanz_view():
 
     #create a filter node that is not visible to the user -> all nodes are under this
-    starting_filter_node  = FilterNode(FilterType.OR)
+    starting_filter_node  = FilterNode(FilterType.AND)
     tree = parse_query_tree(request.args)
     _convert_tree_to_filter_node(tree, starting_filter_node)
 
