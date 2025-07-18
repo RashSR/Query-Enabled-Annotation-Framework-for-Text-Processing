@@ -67,7 +67,8 @@ class FilterNode:
         full_result = []
         match self._filter_type:
             case FilterType.AND:
-                return self._calc_and_result()
+                self._search_results = self._calc_and_result()
+                return self._search_results
             case FilterType.OR:
                 self._calc_or_result()
             case FilterType.NOT:
