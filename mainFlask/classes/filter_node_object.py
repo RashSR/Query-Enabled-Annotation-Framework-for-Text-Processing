@@ -129,8 +129,7 @@ class FilterNodeObject(FilterNode):
 
                         for match in matches:
                             matched_word = match.group()
-                            #print(f"Match at index {match.start()} to {match.end()-1}") #TODO: somehow show that the second match is needed
-                            sr = SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color)
+                            sr = SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color, start_pos=match.start(), end_pos=match.end()-1)
                             self._add_search_results_messages(sr)
                     return []
 
