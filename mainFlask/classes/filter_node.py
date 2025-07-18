@@ -69,7 +69,8 @@ class FilterNode:
                 self._search_results = self._calc_and_result()
                 return self._search_results
             case FilterType.OR:
-                self._calc_or_result()
+                self._search_results = self._calc_or_result()
+                return self._search_results
             case FilterType.NOT:
                 return full_result
             case FilterType.OBJECT:
@@ -78,18 +79,6 @@ class FilterNode:
                 #default case
                 return full_result
         
-        full_result = self._gather_search_results()
-        self._search_results = full_result
-        return full_result
-    
-    def _gather_search_results(self) -> list[SearchResult]:
-        search_result_list = []
-        for msg in self.result_messages:
-            for search_result in msg.search_results:
-                search_result_list.append(search_result)
-        
-        return search_result_list
-
     def _calc_and_result(self) -> list[SearchResult]:
         all_results = self._get_all_search_result_lists()
         conjoined_search_results = self.common_search_results(all_results)

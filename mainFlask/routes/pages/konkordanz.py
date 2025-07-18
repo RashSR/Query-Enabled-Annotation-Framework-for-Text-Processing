@@ -12,15 +12,14 @@ konkordanz_bp = Blueprint('konkordanz', __name__)
 def konkordanz_view():
 
     #create a filter node that is not visible to the user -> all nodes are under this
-    starting_filter_node  = FilterNode(FilterType.AND)
+    starting_filter_node  = FilterNode(FilterType.OR)
     tree = parse_query_tree(request.args)
     _convert_tree_to_filter_node(tree, starting_filter_node)
 
     results = []
 
-    #TODO: bug: if i search for e.g. 'ah' as whole_word AND case_sensitive -> i get two results of the same message and the same hit! 
     if len(starting_filter_node.leaves) > 0:
-        results = starting_filter_node.get_full_result() #TODO: check if messages have more search results after and, or and so on
+        results = starting_filter_node.get_full_result()
 
     def serialize_node(node):
         # FilterNodeObject (leaf)
