@@ -125,8 +125,8 @@ class FilterNodeObject(FilterNode):
                         text = msg.content
                         pattern = self._searchbar_input
 
-                        matches = re.finditer(pattern, text)
-
+                        matches = re.finditer(pattern, text, re.IGNORECASE)
+                    
                         for match in matches:
                             matched_word = match.group()
                             sr = SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color, start_pos=match.start(), end_pos=match.end()-1)

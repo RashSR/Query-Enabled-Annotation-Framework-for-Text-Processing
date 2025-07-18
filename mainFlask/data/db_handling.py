@@ -130,8 +130,7 @@ def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: s
             if msg.message_id not in seen_ids:
                 seen_ids.add(msg.message_id)
                 messages.append(msg)
-
-        print(f"{len(messages)}")
+        
         return messages
     
 def get_messages_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str):
@@ -164,7 +163,7 @@ def get_messages_by_substring_in_content(db: SQLAlchemy, app: Flask, search_stri
         for row in results:
             msg = _convert_db_row_to_message(row)
             messages.append(msg)
-
+        
         return messages
 
 
