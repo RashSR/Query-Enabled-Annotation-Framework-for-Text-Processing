@@ -95,7 +95,7 @@ class SearchResult:
         if not isinstance(other, SearchResult):
             return NotImplemented
         return (
-            self.message == other.message and
+            self.message.message_id == other.message.message_id and
             self.keyword == other.keyword and
             self.matched_word == other.matched_word and
             self.case_sensitive == other.case_sensitive and
@@ -106,7 +106,7 @@ class SearchResult:
 
     def __hash__(self):
         return hash((
-            self.message,
+            self.message.message_id,
             self.keyword,
             self.matched_word,
             self.case_sensitive,

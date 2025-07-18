@@ -213,14 +213,14 @@ class FilterNodeObject(FilterNode):
             sr = SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color, start_pos=startPos, end_pos=endPos)
             self._add_search_results_messages(sr)
 
-    #TODO: ONLY USE REFERENCES FROM CacheStore for each message
     def _add_search_results_messages(self, sr: SearchResult):
+        message = CacheStore.Instance().get_message_by_id(sr.message.message_id)
         if not sr in self._search_result_list:
             self._search_result_list.append(sr)
-        if not sr in sr.message.search_results:
-            sr.message.search_results.append(sr)
-        if not self._is_already_in_result_messages(sr.message):
-            self._result_messages.append(sr.message)
+        if not sr in message.search_results:
+            message.search_results.append(sr)
+        if not self._is_already_in_result_messages(message):
+            self._result_messages.append(message)
 
     def _is_already_in_result_messages(self, new_message: Message):
         for stored_message in self._result_messages:
