@@ -1,4 +1,4 @@
-from classes.message import Message
+from .message import Message
 
 class Chat:
 

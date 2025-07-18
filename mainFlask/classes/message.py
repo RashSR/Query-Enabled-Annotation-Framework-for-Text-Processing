@@ -1,4 +1,4 @@
-from classes.messagetype import MessageType
+from .messagetype import MessageType
 from mainFlask.cachestore import CacheStore
 from mainFlask.ltmatch import LTMatch
 

@@ -2,9 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from datetime import datetime
 from sqlalchemy import text
-from classes.author import Author
-from classes.chat import Chat
-from classes.message import Message
+from .classes.author import Author
+from .classes.chat import Chat
+from .classes.message import Message
 from .cachestore import CacheStore
 from .ltmatch import LTMatch
 

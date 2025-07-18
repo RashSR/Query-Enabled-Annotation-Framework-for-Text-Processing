@@ -1,9 +1,9 @@
 import spacy
 import language_tool_python
 import re
-from classes.message import Message
-from classes.chat import Chat
-from classes.messagetype import MessageType
+from mainFlask.classes.message import Message
+from mainFlask.classes.chat import Chat
+from mainFlask.classes.messagetype import MessageType
 from datetime import datetime
 from mainFlask.ltmatch import LTMatch
 from mainFlask.cachestore import CacheStore

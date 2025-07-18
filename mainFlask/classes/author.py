@@ -1,5 +1,5 @@
-from classes.chat import Chat
 from mainFlask.cachestore import CacheStore
+from .chat import Chat
 
 class Author:
     def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
