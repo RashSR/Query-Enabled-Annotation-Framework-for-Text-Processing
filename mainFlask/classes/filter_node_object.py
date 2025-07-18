@@ -204,6 +204,7 @@ class FilterNodeObject(FilterNode):
             matched_word = original_content[index:index+len(keyword)]
             #TODO only matches first occurrence
             sr = SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color)
+                
             self._add_search_results_messages(sr)
 
     #TODO: maybe needs rework?

@@ -106,9 +106,13 @@ def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: s
         )
 
         messages = []
+        seen_ids = set()
+
         for row in results:
             msg = _convert_db_row_to_message(row, tableHasChatIds=False)
-            messages.append(msg) #TODO liste kann noch duplikat beeinhalten
+            if msg.message_id not in seen_ids:
+                seen_ids.add(msg.message_id)
+                messages.append(msg)
 
         return messages
     
@@ -120,9 +124,13 @@ def get_messages_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str
         )
 
         messages = []
+        seen_ids = set()
+
         for row in results:
             msg = _convert_db_row_to_message(row, tableHasChatIds=False)
-            messages.append(msg) #TODO liste kann noch duplikat beeinhalten
+            if msg.message_id not in seen_ids:
+                seen_ids.add(msg.message_id)
+                messages.append(msg)
 
         return messages
 
@@ -140,8 +148,6 @@ def get_messages_by_substring_in_content(db: SQLAlchemy, app: Flask, search_stri
             messages.append(msg)
 
         return messages
-
-
 
 
 # endregion
