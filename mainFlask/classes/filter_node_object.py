@@ -131,7 +131,7 @@ class FilterNodeObject(FilterNode):
                             matched_word = match.group()
                             sr = SearchResult(msg, self._searchbar_input, matched_word, self._case_sensitive, self._selected_color, start_pos=match.start(), end_pos=match.end()-1)
                             self._add_search_results_messages(sr)
-                    return []
+                    return self._search_result_list
 
                 for msg in CacheStore.Instance().get_all_messages():
                     original_content = msg.content
