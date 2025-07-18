@@ -131,6 +131,7 @@ def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: s
                 seen_ids.add(msg.message_id)
                 messages.append(msg)
 
+        print(f"{len(messages)}")
         return messages
     
 def get_messages_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str):

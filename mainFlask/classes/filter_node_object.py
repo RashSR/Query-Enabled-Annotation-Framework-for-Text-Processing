@@ -210,9 +210,7 @@ class FilterNodeObject(FilterNode):
         index = content.find(keyword)
         if index != -1:
             matched_word = original_content[index:index+len(keyword)]
-            #TODO only matches first occurrence
-            sr = SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color)
-                
+            sr = SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color, start_pos=startPos, end_pos=endPos)
             self._add_search_results_messages(sr)
 
     #TODO: ONLY USE REFERENCES FROM CacheStore for each message
