@@ -1,6 +1,6 @@
 from .messagetype import MessageType
 from mainFlask.cachestore import CacheStore
-from mainFlask.ltmatch import LTMatch
+from .ltmatch import LTMatch
 
 class Message:
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, annotated_text = None, chat = None):

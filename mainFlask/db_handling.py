@@ -6,7 +6,7 @@ from .classes.author import Author
 from .classes.chat import Chat
 from .classes.message import Message
 from .cachestore import CacheStore
-from .ltmatch import LTMatch
+from mainFlask.classes.ltmatch import LTMatch
 
 # region GET
 

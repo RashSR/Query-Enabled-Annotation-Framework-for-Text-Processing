@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request
-from mainFlask.filter_node_object import FilterNodeObject
-from mainFlask.filter_node_group import FilterNodeGroup
-from mainFlask.filter_node import FilterNode
-from mainFlask.filter_type import FilterType
+from mainFlask.classes.filter_node_object import FilterNodeObject
+from mainFlask.classes.filter_node_group import FilterNodeGroup
+from mainFlask.classes.filter_node import FilterNode
+from mainFlask.classes.filter_type import FilterType
 
 konkordanz_bp = Blueprint('konkordanz', __name__)
 

@@ -1,4 +1,4 @@
-from .classes.message import Message
+from .message import Message
 
 class SearchResult:
     def __init__(self, message: Message, keyword, matched_word, case_sensitive=False, selected_color = None, left = None, right = None):
