@@ -3,8 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
 from .cachestore import CacheStore
-from .search_result import SearchResult
-from .classes.author import Author
 from .routes import blueprints
 import re
 import locale
