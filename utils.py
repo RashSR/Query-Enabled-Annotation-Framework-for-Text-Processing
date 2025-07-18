@@ -6,7 +6,7 @@ from mainFlask.classes.chat import Chat
 from mainFlask.classes.messagetype import MessageType
 from datetime import datetime
 from mainFlask.classes.ltmatch import LTMatch
-from mainFlask.cachestore import CacheStore
+from mainFlask.data.cachestore import CacheStore
 from itertools import chain
 from collections import Counter
 

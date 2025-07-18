@@ -3,7 +3,7 @@ from .filter_node import FilterNode
 from .filter_type import FilterType
 from .message import Message
 from .search_result import SearchResult
-from mainFlask.cachestore import CacheStore
+from mainFlask.data.cachestore import CacheStore
 from mainFlask.settings import Settings
 import re
 

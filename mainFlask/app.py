@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
-from .cachestore import CacheStore
+from .data.cachestore import CacheStore
 from .routes import blueprints
 import re
 import locale

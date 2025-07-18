@@ -1,5 +1,5 @@
 from .messagetype import MessageType
-from mainFlask.cachestore import CacheStore
+from mainFlask.data.cachestore import CacheStore
 from .ltmatch import LTMatch
 
 class Message:

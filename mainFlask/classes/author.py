@@ -1,4 +1,4 @@
-from mainFlask.cachestore import CacheStore
+from mainFlask.data.cachestore import CacheStore
 from .chat import Chat
 
 class Author:

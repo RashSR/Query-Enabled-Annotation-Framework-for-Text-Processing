@@ -32,7 +32,7 @@ class CacheStore:
     _loaded_all_authors = False
 
     def get_all_authors(self):
-        from mainFlask.db_handling import get_all_authors
+        from .db_handling import get_all_authors
 
         if self._authors is None or self._loaded_all_authors is False:
             authors = get_all_authors(self._db, self._app)
@@ -46,7 +46,7 @@ class CacheStore:
         if not isinstance(id, int):
             return None
 
-        from mainFlask.db_handling import get_author_by_id
+        from .db_handling import get_author_by_id
 
         if self._authors is None:
             self._authors = {}
@@ -59,7 +59,7 @@ class CacheStore:
         return author
     
     def get_author_by_name(self, name: str):
-        from mainFlask.db_handling import get_author_by_name 
+        from .db_handling import get_author_by_name 
 
         if self._authors is None:
             self._authors = {}
@@ -101,7 +101,7 @@ class CacheStore:
 
         if len(not_cached_chat_ids) > 0:
             # Need to load from DB
-            from mainFlask.db_handling import get_chat_by_ids
+            from .db_handling import get_chat_by_ids
             missing_chats = get_chat_by_ids(self._db, self._app, not_cached_chat_ids)
             chats.extend(missing_chats)
             #this could be async -> store loaded chats in cache
@@ -115,7 +115,7 @@ class CacheStore:
         if not isinstance(id, int):
             return None
 
-        from mainFlask.db_handling import get_chat_by_id
+        from .db_handling import get_chat_by_id
 
         if self._chats is None:
             self._chats = {}
@@ -135,7 +135,7 @@ class CacheStore:
     _loaded_all_messages = False
 
     def get_all_messages(self):
-        from mainFlask.db_handling import get_all_messages
+        from .db_handling import get_all_messages
 
         if self._messages is None or self._loaded_all_messages is False:
             messages = get_all_messages(self._db, self._app)
@@ -149,7 +149,7 @@ class CacheStore:
         if not isinstance(id, int):
             return None
 
-        from mainFlask.db_handling import get_message_by_id
+        from .db_handling import get_message_by_id
 
         if self._messages is None:
             self._messages = {}
@@ -162,7 +162,7 @@ class CacheStore:
         return message
     
     def get_messages_by_error_category(self, category: str):
-        from mainFlask.db_handling import get_messages_by_error_category
+        from .db_handling import get_messages_by_error_category
 
         if self._messages is None:
             self._messages = {}
@@ -174,7 +174,7 @@ class CacheStore:
         return messages
     
     def get_messages_by_error_rule_id(self, rule_id: str):
-        from mainFlask.db_handling import get_messages_by_error_rule_id
+        from .db_handling import get_messages_by_error_rule_id
 
         if self._messages is None:
             self._messages = {}
@@ -186,7 +186,7 @@ class CacheStore:
         return messages
     
     def get_messages_by_substring_in_content(self, search_string: str):
-        from mainFlask.db_handling import get_messages_by_substring_in_content
+        from .db_handling import get_messages_by_substring_in_content
 
         #TODO: make this call modular
         if self._messages is None:
@@ -210,7 +210,7 @@ class CacheStore:
         if not isinstance(msg_id, int) or not isinstance(chat_id, int):
             return None
         
-        from mainFlask.db_handling import get_all_ltms_by_msg_id_and_chat_id
+        from .db_handling import get_all_ltms_by_msg_id_and_chat_id
         
         if self._ltms is None:
             self._ltms = {}
@@ -219,12 +219,12 @@ class CacheStore:
         return ltms
     
     def get_all_distinct_categories_from_ltms(self):
-        from mainFlask.db_handling import get_all_distinct_categories_from_ltms
+        from .db_handling import get_all_distinct_categories_from_ltms
         categories = get_all_distinct_categories_from_ltms(self._db, self._app)
         return categories
 
     def get_all_distinct_rule_ids_from_ltms(self):
-        from mainFlask.db_handling import get_all_distinct_rule_ids_from_ltms
+        from .db_handling import get_all_distinct_rule_ids_from_ltms
         rule_ids = get_all_distinct_rule_ids_from_ltms(self._db, self._app)
         return rule_ids
     
@@ -240,7 +240,7 @@ class CacheStore:
         if lt_match is None:
             return None
         
-        from mainFlask.db_handling import create_lt_match
+        from .db_handling import create_lt_match
 
         generated_id = create_lt_match(self._db, self._app, lt_match)
         lt_match.id = generated_id

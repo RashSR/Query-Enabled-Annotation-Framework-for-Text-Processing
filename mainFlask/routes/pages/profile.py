@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, abort, request
 import utils
-from mainFlask.cachestore import CacheStore
+from mainFlask.data.cachestore import CacheStore
 
 profile_bp = Blueprint('profile', __name__)
 
