@@ -5,4 +5,5 @@ class FilterNodeGroup(Enum):
     RULE_ID = "error-ruleId"
     CATEGORY = "error-category"
     AUTHOR = "author"
+    RECIPIENT = "recipient"
     EMOJI = "emoji"

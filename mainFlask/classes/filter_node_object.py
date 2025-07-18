@@ -104,7 +104,7 @@ class FilterNodeObject(FilterNode):
                 return CacheStore.Instance().get_all_distinct_rule_ids_from_ltms()
             case FilterNodeGroup.CATEGORY:
                 return CacheStore.Instance().get_all_distinct_categories_from_ltms()
-            case FilterNodeGroup.AUTHOR:
+            case FilterNodeGroup.AUTHOR | FilterNodeGroup.RECIPIENT:
                 author_names = []
                 all_authors = CacheStore.Instance().get_all_authors()
                 for author in all_authors:
@@ -167,6 +167,14 @@ class FilterNodeObject(FilterNode):
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
                 messages = author.get_all_own_messages()
                 #TODO Maybe change result table? msg jump only works if active author is selected right
+                for msg in messages:
+                    sr = SearchResult(msg, msg.content, "")
+                    sr.left = msg.content
+                    self._add_search_results_messages(sr)
+                return self._search_result_list
+            case FilterNodeGroup.RECIPIENT:
+                author = CacheStore.Instance().get_author_by_name(self._selected_value)
+                messages = CacheStore.Instance().get_messages_by_recipient_id(author.id)
                 for msg in messages:
                     sr = SearchResult(msg, msg.content, "")
                     sr.left = msg.content

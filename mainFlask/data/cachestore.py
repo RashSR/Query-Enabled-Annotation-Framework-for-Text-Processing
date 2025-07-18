@@ -161,6 +161,18 @@ class CacheStore:
         self._messages[id] = message
         return message
     
+    def get_messages_by_recipient_id(self, recipient_name: str):
+        from .db_handling import get_messages_by_recipient_id
+
+        if self._messages is None:
+            self._messages = {}
+
+        messages = get_messages_by_recipient_id(self._db, self._app, recipient_name)
+        for msg in messages:
+            self._messages[msg.message_id] = msg
+
+        return messages
+    
     def get_messages_by_error_category(self, category: str):
         from .db_handling import get_messages_by_error_category
 

@@ -97,6 +97,24 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         
         #TODO: only load stuff that is not available
 
+def get_messages_by_recipient_id(db: SQLAlchemy, app: Flask, recipient_id: int):
+    with app.app_context():
+        results = db.session.execute(
+            text("SELECT chat_id FROM chat_participants WHERE author_id = :recipient_id"),
+            {'recipient_id': recipient_id}
+        )
+        messages = []
+
+        for row in results:
+            chat_id = row[0]
+            chat = get_chat_by_id(db, app, chat_id)
+            for msg in chat.messages:
+                if msg.sender.id != recipient_id:
+                    messages.append(msg)
+                    print(msg)
+        
+        return messages
+
 #TODO: idea -> for get requests add dictionary like [param, value] -> SELECT * FROM message_with_ltm_ids WHERE param = :value
 def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: str):
     with app.app_context():
