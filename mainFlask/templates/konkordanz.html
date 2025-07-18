@@ -11,16 +11,18 @@
   <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
     <thead>
       <tr>
-        <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
+        <th style="width: 4%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">#</th>
+        <th style="width: 26%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
         <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
         <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
-        <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Sender</th>
-        <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>
+        <th style="width: 12.5%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Sender</th>
+        <th style="width: 12.5%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Empfänger</th>
       </tr>
     </thead>
     <tbody>
       {% for result in results %}
       <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; text-align: right; color: #888;">{{ loop.index }}.</td>
         <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
         <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: {{ result.selected_color }}; white-space: nowrap;">
           <div style="display: flex; align-items: center; gap: 6px;">
