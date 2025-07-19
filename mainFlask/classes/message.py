@@ -2,6 +2,9 @@ from .messagetype import MessageType
 from mainFlask.data.cachestore import CacheStore
 from .ltmatch import LTMatch
 
+#TODO:  Klasse e.g. message_element und hier wird jedes einzelne Element aus einer Nachricht erstellt hinzu kommen eine Liste an lt_matches und spacy_matches hinzu. 
+# Diese können beim annotieren bearbeitet werden
+
 class Message:
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, annotated_text = None, chat = None):
         self.chat_id = chat_id

@@ -167,8 +167,6 @@ class FilterNodeObject(FilterNode):
                 return self._filter_by_error_attr('rule_id')
             case FilterNodeGroup.CATEGORY:
                 return self._filter_by_error_attr('category')
-            case FilterNodeGroup.EMOJI:
-                return []
             case FilterNodeGroup.AUTHOR:
                 #TODO Maybe change result table? msg jump only works if active author is selected right
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
@@ -180,6 +178,12 @@ class FilterNodeObject(FilterNode):
                 messages = CacheStore.Instance().get_messages_by_recipient_id(author.id)
                 self._convert_messages_into_search_results(messages)
                 return self._search_result_list
+            case FilterNodeGroup.WORTART:
+                return []
+            case FilterNodeGroup.LEMMA:
+                return []
+            case FilterNodeGroup.PRONOMENTYP:
+                return []
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
