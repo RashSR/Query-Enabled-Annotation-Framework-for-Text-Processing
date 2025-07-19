@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from mainFlask.classes.ltmatch import LTMatch 
+from mainFlask.classes.spacymatch import SpacyMatch 
 
 class CacheStore:
     _instance = None
@@ -240,6 +241,8 @@ class CacheStore:
         rule_ids = get_all_distinct_rule_ids_from_ltms(self._db, self._app)
         return rule_ids
     
+    _spacy_matches = None
+    
     # endregion
     
     # endregion
@@ -263,6 +266,24 @@ class CacheStore:
         self._ltms[generated_id] = lt_match
         return lt_match
     
+    # endregion
+
+    #region SpacyMatch
+    def create_spacy_match(self, spacy_match: SpacyMatch):
+        if spacy_match is None:
+            return None
+        
+        from .db_handling import create_spacy_match
+
+        generated_id = create_spacy_match(self._db, self._app, spacy_match)
+        spacy_match.id = generated_id
+
+        if self._spacy_matches is None:
+            self._spacy_matches = {}
+
+        self._spacy_matches[generated_id] = spacy_match
+        return spacy_match
+
     # endregion
 
 

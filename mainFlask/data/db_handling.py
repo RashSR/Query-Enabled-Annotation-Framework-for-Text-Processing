@@ -7,6 +7,7 @@ from mainFlask.classes.chat import Chat
 from mainFlask.classes.message import Message
 from .cachestore import CacheStore
 from mainFlask.classes.ltmatch import LTMatch
+from mainFlask.classes.spacymatch import SpacyMatch
 
 # region GET
 
@@ -230,7 +231,57 @@ def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
         new_id = result.lastrowid
         return new_id
 
+def create_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch):
+    with app.app_context():
+        sql_text = text("""
+            INSERT INTO spacy_match (
+                id, message_id, chat_id, start_pos, end_pos, text,
+                lemma, pos, tag, dep, shape, is_alpha, is_stop,
+                tense, person, verb_form, voice, degree, gram_case,
+                number, gender, mood, pron_type
+            ) VALUES (
+                :id, :message_id, :chat_id, :start_pos, :end_pos, :text,
+                :lemma, :pos, :tag, :dep, :shape, :is_alpha, :is_stop,
+                :tense, :person, :verb_form, :voice, :degree, :gram_case,
+                :number, :gender, :mood, :pron_type
+            )
+        """)
+
+        values = {
+            'id': None,
+            'message_id': spacy_match.message_id,
+            'chat_id': spacy_match.chat_id,
+            'start_pos': spacy_match.start_pos,
+            'end_pos': spacy_match.end_pos,
+            'text': spacy_match.text,
+            'lemma': spacy_match.lemma,
+            'pos': spacy_match.pos,
+            'tag': spacy_match.tag,
+            'dep': spacy_match.dep,
+            'shape': spacy_match.shape,
+            'is_alpha': spacy_match.is_alpha,
+            'is_stop': spacy_match.is_stop,
+            'tense': spacy_match.tense,
+            'person': spacy_match.person,
+            'verb_form': spacy_match.verb_form,
+            'voice': spacy_match.voice,
+            'degree': spacy_match.degree,
+            'gram_case': spacy_match.gram_case,
+            'number': spacy_match.number,
+            'gender': spacy_match.gender,
+            'mood': spacy_match.mood,
+            'pron_type': spacy_match.pron_type
+        }
+
+        result = db.session.execute(sql_text, values)
+        db.session.commit()
+
+        new_id = result.lastrowid
+        return new_id
+
 # endregion 
+
+
 
 #region Conversion
 
