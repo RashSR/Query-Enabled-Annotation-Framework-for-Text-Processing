@@ -179,22 +179,25 @@ class FilterNodeObject(FilterNode):
                 self._convert_messages_into_search_results(messages)
                 return self._search_result_list
             case FilterNodeGroup.WORTART:
-                messages: list[Message] = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("pos", self._selected_value)
-                for msg in messages:
-                    for spacy_match in msg.spacy_matches:
-                        if spacy_match.pos == self._selected_value:
-                            sr = SearchResult(message=msg, keyword=spacy_match.text, matched_word=spacy_match.text, selected_color=self._selected_color, start_pos=spacy_match.start_pos, end_pos=spacy_match.end_pos)
-                            self._add_search_results_messages(sr)
+                self._convert_spacy_match_into_search_results(group="pos")
                 return self._search_result_list
             case FilterNodeGroup.LEMMA:
-                messages = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("lemma", self._selected_value)
-                return []
+                self._convert_spacy_match_into_search_results(group="lemma")
+                return self._search_result_list
             case FilterNodeGroup.PRONOMENTYP:
-                messages = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("pron_type", self._selected_value)
-                return []
+                self._convert_spacy_match_into_search_results(group="pron_type")
+                return self._search_result_list
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
+
+    def _convert_spacy_match_into_search_results(self, group: str) -> list[SearchResult]:
+        messages: list[Message] = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value(group, self._selected_value)
+        for msg in messages:
+            for spacy_match in msg.spacy_matches:
+                if getattr(spacy_match, group, None) == self._selected_value:
+                    sr = SearchResult(message=msg, keyword=spacy_match.text, matched_word=spacy_match.text, selected_color=self._selected_color, start_pos=spacy_match.start_pos, end_pos=spacy_match.end_pos)
+                    self._add_search_results_messages(sr)
 
     def _convert_messages_into_search_results(self, messages):
         for msg in messages:
