@@ -12,15 +12,15 @@ class FilterNodeGroup(Enum):
     #FEINTAG = "feintag"
     #BUCHSTABEN = "nurbuchstaben" -> isAlpha
     #FUNKTIONSWORT = "funktionswort"
-    #TEMPUS = "tempus"
-    #PERSON = "person"
-    #VERBFORM = "verform"
-    #STIMME = "stimme"
-    #STEIGERUNGSGRAD = "steigerungsgrad"
-    #KASUS = "kasus"
-    #NUMERUS = "numerus" #singular/plural
-    #GENUS = "gender"
-    #MOUDS = "modus"
+    TEMPUS = "tempus"
+    PERSON = "person"
+    VERBFORM = "verform"
+    STIMME = "stimme"
+    STEIGERUNGSGRAD = "steigerungsgrad"
+    KASUS = "kasus"
+    NUMERUS = "numerus" #singular/plural
+    GENUS = "gender"
+    MOUDS = "modus"
     PRONOMENTYP = "pronomentyp"
 
     

@@ -390,8 +390,8 @@ def _convert_db_row_to_spacy_match(row) -> SpacyMatch:
     lemma = row[6]
     pos = row[7]
     tag = row[8]
-    is_alpha = row[9]
-    is_stop = row[10]
+    is_alpha = row[9] #TODO: convert to bool
+    is_stop = row[10] #TODO: convert to bool
     tense = row[11]
     person = row[12]
     verb_form = row[13]

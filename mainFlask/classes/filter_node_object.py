@@ -117,6 +117,24 @@ class FilterNodeObject(FilterNode):
                 return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("lemma")
             case FilterNodeGroup.PRONOMENTYP:
                 return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("pron_type")
+            case FilterNodeGroup.TEMPUS:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("tense")
+            case FilterNodeGroup.PERSON:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("person")
+            case FilterNodeGroup.VERBFORM:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("verb_form")
+            case FilterNodeGroup.STIMME:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("voice")
+            case FilterNodeGroup.STEIGERUNGSGRAD:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("degree")
+            case FilterNodeGroup.KASUS:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("gram_case")
+            case FilterNodeGroup.NUMERUS:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("number")
+            case FilterNodeGroup.GENUS:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("gender")
+            case FilterNodeGroup.MOUDS:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("mood")
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {filter_node_group}")
@@ -183,6 +201,33 @@ class FilterNodeObject(FilterNode):
                 return self._search_result_list
             case FilterNodeGroup.LEMMA:
                 self._convert_spacy_match_into_search_results(group="lemma")
+                return self._search_result_list
+            case FilterNodeGroup.TEMPUS:
+                self._convert_spacy_match_into_search_results(group="tense")
+                return self._search_result_list
+            case FilterNodeGroup.PERSON:
+                self._convert_spacy_match_into_search_results(group="person")
+                return self._search_result_list
+            case FilterNodeGroup.VERBFORM:
+                self._convert_spacy_match_into_search_results(group="verb_form")
+                return self._search_result_list
+            case FilterNodeGroup.STIMME:
+                self._convert_spacy_match_into_search_results(group="voice")
+                return self._search_result_list
+            case FilterNodeGroup.STEIGERUNGSGRAD:
+                self._convert_spacy_match_into_search_results(group="degree")
+                return self._search_result_list
+            case FilterNodeGroup.KASUS:
+                self._convert_spacy_match_into_search_results(group="gram_case")
+                return self._search_result_list
+            case FilterNodeGroup.NUMERUS:
+                self._convert_spacy_match_into_search_results(group="number")
+                return self._search_result_list
+            case FilterNodeGroup.GENUS:
+                self._convert_spacy_match_into_search_results(group="gender")
+                return self._search_result_list
+            case FilterNodeGroup.MOUDS:
+                self._convert_spacy_match_into_search_results(group="mood")
                 return self._search_result_list
             case FilterNodeGroup.PRONOMENTYP:
                 self._convert_spacy_match_into_search_results(group="pron_type")
