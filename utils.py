@@ -84,46 +84,70 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
 
 #TODO look up lemmatizer
 def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
+    pos_tags = []
     doc = nlp(msg.content)
-    annotated_text = ""
 
     # priniting information
     for token in doc:
-        print(f"Wort: {token.text}") #
-        if not token.pos_ == "PUNCT":
-            annotated_text = annotated_text + " "
-        annotated_token = f"<span data-error=\"{token.lemma_}\">{token.text}</span>"
-        annotated_text = annotated_text + annotated_token
-        print(f"Grundform: {token.lemma_}") #Grundform
-        print(f"POS-Tag: {token.pos_}") #Wortart
+        pos_tags.append(token.pos_)
+        print(f"Grundform: {token.lemma_}")
+        print(f"POS-Tag: {token.pos_}")
         print(f"Tag: {token.tag_}")
-        #just high int value
-        #print(f"Dep: {token.dep}") 
-        #print(f"Shape: {token.shape}")
-        #print(f"Text: {token.text}, Start: {token.idx}, End: {token.idx + len(token)}") #TODO for dic with positions
-        #Idea for annotation: a class with msg_id start index, end index and comment
+        print(f"Dep: {token.dep}")
+        print(f"Shape: {token.shape}")
+        print(f"Text: {token.text}, Start: {token.idx}, End: {token.idx + len(token)}")
         print(f"isAlpha: {token.is_alpha}")
         print(f"isStop: {token.is_stop}")
-        if token.pos_ == "VERB":
-            print_tokennized_word("Tempus", token.morph.get('Tense')) #Zeitform
-            print_tokennized_word("Person", token.morph.get('Person')) #Person des Verbs
-            print_tokennized_word("VerbForm", token.morph.get('VerbForm')) #Verbform finites Verb, Partizip
-            print_tokennized_word("Stimme", token.morph.get('Voice')) #Aktiv oder Passiv #Aktiv oder Passiv
-        if token.pos_ == "ADJ" or token.pos_ == "ADV":
-            print_tokennized_word("Grad", token.morph.get('Degree')) #Grad der Steigerung
-        print_tokennized_word("Kasus", token.morph.get('Case')) #Kasus/"Fall"
-        print_tokennized_word("Zahl", token.morph.get('Number')) #Singular/Plural
-        print_tokennized_word("Geschlecht", token.morph.get('Gender')) #Geschlecht Fem/Masc
-        print_tokennized_word("Modus", token.morph.get('Mood')) #Indikativ/Konjunktiv
-        print_tokennized_word("PronTyp", token.morph.get('PronType'))
+
+        # POS-specific morphological features
+        pos = token.pos_
+
+        if pos in ("VERB", "AUX"):
+            print_tokennized_word("Tempus", token.morph.get('Tense'))
+            print_tokennized_word("Person", token.morph.get('Person'))
+            print_tokennized_word("VerbForm", token.morph.get('VerbForm'))
+            print_tokennized_word("Stimme", token.morph.get('Voice'))
+            print_tokennized_word("Modus", token.morph.get('Mood'))
+
+        if pos in ("ADJ", "ADV"):
+            print_tokennized_word("Grad", token.morph.get('Degree'))
+
+        if pos in ("NOUN", "PROPN", "PRON", "ADJ", "DET"):
+            print_tokennized_word("Kasus", token.morph.get('Case'))
+            print_tokennized_word("Zahl", token.morph.get('Number'))
+            print_tokennized_word("Geschlecht", token.morph.get('Gender'))
+
+        if pos in ("PRON", "DET"):
+            print_tokennized_word("PronTyp", token.morph.get('PronType'))
+
+        # Handle NUM (numerals) optionally
+        if pos == "NUM":
+            print_tokennized_word("Zahl", token.morph.get('Number'))
+            print_tokennized_word("Kasus", token.morph.get('Case'))
+
+        # Optional debug info for rarely used POS
+        if pos in ("CCONJ", "SCONJ", "PART", "ADP", "INTJ", "X"):
+            print(f"[Info] POS {pos} has minimal or no morphological features.")
+
+        # Ignore punctuation and space
+        if pos in ("PUNCT", "SPACE"):
+            print(f"[Skipping] POS {pos} (punctuation or space)")
 
         print("---")
+
+    return pos_tags
 
 #useful to print spacy like annotations
 def print_tokennized_word(key, value):
     if (len(value) != 0):
         print(f"{key}: {value}")
 
+#annotation code 
+        #annotated_text = ""
+        #if not token.pos_ == "PUNCT":
+            #annotated_text = annotated_text + " "
+        #annotated_token = f"<span data-error=\"{token.lemma_}\">{token.text}</span>"
+        #annotated_text = annotated_text + annotated_token
 # endregion 
 
 # region Language Tool

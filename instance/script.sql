@@ -62,3 +62,31 @@ CREATE TABLE lt_match(
     PRIMARY KEY (id, message_id, chat_id),
     FOREIGN KEY (message_id, chat_id) REFERENCES message(id, chat_id)
 );
+
+CREATE TABLE spacy_match (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message_id INTEGER NOT NULL,
+    chat_id INTEGER NOT NULL,
+    start_pos INTEGER NOT NULL,
+    end_pos INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    lemma TEXT,
+    pos TEXT,
+    tag TEXT,
+    dep INTEGER,
+    shape TEXT,
+    is_alpha BOOLEAN,
+    is_stop BOOLEAN,
+    tense TEXT,
+    person TEXT,
+    verb_form TEXT,
+    voice TEXT,
+    degree TEXT,
+    gram_case TEXT,
+    number TEXT,
+    gender TEXT,
+    mood TEXT,
+    pron_type TEXT,
+    FOREIGN KEY (message_id) REFERENCES message(id) ON DELETE CASCADE,
+    FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE
+);
