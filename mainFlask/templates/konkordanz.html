@@ -75,7 +75,7 @@
           <div class="complex-search-group" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; padding:0.5rem 0.5rem; border-radius:6px; border:1px solid #e0e0e0;">
             <div style="display:flex; gap:0.5rem; align-items:center;">
               <label style="font-weight:bold;">Logik:</label>
-              <select name="logic_operator[{{ idx }}]" class="logic-operator-dropdown">
+              <select name="logic_operator[{{ idx }}]" class="logic-operator-dropdown search-konkordanz-dropdown">
                 <option value="AND" {% if n.filter_type.name == 'AND' %}selected{% endif %}>AND</option>
                 <option value="OR" {% if n.filter_type.name == 'OR' %}selected{% endif %}>OR</option>
                 <option value="NOT" {% if n.filter_type.name == 'NOT' %}selected{% endif %}>NOT</option>
