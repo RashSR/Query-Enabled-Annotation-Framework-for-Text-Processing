@@ -7,20 +7,38 @@ class FilterNodeGroup(Enum):
     AUTHOR = "author"
     RECIPIENT = "recipient"
     #EMOJI = "emoji"
-    LEMMA = "grundform"
-    WORTART = "wortart"
+    LEMMA = "lemma"
+    WORTART = "pos"
     #FEINTAG = "feintag"
     #BUCHSTABEN = "nurbuchstaben" -> isAlpha
     #FUNKTIONSWORT = "funktionswort"
-    TEMPUS = "tempus"
+    TEMPUS = "tense"
     PERSON = "person"
-    VERBFORM = "verform"
-    STIMME = "stimme"
-    STEIGERUNGSGRAD = "steigerungsgrad"
-    KASUS = "kasus"
-    NUMERUS = "numerus" #singular/plural
+    VERBFORM = "verb_form"
+    STIMME = "voice"
+    STEIGERUNGSGRAD = "degree"
+    KASUS = "gram_case"
+    NUMERUS = "number" #singular/plural
     GENUS = "gender"
-    MOUDS = "modus"
-    PRONOMENTYP = "pronomentyp"
+    MOUDS = "mood"
+    PRONOMENTYP = "pron_type"
+
+    @classmethod
+    def is_spacy_filter_group(cls, filter_node_group):
+        SPACY_FILTER_GROUPS = {
+            FilterNodeGroup.WORTART,
+            FilterNodeGroup.LEMMA,
+            FilterNodeGroup.PRONOMENTYP,
+            FilterNodeGroup.TEMPUS,
+            FilterNodeGroup.PERSON,
+            FilterNodeGroup.VERBFORM,
+            FilterNodeGroup.STIMME,
+            FilterNodeGroup.STEIGERUNGSGRAD,
+            FilterNodeGroup.KASUS,
+            FilterNodeGroup.NUMERUS,
+            FilterNodeGroup.GENUS,
+            FilterNodeGroup.MOUDS,
+        }
+        return filter_node_group in SPACY_FILTER_GROUPS
 
     
