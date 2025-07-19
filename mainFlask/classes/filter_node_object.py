@@ -180,9 +180,6 @@ class FilterNodeObject(FilterNode):
                 return self._search_result_list
             case FilterNodeGroup.WORTART:
                 messages = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("pos", self._selected_value)
-                print(f"length: {len(messages)}")
-                for msg in messages:
-                    print(msg)
                 return []
             case FilterNodeGroup.LEMMA:
                 messages = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("lemma", self._selected_value)
