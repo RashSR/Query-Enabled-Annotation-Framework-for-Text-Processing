@@ -19,7 +19,7 @@ class Message:
         self._error_list: list[LTMatch] = []
         self._ltmatch_ids = []
         self._spacy_match_ids = []
-        self._spacy_matches = list[SpacyMatch]
+        self._spacy_matches: list[SpacyMatch] = []
         self._annotated_text = annotated_text
         self._chat = chat
         self._search_results = []

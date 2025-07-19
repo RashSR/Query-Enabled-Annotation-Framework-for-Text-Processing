@@ -179,6 +179,7 @@ class FilterNodeObject(FilterNode):
                 self._convert_messages_into_search_results(messages)
                 return self._search_result_list
             case FilterNodeGroup.WORTART:
+                #TODO: load messages by wortart
                 return []
             case FilterNodeGroup.LEMMA:
                 return []
