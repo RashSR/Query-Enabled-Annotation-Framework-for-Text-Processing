@@ -179,8 +179,17 @@ class FilterNodeObject(FilterNode):
                 self._convert_messages_into_search_results(messages)
                 return self._search_result_list
             case FilterNodeGroup.WORTART:
-                messages = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("pos", self._selected_value)
-                return []
+                messages: list[Message] = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("pos", self._selected_value)
+                srs = []
+                for msg in messages:
+                    for spacy_match in msg.spacy_matches:
+                        if spacy_match.pos == self._selected_value:
+                            print("I want to add")
+                            #TODO convert spacy match to search result
+                            print(spacy_match)
+                            sr = SearchResult(message=msg, keyword=spacy_match.text, matched_word=spacy_match.text, start_pos=spacy_match.start_pos, end_pos=spacy_match.end_pos)
+                            srs.append(sr)
+                return srs
             case FilterNodeGroup.LEMMA:
                 messages = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value("lemma", self._selected_value)
                 return []
