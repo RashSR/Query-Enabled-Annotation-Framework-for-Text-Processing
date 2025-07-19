@@ -73,8 +73,6 @@ CREATE TABLE spacy_match (
     lemma TEXT,
     pos TEXT,
     tag TEXT,
-    dep INTEGER,
-    shape TEXT,
     is_alpha BOOLEAN,
     is_stop BOOLEAN,
     tense TEXT,

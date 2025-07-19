@@ -236,12 +236,12 @@ def create_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch):
         sql_text = text("""
             INSERT INTO spacy_match (
                 id, message_id, chat_id, start_pos, end_pos, text,
-                lemma, pos, tag, dep, shape, is_alpha, is_stop,
+                lemma, pos, tag, is_alpha, is_stop,
                 tense, person, verb_form, voice, degree, gram_case,
                 number, gender, mood, pron_type
             ) VALUES (
                 :id, :message_id, :chat_id, :start_pos, :end_pos, :text,
-                :lemma, :pos, :tag, :dep, :shape, :is_alpha, :is_stop,
+                :lemma, :pos, :tag, :is_alpha, :is_stop,
                 :tense, :person, :verb_form, :voice, :degree, :gram_case,
                 :number, :gender, :mood, :pron_type
             )
@@ -257,8 +257,6 @@ def create_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch):
             'lemma': spacy_match.lemma,
             'pos': spacy_match.pos,
             'tag': spacy_match.tag,
-            'dep': spacy_match.dep,
-            'shape': spacy_match.shape,
             'is_alpha': spacy_match.is_alpha,
             'is_stop': spacy_match.is_stop,
             'tense': spacy_match.tense,

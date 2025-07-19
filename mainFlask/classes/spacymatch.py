@@ -9,8 +9,6 @@ class SpacyMatch:
         lemma: str = None,
         pos: str = None,
         tag: str = None,
-        dep: int = None,
-        shape: str = None,
         is_alpha: bool = None,
         is_stop: bool = None,
         tense: str = None,
@@ -33,8 +31,6 @@ class SpacyMatch:
         self._lemma = lemma
         self._pos = pos
         self._tag = tag
-        self._dep = dep
-        self._shape = shape
         self._is_alpha = is_alpha
         self._is_stop = is_stop
         self._tense = tense
@@ -59,8 +55,6 @@ class SpacyMatch:
     lemma: '{self._lemma}',
     pos: '{self._pos}',
     tag: '{self._tag}',
-    dep: {self._dep},
-    shape: '{self._shape}',
     is_alpha: {self._is_alpha},
     is_stop: {self._is_stop},
     tense: '{self._tense}',
@@ -120,16 +114,6 @@ class SpacyMatch:
     def tag(self): return self._tag
     @tag.setter
     def tag(self, value): self._tag = value
-
-    @property
-    def dep(self): return self._dep
-    @dep.setter
-    def dep(self, value): self._dep = value
-
-    @property
-    def shape(self): return self._shape
-    @shape.setter
-    def shape(self, value): self._shape = value
 
     @property
     def is_alpha(self): return self._is_alpha

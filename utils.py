@@ -78,8 +78,8 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
 #Lemma: The base form of the word.
 #POS: The simple UPOS part-of-speech tag.
 #Tag: The detailed part-of-speech tag.
-#Dep: Syntactic dependency, i.e. the relation between tokens.
-#Shape: The word shape – capitalization, punctuation, digits.
+#Dep: Syntactic dependency, i.e. the relation between tokens. just a big number -> further investigation needed
+#Shape: The word shape – capitalization, punctuation, digits. just a big number -> further investigation needed
 #is alpha: Is the token an alpha character?
 #is stop: Is the token part of a stop list, i.e. the most common words of the language?
 
@@ -89,14 +89,6 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
     doc = nlp(msg.content)
 
     for token in doc:
-        print(f"Grundform: {token.lemma_}")
-        print(f"POS-Tag: {token.pos_}")
-        print(f"Tag: {token.tag_}")
-        print(f"Dep: {token.dep}")
-        print(f"Shape: {token.shape}")
-        print(f"Text: {token.text}, Start: {token.idx}, End: {token.idx + len(token)}")
-        print(f"isAlpha: {token.is_alpha}")
-        print(f"isStop: {token.is_stop}")
 
         morph = token.morph
         pos = token.pos_
@@ -133,10 +125,8 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
         if pos in ("PUNCT", "SPACE"):
             print(f"[Skipping] POS {pos} (punctuation or space)")
 
-        print("---")
-
         spacy_match = SpacyMatch(
-            message_id=msg.id,
+            message_id=msg.message_id,
             chat_id=msg.chat_id,
             start_pos=token.idx,
             end_pos=token.idx + len(token),
@@ -144,8 +134,6 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
             lemma=token.lemma_,
             pos=token.pos_,
             tag=token.tag_,
-            dep=token.dep,
-            shape=token.shape_,
             is_alpha=token.is_alpha,
             is_stop=token.is_stop,
             tense=tense,
