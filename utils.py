@@ -6,6 +6,7 @@ from mainFlask.classes.chat import Chat
 from mainFlask.classes.messagetype import MessageType
 from datetime import datetime
 from mainFlask.classes.ltmatch import LTMatch
+from mainFlask.classes.spacymatch import SpacyMatch
 from mainFlask.data.cachestore import CacheStore
 from itertools import chain
 from collections import Counter
@@ -83,13 +84,11 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
 #is stop: Is the token part of a stop list, i.e. the most common words of the language?
 
 #TODO look up lemmatizer
-def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
-    pos_tags = []
+def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
+    #TODO: check for MessageType.TEXT
     doc = nlp(msg.content)
 
-    # priniting information
     for token in doc:
-        pos_tags.append(token.pos_)
         print(f"Grundform: {token.lemma_}")
         print(f"POS-Tag: {token.pos_}")
         print(f"Tag: {token.tag_}")
@@ -99,43 +98,70 @@ def analyze_msg_with_spacy(msg: Message): #TODO: check for MessageType.TEXT
         print(f"isAlpha: {token.is_alpha}")
         print(f"isStop: {token.is_stop}")
 
-        # POS-specific morphological features
+        morph = token.morph
         pos = token.pos_
 
+        tense = person = verb_form = voice = mood = None
+        degree = gram_case = number = gender = pron_type = None
+
+        #TODO: check if there are more pos than that
         if pos in ("VERB", "AUX"):
-            print_tokennized_word("Tempus", token.morph.get('Tense'))
-            print_tokennized_word("Person", token.morph.get('Person'))
-            print_tokennized_word("VerbForm", token.morph.get('VerbForm'))
-            print_tokennized_word("Stimme", token.morph.get('Voice'))
-            print_tokennized_word("Modus", token.morph.get('Mood'))
+            tense = morph.get("Tense")[0] if morph.get("Tense") else None
+            person = morph.get("Person")[0] if morph.get("Person") else None
+            verb_form = morph.get("VerbForm")[0] if morph.get("VerbForm") else None
+            voice = morph.get("Voice")[0] if morph.get("Voice") else None
+            mood = morph.get("Mood")[0] if morph.get("Mood") else None
 
         if pos in ("ADJ", "ADV"):
-            print_tokennized_word("Grad", token.morph.get('Degree'))
+            degree = morph.get("Degree")[0] if morph.get("Degree") else None
 
         if pos in ("NOUN", "PROPN", "PRON", "ADJ", "DET"):
-            print_tokennized_word("Kasus", token.morph.get('Case'))
-            print_tokennized_word("Zahl", token.morph.get('Number'))
-            print_tokennized_word("Geschlecht", token.morph.get('Gender'))
+            gram_case = morph.get("Case")[0] if morph.get("Case") else None
+            number = morph.get("Number")[0] if morph.get("Number") else None
+            gender = morph.get("Gender")[0] if morph.get("Gender") else None
 
         if pos in ("PRON", "DET"):
-            print_tokennized_word("PronTyp", token.morph.get('PronType'))
+            pron_type = morph.get("PronType")[0] if morph.get("PronType") else None
 
-        # Handle NUM (numerals) optionally
         if pos == "NUM":
-            print_tokennized_word("Zahl", token.morph.get('Number'))
-            print_tokennized_word("Kasus", token.morph.get('Case'))
+            number = morph.get("Number")[0] if morph.get("Number") else number
+            gram_case = morph.get("Case")[0] if morph.get("Case") else gram_case
 
-        # Optional debug info for rarely used POS
         if pos in ("CCONJ", "SCONJ", "PART", "ADP", "INTJ", "X"):
             print(f"[Info] POS {pos} has minimal or no morphological features.")
 
-        # Ignore punctuation and space
         if pos in ("PUNCT", "SPACE"):
             print(f"[Skipping] POS {pos} (punctuation or space)")
 
         print("---")
 
-    return pos_tags
+        spacy_match = SpacyMatch(
+            message_id=msg.id,
+            chat_id=msg.chat_id,
+            start_pos=token.idx,
+            end_pos=token.idx + len(token),
+            text=token.text,
+            lemma=token.lemma_,
+            pos=token.pos_,
+            tag=token.tag_,
+            dep=token.dep,
+            shape=token.shape_,
+            is_alpha=token.is_alpha,
+            is_stop=token.is_stop,
+            tense=tense,
+            person=person,
+            verb_form=verb_form,
+            voice=voice,
+            degree=degree,
+            gram_case=gram_case,
+            number=number,
+            gender=gender,
+            mood=mood,
+            pron_type=pron_type
+        )
+
+        CacheStore.Instance().create_spacy_match(spacy_match)
+
 
 #useful to print spacy like annotations
 def print_tokennized_word(key, value):
