@@ -113,3 +113,7 @@ SELECT
       )
     ) AS spacy_match_ids
 FROM message AS m;
+
+CREATE VIEW message_join_spacy_match AS
+SELECT * FROM message m
+JOIN spacy_match sm ON m.id = sm.message_id;

@@ -211,6 +211,18 @@ class CacheStore:
             self._messages[msg.message_id] = msg
         
         return messages
+    
+    def get_messages_from_spacy_matches_by_column_and_value(self, column_name: str, value: str):
+        from .db_handling import get_messages_from_spacy_matches_by_column_and_value
+        
+        if self._messages is None:
+            self._messages = {}
+        
+        messages = get_messages_from_spacy_matches_by_column_and_value(self._db, self._app, column_name, value)
+        for msg in messages:
+            self._messages[msg.message_id] = msg
+
+        return messages
 
     # endregion
 

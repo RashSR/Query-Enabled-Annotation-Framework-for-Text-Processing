@@ -115,7 +115,7 @@ def get_messages_by_recipient_id(db: SQLAlchemy, app: Flask, recipient_id: int):
         
         return messages
 
-#TODO: idea -> for get requests add dictionary like [param, value] -> SELECT * FROM message_with_ltm_ids WHERE param = :value
+#TODO: idea -> for get requests add dictionary like [param, value] -> SELECT * FROM message_join_lt_match WHERE param = :value
 def get_messages_by_error_category(db: SQLAlchemy, app: Flask, error_category: str):
     with app.app_context():
         results = db.session.execute(
@@ -167,6 +167,21 @@ def get_messages_by_substring_in_content(db: SQLAlchemy, app: Flask, search_stri
         
         return messages
 
+def get_messages_from_spacy_matches_by_column_and_value(db: SQLAlchemy, app: Flask, column_name: str, value: str):
+    with app.app_context():
+        sql_text = f"SELECT * FROM message_join_spacy_match WHERE {column_name} = '{value}'"
+        results = db.session.execute(text(sql_text))
+
+        messages = []
+        seen_ids = set()
+
+        for row in results:
+            msg = _convert_db_row_to_message(row, tableHasLTMIds=False, tableHasSpacyIds=False)
+            if msg.message_id not in seen_ids:
+                seen_ids.add(msg.message_id)
+                messages.append(msg)
+        
+        return messages
 
 # endregion
 
