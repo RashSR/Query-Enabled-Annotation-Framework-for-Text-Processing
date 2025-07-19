@@ -7,3 +7,4 @@ class FilterNodeGroup(Enum):
     AUTHOR = "author"
     RECIPIENT = "recipient"
     EMOJI = "emoji"
+    WORTART = 'wortart'

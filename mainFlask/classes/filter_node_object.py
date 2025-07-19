@@ -111,6 +111,8 @@ class FilterNodeObject(FilterNode):
                     author_names.append(author.name)
 
                 return author_names 
+            case FilterNodeGroup.WORTART:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("pos")
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {filter_node_group}")

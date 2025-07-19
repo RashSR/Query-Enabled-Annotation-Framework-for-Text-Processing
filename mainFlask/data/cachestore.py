@@ -242,6 +242,11 @@ class CacheStore:
         return rule_ids
     
     _spacy_matches = None
+
+    def get_all_distinct_column_values_from_spacy_matches_by_column_name(self, column_name: str):
+        from .db_handling import get_all_distinct_column_values_from_spacy_matches_by_column_name
+        column_values = get_all_distinct_column_values_from_spacy_matches_by_column_name(self._db, self._app, column_name)
+        return column_values
     
     # endregion
     

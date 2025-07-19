@@ -207,6 +207,22 @@ def get_all_distinct_rule_ids_from_ltms(db:SQLAlchemy, app: Flask):
 
 # endregion
 
+# region Spacy Matches
+
+def get_all_distinct_column_values_from_spacy_matches_by_column_name(db:SQLAlchemy, app: Flask, column_name: str):
+    with app.app_context():
+        column_values: list[str] = []
+
+        sql_text = f"SELECT DISTINCT {column_name} FROM spacy_match"
+        result = db.session.execute(text(sql_text))
+        for row in result:
+            column_value = row[0]
+            column_values.append(column_value)
+
+        return column_values
+
+# endregion 
+
 # endregion
 
 # region CREATE
