@@ -88,3 +88,28 @@ CREATE TABLE spacy_match (
     FOREIGN KEY (message_id) REFERENCES message(id) ON DELETE CASCADE,
     FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE
 );
+
+CREATE VIEW message_with_ltm_and_spacy_ids AS
+SELECT
+    m.*,  -- all columns from message
+    (
+      SELECT GROUP_CONCAT(id, ',')
+      FROM (
+        SELECT lm.id
+        FROM lt_match AS lm
+        WHERE lm.message_id = m.id
+          AND lm.chat_id = m.chat_id
+        ORDER BY lm.id
+      )
+    ) AS lt_match_ids,
+    (
+      SELECT GROUP_CONCAT(id, ',')
+      FROM (
+        SELECT sm.id
+        FROM spacy_match AS sm
+        WHERE sm.message_id = m.id
+          AND sm.chat_id = m.chat_id
+        ORDER BY sm.id
+      )
+    ) AS spacy_match_ids
+FROM message AS m;

@@ -1,9 +1,11 @@
 from .messagetype import MessageType
 from mainFlask.data.cachestore import CacheStore
 from .ltmatch import LTMatch
+from .spacymatch import SpacyMatch
 
 #TODO:  Klasse e.g. message_element und hier wird jedes einzelne Element aus einer Nachricht erstellt hinzu kommen eine Liste an lt_matches und spacy_matches hinzu. 
 # Diese können beim annotieren bearbeitet werden
+# Für aufeinanderfolgende Suche praktisch -> itereiere über alle und falls zwei hintereinander richtig sind -> hinzufügen
 
 class Message:
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, annotated_text = None, chat = None):
@@ -16,6 +18,8 @@ class Message:
         self.quoted_message = quoted_message
         self._error_list: list[LTMatch] = []
         self._ltmatch_ids = []
+        self._spacy_match_ids = []
+        self._spacy_matches = list[SpacyMatch]
         self._annotated_text = annotated_text
         self._chat = chat
         self._search_results = []
@@ -73,8 +77,18 @@ class Message:
         return self._error_list
 
     @error_list.setter
-    def error_list(self, value):
+    def error_list(self, value: list[LTMatch]):
         self._error_list = value
+
+    @property
+    def spacy_matches(self) -> list[SpacyMatch]:
+        if len(self._spacy_matches)==0: #TODO only load errorlist once
+            self._spacy_matches = CacheStore.Instance().get_all_spacy_matches_by_msg_id(self._message_id)
+        return self._spacy_matches
+    
+    @spacy_matches.setter
+    def spacy_matches(self, value: list[SpacyMatch]):
+        self._spacy_matches = value
 
     @property
     def sender(self):
@@ -107,6 +121,14 @@ class Message:
     @ltmatch_ids.setter
     def ltmatch_ids(self, value):
         self._ltmatch_ids = value
+
+    @property
+    def spacy_match_ids(self):
+        return self._spacy_match_ids
+
+    @spacy_match_ids.setter
+    def spacy_match_ids(self, value):
+        self._spacy_match_ids = value
 
     @property
     def chat(self):

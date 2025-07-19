@@ -79,7 +79,7 @@ def get_chat_by_id(db: SQLAlchemy, app: Flask, chat_id: int):
 def get_all_messages(db: SQLAlchemy, app: Flask):
     with app.app_context():
         messages = []
-        result = db.session.execute(text("SELECT * FROM message_with_ltm_ids"))
+        result = db.session.execute(text("SELECT * FROM message_with_ltm_and_spacy_ids"))
         for row in result:
             loaded_message = _convert_db_row_to_message(row)
             messages.append(loaded_message)
@@ -89,7 +89,7 @@ def get_all_messages(db: SQLAlchemy, app: Flask):
 def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
     with app.app_context():
         result_row = db.session.execute(
-            text("SELECT * FROM message_with_ltm_ids WHERE id = :id"),
+            text("SELECT * FROM message_with_ltm_and_spacy_ids WHERE id = :id"),
             {'id': id}
         ).fetchone()
 
@@ -155,7 +155,7 @@ def get_messages_by_error_rule_id(db: SQLAlchemy, app: Flask, error_rule_id: str
 def get_messages_by_substring_in_content(db: SQLAlchemy, app: Flask, search_string: str):
     with app.app_context():
         results = db.session.execute(
-            text("SELECT * FROM message_with_ltm_ids WHERE content LIKE :search_string "), #for case_sensitiv -> WHERE content LIKE :search_string COLLATE BINARY
+            text("SELECT * FROM message_with_ltm_and_spacy_ids WHERE content LIKE :search_string "), #for case_sensitiv -> WHERE content LIKE :search_string COLLATE BINARY
             {'search_string': f"%{search_string}%"}
         )
 
@@ -209,7 +209,7 @@ def get_all_distinct_rule_ids_from_ltms(db:SQLAlchemy, app: Flask):
 
 # region Spacy Matches
 
-def get_all_distinct_column_values_from_spacy_matches_by_column_name(db:SQLAlchemy, app: Flask, column_name: str):
+def get_all_distinct_column_values_from_spacy_matches_by_column_name(db: SQLAlchemy, app: Flask, column_name: str):
     with app.app_context():
         column_values: list[str] = []
 
@@ -220,6 +220,19 @@ def get_all_distinct_column_values_from_spacy_matches_by_column_name(db:SQLAlche
             column_values.append(column_value)
 
         return column_values
+    
+def get_all_spacy_matches_by_msg_id(db: SQLAlchemy, app: Flask, msg_id: int):
+    with app.app_context():
+        spacy_matches: list[SpacyMatch] = []
+        result = db.session.execute(
+            text("SELECT * FROM spacy_match WHERE message_id = :msg_id"),
+            {'msg_id': msg_id}
+        )
+        for row in result:
+            loaded_spacy_match = _convert_db_row_to_spacy_match(row)
+            spacy_matches.append(loaded_spacy_match)
+
+        return spacy_matches 
 
 # endregion 
 
@@ -348,6 +361,37 @@ def _convert_db_row_to_ltm(row) -> LTMatch:
     loaded_ltm = LTMatch(message_id, chat_id, start_pos, end_pos, content, category, rule_id)
     loaded_ltm.id = id
     return loaded_ltm
+
+def _convert_db_row_to_spacy_match(row) -> SpacyMatch:
+    id = row[0]
+    message_id = row[1]
+    chat_id = row[2]
+    start_pos = row[3]
+    end_pos = row[4]
+    content = row[5]
+    lemma = row[6]
+    pos = row[7]
+    tag = row[8]
+    is_alpha = row[9]
+    is_stop = row[10]
+    tense = row[11]
+    person = row[12]
+    verb_form = row[13]
+    voice = row[14]
+    degree = row[15]
+    gram_case = row[16]
+    number = row[17]
+    gender = row[18]
+    mood = row[19]
+    pron_type = row[20]
+
+    loaded_spacy_match = SpacyMatch(message_id, chat_id, start_pos, end_pos, content, 
+                                    lemma, pos, tag, is_alpha, is_stop, tense, person, 
+                                    verb_form, voice, degree, gram_case, number, 
+                                    gender, mood, pron_type)
+    loaded_spacy_match.id = id
+    return loaded_spacy_match
+
 
 
 # endregion
