@@ -97,7 +97,7 @@ class FilterNodeObject(FilterNode):
     @staticmethod
     def get_values(filter_node_group: FilterNodeGroup):
         match filter_node_group:
-            case (FilterNodeGroup.WORD | FilterNodeGroup.EMOJI):
+            case (FilterNodeGroup.WORD):
                 #enables textfield
                 return []
             case FilterNodeGroup.RULE_ID:
@@ -113,6 +113,10 @@ class FilterNodeObject(FilterNode):
                 return author_names 
             case FilterNodeGroup.WORTART:
                 return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("pos")
+            case FilterNodeGroup.LEMMA:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("lemma")
+            case FilterNodeGroup.PRONOMENTYP:
+                return CacheStore.Instance().get_all_distinct_column_values_from_spacy_matches_by_column_name("pron_type")
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {filter_node_group}")
