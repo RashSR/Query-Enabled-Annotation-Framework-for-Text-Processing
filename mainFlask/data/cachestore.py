@@ -241,6 +241,8 @@ class CacheStore:
         rule_ids = get_all_distinct_rule_ids_from_ltms(self._db, self._app)
         return rule_ids
     
+    #region Spacy Match
+
     _spacy_matches = None
 
     def get_all_distinct_column_values_from_spacy_matches_by_column_name(self, column_name: str):
@@ -248,6 +250,17 @@ class CacheStore:
         column_values = get_all_distinct_column_values_from_spacy_matches_by_column_name(self._db, self._app, column_name)
         return column_values
     
+    def get_all_spacy_matches_by_msg_id(self, msg_id: int):
+        from .db_handling import get_all_spacy_matches_by_msg_id
+        
+        if self._spacy_matches is None:
+            self._spacy_matches = {}
+
+        spacy_matches: list[SpacyMatch] = get_all_spacy_matches_by_msg_id(self._db, self._app, msg_id)
+        return spacy_matches
+
+    # endregion 
+
     # endregion
     
     # endregion
@@ -290,7 +303,6 @@ class CacheStore:
         return spacy_match
 
     # endregion
-
 
     # endregion 
 
