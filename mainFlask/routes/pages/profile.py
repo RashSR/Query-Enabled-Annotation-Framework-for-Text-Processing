@@ -29,5 +29,5 @@ def save_author_annotation(author_id):
     if not author:
         return jsonify({'error': 'Not found'}), 404
     author.annotation = annotation
-    CacheStore.Instance().update_author(author)
+    author = CacheStore.Instance().update_author(author, column_name="annotation", value=annotation)
     return jsonify({'success': True})

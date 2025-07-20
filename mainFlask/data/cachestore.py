@@ -318,5 +318,20 @@ class CacheStore:
 
     # endregion 
 
+    #region UPDATE
+
+    #region Author
+
+    def update_author(self, author, column_name: str, value):
+        from .db_handling import update_author
+        if update_author(self._db, self._app, author.id, column_name, value):
+            setattr(author, column_name, value)
+            self._authors[author.id] = author
+            return self._authors[author.id]
         
+        return None
+
+    # endregion
+
+    # endregion
     

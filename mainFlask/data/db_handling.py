@@ -323,7 +323,25 @@ def create_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch):
 
 # endregion 
 
+# region UPDATE
 
+# region Author
+
+def update_author(db: SQLAlchemy, app: Flask, author_id: int, column_name: str, value) -> bool:
+    with app.app_context():
+        #TODO check if string
+        sql_text = f"UPDATE author SET {column_name} = '{value}' WHERE id = {author_id}"
+        result = db.session.execute(text(sql_text))
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+        
+        return False
+
+
+# endregion
+
+# endregion
 
 #region Conversion
 
