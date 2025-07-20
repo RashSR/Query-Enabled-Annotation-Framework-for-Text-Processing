@@ -164,6 +164,7 @@ class FilterNodeObject(FilterNode):
                 return self._filter_by_error_attr('category')
             case FilterNodeGroup.AUTHOR:
                 #TODO Maybe change result table? msg jump only works if active author is selected right
+                print("Hier bin ich zuerst")
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
                 messages = author.get_all_own_messages()
                 self._convert_messages_into_search_results(messages)
@@ -187,12 +188,6 @@ class FilterNodeObject(FilterNode):
                 if getattr(spacy_match, group, None) == self._selected_value:
                     sr = SearchResult(message=msg, keyword=spacy_match.text, matched_word=spacy_match.text, selected_color=self._selected_color, start_pos=spacy_match.start_pos, end_pos=spacy_match.end_pos)
                     self._add_search_results_messages(sr)
-
-    def _convert_messages_into_search_results(self, messages):
-        for msg in messages:
-            sr = SearchResult(msg, msg.content, "")
-            sr.left = msg.content
-            self._add_search_results_messages(sr)
 
     def _filter_by_error_attr(self, attr_name):
         if attr_name == 'rule_id':
@@ -222,6 +217,16 @@ class FilterNodeObject(FilterNode):
             matched_word = original_content[index:index+len(keyword)]
             sr = SearchResult(msg, keyword, matched_word, self._case_sensitive, self._selected_color, start_pos=startPos, end_pos=endPos)
             self._add_search_results_messages(sr)
+    
+    def __str__(self):
+        toString = f"filter_node_group: {self._filter_node_group}, input: {self._searchbar_input}, selected_value: {self._selected_value}"
+        return toString
+    
+    def _convert_messages_into_search_results(self, messages):
+        for msg in messages:
+            sr = SearchResult(msg, msg.content, "")
+            sr.left = msg.content
+            self._add_search_results_messages(sr)
 
     def _add_search_results_messages(self, sr: SearchResult):
         message = CacheStore.Instance().get_message_by_id(sr.message.message_id)
@@ -231,15 +236,4 @@ class FilterNodeObject(FilterNode):
             message.search_results.append(sr)
         if not self._is_already_in_result_messages(message):
             self._result_messages.append(message)
-
-    def _is_already_in_result_messages(self, new_message: Message):
-        for stored_message in self._result_messages:
-            if stored_message.message_id == new_message.message_id:
-                return True
-        return False
-    
-    def __str__(self):
-        toString = f"filter_node_group: {self._filter_node_group}, input: {self._searchbar_input}, selected_value: {self._selected_value}"
-        return toString
-            
 

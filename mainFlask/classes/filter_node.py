@@ -4,6 +4,7 @@ from .search_result import SearchResult
 from .message import Message
 import utils
 from collections import defaultdict
+from mainFlask.data.cachestore import CacheStore
 
 class FilterNode:
     def __init__(self, filter_type: FilterType):
@@ -39,6 +40,16 @@ class FilterNode:
                 self._result_messages = utils.or_result_messages(result_message_lists)
             case FilterType.AND:
                 self._result_messages = utils.and_result_messages(result_message_lists)
+            case FilterType.NOT:
+                #is special because not can only have one node
+                all_messages = CacheStore.Instance().get_all_messages()
+                self.print_leave_structure()
+                self._leaves[0].get_full_result()
+                excluded_messages = self._leaves[0].result_messages
+                excluded_ids = {msg.message_id for msg in excluded_messages}
+                remaining_messages = [msg for msg in all_messages if msg.message_id not in excluded_ids]
+                print(f"länge: {len(remaining_messages)}")
+                self._result_messages = remaining_messages
             case FilterType.OBJECT:
                 return self._result_messages
             case _: 
@@ -72,7 +83,13 @@ class FilterNode:
                 self._search_results = self._calc_or_result()
                 return self._search_results
             case FilterType.NOT:
-                return full_result
+                my_messages = self.result_messages
+                for msg in my_messages:
+                    sr = SearchResult(msg, msg.content, "")
+                    sr.left = msg.content
+                    self.search_results.append(sr)
+
+                return self._search_results 
             case FilterType.OBJECT:
                 return self.get_result()
             case _: 
@@ -150,9 +167,8 @@ class FilterNode:
     def _make_indents(self, indents: int) -> str:
         return "---" * indents
 
-
-
-    
-
-
-
+    def _is_already_in_result_messages(self, new_message: Message):
+        for stored_message in self._result_messages:
+            if stored_message.message_id == new_message.message_id:
+                return True
+        return False
