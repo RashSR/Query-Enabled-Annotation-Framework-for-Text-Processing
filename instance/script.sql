@@ -117,3 +117,5 @@ FROM message AS m;
 CREATE VIEW message_join_spacy_match AS
 SELECT * FROM message m
 JOIN spacy_match sm ON m.id = sm.message_id;
+
+ALTER TABLE author ADD COLUMN text annotation;
