@@ -12,9 +12,64 @@
     <p><strong>Weitere Sprachen:</strong> {{ author.languages | join(', ') if author.languages else "Keine" }}</p>
     <p><strong>Region:</strong> {{ author.region or "Nicht angegeben" }}</p>
     <p><strong>Beruf:</strong> {{ author.job or "Nicht angegeben" }}</p>
-    <p>
-        <strong>Anzahl Chats: </strong> {{ author.chat_ids | length }}
-    </p>
+    <p><strong>Anzahl Chats: </strong> {{ author.chat_ids | length }}</p>
+    <div style="margin-top:1.5rem;">
+        <label for="annotation-box"><strong>Annotation:</strong></label><br>
+        <textarea id="annotation-box" class="annotation-box" rows="3" readonly>{{ author.annotation or '' }}</textarea>
+        <div style="font-size:0.9em;color:#888;">(Klick zum Bearbeiten, Enter oder Klick außerhalb speichert)</div>
+        <script>
+        const annotationBox = document.getElementById('annotation-box');
+        let lastValue = annotationBox.value;
+        annotationBox.addEventListener('click', function() {
+          if (annotationBox.hasAttribute('readonly')) {
+            annotationBox.removeAttribute('readonly');
+            annotationBox.focus();
+          }
+        });
+        annotationBox.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            annotationBox.blur();
+          }
+        });
+        annotationBox.addEventListener('blur', function() {
+          annotationBox.setAttribute('readonly', 'readonly');
+          if (annotationBox.value !== lastValue) {
+            fetch(window.location.pathname + '/annotation', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ annotation: annotationBox.value })
+            }).then(r => {
+              if (!r.ok) alert('Fehler beim Speichern!');
+              else lastValue = annotationBox.value;
+            });
+          }
+        });
+        </script>
+        <script>
+        const annotationBox = document.getElementById('annotation-box');
+        let lastValue = annotationBox.value;
+        annotationBox.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            annotationBox.blur();
+          }
+        });
+        annotationBox.addEventListener('blur', function() {
+          annotationBox.setAttribute('readonly', 'readonly');
+          if (annotationBox.value !== lastValue) {
+            fetch(window.location.pathname + '/annotation', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ annotation: annotationBox.value })
+            }).then(r => {
+              if (!r.ok) alert('Fehler beim Speichern!');
+              else lastValue = annotationBox.value;
+            });
+          }
+        });
+        </script>
+    </div>
 </div>
 {% else %}
     <div class="no-element-selected">
