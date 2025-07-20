@@ -202,8 +202,15 @@ let nodeCounter = 0;
           selectedNode.classList.remove('selected');
           selectedNode = null;
         }
+        // Check if parent is a NOT complex node and still selected
+        const parentComplex = searchBar.parentElement.closest('.complex-search-group');
         searchBar.remove();
-        updateGlobalAddButtons();
+        if (parentComplex && parentComplex === selectedNode) {
+          // Re-enable the simple search button if NOT node is selected
+          updateGlobalAddButtons();
+        } else {
+          updateGlobalAddButtons();
+        }
       }
       return;
     }
