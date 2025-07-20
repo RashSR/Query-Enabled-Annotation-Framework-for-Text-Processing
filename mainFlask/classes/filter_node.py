@@ -43,12 +43,10 @@ class FilterNode:
             case FilterType.NOT:
                 #is special because not can only have one node
                 all_messages = CacheStore.Instance().get_all_messages()
-                self.print_leave_structure()
                 self._leaves[0].get_full_result()
                 excluded_messages = self._leaves[0].result_messages
                 excluded_ids = {msg.message_id for msg in excluded_messages}
                 remaining_messages = [msg for msg in all_messages if msg.message_id not in excluded_ids]
-                print(f"länge: {len(remaining_messages)}")
                 self._result_messages = remaining_messages
             case FilterType.OBJECT:
                 return self._result_messages
@@ -102,15 +100,18 @@ class FilterNode:
         conjoined_search_results_without_just_messages = self._clean_conjoined_messages(conjoined_search_results)
         return conjoined_search_results_without_just_messages
     
-    #for AND, we only care about results inside messages — normal messages are not needed
-    def _clean_conjoined_messages(self, conjoined_search_results: list[SearchResult]):
-        #remove search_results that are just messages
+    #for AND, we only care about results inside messages — normal messages are not needed EXCEPT all search results are messages
+    def _clean_conjoined_messages(self, conjoined_search_results: list[SearchResult]) -> list[SearchResult]:
+        #collect search_results that are just messages
         to_remove = []
         for search_result in conjoined_search_results:
             if search_result.is_just_message():
                 to_remove.append(search_result)
-        for sr in to_remove:
-            conjoined_search_results.remove(sr)
+        
+        #only remove search results that are just messages if there are non message search results
+        if len(to_remove) != len(conjoined_search_results):
+            for sr in to_remove:
+                conjoined_search_results.remove(sr)
 
         #remove duplicates
         duplicate_free_list = list(set(conjoined_search_results))
