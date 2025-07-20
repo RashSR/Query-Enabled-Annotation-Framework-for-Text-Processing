@@ -410,6 +410,26 @@ let nodeCounter = 0;
 
   /* ───────── Main change handler ───────── */
   container.addEventListener('change', async (ev) => {
+    // Logic operator change: prevent invalid NOT
+    if (ev.target.matches('select[name^="logic_operator"]')) {
+      const dropdown = ev.target;
+      const complexNode = dropdown.closest('.complex-search-group');
+      const groupContainer = complexNode.querySelector('.grouped-searches');
+      const children = Array.from(groupContainer.children);
+      const numChildren = children.length;
+      const hasComplexChild = children.some(child => child.classList.contains('complex-search-group'));
+      const prevValue = dropdown.dataset.prevValue || 'AND';
+      if (dropdown.value === 'NOT' && (numChildren > 1 || hasComplexChild)) {
+        alert('Ein NOT-Knoten darf nur eine einfache Suche als Kind haben.');
+        dropdown.value = prevValue;
+        return;
+      }
+      // Save current value for future revert
+      dropdown.dataset.prevValue = dropdown.value;
+      updateGlobalAddButtons();
+      return;
+    }
+
     const left = ev.target.closest('select[name^="selected_type"]');
     if (!left) return;
 
