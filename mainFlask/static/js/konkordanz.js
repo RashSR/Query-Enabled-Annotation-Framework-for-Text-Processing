@@ -284,6 +284,35 @@ let nodeCounter = 0;
     }
     // If restrictToComplex is not set, but a complex node exists, set it
     if (numComplex > 0 && !restrictToComplex) restrictToComplex = true;
+
+    // Special logic for NOT complex search
+    if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
+      const logicDropdown = selectedNode.querySelector('select[name^="logic_operator"]');
+      if (logicDropdown && logicDropdown.value === 'NOT') {
+        // Only allow one simple search as child
+        const groupContainer = selectedNode.querySelector('.grouped-searches');
+        const numChildren = groupContainer ? groupContainer.children.length : 0;
+        // Enable simple search button only if no child exists
+        if (numChildren === 0) {
+          globalAddBtn.disabled = false;
+          globalAddBtn.classList.remove('disabled');
+          globalAddBtn.style.opacity = '1';
+          globalAddBtn.style.cursor = 'pointer';
+        } else {
+          globalAddBtn.disabled = true;
+          globalAddBtn.classList.add('disabled');
+          globalAddBtn.style.opacity = '0.5';
+          globalAddBtn.style.cursor = 'not-allowed';
+        }
+        // Always disable complex search button
+        globalAddComplexBtn.disabled = true;
+        globalAddComplexBtn.classList.add('disabled');
+        globalAddComplexBtn.style.opacity = '0.5';
+        globalAddComplexBtn.style.cursor = 'not-allowed';
+        return;
+      }
+    }
+
     // If restrictToComplex, use the previous logic
     if (restrictToComplex) {
       if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
