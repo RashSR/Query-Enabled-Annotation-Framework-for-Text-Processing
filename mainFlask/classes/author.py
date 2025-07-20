@@ -2,7 +2,7 @@ from mainFlask.data.cachestore import CacheStore
 from .chat import Chat
 
 class Author:
-    def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, chats = None):
+    def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, annotation = None, chats = None):
         self._id = id
         self._name = name
         self._age = age
@@ -13,6 +13,7 @@ class Author:
         self._job = job
         self._chats = chats if chats is not None else []
         self._chat_ids = []
+        self._annotation = annotation
 
     @property
     def id(self):
@@ -98,6 +99,14 @@ class Author:
 
     def add_chat(self, chat: Chat):
         self._chats.append(chat)
+
+    @property
+    def annotation(self) -> str:
+        return self._annotation
+
+    @annotation.setter
+    def annotation(self, value: str):
+        self._annotation = value
 
     def get_chat_by_id(self, chat_id: int):
         for chat in self.chats:

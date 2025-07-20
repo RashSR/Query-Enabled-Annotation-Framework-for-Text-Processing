@@ -114,8 +114,26 @@ SELECT
     ) AS spacy_match_ids
 FROM message AS m;
 
+CREATE VIEW author_with_chat_ids AS
+SELECT
+    author.id AS author_id,
+    author.name,
+    author.age,
+    author.gender,
+    author.first_language,
+    author.languages,
+    author.region,
+    author.job,
+    author.annotation,
+    STRING_AGG(chat_participants.chat_id, ', ') AS chat_ids
+FROM
+    author
+LEFT JOIN chat_participants ON author.id = chat_participants.author_id
+GROUP BY
+    author.id, author.name;
+
 CREATE VIEW message_join_spacy_match AS
 SELECT * FROM message m
 JOIN spacy_match sm ON m.id = sm.message_id;
 
-ALTER TABLE author ADD COLUMN text annotation;
+ALTER TABLE author ADD COLUMN annotation text;

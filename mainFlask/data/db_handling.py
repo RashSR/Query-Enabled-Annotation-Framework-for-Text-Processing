@@ -336,8 +336,9 @@ def _convert_db_row_to_author(row) -> Author:
     languages = [lang.strip() for lang in row[5].split(',')] #at this time the languages are stored in the DB like 'Language1, Language2, ...'
     region = row[6]
     job = row[7]
-    chat_ids = [chat_id.strip() for chat_id in row[8].split(',')] if row[8] else []
-    loaded_author = Author(author_id, name, age, gender, first_language, languages, region, job)
+    annotation = row[8]
+    chat_ids = [chat_id.strip() for chat_id in row[9].split(',')] if row[9] else []
+    loaded_author = Author(author_id, name, age, gender, first_language, languages, region, job, annotation)
     loaded_author.chat_ids = chat_ids
     return loaded_author
 
