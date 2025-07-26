@@ -2,6 +2,8 @@ from .messagetype import MessageType
 from mainFlask.data.cachestore import CacheStore
 from .ltmatch import LTMatch
 from .spacymatch import SpacyMatch
+from .message_token import MessageToken
+import re
 
 #TODO:  Klasse e.g. message_element und hier wird jedes einzelne Element aus einer Nachricht erstellt hinzu kommen eine Liste an lt_matches und spacy_matches hinzu. 
 # Diese können beim annotieren bearbeitet werden
@@ -23,6 +25,7 @@ class Message:
         self._annotated_text = annotated_text
         self._chat = chat
         self._search_results = []
+        self._message_tokens: list[MessageToken] = []
 
     def __str__(self):
         toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
@@ -146,6 +149,30 @@ class Message:
     @search_results.setter
     def search_results(self, value):
         self._search_results = value
+
+    @property
+    def message_tokens(self) -> MessageToken:
+        #check if dictionary is already created
+        if len(self._message_tokens) == 0:
+            self.message_tokens = self.tokenize_with_positions()
+            for mt in self.message_tokens:
+                print(mt)
+        return self._message_tokens
+    
+    @message_tokens.setter
+    def message_tokens(self, value: list[MessageToken]):
+        self._message_tokens = value
+
+    def tokenize_with_positions(self):
+        pattern = r"\w+|[^\w\s]"  # words or single punctuation
+        tokens = []
+        for match in re.finditer(pattern, self.content):
+            start = match.start()
+            end = match.end()
+            token_text = match.group()
+            mt = MessageToken(start, end, token_text)
+            tokens.append(mt)
+        return tokens
 
     def hasCategory(self, category):
         if category in self.get_error_categories():

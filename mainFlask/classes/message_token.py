@@ -28,6 +28,6 @@ class MessageToken:
     
     def __str__(self):
         return (f"MessageToken(text='{self._text}', "
-                f"Index: {self._start_pos} - {self._end_pos}"
+                f"Index: {self._start_pos} - {self._end_pos},"
                 f"lt_matches={len(self._lt_matches)}, "
                 f"spacy_matches={len(self._spacy_matches)})")
