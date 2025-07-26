@@ -154,14 +154,24 @@ class Message:
     def message_tokens(self) -> MessageToken:
         #check if dictionary is already created
         if len(self._message_tokens) == 0:
+            print(self)
             self.message_tokens = self.tokenize_with_positions()
-            for mt in self.message_tokens:
-                print(mt)
+            for token in self._message_tokens:
+                startPos = token.start_pos
+                endPos = token.end_pos
+                sm = self._find_spacy_match_by_start_and_end_index(startPos, endPos)
+                print(sm)
+                break
         return self._message_tokens
     
     @message_tokens.setter
     def message_tokens(self, value: list[MessageToken]):
         self._message_tokens = value
+
+    def _find_spacy_match_by_start_and_end_index(self, start, end) -> SpacyMatch:
+        for sm in self.spacy_matches:
+            if sm.start_pos == start and sm.end_pos == end:
+                return sm
 
     def tokenize_with_positions(self):
         pattern = r"\w+|[^\w\s]"  # words or single punctuation

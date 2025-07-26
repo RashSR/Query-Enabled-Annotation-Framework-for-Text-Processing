@@ -3,8 +3,9 @@ class MessageToken:
         self._start_pos = start_pos
         self._end_pos = end_pos
         self._text = text
-        self._lt_matches = []
-        self._spacy_matches = []
+        self._lt_match = None
+        self._spacy_match = None
+        self._is_flagged = False #If found in a searchresult -> flag it
 
     @property
     def start_pos(self):
@@ -19,15 +20,20 @@ class MessageToken:
         return self._text
 
     @property
-    def lt_matches(self):
-        return self._lt_matches
+    def lt_match(self):
+        return self._lt_match
 
     @property
-    def spacy_matches(self):
-        return self._spacy_matches
+    def spacy_match(self):
+        return self._spacy_match
+    
+    @property
+    def is_flagged(self):
+        return self._is_flagged
     
     def __str__(self):
         return (f"MessageToken(text='{self._text}', "
                 f"Index: {self._start_pos} - {self._end_pos},"
-                f"lt_matches={len(self._lt_matches)}, "
-                f"spacy_matches={len(self._spacy_matches)})")
+                f"lt_matches={len(self._lt_match)}, "
+                f"spacy_matches={len(self._spacy_match)})")
+    
