@@ -29,6 +29,11 @@
                     <img src="{{ url_for('static', filename='icons/konkordanz2.svg') }}" alt="Konkordanz">
                 </a>
             </div>
+            <div class="nav-icon {% if request.path.startswith(url_for('annotation.annotation_view')) %}active{% endif %}">
+                <a href="{{ url_for('annotation.annotation_view') }}">
+                    <img src="{{ url_for('static', filename='icons/annotation.svg') }}" alt="Annotation">
+                </a>
+            </div>
             <div class="nav-icon {% if request.path.startswith(url_for('metrics.metrics_view')) %}active{% endif %}">
                 <a href="{{ url_for('metrics.metrics_view') }}">
                     <img src="{{ url_for('static', filename='icons/metrics.svg') }}" alt="Metrics">
