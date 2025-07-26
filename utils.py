@@ -15,7 +15,14 @@ from collections import Counter
 
 # Load german spaCy model and initialize language tool -> only loaded once
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
-tool = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
+
+#only check for the websever if it will be used
+_tool_instance = None
+def get_tool():
+    global _tool_instance
+    if _tool_instance is None:
+        _tool_instance = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
+    return _tool_instance
 
 # Store author_id in the session
 def set_active_author(session, author_id):
@@ -177,7 +184,7 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
         text = msg.content
 
         #check the text
-        matches = tool.check(text)
+        matches = get_tool().check(text)
 
         #convert text to a list to change it easily
         text_list = list(text)
