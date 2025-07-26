@@ -154,14 +154,7 @@ class Message:
     def message_tokens(self) -> MessageToken:
         #check if dictionary is already created
         if len(self._message_tokens) == 0:
-            print(self)
             self.message_tokens = self.tokenize_with_positions()
-            for token in self._message_tokens:
-                startPos = token.start_pos
-                endPos = token.end_pos
-                sm = self._find_spacy_match_by_start_and_end_index(startPos, endPos)
-                print(sm)
-                break
         return self._message_tokens
     
     @message_tokens.setter
@@ -180,7 +173,8 @@ class Message:
             start = match.start()
             end = match.end()
             token_text = match.group()
-            mt = MessageToken(start, end, token_text)
+            sm = self._find_spacy_match_by_start_and_end_index(start, end)
+            mt = MessageToken(start, end, token_text, sm)
             tokens.append(mt)
         return tokens
 

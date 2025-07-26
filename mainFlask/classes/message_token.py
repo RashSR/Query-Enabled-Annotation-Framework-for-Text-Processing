@@ -1,10 +1,10 @@
 class MessageToken:
-    def __init__(self, start_pos: int, end_pos: int, text: str):
+    def __init__(self, start_pos: int, end_pos: int, text: str, spacy_match = None, lt_match = None):
         self._start_pos = start_pos
         self._end_pos = end_pos
         self._text = text
-        self._lt_match = None
-        self._spacy_match = None
+        self._spacy_match = spacy_match
+        self._lt_match = lt_match
         self._is_flagged = False #If found in a searchresult -> flag it
 
     @property
@@ -34,6 +34,6 @@ class MessageToken:
     def __str__(self):
         return (f"MessageToken(text='{self._text}', "
                 f"Index: {self._start_pos} - {self._end_pos},"
-                f"lt_matches={len(self._lt_match)}, "
-                f"spacy_matches={len(self._spacy_match)})")
+                f"lt_match={self._lt_match}, "
+                f"spacy_match={self._spacy_match})")
     
