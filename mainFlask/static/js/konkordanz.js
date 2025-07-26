@@ -190,7 +190,7 @@ let nodeCounter = 0;
   /* ───────── Delegated clicks ───────── */
   let selectedNode = null;
 
-  // Selection logic
+  // Selection logic and add child search buttons
   document.addEventListener('click', (e) => {
     // Delete logic (match button or child elements) FIRST
     if (e.target.closest('.delete-search-btn')) {
@@ -228,6 +228,26 @@ let nodeCounter = 0;
         if (document.querySelectorAll('.complex-search-group').length === 0) {
           restrictToComplex = false;
         }
+        updateGlobalAddButtons();
+      }
+      return;
+    }
+    // --- Add child complex search ---
+    if (e.target.closest('.add-complex-search-btn')) {
+      const btn = e.target.closest('.add-complex-search-btn');
+      const complexBar = btn.closest('.complex-search-group');
+      if (complexBar) {
+        createComplexSearchBar(complexBar);
+        updateGlobalAddButtons();
+      }
+      return;
+    }
+    // --- Add child simple search ---
+    if (e.target.closest('.add-simple-search-btn')) {
+      const btn = e.target.closest('.add-simple-search-btn');
+      const complexBar = btn.closest('.complex-search-group');
+      if (complexBar) {
+        createSearchBar(complexBar);
         updateGlobalAddButtons();
       }
       return;
