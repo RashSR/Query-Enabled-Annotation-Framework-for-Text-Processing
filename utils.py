@@ -203,30 +203,9 @@ def print_error(match, startPos, endPos, text):
     if(len(match.replacements) > 0):
         print(f"Vorschlag: {match.replacements}")
     print(f"Position: {startPos}-{endPos}")
-    print(convert_message(match.ruleId))
     print(f"Fehlerregel ID: {match.ruleId}")
     print(f"Kategorie: {match.category}")
     print(f"RuleIssueType: {match.ruleIssueType}")
-
-#convert the match.messages in a useful description
-def convert_message(lt_message):
-    match lt_message:
-        case "GERMAN_SPELLER_RULE":
-            return "Tippfehler"
-        case "PLURAL_APOSTROPH":
-            return "falsches Apostroph bei Pluralbildung"
-        case "KOMMA_INFINITIVGRUPPEN":
-            return "Komma bei Infinitvgruppe"
-        case "DE_CASE":
-            return "Falsche Großschreibung"
-        case "GERMAN_WORD_REPEAT_RULE":
-            return "Wortwiederholung"
-        case "DE_DOUBLE_PUNCTUATION":
-            return "Doppelte Punktuation"
-        case "UPPERCASE_SENTENCE_START":
-            return "Großschreibung am Satzanfang"   
-        case _:
-            print("bisher unbekannt")
 
 #add html style tags
 def add_error_tags(ruleId, fehlertext, startPos, endPos, text_list):
