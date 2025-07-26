@@ -161,6 +161,12 @@ class Message:
     def message_tokens(self, value: list[MessageToken]):
         self._message_tokens = value
 
+    def _find_lt_match_by_start_and_end_index(self, start, end) -> LTMatch:
+        for lt in self.error_list:
+            if lt.start_pos == start: #and lt.end_pos TODO: handle it when error stretches over more than one token -> maybe with lt.start_pos == start || lt.end_pos == end
+                return lt
+
+    #TODO: the same for error
     def _find_spacy_match_by_start_and_end_index(self, start, end) -> SpacyMatch:
         for sm in self.spacy_matches:
             if sm.start_pos == start and sm.end_pos == end:
@@ -174,7 +180,8 @@ class Message:
             end = match.end()
             token_text = match.group()
             sm = self._find_spacy_match_by_start_and_end_index(start, end)
-            mt = MessageToken(start, end, token_text, sm)
+            ltm = self._find_lt_match_by_start_and_end_index(start, end)
+            mt = MessageToken(start, end, token_text, sm, ltm)
             tokens.append(mt)
         return tokens
 

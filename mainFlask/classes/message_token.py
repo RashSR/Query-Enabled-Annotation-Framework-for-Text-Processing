@@ -37,3 +37,5 @@ class MessageToken:
                 f"lt_match={self._lt_match}, "
                 f"spacy_match={self._spacy_match})")
     
+
+    #Do i need to search over more messages? When does one end? After the other person types something?
