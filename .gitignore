@@ -1,6 +1,5 @@
 /venv
 /__pycache__
-/classes/__pycache__
 /mainFlask/__pycache__
 /mainFlask/routes/__pycache__
 /mainFlask/routes/api/__pycache__
