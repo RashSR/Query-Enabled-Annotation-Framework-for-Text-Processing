@@ -1,4 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Show/hide custom number input for range dropdowns
+  document.addEventListener('change', function(e) {
+    if (e.target.matches('select.range-select')) {
+      const select = e.target;
+      const customInput = select.parentElement.querySelector('.custom-range-input');
+      if (!customInput) return;
+      if (select.value === 'custom') {
+        customInput.style.display = 'inline-block';
+        customInput.required = true;
+      } else {
+        customInput.style.display = 'none';
+        customInput.required = false;
+        customInput.value = '';
+      }
+    }
+  });
+
+  // On form submit, if custom is selected, copy the custom value to the token_range field
+  document.querySelector('form')?.addEventListener('submit', function(ev) {
+    document.querySelectorAll('select.range-select').forEach(function(select) {
+      if (select.value === 'custom') {
+        const customInput = select.parentElement.querySelector('.custom-range-input');
+        if (customInput && customInput.value) {
+          // Set the select's value to the custom value for submission
+          select.value = customInput.value;
+        }
+      }
+    });
+  });
   // Show/hide range dropdown for AND nodes in dynamic complex search
   document.addEventListener('change', function(e) {
     if (e.target.matches('select[name="logic_operator"], select[name^="logic_operator["]')) {
