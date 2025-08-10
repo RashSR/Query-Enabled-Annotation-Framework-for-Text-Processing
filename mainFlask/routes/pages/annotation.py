@@ -10,7 +10,7 @@ def annotation_view():
     messages: list[Message] = CacheStore.Instance().get_all_messages()
     for msg in messages:
         x = msg.message_tokens
-        if(msg.message_id == 2):
+        if(msg.message_id == 1):
             for token in msg.message_tokens:
                 print(token)
     return render_template('annotation.html')

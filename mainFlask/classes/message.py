@@ -177,7 +177,7 @@ class Message:
                 return sm
 
     def tokenize_with_positions(self):
-        pattern = r"\w+|[^\w\s]"  # words or single punctuation
+        pattern = r"\w+|[:;8xX=][-^]?[)DPOp]|[^\w\s]"
         tokens = []
         for match in re.finditer(pattern, self.content):
             start = match.start()
