@@ -229,14 +229,21 @@ def or_result_messages(lists: list[list[Message]]) -> list[Message]:
     return unique_messages
 
 #return a list with messages that are in every given list
-def and_result_messages(lists: list[list[Message]]) -> list[Message]:
+def and_result_messages(lists: list[list[Message]], token_distance: int) -> list[Message]:
 
-    total_lists = len(lists)
+    total_lists: int = len(lists)
     key=lambda m: m.message_id
 
     per_list_keys = ( {key(m) for m in lst} for lst in lists )
     counts = Counter(chain.from_iterable(per_list_keys))
+    
+    first: list[Message] = lists[0]
+    result: list[Message] = [m for m in first if counts[key(m)] == total_lists]
+    
+    if token_distance > 0:
+        #TODO return only messages that have the tokens in range
+        result = []
+    
+    return result
 
-    first = lists[0]
-    return [m for m in first if counts[key(m)] == total_lists]
     

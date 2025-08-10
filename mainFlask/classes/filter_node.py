@@ -7,11 +7,20 @@ from collections import defaultdict
 from mainFlask.data.cachestore import CacheStore
 
 class FilterNode:
-    def __init__(self, filter_type: FilterType):
+    def __init__(self, filter_type: FilterType, token_distance = 0):
         self._filter_type = filter_type
         self._leaves : list[FilterNode] = []
         self._result_messages = []
         self._search_results = []
+        self._token_distance = token_distance #distance between tokens in a message, 0 -> full message
+
+    @property
+    def token_distance(self) -> int:
+        return self._token_distance
+    
+    @token_distance.setter
+    def token_distance(self, value: int):
+        self._token_distance = value
     
     @property
     def search_results(self) -> list[SearchResult]:
@@ -39,7 +48,7 @@ class FilterNode:
             case FilterType.OR:
                 self._result_messages = utils.or_result_messages(result_message_lists)
             case FilterType.AND:
-                self._result_messages = utils.and_result_messages(result_message_lists)
+                self._result_messages = utils.and_result_messages(result_message_lists, self._token_distance)
             case FilterType.NOT:
                 #is special because not can only have one node
                 all_messages = CacheStore.Instance().get_all_messages()
