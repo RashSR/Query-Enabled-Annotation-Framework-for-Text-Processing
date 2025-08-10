@@ -70,6 +70,7 @@
       {% macro render_search_node(n, idx) %}
         {# Logic node (AND/OR/NOT) #}
         {% if n.filter_type %}
+          {% set is_and = n.filter_type.name == 'AND' %}
           {% set total_results = 0 %}
           {% set total_results = n.search_results|length %}
           <div class="complex-search-group" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; padding:0.5rem 0.5rem; border-radius:6px; border:1px solid #e0e0e0;">
@@ -98,6 +99,11 @@
                       style="padding:0.3rem 0.6rem; background:#dc3545; color:white; border:none; border-radius:4px;">
                 ✕
               </button>
+              {% if is_and %}
+                <label style="margin-left:1rem; font-weight:normal;">Token Range:
+                  <input type="number" min="0" name="token_range[{{ idx }}]" value="{{ n.token_range if n.token_range is not none else 0 }}" style="width:60px; margin-left:0.3rem;">
+                </label>
+              {% endif %}
             </div>
             <div class="grouped-searches" style="margin-left:2rem;">
               {% for child in n.children %}
@@ -261,6 +267,9 @@
         <option value="OR">OR</option>
         <option value="NOT">NOT</option>
       </select>
+      <label class="token-range-label" style="margin-left:1rem; font-weight:normal; display:none;">Token Range:
+        <input type="number" min="0" name="token_range" value="0" style="width:60px; margin-left:0.3rem;">
+      </label>
       <button type="button" class="add-complex-search-btn"
               title="Komplexe Suche hinzufügen"
               style="padding:0.3rem 0.6rem; background:#28a745; color:white; border:none; border-radius:4px; margin-right:0.3rem;">

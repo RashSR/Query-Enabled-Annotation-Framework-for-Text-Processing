@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Show/hide token_range input for AND nodes in dynamic complex search
+  document.addEventListener('change', function(e) {
+    if (e.target.matches('select[name="logic_operator"], select[name^="logic_operator["]')) {
+      const select = e.target;
+      const parent = select.closest('.complex-search-group');
+      if (!parent) return;
+      let label = parent.querySelector('.token-range-label');
+      if (!label) return;
+      if (select.value === 'AND') {
+        label.style.display = '';
+      } else {
+        label.style.display = 'none';
+      }
+    }
+  });
 
   /* ───────── Hide/show “recipient” column ───────── */
   const toggleRecipient = document.getElementById('toggle-recipient');

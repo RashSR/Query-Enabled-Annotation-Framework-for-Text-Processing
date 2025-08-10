@@ -40,6 +40,7 @@ def konkordanz_view():
         elif hasattr(node, 'leaves'):
             return {
                 'filter_type': getattr(node, 'filter_type', None),
+                'token_range': getattr(node, 'token_range', None),
                 'children': [serialize_node(child) for child in node.leaves],
                 'search_results': getattr(node, 'search_results', []),
             }
@@ -59,7 +60,7 @@ def parse_query_tree(args):
     # Collect all indices for all relevant fields
     fields = [
         'logic_operator', 'selected_type', 'selected_scope',
-        'keyword', 'case_sensitive', 'whole_word', 'use_regex'
+        'keyword', 'case_sensitive', 'whole_word', 'use_regex', 'token_range'
     ]
     nodes = {}
     for key, value in args.items():
@@ -81,12 +82,18 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode):
     new_filter_node = None
     leaf_data = {'selected_type': None, 'selected_scope': None, 'keyword': None,
         'case_sensitive': None, 'whole_word': None, 'use_regex': None }
+    token_range_value = None
 
     for i, (key, value) in enumerate(tree_dict.items()):
         match key:
             case 'logic_operator':
                 new_filter_node = FilterNode(FilterType(value))
                 parent.add_leaf(new_filter_node)
+            case 'token_range':
+                try:
+                    token_range_value = int(value)
+                except Exception:
+                    token_range_value = 0
             case 'selected_type' | 'selected_scope' | 'keyword' | 'case_sensitive' | 'whole_word' | 'use_regex':
                 leaf_data[key] = value
 
@@ -105,4 +112,7 @@ def _convert_tree_to_filter_node(tree_dict: dict, parent: FilterNode):
         #continue recursion
         if isinstance(value, dict):
             child_parent = new_filter_node if new_filter_node else parent
+            # If this is an AND node and token_range_value is set, assign it
+            if new_filter_node and hasattr(new_filter_node, 'filter_type') and new_filter_node.filter_type == FilterType.AND and token_range_value is not None:
+                new_filter_node.token_range = token_range_value
             _convert_tree_to_filter_node(value, child_parent)
