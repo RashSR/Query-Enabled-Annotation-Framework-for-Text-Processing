@@ -164,7 +164,6 @@ class FilterNodeObject(FilterNode):
                 return self._filter_by_error_attr('category')
             case FilterNodeGroup.AUTHOR:
                 #TODO Maybe change result table? msg jump only works if active author is selected right
-                print("Hier bin ich zuerst")
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
                 messages = author.get_all_own_messages()
                 self._convert_messages_into_search_results(messages)
