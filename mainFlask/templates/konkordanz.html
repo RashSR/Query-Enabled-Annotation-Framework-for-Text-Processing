@@ -100,8 +100,13 @@
                 ✕
               </button>
               {% if is_and %}
-                <label style="margin-left:1rem; font-weight:normal;">Token Range:
-                  <input type="number" min="0" name="token_range[{{ idx }}]" value="{{ n.token_range if n.token_range is not none else 0 }}" style="width:60px; margin-left:0.3rem;">
+                <label style="margin-left:1rem; font-weight:normal;">Range:
+                  <select name="token_range[{{ idx }}]" style="width:110px; margin-left:0.3rem;">
+                    <option value="None" {% if n.token_range is none %}selected{% endif %}>Message</option>
+                    <option value="7" {% if n.token_range == 7 %}selected{% endif %}>Sentence</option>
+                    <option value="1" {% if n.token_range == 1 %}selected{% endif %}>Sequential</option>
+                    <option value="3" {% if n.token_range == 3 %}selected{% endif %}>Range</option>
+                  </select>
                 </label>
               {% endif %}
             </div>
@@ -267,8 +272,13 @@
         <option value="OR">OR</option>
         <option value="NOT">NOT</option>
       </select>
-      <label class="token-range-label" style="margin-left:1rem; font-weight:normal; display:none;">Token Range:
-        <input type="number" min="0" name="token_range" value="0" style="width:60px; margin-left:0.3rem;">
+      <label class="token-range-label" style="margin-left:1rem; font-weight:normal; display:none;">Range:
+        <select name="token_range" style="width:110px; margin-left:0.3rem;">
+          <option value="None">Message</option>
+          <option value="7">Sentence</option>
+          <option value="1">Sequential</option>
+          <option value="3">Range</option>
+        </select>
       </label>
       <button type="button" class="add-complex-search-btn"
               title="Komplexe Suche hinzufügen"

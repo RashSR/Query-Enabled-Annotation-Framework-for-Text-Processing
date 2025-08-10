@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Show/hide token_range input for AND nodes in dynamic complex search
+  // Show/hide range dropdown for AND nodes in dynamic complex search
   document.addEventListener('change', function(e) {
     if (e.target.matches('select[name="logic_operator"], select[name^="logic_operator["]')) {
       const select = e.target;
@@ -7,10 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!parent) return;
       let label = parent.querySelector('.token-range-label');
       if (!label) return;
+      const rangeDropdown = label.querySelector('select[name="token_range"]');
       if (select.value === 'AND') {
         label.style.display = '';
       } else {
         label.style.display = 'none';
+        if (rangeDropdown) rangeDropdown.value = 'None';
       }
     }
   });
@@ -170,11 +172,16 @@ let nodeCounter = 0;
     const frag = complexTemplate.content.cloneNode(true);
     const clone = frag.querySelector('.complex-search-group');
     if (!clone) return console.error('Template missing .complex-search-group');
-    // Show token_range input by default for AND nodes
+    // Show range dropdown by default for AND nodes
     const logicSelect = clone.querySelector('select[name="logic_operator"]');
     const tokenLabel = clone.querySelector('.token-range-label');
+    const rangeDropdown = tokenLabel ? tokenLabel.querySelector('select[name="token_range"]') : null;
     if (logicSelect && tokenLabel && logicSelect.value === 'AND') {
       tokenLabel.style.display = '';
+    }
+    // Set default value to 'None' (Message)
+    if (rangeDropdown) {
+      rangeDropdown.value = 'None';
     }
     // Hierarchical index logic
     let parentIndex = '';
