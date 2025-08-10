@@ -250,7 +250,7 @@ class Message:
                 if first_flagged_token_index is None:
                     first_flagged_token_index = loop_index
                 else: #check if the next found token is in range
-                    if loop_index - first_flagged_token_index > token_range:
+                    if loop_index - first_flagged_token_index > token_range:  #TODO: add direction of range
                         return False
 
         if first_flagged_token_index is None:

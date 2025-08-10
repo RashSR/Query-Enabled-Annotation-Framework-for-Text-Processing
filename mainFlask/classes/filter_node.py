@@ -107,22 +107,20 @@ class FilterNode:
         all_results = self._get_all_search_result_lists()
         conjoined_search_results = self.common_search_results(all_results)
         conjoined_search_results_without_just_messages = self._clean_conjoined_messages(conjoined_search_results)
-        print(f"tokenlength: {self.token_range}")
+        
         if self.token_range is not None and self.token_range > 0:
             pre_result_messages = self._get_messages_from_search_result_list(conjoined_search_results_without_just_messages)
-            print(f"LängePRE: {len(pre_result_messages)}")
             #return only messages that have tokens within the given range
-            result_messages_with_token_range = []
+            result_message_ids_with_token_range = []
             for msg in pre_result_messages:
-                if msg.message_id == 147:
-                        for token in msg.message_tokens:
-                            print(token)
                 if msg.hasTokensWithinRange(self.token_range):
-                    result_messages_with_token_range.append(msg)
-                    #print(msg)
-            #TODO: only use search results that have messages in list: result_messages_with_token_range
-            #TEST tokenwithinrange method for specific message id 147
-            print(f"LängePOST: {len(result_messages_with_token_range)}")
+                    result_message_ids_with_token_range.append(msg.message_id)
+            
+            filtered_search_results = [
+                sr for sr in conjoined_search_results_without_just_messages
+                if sr.message.message_id in result_message_ids_with_token_range
+            ]
+            return filtered_search_results
 
         return conjoined_search_results_without_just_messages
     
