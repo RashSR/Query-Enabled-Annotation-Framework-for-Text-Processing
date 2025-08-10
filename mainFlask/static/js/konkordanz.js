@@ -225,6 +225,12 @@ let nodeCounter = 0;
         // Check if parent is a NOT complex node and still selected
         const parentComplex = searchBar.parentElement.closest('.complex-search-group');
         searchBar.remove();
+        // Show global add buttons if all search bars are deleted
+        const numSimple = container.querySelectorAll('.search-group').length;
+        const numComplex = container.querySelectorAll('.complex-search-group').length;
+        if (numSimple === 0 && numComplex === 0) {
+          document.getElementById('global-add-buttons').style.display = '';
+        }
         if (parentComplex && parentComplex === selectedNode) {
           // Re-enable the simple search button if NOT node is selected
           updateGlobalAddButtons();
@@ -244,6 +250,12 @@ let nodeCounter = 0;
           selectedNode = null;
         }
         complexBar.remove();
+        // Show global add buttons if all search bars are deleted
+        const numSimple = container.querySelectorAll('.search-group').length;
+        const numComplex = container.querySelectorAll('.complex-search-group').length;
+        if (numSimple === 0 && numComplex === 0) {
+          document.getElementById('global-add-buttons').style.display = '';
+        }
         // If no complex nodes remain, re-enable global add buttons
         if (document.querySelectorAll('.complex-search-group').length === 0) {
           restrictToComplex = false;
