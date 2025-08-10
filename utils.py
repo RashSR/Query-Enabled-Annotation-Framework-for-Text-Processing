@@ -157,12 +157,6 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
 
         CacheStore.Instance().create_spacy_match(spacy_match)
 
-
-#useful to print spacy like annotations
-def print_tokennized_word(key, value):
-    if (len(value) != 0):
-        print(f"{key}: {value}")
-
 #annotation code 
         #annotated_text = ""
         #if not token.pos_ == "PUNCT":
