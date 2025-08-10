@@ -255,5 +255,9 @@ class Message:
                     
         return True;
         
-    
+    def set_found_flag_for_token(self, startPos: int, endPos: int):
+        for token in self.message_tokens:
+            if startPos >= token.start_pos and endPos <= token.end_pos:
+                token.is_flagged = True
+                break
 
