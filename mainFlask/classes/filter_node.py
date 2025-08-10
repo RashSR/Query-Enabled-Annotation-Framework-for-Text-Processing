@@ -114,10 +114,14 @@ class FilterNode:
             #return only messages that have tokens within the given range
             result_messages_with_token_range = []
             for msg in pre_result_messages:
+                if msg.message_id == 147:
+                        for token in msg.message_tokens:
+                            print(token)
                 if msg.hasTokensWithinRange(self.token_range):
                     result_messages_with_token_range.append(msg)
-                    print(msg)
+                    #print(msg)
             #TODO: only use search results that have messages in list: result_messages_with_token_range
+            #TEST tokenwithinrange method for specific message id 147
             print(f"LängePOST: {len(result_messages_with_token_range)}")
 
         return conjoined_search_results_without_just_messages

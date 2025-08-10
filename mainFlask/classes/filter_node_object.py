@@ -197,6 +197,7 @@ class FilterNodeObject(FilterNode):
         else:
             return []
 
+        #TODO: load messages that is_flagged does not get lost
         for msg in loaded_msgs:
             for error in msg.error_list:
                 if getattr(error, attr_name) == self._selected_value:
