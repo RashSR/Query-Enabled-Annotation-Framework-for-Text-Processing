@@ -259,5 +259,4 @@ class Message:
         for token in self.message_tokens:
             if startPos >= token.start_pos and endPos <= token.end_pos:
                 token.is_flagged = True
-                break
 
