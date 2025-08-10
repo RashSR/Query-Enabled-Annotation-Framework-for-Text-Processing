@@ -1,10 +1,10 @@
 class MessageToken:
-    def __init__(self, start_pos: int, end_pos: int, text: str, spacy_match = None, lt_match = None):
+    def __init__(self, start_pos: int, end_pos: int, text: str, spacy_match = None, lt_matches = []):
         self._start_pos = start_pos
         self._end_pos = end_pos
         self._text = text
         self._spacy_match = spacy_match
-        self._lt_match = lt_match
+        self._lt_matches = lt_matches
         self._is_flagged = False #If found in a searchresult -> flag it
 
     @property
@@ -20,8 +20,8 @@ class MessageToken:
         return self._text
 
     @property
-    def lt_match(self):
-        return self._lt_match
+    def lt_matches(self):
+        return self._lt_matches
 
     @property
     def spacy_match(self):
@@ -34,8 +34,8 @@ class MessageToken:
     def __str__(self):
         return (f"MessageToken(text='{self._text}', "
                 f"Index: {self._start_pos} - {self._end_pos},"
-                f"lt_match={self._lt_match}, "
+                f"lt_match={len(self._lt_matches)}, "
                 f"spacy_match={self._spacy_match})")
     
 
-    #Do i need to search over more messages? When does one end? After the other person types something?
+    #TODO:Do i need to search over more messages? When does one end? After the other person types something?
