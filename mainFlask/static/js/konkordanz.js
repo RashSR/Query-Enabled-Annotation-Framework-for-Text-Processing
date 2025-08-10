@@ -404,9 +404,11 @@ let nodeCounter = 0;
     const numComplex = container.querySelectorAll('.complex-search-group').length;
     if (numSimple === 0 && numComplex === 0) {
       createSearchBar();
+      document.getElementById('global-add-buttons').style.display = 'none';
       updateGlobalAddButtons();
     } else if (restrictToComplex && selectedNode && selectedNode.classList.contains('complex-search-group')) {
       createSearchBar(selectedNode);
+      document.getElementById('global-add-buttons').style.display = 'none';
       updateGlobalAddButtons();
     }
   });
@@ -418,6 +420,7 @@ let nodeCounter = 0;
       } else {
         createComplexSearchBar();
       }
+      document.getElementById('global-add-buttons').style.display = 'none';
       // After first complex node is created, restrict further adds
       restrictToComplex = true;
       updateGlobalAddButtons();
@@ -426,6 +429,7 @@ let nodeCounter = 0;
     // If restrictToComplex is true, only allow as child of complex node
     if (selectedNode && selectedNode.classList.contains('complex-search-group')) {
       createComplexSearchBar(selectedNode);
+      document.getElementById('global-add-buttons').style.display = 'none';
     }
   });
 
