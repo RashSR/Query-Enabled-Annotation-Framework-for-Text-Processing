@@ -105,7 +105,7 @@
                     <option value="None" {% if n.token_range is none %}selected{% endif %}>Message</option>
                     <option value="7" {% if n.token_range == 7 %}selected{% endif %}>Sentence</option>
                     <option value="1" {% if n.token_range == 1 %}selected{% endif %}>Sequential</option>
-                    <option value="3" {% if n.token_range == 3 %}selected{% endif %}>Range</option>
+                    <option value="3" {% if n.token_range == 3 %}selected{% endif %}>Custom</option>
                   </select>
                 </label>
               {% endif %}
@@ -277,7 +277,7 @@
           <option value="None">Message</option>
           <option value="7">Sentence</option>
           <option value="1">Sequential</option>
-          <option value="3">Range</option>
+          <option value="3">Custom</option>
         </select>
       </label>
       <button type="button" class="add-complex-search-btn"
