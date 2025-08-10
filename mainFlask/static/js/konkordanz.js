@@ -170,6 +170,12 @@ let nodeCounter = 0;
     const frag = complexTemplate.content.cloneNode(true);
     const clone = frag.querySelector('.complex-search-group');
     if (!clone) return console.error('Template missing .complex-search-group');
+    // Show token_range input by default for AND nodes
+    const logicSelect = clone.querySelector('select[name="logic_operator"]');
+    const tokenLabel = clone.querySelector('.token-range-label');
+    if (logicSelect && tokenLabel && logicSelect.value === 'AND') {
+      tokenLabel.style.display = '';
+    }
     // Hierarchical index logic
     let parentIndex = '';
     if (parent) {
@@ -187,8 +193,7 @@ let nodeCounter = 0;
     clone.dataset.nodeIndex = nodeIndex;
 
     // Set field name for logic operator
-    const logicSel = clone.querySelector('select[name="logic_operator"]');
-    logicSel.name = `logic_operator[${nodeIndex}]`;
+    logicSelect.name = `logic_operator[${nodeIndex}]`;
 
     if (parent) {
       let groupContainer = parent.querySelector('.grouped-searches');
