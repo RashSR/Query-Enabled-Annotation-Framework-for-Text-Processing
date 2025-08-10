@@ -48,7 +48,7 @@ class FilterNode:
             case FilterType.OR:
                 self._result_messages = utils.or_result_messages(result_message_lists)
             case FilterType.AND:
-                self._result_messages = utils.and_result_messages(result_message_lists, self._token_range)
+                self._result_messages = utils.and_result_messages(result_message_lists) #TODO: is this important for token range search?
             case FilterType.NOT:
                 #is special because not can only have one node
                 all_messages = CacheStore.Instance().get_all_messages()
@@ -107,7 +107,32 @@ class FilterNode:
         all_results = self._get_all_search_result_lists()
         conjoined_search_results = self.common_search_results(all_results)
         conjoined_search_results_without_just_messages = self._clean_conjoined_messages(conjoined_search_results)
+        print(f"tokenlength: {self.token_range}")
+        if self.token_range is not None and self.token_range > 0:
+            pre_result_messages = self._get_messages_from_search_result_list(conjoined_search_results_without_just_messages)
+            print(f"LängePRE: {len(pre_result_messages)}")
+            #return only messages that have tokens within the given range
+            result_messages_with_token_range = []
+            for msg in pre_result_messages:
+                if msg.hasTokensWithinRange(self.token_range):
+                    result_messages_with_token_range.append(msg)
+                    print(msg)
+            #TODO: only use search results that have messages in list: result_messages_with_token_range
+            print(f"LängePOST: {len(result_messages_with_token_range)}")
+
         return conjoined_search_results_without_just_messages
+    
+    def _get_messages_from_search_result_list(self, search_results: list[SearchResult]) -> list[Message]:
+        unique_messages = {}
+        for search_result in search_results:
+            msg = search_result.message
+            if msg.message_id not in unique_messages:
+                unique_messages[msg.message_id] = msg
+
+        # Get the distinct messages as a list
+        distinct_messages = list(unique_messages.values())
+        return distinct_messages
+        
     
     #for AND, we only care about results inside messages — normal messages are not needed EXCEPT all search results are messages
     def _clean_conjoined_messages(self, conjoined_search_results: list[SearchResult]) -> list[SearchResult]:

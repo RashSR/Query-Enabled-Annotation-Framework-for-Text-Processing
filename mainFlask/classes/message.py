@@ -252,8 +252,11 @@ class Message:
                 else: #check if the next found token is in range
                     if loop_index - first_flagged_token_index > token_range:
                         return False
-                    
-        return True;
+
+        if first_flagged_token_index is None:
+            return False
+
+        return True
         
     def set_found_flag_for_token(self, startPos: int, endPos: int):
         for token in self.message_tokens:
