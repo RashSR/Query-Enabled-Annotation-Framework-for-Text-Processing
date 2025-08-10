@@ -5,7 +5,7 @@ class MessageToken:
         self._text = text
         self._spacy_match = spacy_match
         self._lt_matches = lt_matches
-        self._is_flagged = False #If found in a searchresult -> flag it
+        self._is_flagged: bool = False #If found in a searchresult -> flag it
 
     @property
     def start_pos(self):
@@ -28,9 +28,13 @@ class MessageToken:
         return self._spacy_match
     
     @property
-    def is_flagged(self):
+    def is_flagged(self) -> bool:
         return self._is_flagged
     
+    @is_flagged.setter
+    def is_flagged(self, value: bool):
+        self._is_flagged = value
+
     def __str__(self):
         return (f"MessageToken(text='{self._text}', "
                 f"Index: {self._start_pos} - {self._end_pos},"

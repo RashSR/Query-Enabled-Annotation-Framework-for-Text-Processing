@@ -184,7 +184,7 @@ class FilterNodeObject(FilterNode):
     def _convert_spacy_match_into_search_results(self, group: str) -> list[SearchResult]:
         messages: list[Message] = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value(group, self._selected_value)
         for msg in messages:
-            for spacy_match in msg.spacy_matches:
+            for spacy_match in msg.spacy_matches: #TODO: find this spacy match in message tokens -> select is_flagged = true -> after that in utils and messages add an option to select token distance of this
                 if getattr(spacy_match, group, None) == self._selected_value:
                     sr = SearchResult(message=msg, keyword=spacy_match.text, matched_word=spacy_match.text, selected_color=self._selected_color, start_pos=spacy_match.start_pos, end_pos=spacy_match.end_pos)
                     self._add_search_results_messages(sr)
