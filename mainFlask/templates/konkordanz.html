@@ -101,7 +101,7 @@
               </button>
               {% if is_and %}
                 <label style="margin-left:1rem; font-weight:normal;">Range:
-                  <select name="token_range[{{ idx }}]" style="width:110px; margin-left:0.3rem;">
+                  <select name="token_range[{{ idx }}]" class="search-konkordanz-dropdown" style="width:110px; margin-left:0.3rem;">
                     <option value="None" {% if n.token_range is none %}selected{% endif %}>Message</option>
                     <option value="7" {% if n.token_range == 7 %}selected{% endif %}>Sentence</option>
                     <option value="1" {% if n.token_range == 1 %}selected{% endif %}>Sequential</option>
@@ -273,7 +273,7 @@
         <option value="NOT">NOT</option>
       </select>
       <label class="token-range-label" style="margin-left:1rem; font-weight:normal; display:none;">Range:
-        <select name="token_range" style="width:110px; margin-left:0.3rem;">
+  <select name="token_range" class="search-konkordanz-dropdown" style="width:110px; margin-left:0.3rem;">
           <option value="None">Message</option>
           <option value="7">Sentence</option>
           <option value="1">Sequential</option>
