@@ -7,7 +7,7 @@ import re
 
 #TODO:  Klasse e.g. message_element und hier wird jedes einzelne Element aus einer Nachricht erstellt hinzu kommen eine Liste an lt_matches und spacy_matches hinzu. 
 # Diese können beim annotieren bearbeitet werden
-# Für aufeinanderfolgende Suche praktisch -> itereiere über alle und falls zwei hintereinander richtig sind -> hinzufügen
+# Für aufeinanderfolgende Suche praktisch -> iteriere über alle und falls zwei hintereinander richtig sind -> hinzufügen
 
 class Message:
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, annotated_text = None, chat = None):
@@ -151,7 +151,7 @@ class Message:
         self._search_results = value
 
     @property
-    def message_tokens(self) -> MessageToken:
+    def message_tokens(self) ->list[MessageToken]:
         #check if dictionary is already created
         if len(self._message_tokens) == 0:
             self.message_tokens = self.tokenize_with_positions()
@@ -242,6 +242,18 @@ class Message:
             self.message_id,
             self.timestamp
         ))
+    
+    def hasTokensWithinRange(self, token_range: int) -> bool:
+        first_flagged_token_index = None
+        for loop_index, token in enumerate(self.message_tokens):
+            if token.is_flagged:
+                if first_flagged_token_index is None:
+                    first_flagged_token_index = loop_index
+                else: #check if the next found token is in range
+                    if loop_index - first_flagged_token_index > token_range:
+                        return False
+                    
+        return True;
         
     
 

@@ -229,7 +229,7 @@ def or_result_messages(lists: list[list[Message]]) -> list[Message]:
     return unique_messages
 
 #return a list with messages that are in every given list
-def and_result_messages(lists: list[list[Message]], token_distance: int) -> list[Message]:
+def and_result_messages(lists: list[list[Message]], token_range: int) -> list[Message]:
 
     total_lists: int = len(lists)
     key=lambda m: m.message_id
@@ -240,10 +240,14 @@ def and_result_messages(lists: list[list[Message]], token_distance: int) -> list
     first: list[Message] = lists[0]
     result: list[Message] = [m for m in first if counts[key(m)] == total_lists]
     
-    if token_distance > 0:
-        #TODO return only messages that have the tokens in range
-        result = []
-    
+    #return only messages that have tokens within the given range
+    if token_range is not None:
+        result_with_token_range = []
+        for msg in result:
+            if msg.hasTokensWithinRange(token_range):
+                result_with_token_range.append(msg)
+        result = result_with_token_range
+
     return result
 
     
