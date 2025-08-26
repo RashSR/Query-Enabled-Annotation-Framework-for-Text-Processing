@@ -5,25 +5,18 @@ from mainFlask.classes.spacymatch import SpacyMatch
 
 class CacheStore:
     _instance = None
-    _initialized = False
 
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-        return cls._instance
-
-    def __init__(self, db: SQLAlchemy = None, app: Flask = None):
-        if self.__class__._initialized:
-            if db is not None or app is not None:
-                raise Exception("CacheStore is already initialized")
-            return
+    def __init__(self, db: SQLAlchemy, app: Flask = None):
         self._db = db
         self._app = app
-        self.__class__._initialized = True
 
     @classmethod
     def Instance(cls, db: SQLAlchemy = None, app: Flask = None):
-        return cls(db, app)
+        if cls._instance is None:
+            if db is None:
+                raise ValueError("A SQLAlchemy instance must be provided on first initialization")
+            cls._instance = cls(db, app)
+        return cls._instance
     
     #region GET
     
