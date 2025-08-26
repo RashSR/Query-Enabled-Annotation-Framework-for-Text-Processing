@@ -328,3 +328,17 @@ class CacheStore:
 
     # endregion
     
+    #region DELETE
+    
+    #region Author
+
+    def delete_author_by_id(self, id):
+        from .db_handling import delete_author_by_id
+        if delete_author_by_id(self._db, self._app, id):
+            if self._authors is not None and id in self._authors:
+                del self._authors[id]
+            return True
+        return False
+    # endregion
+
+    # endregion

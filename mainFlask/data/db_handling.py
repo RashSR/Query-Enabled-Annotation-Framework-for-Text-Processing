@@ -346,6 +346,24 @@ def update_author(db: SQLAlchemy, app: Flask, author_id: int, column_name: str, 
 
 # endregion
 
+# region DELETE
+
+# region Author
+def delete_author_by_id(db: SQLAlchemy, app: Flask, author_id: int) -> bool:
+    with app.app_context():
+        result = db.session.execute(
+            text("DELETE FROM author WHERE id = :author_id"),
+            {'author_id': author_id}
+        )
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+        
+        return False
+# endregion
+
+# endregion
+
 #region Conversion
 
 def _convert_db_row_to_author(row) -> Author:
