@@ -24,7 +24,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 #intialize CacheStore
-cache = CacheStore.Instance(db, app)
+CacheStore.Instance(db, app)
 
 @app.context_processor
 def inject_request():
