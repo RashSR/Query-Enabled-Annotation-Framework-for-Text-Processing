@@ -100,7 +100,7 @@
                 ✕
               </button>
               {% if is_and %}
-                <label style="margin-left:1rem; font-weight:normal; display: flex; align-items: center;">Range:
+                <label style="margin-left:1rem; font-weight:normal; display: flex; align-items: center;">Scope:
                   <select name="token_range[{{ idx }}]" class="search-konkordanz-dropdown range-select" style="width:110px; margin-left:0.3rem;">
                     <option value="None" {% if n.token_range is none %}selected{% endif %}>Message</option>
                     <option value="7" {% if n.token_range == 7 %}selected{% endif %}>Sentence</option>
