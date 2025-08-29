@@ -51,12 +51,12 @@ class FilterNode:
                 self._result_messages = utils.and_result_messages(result_message_lists) #TODO: is this important for token range search?
             case FilterType.NOT:
                 #is special because not can only have one node
-                all_messages = CacheStore.Instance().get_all_messages()
+                all_messages: list[Message] = CacheStore.Instance().get_all_messages()
                 self._leaves[0].get_full_result()
-                excluded_messages = self._leaves[0].result_messages
+                excluded_messages: list[Message]  = self._leaves[0].result_messages
                 excluded_ids = {msg.message_id for msg in excluded_messages}
                 remaining_messages = [msg for msg in all_messages if msg.message_id not in excluded_ids]
-                self._result_messages = remaining_messages
+                self._result_messages: list[Message] = remaining_messages
             case FilterType.OBJECT:
                 return self._result_messages
             case _: 
