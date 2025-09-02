@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from mainFlask.classes.ltmatch import LTMatch 
 from mainFlask.classes.spacymatch import SpacyMatch 
+from mainFlask.classes.annotation import Annotation
 
 class CacheStore:
     _instance = None
@@ -268,6 +269,29 @@ class CacheStore:
 
     # endregion
     
+    #region Annotation
+    
+    _annotations = None
+
+    def get_annotation_by_id(self, id):
+
+        if not isinstance(id, int):
+            return None
+
+        from .db_handling import get_annotation_by_id
+
+        if self._annotations is None:
+            self._annotations = {}
+
+        if id in self._annotations:
+            return self._annotations[id]
+        
+        annotation = get_annotation_by_id(self._db, self._app, id)
+        self._annotations[id] = annotation
+        return annotation
+
+    # endregion
+
     # endregion
 
     #region CREATE 
@@ -309,6 +333,24 @@ class CacheStore:
 
     # endregion
 
+    #region Annoation
+    def create_annotation(self, annotation: Annotation):
+        if annotation is None:
+            return None
+        
+        from .db_handling import create_annotation
+
+        generated_id = create_annotation(self._db, self._app, annotation)
+        annotation.id = generated_id
+
+        if self._annotations is None:
+            self._annotations = {}
+
+        self._annotations[generated_id] = annotation
+        return annotation
+    
+    # endregion
+
     # endregion 
 
     #region UPDATE
@@ -321,6 +363,19 @@ class CacheStore:
             setattr(author, column_name, value)
             self._authors[author.id] = author
             return self._authors[author.id]
+        
+        return None
+
+    # endregion
+
+    #region Annotation
+
+    def update_annotation(self, annotation: Annotation):
+        from .db_handling import update_annotation
+        
+        if update_annotation(self._db, self._app, annotation):
+            self._annotations[annotation.id] = annotation
+            return self._annotations[annotation.id]
         
         return None
 
@@ -339,6 +394,18 @@ class CacheStore:
                 del self._authors[id]
             return True
         return False
+    # endregion
+
+    #region Annotation
+
+    def delete_annotation_by_id(self, id: int) -> bool:
+        from .db_handling import delete_annotation_by_id
+        if delete_annotation_by_id(self._db, self._app, id):
+            if self._annotations is not None and id in self._annotations:
+                del self._annotations[id]
+            return True
+        return False
+
     # endregion
 
     # endregion

@@ -8,6 +8,7 @@ from mainFlask.classes.message import Message
 from .cachestore import CacheStore
 from mainFlask.classes.ltmatch import LTMatch
 from mainFlask.classes.spacymatch import SpacyMatch
+from mainFlask.classes.annotation import Annotation
 
 # region GET
 
