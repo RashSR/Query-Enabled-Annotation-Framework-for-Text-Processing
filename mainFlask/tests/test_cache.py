@@ -8,7 +8,7 @@ def test_CRUD_annotation():
     created_annotation = CacheStore.Instance().create_annotation(annotation)
     print(created_annotation)
     
-    getted_annotation = CacheStore.Instance().get_annotation_by_id(1)
+    getted_annotation = CacheStore.Instance().get_annotation_by_id(created_annotation.id)
     print(getted_annotation)
 
     getted_annotation.comment = "Das ist der geänderte Kommentar"
