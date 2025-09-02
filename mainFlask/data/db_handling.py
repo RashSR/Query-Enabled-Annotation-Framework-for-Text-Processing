@@ -387,7 +387,7 @@ def update_annotation(db: SQLAlchemy, app: Flask, annotation: Annotation) -> boo
         reason =  f"'{annotation.reason}'"
         comment = f"'{annotation.comment}'"
 
-        sql_text = f"UPDATE annotation SET start_pos = {start_pos}, end_pos ={end_pos}, annotation = {annotation_str}, reson = {reason}, comment = {comment} WHERE id = {annotation.id}"
+        sql_text = f"UPDATE annotation SET start_pos = {start_pos}, end_pos ={end_pos}, annotation = {annotation_str}, reason = {reason}, comment = {comment} WHERE id = {annotation.id}"
         result = db.session.execute(text(sql_text))
         if result.rowcount > 0:
             db.session.commit()
