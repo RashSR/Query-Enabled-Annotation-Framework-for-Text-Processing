@@ -14,3 +14,8 @@ def annotation_view():
             for token in msg.message_tokens:
                 print(token)
     return render_template('annotation.html')
+
+@annotation_bp.route("/annotation/<int:message_id>")
+def annotation_view_message(message_id: int):
+    message: Message = CacheStore.Instance().get_message_by_id(message_id)
+    return render_template('annotation.html')
