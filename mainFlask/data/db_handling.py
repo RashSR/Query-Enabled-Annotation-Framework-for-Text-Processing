@@ -223,7 +223,7 @@ def get_all_distinct_rule_ids_from_ltms(db:SQLAlchemy, app: Flask):
 
 # endregion
 
-# region Spacy Matches
+#region Spacy Matches
 
 def get_all_distinct_column_values_from_spacy_matches_by_column_name(db: SQLAlchemy, app: Flask, column_name: str):
     with app.app_context():
@@ -251,6 +251,19 @@ def get_all_spacy_matches_by_msg_id(db: SQLAlchemy, app: Flask, msg_id: int):
         return spacy_matches 
 
 # endregion 
+
+#region Annotation
+
+def get_annotation_by_id(db: SQLAlchemy, app: Flask, id: int):
+    with app.app_context():
+        result_row = db.session.execute(
+            text("SELECT * FROM annotation WHERE id = :id"),
+            {'id': id}
+        ).fetchone()
+
+        loaded_annotation = _convert_db_row_to_annotation(result_row)
+        return loaded_annotation
+# endregion
 
 # endregion
 
@@ -322,6 +335,27 @@ def create_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch):
         new_id = result.lastrowid
         return new_id
 
+#region Annotation
+def create_annotation(db: SQLAlchemy, app: Flask, annotation: Annotation):
+    with app.app_context():
+        message_id = annotation.message_id
+        start_pos = annotation.start_pos
+        end_pos = annotation.end_pos
+        annotation_str = annotation.annotation
+        reason = annotation.reason
+        comment = annotation.comment
+
+        sql_text = text("INSERT INTO annotation VALUES (:id, :message_id, :start_pos, :end_pos, :annotation_str, :reason, :comment)")
+        prepared_values = {'id': None, 'message_id': message_id, 'start_pos': start_pos, 'end_pos': end_pos, 'annotation_str': annotation_str, 'reason': reason, 'comment': comment}
+
+        result = db.session.execute(sql_text, prepared_values)
+        db.session.commit()
+
+        new_id = result.lastrowid
+        return new_id
+
+# endregion
+
 # endregion 
 
 # region UPDATE
@@ -342,6 +376,24 @@ def update_author(db: SQLAlchemy, app: Flask, author_id: int, column_name: str, 
         
         return False
 
+# endregion
+
+#region Annotation
+def update_annotation(db: SQLAlchemy, app: Flask, annotation: Annotation) -> bool:
+    with app.app_context():
+        start_pos = annotation.start_pos
+        end_pos = annotation.end_pos
+        annotation_str =  f"'{annotation.annotation}'"
+        reason =  f"'{annotation.reason}'"
+        comment = f"'{annotation.comment}'"
+
+        sql_text = f"UPDATE annotation SET start_pos = {start_pos}, end_pos ={end_pos}, annotation = {annotation_str}, reson = {reason}, comment = {comment} WHERE id = {annotation.id}"
+        result = db.session.execute(text(sql_text))
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+        
+        return False
 
 # endregion
 
@@ -355,6 +407,20 @@ def delete_author_by_id(db: SQLAlchemy, app: Flask, author_id: int) -> bool:
         result = db.session.execute(
             text("DELETE FROM author WHERE id = :author_id"),
             {'author_id': author_id}
+        )
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+        
+        return False
+# endregion
+
+#region Annotation
+def delete_annotation_by_id(db: SQLAlchemy, app: Flask, annotation_id: int) -> bool:
+    with app.app_context():
+        result = db.session.execute(
+            text("DELETE FROM annotation WHERE id = :annotation_id"),
+            {'annotation_id': annotation_id}
         )
         if result.rowcount > 0:
             db.session.commit()
@@ -451,6 +517,17 @@ def _convert_db_row_to_spacy_match(row) -> SpacyMatch:
     loaded_spacy_match.id = id
     return loaded_spacy_match
 
+def _convert_db_row_to_annotation(row) -> Annotation:
+    id = row[0]
+    message_id = row[1]
+    start_pos = row[2]
+    end_pos = row[3]
+    annotation = row[4]
+    reason = row[5]
+    comment = row[6]
+
+    loaded_annotation = Annotation(id, message_id, start_pos, end_pos, annotation, reason, comment)
+    return loaded_annotation
 
 
 # endregion
