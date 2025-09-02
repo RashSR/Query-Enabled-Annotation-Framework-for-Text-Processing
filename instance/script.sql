@@ -137,3 +137,14 @@ SELECT * FROM message m
 JOIN spacy_match sm ON m.id = sm.message_id;
 
 ALTER TABLE author ADD COLUMN annotation text;
+
+CREATE TABLE annotation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message_id INTEGER NOT NULL,
+    start_pos INTEGER NOT NULL,
+    end_pos INTEGER NOT NULL,
+    annotation TEXT NOT NULL,
+    reason TEXT,
+    comment TEXT,
+    FOREIGN KEY (message_id) REFERENCES message(id) ON DELETE CASCADE
+);
