@@ -18,4 +18,5 @@ def annotation_view():
 @annotation_bp.route("/annotation/<int:message_id>")
 def annotation_view_message(message_id: int):
     message: Message = CacheStore.Instance().get_message_by_id(message_id)
+    print(message)
     return render_template('annotation.html')

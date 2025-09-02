@@ -3,6 +3,7 @@ from mainFlask.data.cachestore import CacheStore
 from .ltmatch import LTMatch
 from .spacymatch import SpacyMatch
 from .message_token import MessageToken
+from .annotation import Annotation
 import re
 
 #TODO:  Klasse e.g. message_element und hier wird jedes einzelne Element aus einer Nachricht erstellt hinzu kommen eine Liste an lt_matches und spacy_matches hinzu. 
@@ -26,6 +27,7 @@ class Message:
         self._chat = chat
         self._search_results = []
         self._message_tokens: list[MessageToken] = []
+        self._annotations: list[Annotation] = []
 
     def __str__(self):
         toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
