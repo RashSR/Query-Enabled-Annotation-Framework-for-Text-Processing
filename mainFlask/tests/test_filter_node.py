@@ -1,7 +1,7 @@
-from mainFlask.filter_node import FilterNode
-from mainFlask.filter_node_object import FilterNodeObject
-from mainFlask.filter_node_group import FilterNodeGroup
-from mainFlask.filter_type import FilterType
+from mainFlask.classes.filter_node import FilterNode
+from mainFlask.classes.filter_node_object import FilterNodeObject
+from mainFlask.classes.filter_node_group import FilterNodeGroup
+from mainFlask.classes.filter_type import FilterType
 
 def test_filter_node():
     #build starting node with two FNOs
