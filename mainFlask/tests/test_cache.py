@@ -4,6 +4,12 @@ from mainFlask.data.cachestore import CacheStore
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
+def setup_method(self):
+    print("This runs before each test")
+
+def teardown_method(self):
+    print("This runs after each test")
+
 @pytest.fixture
 def establish_db_connection():
     app = Flask(__name__)
@@ -13,22 +19,22 @@ def establish_db_connection():
     db = SQLAlchemy(app)
     CacheStore.Instance(db, app)
 
-def test_CRUD_annotation():
-    annotation = Annotation(None, 1, 3, 6, "RULE 43", "Das ist der Grund", "Mein Kommentar.")
-    print(annotation)
-    
+def test_CRUD_annotation(establish_db_connection):
+    comment = "Mein Kommentar."
+    annotation = Annotation(None, 1, 3, 6, "RULE 43", "Das ist der Grund", comment)
     created_annotation = CacheStore.Instance().create_annotation(annotation)
-    print(created_annotation)
+    assert created_annotation.id is not None
     
     getted_annotation = CacheStore.Instance().get_annotation_by_id(created_annotation.id)
-    print(getted_annotation)
+    assert getted_annotation.comment == comment
 
     getted_annotation.comment = "Das ist der geänderte Kommentar"
     updated_annotation= CacheStore.Instance().update_annotation(getted_annotation)
-    print(updated_annotation)
+    assert getted_annotation.comment is not comment
 
-    if(CacheStore.Instance().delete_annotation_by_id(updated_annotation.id)):
-        print("Erfolgreich gelöscht!")
+    isDeletionSucessful = CacheStore.Instance().delete_annotation_by_id(updated_annotation.id)
+    assert isDeletionSucessful
+
 
 def test_get_all_annotations_by_msg_id(establish_db_connection):
 
