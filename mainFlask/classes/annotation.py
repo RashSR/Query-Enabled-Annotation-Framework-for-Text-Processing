@@ -68,4 +68,12 @@ class Annotation:
     def __str__(self):
         return (f"Annotation(id={self._id}, message_id={self._message_id}, start_pos={self._start_pos}, "
                 f"end_pos={self._end_pos}, annotation={self._annotation}, reason={self._reason}, comment={self._comment})")
+    
+    def __eq__(self, other):
+        if isinstance(other, Annotation):
+            return self.id == other.id
+        return False
+
+    def __hash__(self):
+        return hash(self.id)
 
