@@ -96,6 +96,16 @@ class Message:
         self._spacy_matches = value
 
     @property
+    def annotations(self) -> list[Annotation]:
+        if len(self._annotations)==0: #TODO only load errorlist once
+            self._annotations = CacheStore.Instance().get_all_annotations_by_msg_id(self._message_id)
+        return self._annotations
+    
+    @annotations.setter
+    def annotations(self, value: list[Annotation]):
+        self._annotations = value
+
+    @property
     def sender(self):
         return self._sender
 
