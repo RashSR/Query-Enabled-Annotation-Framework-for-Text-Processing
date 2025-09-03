@@ -19,15 +19,23 @@ def test_CRUD_annotation():
         print("Erfolgreich gelöscht!")
 
 def test_get_all_annotations_by_msg_id():
+    #arrange
     msg_id: int = 1
     annotation1 = Annotation(None, msg_id, 3, 6, "RULE 43", "Das ist der Grund", "Mein Kommentar.")
-    created_annotation1 = CacheStore.Instance().create_annotation(annotation1)
     annotation2 = Annotation(None, msg_id, 9, 15, "RULE 5", "Ein anderer Grund", "Mein Kommentar hat sich verändert.")
-    created_annotation2 = CacheStore.Instance().create_annotation(annotation2)
     annotation3 = Annotation(None, msg_id+2, 9, 15, "RULE 45", "Ein Grund", "Kommentar")
+    
+    created_annotation1 = CacheStore.Instance().create_annotation(annotation1)
+    created_annotation2 = CacheStore.Instance().create_annotation(annotation2)
     created_annotation3 = CacheStore.Instance().create_annotation(annotation3)
+
+    #act
     annotations: list[Annotation] = CacheStore.Instance().get_all_annotations_by_msg_id(msg_id)
-    if len(annotations) == 2:
-        print("true")
-    for annotation in annotations:
-        print(annotation)
+    
+    #assert
+    assert len(annotations) == 2
+    assert all(a.msg_id == msg_id for a in annotations)
+    assert {a.reason for a in annotations} == {"Das ist der Grund", "Ein anderer Grund"}
+    assert created_annotation1 in annotations
+    assert created_annotation2 in annotations 
+    assert created_annotation3 not in annotations
