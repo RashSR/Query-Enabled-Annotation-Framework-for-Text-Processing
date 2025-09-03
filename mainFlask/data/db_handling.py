@@ -263,6 +263,19 @@ def get_annotation_by_id(db: SQLAlchemy, app: Flask, id: int):
 
         loaded_annotation = _convert_db_row_to_annotation(result_row)
         return loaded_annotation
+    
+def get_all_annotations_by_msg_id(db: SQLAlchemy, app: Flask, msg_id: int):
+    with app.app_context():
+        annotations: list[Annotation] = []
+        result = db.session.execute(
+            text("SELECT * FROM annotation WHERE message_id = :msg_id"),
+            {'msg_id': msg_id}
+        )
+        for row in result:
+            loaded_annotation = _convert_db_row_to_annotation(row)
+            annotations.append(loaded_annotation)
+
+        return annotations 
 # endregion
 
 # endregion
