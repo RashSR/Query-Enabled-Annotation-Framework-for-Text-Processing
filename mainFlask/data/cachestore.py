@@ -273,7 +273,7 @@ class CacheStore:
     
     _annotations = None
 
-    def get_annotation_by_id(self, id):
+    def get_annotation_by_id(self, id) -> Annotation:
 
         if not isinstance(id, int):
             return None
@@ -289,6 +289,15 @@ class CacheStore:
         annotation = get_annotation_by_id(self._db, self._app, id)
         self._annotations[id] = annotation
         return annotation
+    
+    def get_all_annotations_by_msg_id(self, msg_id: int) -> list[Annotation]:
+        from .db_handling import get_all_annotations_by_msg_id
+        
+        if self._annotations is None:
+            self._annotations = {}
+
+        annotations: list[Annotation] = get_all_annotations_by_msg_id(self._db, self._app, msg_id)
+        return annotations
 
     # endregion
 
