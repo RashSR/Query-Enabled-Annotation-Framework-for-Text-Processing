@@ -35,7 +35,7 @@ def inject_request():
 def search_view():
     query = request.args.get("query", "").strip()
     sender = request.args.get("sender", "")
-    all_messages = utils.get_active_author(session).get_all_messages() #TODO: only messages from selected author?
+    all_messages = CacheStore.Instance().get_all_messages()
     all_senders = sorted(set(msg.sender.name for msg in all_messages))
     results = []
 
