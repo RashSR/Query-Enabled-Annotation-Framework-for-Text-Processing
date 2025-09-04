@@ -181,6 +181,15 @@ class Message:
                 ltms.append(lt)
         
         return ltms
+    
+    #one token can have more than one annotation
+    def _find_annotations_by_start_and_end_index(self, start, end) -> list[Annotation]:
+        annos: list[Annotation] = []
+        for anno in self.annotations:
+            if start >= anno.start_pos and end <= anno.end_pos:
+                annos.append(anno)
+        
+        return annos
 
     #only returns one, because all information are coded in on spacy match
     def _find_spacy_match_by_start_and_end_index(self, start, end) -> SpacyMatch:
@@ -197,7 +206,8 @@ class Message:
             token_text = match.group()
             sm = self._find_spacy_match_by_start_and_end_index(start, end)
             ltms = self._find_lt_matches_by_start_and_end_index(start, end)
-            mt = MessageToken(start, end, token_text, sm, ltms)
+            annos = self._find_annotations_by_start_and_end_index(start, end)
+            mt = MessageToken(start, end, token_text, sm, ltms, annos)
             tokens.append(mt)
         return tokens
 

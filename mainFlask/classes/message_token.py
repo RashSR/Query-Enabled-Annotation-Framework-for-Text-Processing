@@ -1,10 +1,11 @@
 class MessageToken:
-    def __init__(self, start_pos: int, end_pos: int, text: str, spacy_match = None, lt_matches = []):
+    def __init__(self, start_pos: int, end_pos: int, text: str, spacy_match = None, lt_matches = [], annotations = []):
         self._start_pos = start_pos
         self._end_pos = end_pos
         self._text = text
         self._spacy_match = spacy_match
         self._lt_matches = lt_matches
+        self._annotations = annotations
         self._is_flagged: bool = False #If found in a searchresult -> flag it
 
     @property
@@ -26,6 +27,10 @@ class MessageToken:
     @property
     def spacy_match(self):
         return self._spacy_match
+    
+    @property
+    def annotations(self):
+        return self._annotations
     
     @property
     def is_flagged(self) -> bool:
