@@ -42,10 +42,9 @@ class MessageToken:
 
     def __str__(self):
         return (f"MessageToken(text='{self._text}', "
-                f"Index: {self._start_pos} - {self._end_pos},"
-                f"is_flagged: {self.is_flagged},"
-                f"lt_match={len(self._lt_matches)}, "
+                f"Index: {self._start_pos} - {self._end_pos}, "
+                f"is_flagged: {self.is_flagged}, "
+                f"annotations={len(self._annotations)}, "
+                f"lt_matches={len(self._lt_matches)}, "
                 f"spacy_match={self._spacy_match})")
-    
 
-    #TODO:Do i need to search over more messages? When does one end? After the other person types something?
