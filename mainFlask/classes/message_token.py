@@ -1,3 +1,7 @@
+from .annotation import Annotation
+from .ltmatch import LTMatch
+from .spacymatch import SpacyMatch
+
 class MessageToken:
     def __init__(self, start_pos: int, end_pos: int, text: str, spacy_match = None, lt_matches = [], annotations = []):
         self._start_pos = start_pos
@@ -9,27 +13,27 @@ class MessageToken:
         self._is_flagged: bool = False #If found in a searchresult -> flag it
 
     @property
-    def start_pos(self):
+    def start_pos(self) -> int:
         return self._start_pos
     
     @property
-    def end_pos(self):
+    def end_pos(self) -> int:
         return self._end_pos
 
     @property
-    def text(self):
+    def text(self) -> str:
         return self._text
 
     @property
-    def lt_matches(self):
+    def lt_matches(self) -> LTMatch:
         return self._lt_matches
 
     @property
-    def spacy_match(self):
+    def spacy_match(self) -> SpacyMatch:
         return self._spacy_match
     
     @property
-    def annotations(self):
+    def annotations(self) -> list[Annotation]:
         return self._annotations
     
     @property
