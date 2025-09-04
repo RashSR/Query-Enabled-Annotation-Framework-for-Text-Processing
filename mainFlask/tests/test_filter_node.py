@@ -1,9 +1,22 @@
+import pytest
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from mainFlask.data.cachestore import CacheStore
 from mainFlask.classes.filter_node import FilterNode
 from mainFlask.classes.filter_node_object import FilterNodeObject
 from mainFlask.classes.filter_node_group import FilterNodeGroup
 from mainFlask.classes.filter_type import FilterType
 
-def test_filter_node():
+@pytest.fixture
+def establish_db_connection():
+    app = Flask(__name__)
+    app.secret_key = 'your_secret_key'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_database.db'  #TODO: this needs own db
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db = SQLAlchemy(app)
+    CacheStore.Instance(db, app)
+
+def test_filter_node(establish_db_connection):
     #build starting node with two FNOs
     starting_test_node = FilterNode(FilterType.OR)
     categoryNode = FilterNodeObject(FilterNodeGroup("error-category"), None, "CASING")
