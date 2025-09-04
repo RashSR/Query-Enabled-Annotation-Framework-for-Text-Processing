@@ -16,4 +16,5 @@ def annotation_view_message(message_id: int):
     print(message)
     for token in message.message_tokens:
         print(token)
+    print(message.annotated_text)
     return render_template('annotation.html')

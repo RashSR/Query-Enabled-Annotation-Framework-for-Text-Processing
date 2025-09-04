@@ -123,6 +123,48 @@ class Message:
 
     @property
     def annotated_text(self):
+        #TODO: Combine from message_token
+        output = ""
+        open_lt_matches = set()
+        open_annotations = set()
+
+        for token in self.message_tokens:
+            # Close LT matches that ended before this token
+            to_close_lt = [lt for lt in open_lt_matches if lt.end_pos <= token.spacy_match.start_pos]
+            for lt in to_close_lt:
+                output += "</span>"
+                open_lt_matches.remove(lt)
+            
+            # Close annotations that ended before this token
+            to_close_ann = [ann for ann in open_annotations if ann.end_pos <= token.spacy_match.start_pos]
+            for ann in to_close_ann:
+                output += "</span>"
+                open_annotations.remove(ann)
+
+            # Open LT matches starting at this token
+            for lt in token.lt_matches:
+                if lt not in open_lt_matches:
+                    output += f"<span class='lt_match'>"
+                    open_lt_matches.add(lt)
+
+            # Open annotations starting at this token
+            for ann in token.annotations:
+                if ann not in open_annotations:
+                    output += f"<span class='annotation'>"
+                    open_annotations.add(ann)
+
+            # Always wrap the token with its spacy_match
+            if token.spacy_match is None:
+                output += f"<span class='EMPTY'>{token.text}</span>"
+            else:
+                output += f"<span class='spacy_match'>{token.spacy_match.text}</span>"
+
+        # Close any remaining open spans
+        for _ in range(len(open_annotations)):
+            output += "</span>"
+        for _ in range(len(open_lt_matches)):
+            output += "</span>"
+        self._annotated_text = output
         return self._annotated_text
     
     @annotated_text.setter
