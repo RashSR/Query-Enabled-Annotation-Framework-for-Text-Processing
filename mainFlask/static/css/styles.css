@@ -520,6 +520,13 @@ span[annotation][data-tooltip-position="top"]::after {
     margin-bottom: 10px;
 }
 
+body:not(.show-annotation-highlight) span[annotation]::after,
+body:not(.show-error-highlight) span[data-error]::after,
+body:not(.show-pos-highlight) span[part-of-speech]::after {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 body:not(.show-annotation-highlight) span[annotation],
 body:not(.show-error-highlight) span[data-error],
 body:not(.show-pos-highlight) span[part-of-speech] {
