@@ -42,9 +42,7 @@ def save_annotatio_route():
     success = update_annotation(annotation_id, new_comment, grund, annotation_text, start_pos, end_pos)
     return jsonify({'success': bool(success)})
 
-
 def delete_annotation(annotation_id: int):
-    print(f"try to delete {annotation_id}")
     return CacheStore.Instance().delete_annotation_by_id(annotation_id)
 
 @annotation_bp.route('/delete_annotation', methods=['POST'])

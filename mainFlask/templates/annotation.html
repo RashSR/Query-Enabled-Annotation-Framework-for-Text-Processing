@@ -140,6 +140,37 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // Delete button logic for annotation
+    document.querySelectorAll('.delete-annotation-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var li = btn.closest('li');
+            var annotationId = li.getAttribute('data-annotation-id');
+            if (!annotationId) {
+                alert('Annotation ID fehlt!');
+                return;
+            }
+            btn.disabled = true;
+            fetch('/delete_annotation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'annotation_id=' + encodeURIComponent(annotationId)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    li.remove();
+                } else {
+                    btn.textContent = 'Fehler!';
+                    setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
+                }
+            })
+            .catch(() => {
+                btn.textContent = 'Fehler!';
+                setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
+            });
+        });
+    });
 });
 </script>
 {% endblock %}
