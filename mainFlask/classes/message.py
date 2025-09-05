@@ -76,8 +76,7 @@ class Message:
 
     @property
     def error_list(self) -> list[LTMatch]:
-        if len(self._error_list)==0: #TODO only load errorlist once
-            self._error_list = CacheStore.Instance().get_all_ltms_by_msg_id_and_chat_id(self._message_id, self.chat_id)
+        self._error_list = CacheStore.Instance().get_all_ltms_by_msg_id_and_chat_id(self._message_id, self.chat_id)
         return self._error_list
 
     @error_list.setter
@@ -86,8 +85,7 @@ class Message:
 
     @property
     def spacy_matches(self) -> list[SpacyMatch]:
-        if len(self._spacy_matches)==0: #TODO only load errorlist once
-            self._spacy_matches = CacheStore.Instance().get_all_spacy_matches_by_msg_id(self._message_id)
+        self._spacy_matches = CacheStore.Instance().get_all_spacy_matches_by_msg_id(self._message_id)
         return self._spacy_matches
     
     @spacy_matches.setter
@@ -96,11 +94,10 @@ class Message:
 
     @property
     def annotations(self) -> list[Annotation]:
-        if len(self._annotations)==0: #TODO only load errorlist once
-            self._annotations = sorted(
-                CacheStore.Instance().get_all_annotations_by_msg_id(self._message_id),
-                key=lambda ann: (ann.start_pos, ann.end_pos)
-            )
+        self._annotations = sorted(
+            CacheStore.Instance().get_all_annotations_by_msg_id(self._message_id),
+            key=lambda ann: (ann.start_pos, ann.end_pos)
+        )
         return self._annotations
     
     @annotations.setter
