@@ -244,7 +244,8 @@ class Message:
                 return sm
 
     def tokenize_with_positions(self):
-        pattern = r"\w+|[:;8xX=][-^]?[)DPOp]|[^\w\s]"
+        # decimals first, then emoticons, then words, then any other non-space char
+        pattern = r"\d+(?:\.\d+)?|[:;8xX=][-^]?[)DPOp]|\w+|[^\w\s]"
         tokens = []
         for match in re.finditer(pattern, self.content):
             start = match.start()
@@ -256,6 +257,7 @@ class Message:
             mt = MessageToken(start, end, token_text, sm, ltms, annos)
             tokens.append(mt)
         return tokens
+
 
     def hasCategory(self, category):
         if category in self.get_error_categories():
