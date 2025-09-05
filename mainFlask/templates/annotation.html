@@ -15,12 +15,16 @@
         {% if message.annotations and message.annotations|length > 0 %}
             <ul style="padding-left:1.2em;">
             {% for ann in message.annotations %}
-                <li style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em;">
-                    <strong>Position:</strong> {{ ann.start_pos }} - {{ ann.end_pos }}<br>
-                    <strong>Annotation:</strong> {{ ann.annotation }}<br>
-                    {% if ann.reason %}<strong>Grund:</strong> {{ ann.reason }}<br>{% endif %}
-                    <strong>Kommentar:</strong>
-                    <input type="text" name="comment_{{ loop.index0 }}" value="{{ ann.comment }}" style="padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em; width:auto; min-width:2em;" oninput="this.style.width = ((this.value.length + 1) * 0.7) + 'em';" />
+                <li style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em;">
+                    <div style="flex:1;">
+                        <strong>Position:</strong> {{ ann.start_pos }} - {{ ann.end_pos }}<br>
+                        <strong>Annotation:</strong> {{ ann.annotation }}<br>
+                        {% if ann.reason %}<strong>Grund:</strong> {{ ann.reason }}<br>{% endif %}
+                        <strong>Kommentar:</strong>
+                        <input type="text" name="comment_{{ loop.index0 }}" value="{{ ann.comment }}" style="padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em; width:auto; min-width:2em;" oninput="this.style.width = ((this.value.length + 1) * 0.7) + 'em';" />
+                    </div>
+                    <button type="button" class="save-annotation-btn" style="padding:0.2em 0.7em; background:#28a745; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Speichern</button>
+                    <button type="button" class="delete-annotation-btn" style="padding:0.2em 0.7em; background:#dc3545; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Löschen</button>
                 </li>
             {% endfor %}
             </ul>
