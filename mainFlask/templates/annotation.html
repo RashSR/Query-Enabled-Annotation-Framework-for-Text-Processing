@@ -42,8 +42,14 @@
         {% if message.error_list and message.error_list|length > 0 %}
             <ul style="padding-left:1.2em; max-height:14em; overflow-y:auto; resize:vertical; min-height:3em; scrollbar-width:thick;">
             {% for err in message.error_list %}
-                <li style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; color:#b30000;">
-                    {{ err }}
+                {# Expecting err to be a dict/object with keys: start_pos, end_pos, category, rule_id, message #}
+                <li style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em; color:#b30000;">
+                    <div style="flex:1;">
+                        <div><strong>Position:</strong> <span class="error-start">{{ err.start_pos }}</span> - <span class="error-end">{{ err.end_pos }}</span></div>
+                        <div><strong>Kategorie:</strong> <span class="error-category">{{ err.category }}</span></div>
+                        <div><strong>Regel-ID:</strong> <span class="error-rule">{{ err.rule_id }}</span></div>
+                    </div>
+                    <button type="button" class="delete-error-btn" style="padding:0.2em 0.7em; background:#dc3545; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Löschen</button>
                 </li>
             {% endfor %}
             </ul>
