@@ -100,4 +100,32 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // Selectable list items logic with checkbox
+    document.querySelectorAll('.selectable').forEach(function(item) {
+        var checkbox = item.querySelector('.select-checkbox');
+        item.addEventListener('click', function(e) {
+            // Prevent selection if clicking a button inside the item
+            if (e.target.tagName === 'BUTTON') return;
+            document.querySelectorAll('.selectable.selected').forEach(function(sel) {
+                sel.classList.remove('selected');
+                var cb = sel.querySelector('.select-checkbox');
+                if (cb) cb.checked = false;
+            });
+            item.classList.add('selected');
+            if (checkbox) checkbox.checked = true;
+        });
+        if (checkbox) {
+            checkbox.addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.querySelectorAll('.selectable.selected').forEach(function(sel) {
+                    sel.classList.remove('selected');
+                    var cb = sel.querySelector('.select-checkbox');
+                    if (cb) cb.checked = false;
+                });
+                item.classList.add('selected');
+                checkbox.checked = true;
+            });
+        }
+    });
 });

@@ -1,5 +1,14 @@
 {% extends "layout.html" %}
 
+<style>
+    .selectable.selected {
+        box-shadow: 0 0 0 3px #0074D9;
+        background: #cce4ff !important;
+        border: 2px solid #0074D9 !important;
+        color: #003366 !important;
+        z-index: 1;
+    }
+</style>
 {% block content %}
 <div style="padding: 2rem; font-size: 1.2rem;">
     <label for="annotated-text" style="font-weight:bold;">Annotierter Text:</label>
@@ -16,7 +25,8 @@
         {% if message.annotations and message.annotations|length > 0 %}
             <ul style="padding-left:1.2em; max-height:14em; overflow-y:auto; resize:vertical; min-height:3em; scrollbar-width:thick;">
             {% for ann in message.annotations %}
-                <li style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em;" data-annotation-id="{{ ann.id }}">
+                <li class="selectable annotation-item" style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em; cursor:pointer;" data-annotation-id="{{ ann.id }}">
+                    <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="flex:1;">
                         <strong>Position:</strong> <span class="annotation-start">{{ ann.start_pos }}</span> - <span class="annotation-end">{{ ann.end_pos }}</span><br>
                         <strong>Annotation:</strong> <span class="annotation-text">{{ ann.annotation }}</span><br>
@@ -43,7 +53,8 @@
             <ul style="padding-left:1.2em; max-height:14em; overflow-y:auto; resize:vertical; min-height:3em; scrollbar-width:thick;">
             {% for err in message.error_list %}
                 {# Expecting err to be a dict/object with keys: start_pos, end_pos, category, rule_id, message #}
-                <li style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em; color:#b30000;">
+                <li class="selectable error-item" style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em; color:#b30000; cursor:pointer;">
+                    <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="flex:1;">
                         <div><strong>Position:</strong> <span class="error-start">{{ err.start_pos }}</span> - <span class="error-end">{{ err.end_pos }}</span></div>
                         <div><strong>Kategorie:</strong> <span class="error-category">{{ err.category }}</span></div>
@@ -66,7 +77,8 @@
         {% if message.spacy_matches and message.spacy_matches|length > 0 %}
             <ul style="padding-left:1.2em; max-height:14em; overflow-y:auto; resize:vertical; min-height:3em; scrollbar-width:thick;">
             {% for match in message.spacy_matches %}
-                <li style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b;">
+                <li class="selectable spacy-item" style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b; cursor:pointer;">
+                    <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     {{ match }}
                 </li>
             {% endfor %}
