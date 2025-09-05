@@ -15,7 +15,7 @@
         {% if message.annotations and message.annotations|length > 0 %}
             <ul style="padding-left:1.2em;">
             {% for ann in message.annotations %}
-                <li style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em;">
+                <li style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em;" data-annotation-id="{{ ann.id }}">
                     <div style="flex:1;">
                         <strong>Position:</strong> {{ ann.start_pos }} - {{ ann.end_pos }}<br>
                         <strong>Annotation:</strong> {{ ann.annotation }}<br>
@@ -92,6 +92,40 @@ document.addEventListener('DOMContentLoaded', function() {
     setupCollapsible('annotation-header', 'annotation-list', 'Annotationen');
     setupCollapsible('error-header', 'error-list', 'Fehlerliste');
     setupCollapsible('spacy-header', 'spacy-list', 'Spacy Matches');
+
+    // Save button logic for annotation comments
+    document.querySelectorAll('.save-annotation-btn').forEach(function(btn, idx) {
+        btn.addEventListener('click', function() {
+            var li = btn.closest('li');
+            var input = li.querySelector('input[type="text"][name^="comment_"]');
+            var comment = input ? input.value : '';
+            // Get annotation_id from a data attribute (add this to your li in the template)
+            var annotationId = li.getAttribute('data-annotation-id');
+            if (!annotationId) {
+                alert('Annotation ID fehlt!');
+                return;
+            }
+            btn.disabled = true;
+            fetch('/save_annotation_comment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'annotation_id=' + encodeURIComponent(annotationId) + '&new_comment=' + encodeURIComponent(comment)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    btn.textContent = 'Gespeichert!';
+                } else {
+                    btn.textContent = 'Fehler!';
+                }
+                setTimeout(function() { btn.textContent = 'Speichern'; btn.disabled = false; }, 1200);
+            })
+            .catch(() => {
+                btn.textContent = 'Fehler!';
+                setTimeout(function() { btn.textContent = 'Speichern'; btn.disabled = false; }, 1200);
+            });
+        });
+    });
 });
 </script>
 {% endblock %}
