@@ -9,9 +9,9 @@
 
     <div style="margin-top:1.5rem;">
         <div id="annotation-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#e9ecef; padding:0.5em 0.8em; border-radius:4px; user-select:none;">
-            Annotationen ▼
+            Annotationen ▶
         </div>
-        <div id="annotation-list" style="margin-top:0.5rem;">
+        <div id="annotation-list" style="margin-top:0.5rem; display:none;">
         {% if message.annotations and message.annotations|length > 0 %}
             <ul style="padding-left:1.2em;">
             {% for ann in message.annotations %}
@@ -19,7 +19,8 @@
                     <strong>Position:</strong> {{ ann.start_pos }} - {{ ann.end_pos }}<br>
                     <strong>Annotation:</strong> {{ ann.annotation }}<br>
                     {% if ann.reason %}<strong>Grund:</strong> {{ ann.reason }}<br>{% endif %}
-                    {% if ann.comment %}<strong>Kommentar:</strong> {{ ann.comment }}{% endif %}
+                    <strong>Kommentar:</strong>
+                    <input type="text" name="comment_{{ loop.index0 }}" value="{{ ann.comment }}" style="padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em; width:auto; min-width:2em;" oninput="this.style.width = ((this.value.length + 1) * 0.7) + 'em';" />
                 </li>
             {% endfor %}
             </ul>
@@ -29,9 +30,9 @@
         </div>
 
         <div id="error-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#ffecec; padding:0.5em 0.8em; border-radius:4px; user-select:none; margin-top:1.2em;">
-            Fehlerliste ▼
+            Fehlerliste ▶
         </div>
-        <div id="error-list" style="margin-top:0.5rem;">
+        <div id="error-list" style="margin-top:0.5rem; display:none;">
         {% if message.error_list and message.error_list|length > 0 %}
             <ul style="padding-left:1.2em;">
             {% for err in message.error_list %}
@@ -46,9 +47,9 @@
         </div>
 
         <div id="spacy-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#e0f7fa; padding:0.5em 0.8em; border-radius:4px; user-select:none; margin-top:1.2em;">
-            Spacy Matches ▼
+            Spacy Matches ▶
         </div>
-        <div id="spacy-list" style="margin-top:0.5rem;">
+        <div id="spacy-list" style="margin-top:0.5rem; display:none;">
         {% if message.spacy_matches and message.spacy_matches|length > 0 %}
             <ul style="padding-left:1.2em;">
             {% for match in message.spacy_matches %}
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupCollapsible(headerId, listId, label) {
         var header = document.getElementById(headerId);
         var list = document.getElementById(listId);
-        var expanded = true;
+        var expanded = false;
         if (header && list) {
             header.addEventListener('click', function() {
                 expanded = !expanded;
