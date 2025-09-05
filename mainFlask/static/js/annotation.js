@@ -176,25 +176,34 @@ document.addEventListener('DOMContentLoaded', function() {
     setupHeaderCheckbox('error-header-checkbox', 'error-item');
     setupHeaderCheckbox('spacy-header-checkbox', 'spacy-item');
 
-    // Toggle highlight CSS for spans based on header checkbox
-    function setupSpanHighlight(headerClass, bodyClass) {
+    // Toggle highlight CSS for spans based on header checkbox or all items selected
+    function setupSpanHighlight(headerClass, bodyClass, itemClass) {
         var headerCheckbox = document.querySelector('.' + headerClass);
-        if (!headerCheckbox) return;
-        headerCheckbox.addEventListener('change', function() {
-            if (headerCheckbox.checked) {
+        var items = document.querySelectorAll('.' + itemClass);
+        function updateHighlight() {
+            var allSelected = Array.from(items).length > 0 && Array.from(items).every(function(item) {
+                return item.classList.contains('selected');
+            });
+            if ((headerCheckbox && headerCheckbox.checked) || allSelected) {
                 document.body.classList.add(bodyClass);
             } else {
                 document.body.classList.remove(bodyClass);
             }
+        }
+        if (headerCheckbox) {
+            headerCheckbox.addEventListener('change', updateHighlight);
+        }
+        items.forEach(function(item) {
+            item.addEventListener('click', updateHighlight);
+            var cb = item.querySelector('.select-checkbox');
+            if (cb) {
+                cb.addEventListener('change', updateHighlight);
+            }
         });
         // Initial state
-        if (headerCheckbox.checked) {
-            document.body.classList.add(bodyClass);
-        } else {
-            document.body.classList.remove(bodyClass);
-        }
+        updateHighlight();
     }
-    setupSpanHighlight('annotation-header-checkbox', 'show-annotation-highlight');
-    setupSpanHighlight('error-header-checkbox', 'show-error-highlight');
-    setupSpanHighlight('spacy-header-checkbox', 'show-pos-highlight');
+    setupSpanHighlight('annotation-header-checkbox', 'show-annotation-highlight', 'annotation-item');
+    setupSpanHighlight('error-header-checkbox', 'show-error-highlight', 'error-item');
+    setupSpanHighlight('spacy-header-checkbox', 'show-pos-highlight', 'spacy-item');
 });
