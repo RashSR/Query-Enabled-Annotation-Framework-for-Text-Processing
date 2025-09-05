@@ -6,5 +6,48 @@
     <div id="annotated-text" style="width:100%; font-size:1rem; padding:0.5rem; background:#f8f9fa; border:1px solid #ccc; border-radius:4px; min-height:6em;">
         {{ message.annotated_text | safe }}
     </div>
+
+    <div style="margin-top:1.5rem;">
+        <div id="annotation-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#e9ecef; padding:0.5em 0.8em; border-radius:4px; user-select:none;">
+            Annotationen ▼
+        </div>
+        <div id="annotation-list" style="margin-top:0.5rem;">
+        {% if message.annotations and message.annotations|length > 0 %}
+            <ul style="padding-left:1.2em;">
+            {% for ann in message.annotations %}
+                <li style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em;">
+                    <strong>Position:</strong> {{ ann.start_pos }} - {{ ann.end_pos }}<br>
+                    <strong>Annotation:</strong> {{ ann.annotation }}<br>
+                    {% if ann.reason %}<strong>Grund:</strong> {{ ann.reason }}<br>{% endif %}
+                    {% if ann.comment %}<strong>Kommentar:</strong> {{ ann.comment }}{% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color:#888;">Keine Annotationen vorhanden.</p>
+        {% endif %}
+    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var header = document.getElementById('annotation-header');
+    var list = document.getElementById('annotation-list');
+    var expanded = true;
+    if (header && list) {
+        header.addEventListener('click', function() {
+            expanded = !expanded;
+            if (expanded) {
+                list.style.display = '';
+                header.textContent = 'Annotationen ▼';
+            } else {
+                list.style.display = 'none';
+                header.textContent = 'Annotationen ▶';
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
