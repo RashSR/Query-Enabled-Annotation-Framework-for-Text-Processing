@@ -13,7 +13,7 @@
         </div>
         <div id="annotation-list" style="margin-top:0.5rem; display:none;">
         {% if message.annotations and message.annotations|length > 0 %}
-            <ul style="padding-left:1.2em;">
+            <ul style="padding-left:1.2em; max-height:8.5em; overflow-y:auto;">
             {% for ann in message.annotations %}
                 <li style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em;" data-annotation-id="{{ ann.id }}">
                     <div style="flex:1;">
@@ -38,7 +38,7 @@
         </div>
         <div id="error-list" style="margin-top:0.5rem; display:none;">
         {% if message.error_list and message.error_list|length > 0 %}
-            <ul style="padding-left:1.2em;">
+            <ul style="padding-left:1.2em; max-height:8.5em; overflow-y:auto;">
             {% for err in message.error_list %}
                 <li style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; color:#b30000;">
                     {{ err }}
@@ -55,7 +55,7 @@
         </div>
         <div id="spacy-list" style="margin-top:0.5rem; display:none;">
         {% if message.spacy_matches and message.spacy_matches|length > 0 %}
-            <ul style="padding-left:1.2em;">
+            <ul style="padding-left:1.2em; max-height:8.5em; overflow-y:auto;">
             {% for match in message.spacy_matches %}
                 <li style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b;">
                     {{ match }}
