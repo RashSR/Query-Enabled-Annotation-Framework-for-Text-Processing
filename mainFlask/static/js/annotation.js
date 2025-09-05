@@ -101,30 +101,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Selectable list items logic with checkbox
+    // Selectable list items logic with checkbox (allow deselect)
     document.querySelectorAll('.selectable').forEach(function(item) {
         var checkbox = item.querySelector('.select-checkbox');
         item.addEventListener('click', function(e) {
-            // Prevent selection if clicking a button inside the item
             if (e.target.tagName === 'BUTTON') return;
-            document.querySelectorAll('.selectable.selected').forEach(function(sel) {
-                sel.classList.remove('selected');
-                var cb = sel.querySelector('.select-checkbox');
-                if (cb) cb.checked = false;
-            });
-            item.classList.add('selected');
-            if (checkbox) checkbox.checked = true;
-        });
-        if (checkbox) {
-            checkbox.addEventListener('click', function(e) {
-                e.stopPropagation();
+            var isSelected = item.classList.contains('selected');
+            if (isSelected) {
+                item.classList.remove('selected');
+                if (checkbox) checkbox.checked = false;
+            } else {
                 document.querySelectorAll('.selectable.selected').forEach(function(sel) {
                     sel.classList.remove('selected');
                     var cb = sel.querySelector('.select-checkbox');
                     if (cb) cb.checked = false;
                 });
                 item.classList.add('selected');
-                checkbox.checked = true;
+                if (checkbox) checkbox.checked = true;
+            }
+        });
+        if (checkbox) {
+            checkbox.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var isSelected = item.classList.contains('selected');
+                if (isSelected) {
+                    item.classList.remove('selected');
+                    checkbox.checked = false;
+                } else {
+                    document.querySelectorAll('.selectable.selected').forEach(function(sel) {
+                        sel.classList.remove('selected');
+                        var cb = sel.querySelector('.select-checkbox');
+                        if (cb) cb.checked = false;
+                    });
+                    item.classList.add('selected');
+                    checkbox.checked = true;
+                }
             });
         }
     });
