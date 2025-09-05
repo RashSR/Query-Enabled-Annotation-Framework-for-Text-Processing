@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var startPos = li.querySelector('.annotation-start') ? li.querySelector('.annotation-start').textContent.trim() : '';
             var endPos = li.querySelector('.annotation-end') ? li.querySelector('.annotation-end').textContent.trim() : '';
             btn.disabled = true;
-            fetch('/save_annotation_comment', {
+            fetch('/update_annotation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'annotation_id=' + encodeURIComponent(annotationId) +
