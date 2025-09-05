@@ -430,3 +430,47 @@ ul[style*="resize:vertical"] {
     min-height: 3em;
     max-height: 30em;
 }
+
+span[part-of-speech] {
+    position: relative;
+    cursor: pointer;
+    color: #00796b; /* highlight color */
+    font-weight: bold;
+}
+
+/* Tooltip for part-of-speech */
+span[part-of-speech]::after {
+    content: attr(part-of-speech); /* show the POS tag */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00796b;  /* same highlight color as background */
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: normal;
+    max-width: 200px;
+    overflow-wrap: break-word;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Show tooltip on hover */
+span[part-of-speech]:hover::after {
+    opacity: 1;
+}
+
+/* Position tweaks */
+span[part-of-speech][data-tooltip-position="bottom"]::after {
+    top: 100%;
+    margin-top: 10px;
+}
+
+span[part-of-speech][data-tooltip-position="top"]::after {
+    bottom: 100%;
+    margin-bottom: 10px;
+}
