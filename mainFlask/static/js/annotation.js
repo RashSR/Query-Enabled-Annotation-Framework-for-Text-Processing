@@ -6,8 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
         var expanded = false;
         if (header && list && arrowSpan) {
             header.addEventListener('click', function(e) {
-                // Only toggle if the click is NOT on the Hinzufügen button
-                if (e.target.classList.contains('add-annotation-btn') || e.target.classList.contains('add-error-btn') || e.target.classList.contains('add-spacy-btn')) {
+                // Prevent toggle if clicking the Hinzufügen button or header checkbox
+                if (e.target.classList.contains('add-annotation-btn') ||
+                    e.target.classList.contains('add-error-btn') ||
+                    e.target.classList.contains('add-spacy-btn') ||
+                    e.target.classList.contains('header-checkbox')) {
                     return;
                 }
                 expanded = !expanded;
