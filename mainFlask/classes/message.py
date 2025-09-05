@@ -11,7 +11,7 @@ import re
 # Für aufeinanderfolgende Suche praktisch -> iteriere über alle und falls zwei hintereinander richtig sind -> hinzufügen
 
 class Message:
-    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, annotated_text = None, chat = None):
+    def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, chat = None):
         self.chat_id = chat_id
         self._message_id = message_id
         self.sender = sender
@@ -23,7 +23,6 @@ class Message:
         self._ltmatch_ids = []
         self._spacy_match_ids = []
         self._spacy_matches: list[SpacyMatch] = []
-        self._annotated_text = annotated_text
         self._chat = chat
         self._search_results = []
         self._message_tokens: list[MessageToken] = []
@@ -168,14 +167,8 @@ class Message:
         while open_lt_matches:
             open_lt_matches.pop()
             output += "</span>"
-
-        self._annotated_text = output
-        return self._annotated_text
-
-    
-    @annotated_text.setter
-    def annotated_text(self, value):
-        self._annotated_text = value
+        
+        return output
 
     @property
     def ltmatch_ids(self):

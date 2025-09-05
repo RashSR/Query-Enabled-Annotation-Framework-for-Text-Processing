@@ -476,13 +476,12 @@ def _convert_db_row_to_message(row, tableHasLTMIds: bool = True, tableHasSpacyId
     timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
     content = row[4]
     #quoted_msg is in row[5]
-    annotated_text = row[6]
-    loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content, annotated_text=annotated_text)
+    loaded_message = Message(chat_id=chat_id, message_id=message_id, sender=sender, timestamp=timestamp, content=content)
     if tableHasLTMIds:
-        ltm_ids = [ltm_id.strip() for ltm_id in row[7].split(',')] if row[7] else []
+        ltm_ids = [ltm_id.strip() for ltm_id in row[6].split(',')] if row[6] else []
         loaded_message.ltmatch_ids = ltm_ids
     if tableHasSpacyIds:
-        spacy_ids = [spacy_id.strip() for spacy_id in row[8].split(',')] if row[8] else []
+        spacy_ids = [spacy_id.strip() for spacy_id in row[7].split(',')] if row[7] else []
         loaded_message.spacy_match_ids = spacy_ids
     return loaded_message
 
