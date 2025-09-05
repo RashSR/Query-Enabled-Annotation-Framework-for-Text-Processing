@@ -25,7 +25,7 @@ class MessageToken:
         return self._text
 
     @property
-    def lt_matches(self) -> LTMatch:
+    def lt_matches(self) -> list[LTMatch]:
         return self._lt_matches
 
     @property

@@ -14,7 +14,7 @@ def annotation_view_message(message_id: int):
     #Use_msg ID = 2
     message: Message = CacheStore.Instance().get_message_by_id(message_id)
     print(message)
-    for token in message.message_tokens:
-        print(token)
+    #for token in message.message_tokens:
+        #print(token)
     print(message.annotated_text)
     return render_template('annotation.html', message=message)

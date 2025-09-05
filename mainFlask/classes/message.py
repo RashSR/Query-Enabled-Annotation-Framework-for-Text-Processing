@@ -144,7 +144,7 @@ class Message:
             # Open LT matches starting at this token
             for lt in token.lt_matches:
                 if lt not in open_lt_matches:
-                    output += f"<span class='lt_match'>"
+                    output += f"<span data-error='{lt.category}'>"
                     open_lt_matches.append(lt)
 
             # Open annotations starting at this token
