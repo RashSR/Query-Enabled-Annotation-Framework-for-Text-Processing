@@ -175,4 +175,26 @@ document.addEventListener('DOMContentLoaded', function() {
     setupHeaderCheckbox('annotation-header-checkbox', 'annotation-item');
     setupHeaderCheckbox('error-header-checkbox', 'error-item');
     setupHeaderCheckbox('spacy-header-checkbox', 'spacy-item');
+
+    // Toggle highlight CSS for spans based on header checkbox
+    function setupSpanHighlight(headerClass, bodyClass) {
+        var headerCheckbox = document.querySelector('.' + headerClass);
+        if (!headerCheckbox) return;
+        headerCheckbox.addEventListener('change', function() {
+            if (headerCheckbox.checked) {
+                document.body.classList.add(bodyClass);
+            } else {
+                document.body.classList.remove(bodyClass);
+            }
+        });
+        // Initial state
+        if (headerCheckbox.checked) {
+            document.body.classList.add(bodyClass);
+        } else {
+            document.body.classList.remove(bodyClass);
+        }
+    }
+    setupSpanHighlight('annotation-header-checkbox', 'show-annotation-highlight');
+    setupSpanHighlight('error-header-checkbox', 'show-error-highlight');
+    setupSpanHighlight('spacy-header-checkbox', 'show-pos-highlight');
 });

@@ -475,14 +475,12 @@ span[part-of-speech][data-tooltip-position="top"]::after {
     margin-bottom: 10px;
 }
 
-/* Annotation wrapper */
+/* Annotation wrapper (text highlight only) */
 span[annotation] {
     position: relative;
     cursor: pointer;
-    background-color: #f1f1f1; /* highlight background */
-    color: black;             /* readable text on light bg */
-    border-radius: 3px;
-    padding: 0 2px;           /* subtle padding so bg shows around text */
+    color: #f1f1f1;   /* text color instead of background */
+    font-weight: bold;
 }
 
 /* Tooltip for annotation */
@@ -520,4 +518,13 @@ span[annotation][data-tooltip-position="bottom"]::after {
 span[annotation][data-tooltip-position="top"]::after {
     bottom: 100%;
     margin-bottom: 10px;
+}
+
+body:not(.show-annotation-highlight) span[annotation],
+body:not(.show-error-highlight) span[data-error],
+body:not(.show-pos-highlight) span[part-of-speech] {
+    background: none !important;
+    color: inherit !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }
