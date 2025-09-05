@@ -474,3 +474,50 @@ span[part-of-speech][data-tooltip-position="top"]::after {
     bottom: 100%;
     margin-bottom: 10px;
 }
+
+/* Annotation wrapper */
+span[annotation] {
+    position: relative;
+    cursor: pointer;
+    background-color: #f1f1f1; /* highlight background */
+    color: black;             /* readable text on light bg */
+    border-radius: 3px;
+    padding: 0 2px;           /* subtle padding so bg shows around text */
+}
+
+/* Tooltip for annotation */
+span[annotation]::after {
+    content: attr(annotation); /* show the annotation text */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;   /* tooltip bubble background */
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: normal;
+    max-width: 200px;
+    overflow-wrap: break-word;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Show tooltip on hover */
+span[annotation]:hover::after {
+    opacity: 1;
+}
+
+/* Optional positioning */
+span[annotation][data-tooltip-position="bottom"]::after {
+    top: 100%;
+    margin-top: 10px;
+}
+
+span[annotation][data-tooltip-position="top"]::after {
+    bottom: 100%;
+    margin-bottom: 10px;
+}

@@ -150,7 +150,7 @@ class Message:
             # Open annotations starting at this token
             for ann in token.annotations:
                 if ann not in open_annotations:
-                    output += f"<span class='annotation'>"
+                    output += f"<span annotation='{ann.reason}'>"
                     open_annotations.append(ann)
 
             # Always wrap the token with its spacy_match
