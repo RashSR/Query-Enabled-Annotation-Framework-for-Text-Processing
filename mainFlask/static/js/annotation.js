@@ -129,4 +129,47 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    // Header checkbox logic for bulk select/deselect
+    function setupHeaderCheckbox(headerClass, itemClass) {
+        var headerCheckbox = document.querySelector('.' + headerClass);
+        var items = document.querySelectorAll('.' + itemClass);
+        if (headerCheckbox) {
+            headerCheckbox.addEventListener('change', function() {
+                var checked = headerCheckbox.checked;
+                items.forEach(function(item) {
+                    var cb = item.querySelector('.select-checkbox');
+                    if (checked) {
+                        item.classList.add('selected');
+                        if (cb) cb.checked = true;
+                    } else {
+                        item.classList.remove('selected');
+                        if (cb) cb.checked = false;
+                    }
+                });
+            });
+        }
+        // Sync header checkbox if all/none selected
+        function syncHeaderCheckbox() {
+            var selectedCount = 0;
+            items.forEach(function(item) {
+                if (item.classList.contains('selected')) selectedCount++;
+            });
+            if (selectedCount === items.length && items.length > 0) {
+                headerCheckbox.checked = true;
+            } else {
+                headerCheckbox.checked = false;
+            }
+        }
+        items.forEach(function(item) {
+            var cb = item.querySelector('.select-checkbox');
+            if (cb) {
+                cb.addEventListener('change', syncHeaderCheckbox);
+            }
+            item.addEventListener('click', syncHeaderCheckbox);
+        });
+    }
+    setupHeaderCheckbox('annotation-header-checkbox', 'annotation-item');
+    setupHeaderCheckbox('error-header-checkbox', 'error-item');
+    setupHeaderCheckbox('spacy-header-checkbox', 'spacy-item');
 });
