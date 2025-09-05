@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Selectable list items logic with checkbox (allow deselect)
+    // Selectable list items logic with checkbox (multi-select)
     document.querySelectorAll('.selectable').forEach(function(item) {
         var checkbox = item.querySelector('.select-checkbox');
         item.addEventListener('click', function(e) {
@@ -111,11 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.classList.remove('selected');
                 if (checkbox) checkbox.checked = false;
             } else {
-                document.querySelectorAll('.selectable.selected').forEach(function(sel) {
-                    sel.classList.remove('selected');
-                    var cb = sel.querySelector('.select-checkbox');
-                    if (cb) cb.checked = false;
-                });
                 item.classList.add('selected');
                 if (checkbox) checkbox.checked = true;
             }
@@ -128,11 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.remove('selected');
                     checkbox.checked = false;
                 } else {
-                    document.querySelectorAll('.selectable.selected').forEach(function(sel) {
-                        sel.classList.remove('selected');
-                        var cb = sel.querySelector('.select-checkbox');
-                        if (cb) cb.checked = false;
-                    });
                     item.classList.add('selected');
                     checkbox.checked = true;
                 }
