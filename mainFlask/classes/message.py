@@ -97,7 +97,10 @@ class Message:
     @property
     def annotations(self) -> list[Annotation]:
         if len(self._annotations)==0: #TODO only load errorlist once
-            self._annotations = CacheStore.Instance().get_all_annotations_by_msg_id(self._message_id)
+            self._annotations = sorted(
+                CacheStore.Instance().get_all_annotations_by_msg_id(self._message_id),
+                key=lambda ann: (ann.start_pos, ann.end_pos)
+            )
         return self._annotations
     
     @annotations.setter
