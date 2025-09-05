@@ -23,7 +23,7 @@
                         <strong>Kommentar:</strong>
                         <input type="text" name="comment_{{ loop.index0 }}" value="{{ ann.comment }}" style="padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em; width:auto; min-width:2em;" oninput="this.style.width = ((this.value.length + 1) * 0.7) + 'em';" />
                     </div>
-                    <button type="button" class="save-annotation-btn" style="padding:0.2em 0.7em; background:#28a745; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Speichern</button>
+                    <button type="button" class="save-annotation-btn" style="padding:0.2em 0.7em; background:#0074D9; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Speichern</button>
                     <button type="button" class="delete-annotation-btn" style="padding:0.2em 0.7em; background:#dc3545; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Löschen</button>
                 </li>
             {% endfor %}
@@ -123,10 +123,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     btn.textContent = 'Gespeichert!';
+                    btn.style.background = '#28a745';
                 } else {
                     btn.textContent = 'Fehler!';
+                    btn.style.background = '#dc3545';
                 }
-                setTimeout(function() { btn.textContent = 'Speichern'; btn.disabled = false; }, 1200);
+                setTimeout(function() {
+                    btn.textContent = 'Speichern';
+                    btn.style.background = '#0074D9';
+                    btn.disabled = false;
+                }, 1200);
             })
             .catch(() => {
                 btn.textContent = 'Fehler!';
