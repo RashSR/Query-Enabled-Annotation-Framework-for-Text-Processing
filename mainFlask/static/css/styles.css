@@ -419,3 +419,14 @@ input.hidden-toggle {
   pointer-events: none; /* allow click-through to input */
 }
 
+ul[style*="resize:vertical"]::-webkit-scrollbar {
+    width: 16px;
+}
+ul[style*="resize:vertical"]::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 8px;
+}
+ul[style*="resize:vertical"] {
+    min-height: 3em;
+    max-height: 30em;
+}

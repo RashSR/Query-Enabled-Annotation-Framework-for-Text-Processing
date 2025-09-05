@@ -103,19 +103,3 @@
     <script src="{{ url_for('static', filename='js/annotation.js') }}"></script>
 {% endblock %}
 
-{% block styles %}
-<style>
-ul[style*="resize:vertical"]::-webkit-scrollbar {
-    width: 16px;
-}
-ul[style*="resize:vertical"]::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 8px;
-}
-ul[style*="resize:vertical"] {
-    min-height: 3em;
-    max-height: 30em;
-}
-</style>
-{% endblock %}
-
