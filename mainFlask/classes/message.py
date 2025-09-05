@@ -157,7 +157,7 @@ class Message:
             if token.spacy_match is None:
                 token_html = f"<span class='EMPTY'>{token.text}</span>"
             else:
-                token_html = f"<span class='spacy_match'>{token.spacy_match.text}</span>"
+                token_html = f"<span part-of-speech='{token.spacy_match.pos}'>{token.spacy_match.text}</span>"
 
             output += token_html
 
