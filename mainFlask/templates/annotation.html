@@ -26,28 +26,67 @@
         {% else %}
             <p style="color:#888;">Keine Annotationen vorhanden.</p>
         {% endif %}
+        </div>
+
+        <div id="error-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#ffecec; padding:0.5em 0.8em; border-radius:4px; user-select:none; margin-top:1.2em;">
+            Fehlerliste ▼
+        </div>
+        <div id="error-list" style="margin-top:0.5rem;">
+        {% if message.error_list and message.error_list|length > 0 %}
+            <ul style="padding-left:1.2em;">
+            {% for err in message.error_list %}
+                <li style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; color:#b30000;">
+                    {{ err }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color:#888;">Keine Fehler vorhanden.</p>
+        {% endif %}
+        </div>
+
+        <div id="spacy-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#e0f7fa; padding:0.5em 0.8em; border-radius:4px; user-select:none; margin-top:1.2em;">
+            Spacy Matches ▼
+        </div>
+        <div id="spacy-list" style="margin-top:0.5rem;">
+        {% if message.spacy_matches and message.spacy_matches|length > 0 %}
+            <ul style="padding-left:1.2em;">
+            {% for match in message.spacy_matches %}
+                <li style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b;">
+                    {{ match }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color:#888;">Keine Spacy Matches vorhanden.</p>
+        {% endif %}
+        </div>
     </div>
-</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var header = document.getElementById('annotation-header');
-    var list = document.getElementById('annotation-list');
-    var expanded = true;
-    if (header && list) {
-        header.addEventListener('click', function() {
-            expanded = !expanded;
-            if (expanded) {
-                list.style.display = '';
-                header.textContent = 'Annotationen ▼';
-            } else {
-                list.style.display = 'none';
-                header.textContent = 'Annotationen ▶';
-            }
-        });
+    function setupCollapsible(headerId, listId, label) {
+        var header = document.getElementById(headerId);
+        var list = document.getElementById(listId);
+        var expanded = true;
+        if (header && list) {
+            header.addEventListener('click', function() {
+                expanded = !expanded;
+                if (expanded) {
+                    list.style.display = '';
+                    header.textContent = label + ' ▼';
+                } else {
+                    list.style.display = 'none';
+                    header.textContent = label + ' ▶';
+                }
+            });
+        }
     }
+    setupCollapsible('annotation-header', 'annotation-list', 'Annotationen');
+    setupCollapsible('error-header', 'error-list', 'Fehlerliste');
+    setupCollapsible('spacy-header', 'spacy-list', 'Spacy Matches');
 });
 </script>
 {% endblock %}
