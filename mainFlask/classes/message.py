@@ -126,7 +126,7 @@ class Message:
         open_lt_matches = []
         open_annotations = []   
 
-        for token in self.message_tokens:
+        for i, token in enumerate(self.message_tokens):
             token_start = token.start_pos
 
             # Close LT matches that ended before this token
@@ -155,20 +155,25 @@ class Message:
 
             # Always wrap the token with its spacy_match
             if token.spacy_match is None:
-                output += f"<span class='EMPTY'>{token.text}</span>"
+                token_html = f"<span class='EMPTY'>{token.text}</span>"
             else:
-                output += f"<span class='spacy_match'>{token.spacy_match.text}</span>"
+                token_html = f"<span class='spacy_match'>{token.spacy_match.text}</span>"
+
+            output += token_html
+
+            if i < len(self.message_tokens) - 1:
+                output += " "
 
         # Close any remaining open spans in reverse order to maintain proper nesting
         while open_annotations:
             open_annotations.pop()
             output += "</span>"
-
         while open_lt_matches:
             open_lt_matches.pop()
             output += "</span>"
         
         return output
+
 
     @property
     def ltmatch_ids(self):
