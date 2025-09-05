@@ -9,7 +9,7 @@
 
     <div style="margin-top:1.5rem;">
         <div id="annotation-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#e9ecef; padding:0.5em 0.8em; border-radius:4px; user-select:none;">
-            Annotationen ({{ message.annotations|length if message.annotations else 0 }}) ▶
+            Manuelle Annotationen ({{ message.annotations|length if message.annotations else 0 }}) ▶
         </div>
         <div id="annotation-list" style="margin-top:0.5rem; display:none;">
         {% if message.annotations and message.annotations|length > 0 %}
@@ -29,7 +29,7 @@
             {% endfor %}
             </ul>
         {% else %}
-            <p style="color:#888;">Keine Annotationen vorhanden.</p>
+            <p style="color:#888;">Keine manuellen Annotationen vorhanden.</p>
         {% endif %}
         </div>
 
@@ -51,7 +51,7 @@
         </div>
 
         <div id="spacy-header" style="font-weight:bold; font-size:1.1rem; cursor:pointer; background:#e0f7fa; padding:0.5em 0.8em; border-radius:4px; user-select:none; margin-top:1.2em;">
-            Spacy Matches ({{ message.spacy_matches|length if message.spacy_matches else 0 }}) ▶
+            Linguistische Attribute ({{ message.spacy_matches|length if message.spacy_matches else 0 }}) ▶
         </div>
         <div id="spacy-list" style="margin-top:0.5rem; display:none;">
         {% if message.spacy_matches and message.spacy_matches|length > 0 %}
@@ -63,7 +63,7 @@
             {% endfor %}
             </ul>
         {% else %}
-            <p style="color:#888;">Keine Spacy Matches vorhanden.</p>
+            <p style="color:#888;">Keine linguistischen Attribute vorhanden.</p>
         {% endif %}
         </div>
     </div>
