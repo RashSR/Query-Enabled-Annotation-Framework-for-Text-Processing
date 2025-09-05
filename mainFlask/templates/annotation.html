@@ -2,6 +2,9 @@
 
 {% block content %}
 <div style="padding: 2rem; font-size: 1.2rem;">
-    Annotationen folgen bald...
+    <label for="annotated-text" style="font-weight:bold;">Annotierter Text:</label>
+    <div id="annotated-text" style="width:100%; font-size:1rem; padding:0.5rem; background:#f8f9fa; border:1px solid #ccc; border-radius:4px; min-height:6em;">
+        {{ message.annotated_text | safe }}
+    </div>
 </div>
 {% endblock %}
