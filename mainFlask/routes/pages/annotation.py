@@ -60,4 +60,4 @@ def save_annotation():
     created_annotation = CacheStore.Instance().create_annotation(annotation_to_create)
     IsCreationSucessfully = created_annotation is not None
 
-    return jsonify({'status': 'success', 'position': position, 'annotation': annotation, 'grund': grund, 'kommentar': kommentar})
+    return jsonify({'success': bool(IsCreationSucessfully)})

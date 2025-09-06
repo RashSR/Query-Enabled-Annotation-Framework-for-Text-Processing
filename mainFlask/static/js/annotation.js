@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Open 'Manuelle Annotationen' list if flag is set
+    if (localStorage.getItem('openAnnotationListAfterReload')) {
+        var annotationList = document.getElementById('annotation-list');
+        var annotationHeader = document.getElementById('annotation-header');
+        if (annotationList && annotationHeader) {
+            annotationList.style.display = 'block';
+            // Optionally update header arrow or state here
+        }
+        localStorage.removeItem('openAnnotationListAfterReload');
+    }
+
     function setupCollapsible(headerId, listId, label) {
         var header = document.getElementById(headerId);
         var list = document.getElementById(listId);
@@ -245,28 +256,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     manualForm.onsubmit = function(e) {
                         e.preventDefault();
                         var formData = new FormData(manualForm);
-                        // Get message_id from a global JS variable or data attribute
                         var messageId = window.message_id || document.getElementById('annotated-text').getAttribute('data-message-id');
                         if (messageId) {
                             formData.append('message_id', messageId);
                         }
+                        var saveBtn = manualForm.querySelector('button[type="submit"]');
                         fetch('/save_annotation', {
                             method: 'POST',
                             body: formData
                         })
                         .then(response => response.json())
                         .then(data => {
-                            if (data.status === 'success') {
-                                alert('Annotation gespeichert!');
-                                formContainer.style.display = 'none';
-                                formContainer.innerHTML = '';
-                                // Optionally refresh annotation list here
+                            if (data.success) {
+                                saveBtn.style.background = '#28a745'; // green
+                                saveBtn.textContent = 'Gespeichert!';
+                                localStorage.setItem('openAnnotationListAfterReload', '1');
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 700);
                             } else {
-                                alert('Fehler beim Speichern!');
+                                saveBtn.style.background = '#dc3545'; // red
+                                saveBtn.textContent = 'Fehler!';
                             }
                         })
                         .catch(() => {
-                            alert('Fehler beim Speichern!');
+                            saveBtn.style.background = '#dc3545'; // red
+                            saveBtn.textContent = 'Fehler!';
                         });
                     };
                 }
