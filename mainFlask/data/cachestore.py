@@ -250,6 +250,8 @@ class CacheStore:
         rule_ids = get_all_distinct_rule_ids_from_ltms(self._db, self._app)
         return rule_ids
     
+    # endregion
+
     #region Spacy Match
 
     _spacy_matches = None
@@ -267,8 +269,6 @@ class CacheStore:
 
         spacy_matches: list[SpacyMatch] = get_all_spacy_matches_by_msg_id(self._db, self._app, msg_id)
         return spacy_matches
-
-    # endregion 
 
     # endregion
     
@@ -307,6 +307,61 @@ class CacheStore:
     # endregion
 
     #region CREATE 
+
+    #region Author
+
+    def create_author(self, author):
+        if author is None:
+            return None
+        
+        from .db_handling import create_author
+
+        generated_id = create_author(self._db, self._app, author)
+        author.id = generated_id
+
+        if self._authors is None:
+            self._authors = {}
+
+        self._authors[generated_id] = author
+        return author
+    
+    # endregion
+
+    #region Chat
+    def create_chat(self, chat):
+        if chat is None:
+            return None
+        
+        from .db_handling import create_chat
+
+        generated_id = create_chat(self._db, self._app, chat)
+        chat.chat_id = generated_id
+
+        if self._chats is None:
+            self._chats = {}
+
+        self._chats[generated_id] = chat
+        return chat
+    
+    # endregion
+
+    #region Message
+    def create_message(self, message):
+        if message is None:
+            return None
+        
+        from .db_handling import create_message
+
+        generated_id = create_message(self._db, self._app, message)
+        message.message_id = generated_id
+
+        if self._messages is None:
+            self._messages = {}
+
+        self._messages[generated_id] = message
+        return message
+    
+    # endregion
 
     #region LTM
 
@@ -368,7 +423,6 @@ class CacheStore:
     #region UPDATE
 
     #region Author
-
     def update_author(self, author, column_name: str, value):
         from .db_handling import update_author
         if update_author(self._db, self._app, author.id, column_name, value):
@@ -380,6 +434,52 @@ class CacheStore:
 
     # endregion
 
+    #region Chat
+    def update_chat(self, chat, column_name: str, value):
+        from .db_handling import update_chat
+        if update_chat(self._db, self._app, chat.chat_id, column_name, value):
+            setattr(chat, column_name, value)
+            self._chats[chat.chat_id] = chat
+            return self._chats[chat.chat_id]
+        
+        return None
+    
+    # endregion
+
+    #region Message
+    def update_message(self, message, column_name: str, value):
+        from .db_handling import update_message
+        if update_message(self._db, self._app, message.message_id, column_name, value):
+            setattr(message, column_name, value)
+            self._messages[message.message_id] = message
+            return self._messages[message.message_id]
+        
+        return None
+    
+    # endregion
+
+    # region LTM
+    def update_lt_match(self, lt_match: LTMatch):
+        from .db_handling import update_lt_match
+        if update_lt_match(self._db, self._app, lt_match):
+            self._ltms[lt_match.id] = lt_match
+            return self._ltms[lt_match.id]
+        
+        return None
+    
+    # endregion
+    
+    # region SpacyMatch
+    def update_spacy_match(self, spacy_match: SpacyMatch):
+        from .db_handling import update_spacy_match
+        if update_spacy_match(self._db, self._app, spacy_match):
+            self._spacy_matches[spacy_match.id] = spacy_match
+            return self._spacy_matches[spacy_match.id]
+        
+        return None
+    
+    # endregion
+    
     #region Annotation
 
     def update_annotation(self, annotation: Annotation):
@@ -406,6 +506,52 @@ class CacheStore:
                 del self._authors[id]
             return True
         return False
+    # endregion
+
+    #region Chat
+
+    def delete_chat_by_id(self, id: int) -> bool:
+        from .db_handling import delete_chat_by_id
+        if delete_chat_by_id(self._db, self._app, id):
+            if self._chats is not None and id in self._chats:
+                del self._chats[id]
+            return True
+        return False
+    
+    # endregion
+
+    #region Message
+
+    def delete_message_by_id(self, id: int) -> bool:
+        from .db_handling import delete_message_by_id
+        if delete_message_by_id(self._db, self._app, id):
+            if self._messages is not None and id in self._messages:
+                del self._messages[id]
+            return True
+        return False
+    
+    # endregion
+    
+    # region LTM
+    def delete_lt_match_by_id(self, id: int) -> bool:
+        from .db_handling import delete_lt_match_by_id
+        if delete_lt_match_by_id(self._db, self._app, id):
+            if self._ltms is not None and id in self._ltms:
+                del self._ltms[id]
+            return True
+        return False
+    
+    # endregion
+
+    # region SpacyMatch
+    def delete_spacy_match_by_id(self, id: int) -> bool:
+        from .db_handling import delete_spacy_match_by_id
+        if delete_spacy_match_by_id(self._db, self._app, id):
+            if self._spacy_matches is not None and id in self._spacy_matches:
+                del self._spacy_matches[id]
+            return True
+        return False
+    
     # endregion
 
     #region Annotation
