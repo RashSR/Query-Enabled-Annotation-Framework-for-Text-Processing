@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          window.location.reload();
+          window.location.href = '/profile';
         } else {
           alert('Fehler beim Löschen!');
         }
