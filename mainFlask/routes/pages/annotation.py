@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify
 from mainFlask.data.cachestore import CacheStore
 from mainFlask.classes.message import Message
+from mainFlask.classes.annotation import Annotation
 
 annotation_bp = Blueprint('annotation', __name__)
 
@@ -45,3 +46,18 @@ def delete_annotation_route():
     annotation_id = request.form.get('annotation_id', type=int)
     success = delete_annotation(annotation_id)
     return jsonify({'success': bool(success)})
+
+@annotation_bp.route('/save_annotation', methods=['POST'])
+def save_annotation():
+    position = request.form.get('position')
+    annotation = request.form.get('annotation')
+    grund = request.form.get('grund')
+    kommentar = request.form.get('kommentar')
+    message_id = request.form.get('message_id')
+    start_pos, end_pos = map(int, position.split("-"))
+
+    annotation_to_create = Annotation(None, message_id, start_pos, end_pos, annotation, grund, kommentar)
+    created_annotation = CacheStore.Instance().create_annotation(annotation_to_create)
+    IsCreationSucessfully = created_annotation is not None
+
+    return jsonify({'status': 'success', 'position': position, 'annotation': annotation, 'grund': grund, 'kommentar': kommentar})

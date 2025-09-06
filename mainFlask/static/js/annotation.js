@@ -239,6 +239,37 @@ document.addEventListener('DOMContentLoaded', function() {
                     formContainer.style.display = 'none';
                     formContainer.innerHTML = '';
                 };
+                // Attach submit handler
+                var manualForm = document.getElementById('manual-annotation-form');
+                if (manualForm) {
+                    manualForm.onsubmit = function(e) {
+                        e.preventDefault();
+                        var formData = new FormData(manualForm);
+                        // Get message_id from a global JS variable or data attribute
+                        var messageId = window.message_id || document.getElementById('annotated-text').getAttribute('data-message-id');
+                        if (messageId) {
+                            formData.append('message_id', messageId);
+                        }
+                        fetch('/save_annotation', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Annotation gespeichert!');
+                                formContainer.style.display = 'none';
+                                formContainer.innerHTML = '';
+                                // Optionally refresh annotation list here
+                            } else {
+                                alert('Fehler beim Speichern!');
+                            }
+                        })
+                        .catch(() => {
+                            alert('Fehler beim Speichern!');
+                        });
+                    };
+                }
             }
         });
     }

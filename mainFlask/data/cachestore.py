@@ -346,7 +346,7 @@ class CacheStore:
     # endregion
 
     #region Annoation
-    def create_annotation(self, annotation: Annotation):
+    def create_annotation(self, annotation: Annotation) -> Annotation:
         if annotation is None:
             return None
         

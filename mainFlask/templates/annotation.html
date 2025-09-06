@@ -13,7 +13,7 @@
 {% if message %}
 <div style="padding: 2rem; font-size: 1.2rem;">
     <label for="annotated-text" style="font-weight:bold;">Annotierter Text:</label>
-    <div id="annotated-text" style="width:100%; font-size:1rem; padding:0.5rem; background:#f8f9fa; border:1px solid #ccc; border-radius:4px; min-height:6em;">
+    <div id="annotated-text" data-message-id="{{ message.message_id }}" style="width:100%; font-size:1rem; padding:0.5rem; background:#f8f9fa; border:1px solid #ccc; border-radius:4px; min-height:6em;">
         {{ message.annotated_text | safe }}
     </div>
     <div id="add-annotation-form-container" style="display:none; margin:2em 0 1em 0;"></div>
