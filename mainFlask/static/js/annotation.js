@@ -120,8 +120,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateAnnotationHeaderCount() {
         var headerSpan = document.querySelector('#annotation-header span');
         var annotationItems = document.querySelectorAll('.annotation-item');
+        var annotationList = document.getElementById('annotation-list');
         if (headerSpan) {
             headerSpan.textContent = 'Manuelle Annotationen (' + annotationItems.length + ') ▶';
+        }
+        // Show default message if no items left
+        if (annotationList && annotationItems.length === 0) {
+            annotationList.innerHTML = '<p style="color:#888;">Keine manuellen Annotationen vorhanden.</p>';
         }
     }
 
