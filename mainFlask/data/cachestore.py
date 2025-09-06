@@ -153,7 +153,10 @@ class CacheStore:
             return self._messages[id]
         
         message = get_message_by_id(self._db, self._app, id) #db_handling function
-        self._messages[id] = message
+        
+        if message is not None:
+            self._messages[id] = message
+        
         return message
     
     def get_messages_by_recipient_id(self, recipient_name: str):
