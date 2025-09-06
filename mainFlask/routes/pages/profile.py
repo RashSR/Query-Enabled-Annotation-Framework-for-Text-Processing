@@ -53,7 +53,6 @@ def add_author():
 def delete_author():
     data = request.get_json()
     author_id = data.get('author_id', None)
-    print(author_id)
     if not author_id:
         return jsonify({'success': False})
     deleted = CacheStore.Instance().delete_author_by_id(author_id)
