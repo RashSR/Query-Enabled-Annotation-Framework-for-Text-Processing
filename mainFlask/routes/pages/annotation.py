@@ -21,7 +21,7 @@ def save_annotation():
     annotation = request.form.get('annotation')
     grund = request.form.get('grund')
     kommentar = request.form.get('kommentar')
-    message_id = request.form.get('message_id')
+    message_id = int(request.form.get('message_id'))
     start_pos, end_pos = map(int, position.split("-"))
 
     annotation_to_create = Annotation(None, message_id, start_pos, end_pos, annotation, grund, kommentar)

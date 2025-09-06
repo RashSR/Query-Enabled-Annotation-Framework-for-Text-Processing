@@ -211,8 +211,7 @@ class Message:
     @property
     def message_tokens(self) ->list[MessageToken]:
         #check if dictionary is already created
-        if len(self._message_tokens) == 0:
-            self.message_tokens = self.tokenize_with_positions()
+        self.message_tokens = self.tokenize_with_positions()
         return self._message_tokens
     
     @message_tokens.setter
