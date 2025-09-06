@@ -5,14 +5,15 @@
 </div>
 <ul class="elements-list">
   {% for a in authors %}
-  <li class="{% if a.id == author.id %}active{% endif %}">
-    <a href="{{ url_for('profile.author_profile', author_id=a.id) }}" style="display: flex; align-items: center;">
+  <li class="{% if a.id == author.id %}active{% endif %}" style="display:flex; align-items:center; justify-content:space-between;">
+    <a href="{{ url_for('profile.author_profile', author_id=a.id) }}" style="display: flex; align-items: center; flex:1;">
       <div class="avatar">{{ a.name[0] }}</div>
       <div style="flex: 1;">
         <strong>{{ a.name }}</strong>
         <p>{{ a.job or "Beruf unbekannt" }}</p>
       </div>
     </a>
+    <button type="button" class="delete-author-btn" data-author-id="{{ a.id }}" style="margin-left:1em; padding:0.18rem 0.38rem; background:#dc3545; color:white; border:none; border-radius:3px; font-size:0.95em; cursor:pointer;">✕</button>
   </li>
   {% endfor %}
 </ul>
