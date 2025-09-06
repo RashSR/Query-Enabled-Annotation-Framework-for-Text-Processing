@@ -31,3 +31,4 @@ def save_author_annotation(author_id):
     author.annotation = annotation
     author = CacheStore.Instance().update_author(author, column_name="annotation", value=annotation)
     return jsonify({'success': True})
+

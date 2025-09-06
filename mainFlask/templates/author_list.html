@@ -1,3 +1,8 @@
+<div style="width:100%; display:flex; align-items:center; justify-content:center; background:#075E54; padding:0.7em 1.2em; border-radius:6px; margin-bottom:1.2em; box-shadow:0 2px 8px rgba(0,0,0,0.04); border:1px solid #222; position:relative;">
+    <div style="width:100%; display:flex; justify-content:center;">
+        <button type="button" class="add-author-btn" style="background:#25D366; color: black; border:none; border-radius:4px; padding:0.4em 1.2em; font-size:1em; cursor:pointer; font-weight:bold; box-shadow:0 1px 4px rgba(0,0,0,0.08);">Autor hinzufügen</button>
+    </div>
+</div>
 <ul class="elements-list">
   {% for a in authors %}
   <li class="{% if a.id == author.id %}active{% endif %}">
