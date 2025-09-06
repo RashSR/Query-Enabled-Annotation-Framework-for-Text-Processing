@@ -11,8 +11,8 @@
   <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
     <thead>
       <tr>
-        <th style="width: 4%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">#</th>
-        <th style="width: 26%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
+        <th style="width: 3%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">#</th>
+        <th style="width: 27%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Left Context</th>
         <th style="width: 15%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Hit</th>
         <th style="width: 30%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Right Context</th>
         <th style="width: 12.5%; border: 1px solid #ddd; padding: 8px; background-color: #f4f4f4;">Sender</th>
@@ -23,17 +23,22 @@
       {% for result in results %}
       <tr>
         <td style="border: 1px solid #ddd; padding: 8px; text-align: right; color: #888;">{{ loop.index }}.</td>
-        <td style="border: 1px solid #ddd; padding: 8px;">{{ result.left }}</td>
-        <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: {{ result.selected_color }}; white-space: nowrap;">
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span>{{ result.matched_word }}</span>
-            <a href="{{ url_for('chat.chat_view', chat_id=result.message.chat_id) }}#msg-{{ result.message.message_id }}" 
+        <td style="border: 1px solid #ddd; padding: 8px;">
+          <span>{{ result.left }}</span>
+          <a href="{{ url_for('chat.chat_view', chat_id=result.message.chat_id) }}#msg-{{ result.message.message_id }}" 
               title="Im vollständigen Chat anzeigen" 
               style="text-decoration: none;">
               <img src="{{ url_for('static', filename='icons/arrow_out_square.svg') }}" 
                   alt="Arrow icon" 
                   style="width: 14px; height: 14px;">
             </a>
+            <a href="{{ url_for('annotation.annotation_view_message', message_id=result.message.message_id) }}" title="Nachricht annotieren" style="text-decoration: none;">
+              <img src="{{ url_for('static', filename='icons/annotation.svg') }}" alt="Arrow icon" style="width: 16px; height: 16px;">
+            </a>
+        </td>
+        <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; color: {{ result.selected_color }}; white-space: nowrap;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span>{{ result.matched_word }}</span>
           </div>
         </td>
         <td style="border: 1px solid #ddd; padding: 8px;">{{ result.right }}</td>
