@@ -49,6 +49,6 @@ def add_author():
     languages = data.get('languages', '')
     region = data.get('region', '')
     job = data.get('job', '')
-    create_author(name, age, gender, first_language, languages, region, job)
-    return jsonify({'success': True})
+    success = create_author(name, age, gender, first_language, languages, region, job)
+    return jsonify({'success': success})
 

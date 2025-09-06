@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   document.getElementById('add-author-form').onsubmit = function(e) {
     e.preventDefault();
-    // Collect all modal input values
     var name = document.getElementById('author-name').value;
     var age = document.getElementById('author-age').value;
     var gender = document.getElementById('author-gender').value;
@@ -57,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var languages = document.getElementById('author-languages').value;
     var region = document.getElementById('author-region').value;
     var job = document.getElementById('author-job').value;
-    // Send to Flask backend
     fetch('/add_author', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
