@@ -76,7 +76,10 @@ class Message:
 
     @property
     def error_list(self) -> list[LTMatch]:
-        self._error_list = CacheStore.Instance().get_all_ltms_by_msg_id_and_chat_id(self._message_id, self.chat_id)
+        self._error_list = sorted(
+            CacheStore.Instance().get_all_ltms_by_msg_id_and_chat_id(self._message_id, self.chat_id),
+            key=lambda err: (err.start_pos, err.end_pos)
+        )
         return self._error_list
 
     @error_list.setter
@@ -86,6 +89,10 @@ class Message:
     @property
     def spacy_matches(self) -> list[SpacyMatch]:
         self._spacy_matches = CacheStore.Instance().get_all_spacy_matches_by_msg_id(self._message_id)
+        self._spacy_matches = sorted(
+            CacheStore.Instance().get_all_spacy_matches_by_msg_id(self._message_id),
+            key=lambda sm: (sm.start_pos, sm.end_pos)
+        )
         return self._spacy_matches
     
     @spacy_matches.setter
