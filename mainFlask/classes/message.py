@@ -144,20 +144,20 @@ class Message:
             # Open LT matches starting at this token
             for lt in token.lt_matches:
                 if lt not in open_lt_matches:
-                    output += f"<span data-error='{lt.category}'>"
+                    output += f"<span data-error='{lt.category}' data-id='{lt.id}'>"
                     open_lt_matches.append(lt)
 
             # Open annotations starting at this token
             for ann in token.annotations:
                 if ann not in open_annotations:
-                    output += f"<span annotation='{ann.reason}'>"
+                    output += f"<span annotation='{ann.reason}' data-id='{ann.id}'>"
                     open_annotations.append(ann)
 
             # Always wrap the token with its spacy_match
             if token.spacy_match is None:
                 token_html = f"<span class='EMPTY'>{token.text}</span>"
             else:
-                token_html = f"<span part-of-speech='{token.spacy_match.pos}'>{token.spacy_match.text}</span>"
+                token_html = f"<span part-of-speech='{token.spacy_match.pos}' data-id='{token.spacy_match.id}'>{token.spacy_match.text}</span>"
 
             output += token_html
 
