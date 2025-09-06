@@ -1,6 +1,7 @@
 import pytest
 from mainFlask.classes.annotation import Annotation
 from mainFlask.data.cachestore import CacheStore
+from mainFlask.classes.author import Author
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -63,3 +64,15 @@ def test_get_all_annotations_by_msg_id(establish_db_connection):
     CacheStore.Instance().delete_annotation_by_id(created_annotation2.id)
     CacheStore.Instance().delete_annotation_by_id(created_annotation3.id)
 
+def test_create_author(establish_db_connection):
+
+    #arrange
+    author_to_create = Author(None, "Marten", 43, 'Male', 'Deutsch', [], 'Hessen', 'Verkäufer', '')
+
+    #act
+    created_author = CacheStore.Instance().create_author(author_to_create)
+
+    #assert
+    assert author_to_create is not None
+    assert author_to_create.id > 0
+    assert author_to_create.name == 'Marten'
