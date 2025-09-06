@@ -434,7 +434,7 @@ ul[style*="resize:vertical"] {
 span[part-of-speech] {
     position: relative;
     cursor: pointer;
-    color: #00796b; /* highlight color */
+    color: blue; /* highlight color */
     font-weight: bold;
 }
 
@@ -479,7 +479,7 @@ span[part-of-speech][data-tooltip-position="top"]::after {
 span[annotation] {
     position: relative;
     cursor: pointer;
-    color: #f1f1f1;   /* text color instead of background */
+    color: gray;   /* text color instead of background */
     font-weight: bold;
 }
 
