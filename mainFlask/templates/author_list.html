@@ -84,5 +84,30 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Fehler beim Speichern!');
     });
   };
+
+  // Author delete logic
+  document.querySelectorAll('.delete-author-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var authorId = btn.getAttribute('data-author-id');
+      if (!authorId) return;
+      if (!confirm('Autor wirklich löschen?')) return;
+      fetch('/delete_author', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ author_id: authorId })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.reload();
+        } else {
+          alert('Fehler beim Löschen!');
+        }
+      })
+      .catch(() => {
+        alert('Fehler beim Löschen!');
+      });
+    });
+  });
 });
 </script>

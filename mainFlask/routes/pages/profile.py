@@ -49,3 +49,13 @@ def add_author():
     author_id = created_author.id if success else None
     return jsonify({'success': success, 'author_id': author_id})
 
+@profile_bp.route('/delete_author', methods=['POST'])
+def delete_author():
+    data = request.get_json()
+    author_id = data.get('author_id', None)
+    print(author_id)
+    if not author_id:
+        return jsonify({'success': False})
+    deleted = CacheStore.Instance().delete_author_by_id(author_id)
+    return jsonify({'success': bool(deleted)})
+
