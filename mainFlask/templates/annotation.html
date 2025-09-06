@@ -10,6 +10,7 @@
     }
 </style>
 {% block content %}
+{% if message %}
 <div style="padding: 2rem; font-size: 1.2rem;">
     <label for="annotated-text" style="font-weight:bold;">Annotierter Text:</label>
     <div id="annotated-text" style="width:100%; font-size:1rem; padding:0.5rem; background:#f8f9fa; border:1px solid #ccc; border-radius:4px; min-height:6em;">
@@ -97,6 +98,12 @@
         {% endif %}
         </div>
     </div>
+{% else %}
+<div style="margin-top:2em; padding:1.2em; background:#ffecec; color:#b30000; border-radius:6px; text-align:center; font-size:1.1em;">
+    <i class="fas fa-info-circle" style="margin-right:0.5em;"></i>
+    Es ist keine Nachricht ausgewählt. Bitte wählen Sie eine Nachricht aus, um die Annotationen zu sehen.
+</div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
