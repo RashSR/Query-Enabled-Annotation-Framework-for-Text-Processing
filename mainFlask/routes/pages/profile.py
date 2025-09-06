@@ -33,12 +33,6 @@ def save_author_annotation(author_id):
     author = CacheStore.Instance().update_author(author, column_name="annotation", value=annotation)
     return jsonify({'success': True})
 
-def create_author(name, age, gender, first_language, languages, region, job) -> bool:
-    author_to_create = Author(None, name, age, gender, first_language, languages, region, job)
-    created_author = CacheStore.Instance().create_author(author_to_create)
-    IsCreationSucessfully = created_author is not None
-    return IsCreationSucessfully
-
 @profile_bp.route('/add_author', methods=['POST'])
 def add_author():
     data = request.get_json()
@@ -49,6 +43,9 @@ def add_author():
     languages = data.get('languages', '')
     region = data.get('region', '')
     job = data.get('job', '')
-    success = create_author(name, age, gender, first_language, languages, region, job)
-    return jsonify({'success': success})
+    author_to_create = Author(None, name, age, gender, first_language, languages, region, job)
+    created_author = CacheStore.Instance().create_author(author_to_create)
+    success = created_author is not None
+    author_id = created_author.id if success else None
+    return jsonify({'success': success, 'author_id': author_id})
 

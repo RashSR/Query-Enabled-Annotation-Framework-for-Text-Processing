@@ -71,10 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.json())
     .then(data => {
-      if (data.success) {
+      if (data.success && data.author_id) {
         modal.style.display = 'none';
         this.reset();
-        window.location.reload();
+        window.location.href = '/profile/' + data.author_id;
       } else {
         alert('Fehler beim Speichern!');
       }
