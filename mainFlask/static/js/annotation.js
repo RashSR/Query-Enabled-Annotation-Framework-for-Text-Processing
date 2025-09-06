@@ -242,4 +242,54 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Highlight selection in annotated-text and fill position field in form
+    function setPositionFromSelection() {
+        var annotatedText = document.getElementById('annotated-text');
+        var form = document.getElementById('manual-annotation-form');
+        if (!annotatedText || !form) return;
+        annotatedText.addEventListener('mouseup', function() {
+            var selection = window.getSelection();
+            if (!selection || selection.rangeCount === 0) return;
+            var range = selection.getRangeAt(0);
+            if (!annotatedText.contains(range.commonAncestorContainer)) return;
+            var selectedText = selection.toString();
+            if (!selectedText) return;
+            // Calculate offset relative to visible text only
+            var fullText = annotatedText.textContent;
+            var leadingWhitespaceMatch = fullText.match(/^\s*/);
+            var leadingWhitespaceLength = leadingWhitespaceMatch ? leadingWhitespaceMatch[0].length : 0;
+            var preRange = document.createRange();
+            preRange.selectNodeContents(annotatedText);
+            preRange.setEnd(range.startContainer, range.startOffset);
+            var start = preRange.toString().length - leadingWhitespaceLength;
+            var end = start + selectedText.length;
+            var positionInput = document.getElementById('position');
+            if (positionInput) {
+                positionInput.value = start + '-' + end;
+            }
+            // Debug output
+            var afterText = fullText.substring(end + leadingWhitespaceLength);
+            console.log('Annotated text:', fullText);
+            console.log('Selected text:', selectedText);
+            console.log('Text after selection:', afterText);
+            console.log('Leading whitespace length:', leadingWhitespaceLength);
+            console.log('Start offset:', start);
+            console.log('End offset:', end);
+        });
+    }
+
+    // Attach after form is created
+    function attachFormSelectionListener() {
+        var formContainer = document.getElementById('add-annotation-form-container');
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (document.getElementById('manual-annotation-form')) {
+                    setPositionFromSelection();
+                }
+            });
+        });
+        observer.observe(formContainer, { childList: true });
+    }
+    attachFormSelectionListener();
 });
