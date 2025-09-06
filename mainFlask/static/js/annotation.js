@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     li.remove();
+                    updateAnnotationHeaderCount();
                 } else {
                     btn.textContent = 'Fehler!';
                     setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
@@ -114,6 +115,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // Update annotation header counter
+    function updateAnnotationHeaderCount() {
+        var headerSpan = document.querySelector('#annotation-header span');
+        var annotationItems = document.querySelectorAll('.annotation-item');
+        if (headerSpan) {
+            headerSpan.textContent = 'Manuelle Annotationen (' + annotationItems.length + ') ▶';
+        }
+    }
 
     // Selectable list items logic with checkbox (multi-select)
     document.querySelectorAll('.selectable').forEach(function(item) {
