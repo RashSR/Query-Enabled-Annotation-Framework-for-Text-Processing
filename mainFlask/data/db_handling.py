@@ -447,6 +447,9 @@ def delete_annotation_by_id(db: SQLAlchemy, app: Flask, annotation_id: int) -> b
 #region Conversion
 
 def _convert_db_row_to_author(row) -> Author:
+    if row is None:
+        return None
+    
     author_id = row[0]
     name = row[1]
     age = row[2]
@@ -462,6 +465,9 @@ def _convert_db_row_to_author(row) -> Author:
     return loaded_author
 
 def _convert_db_row_to_chat(row) -> Chat:
+    if row is None:
+        return None
+    
     chat_id = row[0]
     groupname = row[1]
     relation = row[2]
@@ -469,6 +475,9 @@ def _convert_db_row_to_chat(row) -> Chat:
     return loaded_chat
 
 def _convert_db_row_to_message(row, tableHasLTMIds: bool = True, tableHasSpacyIds: bool = True) -> Message:
+    if row is None:
+        return None
+    
     message_id = row[0]
     chat_id = row[1]
     sender_id = row[2]
@@ -486,6 +495,9 @@ def _convert_db_row_to_message(row, tableHasLTMIds: bool = True, tableHasSpacyId
     return loaded_message
 
 def _convert_db_row_to_ltm(row) -> LTMatch:
+    if row is None:
+        return None
+    
     id = row[0]
     message_id = row[1]
     chat_id = row[2]
@@ -500,6 +512,9 @@ def _convert_db_row_to_ltm(row) -> LTMatch:
     return loaded_ltm
 
 def _convert_db_row_to_spacy_match(row) -> SpacyMatch:
+    if row is None:
+        return None
+    
     id = row[0]
     message_id = row[1]
     chat_id = row[2]
@@ -530,6 +545,9 @@ def _convert_db_row_to_spacy_match(row) -> SpacyMatch:
     return loaded_spacy_match
 
 def _convert_db_row_to_annotation(row) -> Annotation:
+    if row is None:
+        return None
+    
     id = row[0]
     message_id = row[1]
     start_pos = row[2]
