@@ -282,6 +282,27 @@ def get_all_annotations_by_msg_id(db: SQLAlchemy, app: Flask, msg_id: int):
 
 # region CREATE
 
+#region Author
+def create_author(db: SQLAlchemy, app: Flask, author: Author):
+    with app.app_context():
+        name = author.name
+        age = author.age
+        gender = author.gender
+        first_language = author.first_language
+        languages = ', '.join(author.languages)  # Store as comma-separated string
+        region = author.region
+        job = author.job
+        annotation = author.annotation
+
+        sql_text = text("INSERT INTO author VALUES (:id, :name, :age, :gender, :first_language, :languages, :region, :job, :annotation)")
+        prepared_values = {'id': None, 'name': name, 'age': age, 'gender:': gender, 'first_language': first_language, 'languages': languages, 'region': region, 'job': job, 'annotation': annotation}
+        result = db.session.execute(sql_text, prepared_values)
+        db.session.commit()
+        new_id = result.lastrowid
+        return new_id
+
+# endregion 
+
 #TODO: Category own DB table? 
 def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
     with app.app_context():
