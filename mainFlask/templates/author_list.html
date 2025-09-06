@@ -16,3 +16,58 @@
   </li>
   {% endfor %}
 </ul>
+<!-- Author Add Modal -->
+<div id="add-author-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); z-index:1000; align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:2em 2em 1.5em 2em; border-radius:10px; box-shadow:0 4px 24px rgba(0,0,0,0.18); min-width:320px; max-width:90vw;">
+    <h2 style="margin-top:0; margin-bottom:1em; font-size:1.2em; color:#075E54;">Autor hinzufügen</h2>
+    <form id="add-author-form">
+      <div style="margin-bottom:0.8em;"><label for="author-name" style="font-weight:bold;">Name:</label><br><input type="text" id="author-name" name="name" required style="width:100%; padding:0.4em; border-radius:4px; border:1px solid #ccc;"></div>
+      <div style="margin-bottom:0.8em;"><label for="author-age" style="font-weight:bold;">Alter:</label><br><input type="number" id="author-age" name="age" min="0" style="width:100%; padding:0.4em; border-radius:4px; border:1px solid #ccc;"></div>
+      <div style="margin-bottom:0.8em;"><label for="author-gender" style="font-weight:bold;">Geschlecht:</label><br><select id="author-gender" name="gender" style="width:100%; padding:0.4em; border-radius:4px; border:1px solid #ccc;"><option value="">Bitte wählen</option><option value="männlich">Männlich</option><option value="weiblich">Weiblich</option><option value="divers">Divers</option></select></div>
+      <div style="margin-bottom:0.8em;"><label for="author-first-language" style="font-weight:bold;">Muttersprache:</label><br><input type="text" id="author-first-language" name="first_language" style="width:100%; padding:0.4em; border-radius:4px; border:1px solid #ccc;"></div>
+      <div style="margin-bottom:0.8em;"><label for="author-languages" style="font-weight:bold;">Weitere Sprachen:</label><br><input type="text" id="author-languages" name="languages" placeholder="z.B. Englisch, Französisch" style="width:100%; padding:0.4em; border-radius:4px; border:1px solid #ccc;"></div>
+      <div style="margin-bottom:0.8em;"><label for="author-region" style="font-weight:bold;">Region:</label><br><input type="text" id="author-region" name="region" style="width:100%; padding:0.4em; border-radius:4px; border:1px solid #ccc;"></div>
+      <div style="margin-bottom:1.2em;"><label for="author-job" style="font-weight:bold;">Beruf:</label><br><input type="text" id="author-job" name="job" style="width:100%; padding:0.4em; border-radius:4px; border:1px solid #ccc;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:1em;">
+        <button type="submit" style="background:#25D366; color:#fff; border:none; border-radius:4px; padding:0.5em 1.4em; font-size:1em; font-weight:bold; cursor:pointer;">Speichern</button>
+        <button type="button" id="cancel-add-author" style="background:#dc3545; color:#fff; border:none; border-radius:4px; padding:0.5em 1.4em; font-size:1em; font-weight:bold; cursor:pointer;">Abbrechen</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var addBtn = document.querySelector('.add-author-btn');
+  var modal = document.getElementById('add-author-modal');
+  var cancelBtn = document.getElementById('cancel-add-author');
+  addBtn.addEventListener('click', function() {
+    modal.style.display = 'flex';
+  });
+  cancelBtn.addEventListener('click', function() {
+    modal.style.display = 'none';
+    document.getElementById('add-author-form').reset();
+  });
+  // Optional: handle form submission via AJAX
+  document.getElementById('add-author-form').onsubmit = function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    fetch('/add_author', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        modal.style.display = 'none';
+        this.reset();
+        window.location.reload();
+      } else {
+        alert('Fehler beim Speichern!');
+      }
+    })
+    .catch(() => {
+      alert('Fehler beim Speichern!');
+    });
+  };
+});
+</script>
