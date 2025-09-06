@@ -206,4 +206,40 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSpanHighlight('annotation-header-checkbox', 'show-annotation-highlight', 'annotation-item');
     setupSpanHighlight('error-header-checkbox', 'show-error-highlight', 'error-item');
     setupSpanHighlight('spacy-header-checkbox', 'show-pos-highlight', 'spacy-item');
+
+    var addBtn = document.querySelector('.add-annotation-btn');
+    var formContainer = document.getElementById('add-annotation-form-container');
+    if (addBtn && formContainer) {
+        addBtn.addEventListener('click', function() {
+            if (formContainer.style.display === 'none' || !formContainer.innerHTML) {
+                formContainer.innerHTML = `
+                    <form id="manual-annotation-form" style="background:#e9ecef; padding:1em; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+                        <div style="margin-bottom:0.7em;">
+                            <label for="position" style="font-weight:bold;">Position:</label>
+                            <input type="text" id="position" name="position" style="margin-left:1em; padding:0.3em; border-radius:3px; border:1px solid #ccc; width:6em;" required />
+                        </div>
+                        <div style="margin-bottom:0.7em;">
+                            <label for="annotation" style="font-weight:bold;">Annotation:</label>
+                            <input type="text" id="annotation" name="annotation" style="margin-left:1em; padding:0.3em; border-radius:3px; border:1px solid #ccc; width:12em;" required />
+                        </div>
+                        <div style="margin-bottom:0.7em;">
+                            <label for="grund" style="font-weight:bold;">Grund:</label>
+                            <input type="text" id="grund" name="grund" style="margin-left:1em; padding:0.3em; border-radius:3px; border:1px solid #ccc; width:12em;" />
+                        </div>
+                        <div style="margin-bottom:0.7em;">
+                            <label for="kommentar" style="font-weight:bold;">Kommentar:</label>
+                            <input type="text" id="kommentar" name="kommentar" style="margin-left:1em; padding:0.3em; border-radius:3px; border:1px solid #ccc; width:16em;" />
+                        </div>
+                        <button type="submit" style="background:#0074D9; color:white; border:none; border-radius:3px; padding:0.4em 1.2em; font-size:1em; cursor:pointer;">Speichern</button>
+                        <button type="button" id="cancel-annotation-form" style="background:#dc3545; color:white; border:none; border-radius:3px; padding:0.4em 1.2em; font-size:1em; cursor:pointer; margin-left:1em;">Abbrechen</button>
+                    </form>
+                `;
+                formContainer.style.display = 'block';
+                document.getElementById('cancel-annotation-form').onclick = function() {
+                    formContainer.style.display = 'none';
+                    formContainer.innerHTML = '';
+                };
+            }
+        });
+    }
 });
