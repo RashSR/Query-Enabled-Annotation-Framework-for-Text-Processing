@@ -53,7 +53,6 @@
                 <input type="checkbox" class="header-checkbox error-header-checkbox" style="margin-right:0.7em;" />
                 <span>Fehlerliste ({{ message.error_list|length if message.error_list else 0 }}) ▶</span>
             </div>
-            <button type="button" class="add-error-btn" style="padding:0.2em 0.9em; background:#0074D9; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Hinzufügen</button>
         </div>
         <div id="error-list" style="margin-top:0.5rem; display:none;">
         {% if message.error_list and message.error_list|length > 0 %}
@@ -81,7 +80,6 @@
                 <input type="checkbox" class="header-checkbox spacy-header-checkbox" style="margin-right:0.7em;" />
                 <span>Linguistische Attribute ({{ message.spacy_matches|length if message.spacy_matches else 0 }}) ▶</span>
             </div>
-            <button type="button" class="add-spacy-btn" style="padding:0.2em 0.9em; background:#0074D9; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Hinzufügen</button>
         </div>
         <div id="spacy-list" style="margin-top:0.5rem; display:none;">
         {% if message.spacy_matches and message.spacy_matches|length > 0 %}
