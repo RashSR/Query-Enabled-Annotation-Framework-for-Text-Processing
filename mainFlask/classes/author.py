@@ -176,3 +176,11 @@ class Author:
                 msgs.extend(chat.get_messages_by_error_rule_id_and_author(rule_id, self))
 
         return msgs
+    
+    def __eq__(self, other):
+        if isinstance(other, Author):
+            return self.id == other.id
+        return False
+
+    def __hash__(self):
+        return hash(self.id)

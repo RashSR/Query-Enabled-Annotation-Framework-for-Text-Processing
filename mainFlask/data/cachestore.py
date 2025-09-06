@@ -500,6 +500,7 @@ class CacheStore:
     #region Author
 
     def delete_author_by_id(self, id: int) -> bool:
+        id = int(id)
         from .db_handling import delete_author_by_id
         if delete_author_by_id(self._db, self._app, id):
             if self._authors is not None and id in self._authors:
@@ -511,6 +512,7 @@ class CacheStore:
     #region Chat
 
     def delete_chat_by_id(self, id: int) -> bool:
+        id = int(id)
         from .db_handling import delete_chat_by_id
         if delete_chat_by_id(self._db, self._app, id):
             if self._chats is not None and id in self._chats:
@@ -523,6 +525,7 @@ class CacheStore:
     #region Message
 
     def delete_message_by_id(self, id: int) -> bool:
+        id = int(id)
         from .db_handling import delete_message_by_id
         if delete_message_by_id(self._db, self._app, id):
             if self._messages is not None and id in self._messages:
@@ -534,6 +537,7 @@ class CacheStore:
     
     # region LTM
     def delete_lt_match_by_id(self, id: int) -> bool:
+        id = int(id)
         from .db_handling import delete_lt_match_by_id
         if delete_lt_match_by_id(self._db, self._app, id):
             if self._ltms is not None and id in self._ltms:
@@ -545,6 +549,7 @@ class CacheStore:
 
     # region SpacyMatch
     def delete_spacy_match_by_id(self, id: int) -> bool:
+        id = int(id)
         from .db_handling import delete_spacy_match_by_id
         if delete_spacy_match_by_id(self._db, self._app, id):
             if self._spacy_matches is not None and id in self._spacy_matches:
@@ -557,6 +562,7 @@ class CacheStore:
     #region Annotation
 
     def delete_annotation_by_id(self, id: int) -> bool:
+        id = int(id)
         from .db_handling import delete_annotation_by_id
         if delete_annotation_by_id(self._db, self._app, id):
             if self._annotations is not None and id in self._annotations:
