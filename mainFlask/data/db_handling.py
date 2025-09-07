@@ -324,6 +324,23 @@ def create_chat(db: SQLAlchemy, app: Flask, chat: Chat):
         return new_chat_id
 # endregion
 
+# region Message
+def create_message(db: SQLAlchemy, app: Flask, message: Message):
+    with app.app_context():
+        chat_id = message.chat_id
+        sender_id = message.sender.id
+        timestamp = message.timestamp
+        content = message.content
+        quoted_message_id = None #TODO: change after quotation is implemented properly
+
+        sql_text = text("INSERT INTO message VALUES(:id, :chat_id, :sender_id, :timestamp, :content, :quoted_message_id)")
+        prepared_values = {'id': None, 'chat_id': chat_id, 'sender_id': sender_id, 'timestamp': timestamp, 'content': content, 'quoted_message_id': quoted_message_id}
+        result = db.session.execute(sql_text, prepared_values)
+        new_message_id = result.lastrowid
+        db.session.commit()
+        return new_message_id
+# endregion
+
 #TODO: Category own DB table? 
 def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
     with app.app_context():
