@@ -1,10 +1,8 @@
+import re
 import spacy
 import language_tool_python
-import re
 from mainFlask.classes.message import Message
 from mainFlask.classes.chat import Chat
-from mainFlask.classes.messagetype import MessageType
-from datetime import datetime
 from mainFlask.classes.ltmatch import LTMatch
 from mainFlask.classes.spacymatch import SpacyMatch
 from mainFlask.data.cachestore import CacheStore
@@ -25,42 +23,41 @@ def get_active_author(session):
 
 #region chat loading
 
+MESSAGE_REGEX_PATTERN = r'\[(\d{2}\.\d{2}\.\d{2}), (\d{2}:\d{2}:\d{2})\] ([^:]+): (.*?)(?=\n\[\d{2}\.\d{2}\.\d{2}, \d{2}:\d{2}:\d{2}\] |$)'
+
+
+def load_single_chat_from_file(chat_text: str) -> Chat:
+    from datetime import datetime
+    # Pattern to match each message
+    # Find all matches
+    matches = re.findall(MESSAGE_REGEX_PATTERN, chat_text, re.DOTALL)
+    for match in matches:
+        print(match)
+    return
+    chat = Chat(14)
+    msg_id = 0
+    total = len(matches)
+    print(total)
+
+    # Iterate each message
+    for date, time, sender, message in matches:
+        print_progress_bar(msg_id + 1, total)
+
+        str_date = date + " " + time
+        date_obj = datetime.strptime(str_date, "%d.%m.%y %H:%M:%S")
+        msg = Message(chat.chat_id, msg_id, sender, date_obj, message.strip())
+        print(msg)
+        chat.add_message(msg)
+
+        msg_id += 1
+    
+    return chat
+
 def print_progress_bar(iteration, total, length=40):
     percent = (iteration / total)
     filled_length = int(length * percent)
     bar = '█' * filled_length + '-' * (length - filled_length)
     print(f'\rProcessing |{bar}| {percent*100:.1f}% complete', end='')
-
-def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
-    filename = "whatsapp_chat_"
-
-    # Read the file
-    with open("texts/" + filename + str(id) + ".txt", "r", encoding="utf-8") as file:
-        chat_text = file.read()
-
-    # Pattern to match each message
-    pattern = r'\[(\d{1,2}:\d{2}), (\d{1,2}\.\d{1,2}\.\d{4})\] ([^:]+): (.*?)((?=\n\[\d{1,2}:\d{2}, \d{1,2}\.\d{1,2}\.\d{4}\])|$)'
-
-    # Find all matches
-    matches = re.findall(pattern, chat_text, re.DOTALL)
-
-    chat = Chat(id)
-    msg_id = 0
-
-    total = len(matches)
-    # Iterate each message
-    for time, date, sender, message, _ in matches:
-        print_progress_bar(msg_id + 1, total)
-        str_date = date + " " + time
-        date_obj = datetime.strptime(str_date, "%d.%m.%Y %H:%M")
-        msg = Message(id, msg_id, sender, date_obj, message.strip())
-        if isAnalyzing and msg.message_type == MessageType.TEXT:
-            #analyze_msg_with_spacy(msg.content)
-            msg.annotated_text = analyze_msg_with_language_tool(msg)
-        chat.add_message(msg)
-        msg_id = msg_id + 1
-    
-    return chat
 
 # endregion
 

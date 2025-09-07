@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, session, abort, request, jsonify
 import utils
 from mainFlask.data.cachestore import CacheStore
 from mainFlask.classes.author import Author
+from mainFlask.classes.chat import Chat
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -57,4 +58,20 @@ def delete_author():
         return jsonify({'success': False})
     deleted = CacheStore.Instance().delete_author_by_id(author_id)
     return jsonify({'success': bool(deleted)})
+
+@profile_bp.route('/profile/<int:author_id>/add_chat', methods=['POST'])
+def add_chat(author_id):
+    chat_file = request.files.get('chat_file')
+    file_content = chat_file.read().decode('utf-8')
+    utils.load_single_chat_from_file(file_content)
+    if not chat_file or not chat_file.filename.endswith('.txt'):
+        return jsonify({'success': False, 'error': 'Invalid file'}), 400
+    try:
+        file_content = chat_file.read().decode('utf-8')
+        if not utils.validate_chat_format(file_content):
+            print("i am here")
+            return jsonify({'success': False, 'error': str(e)}), 500
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
