@@ -107,10 +107,7 @@ def map_chat_authors(author_id):
     chat_to_create.participants.append(author_1)
     chat_to_create.participants.append(author_2)
     chat_to_create.relation = relationship
-    print(relationship)
     created_chat = CacheStore.Instance().create_chat(chat_to_create)
     
-    print(f"Received author mapping for chat upload: {mapped_info}")
-    print(f"Relationship between authors: {relationship}")
     return jsonify({'success': True, 'mapped_info': mapped_info, 'relationship': relationship})
 

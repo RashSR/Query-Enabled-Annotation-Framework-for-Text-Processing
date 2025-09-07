@@ -61,12 +61,12 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         // Show modal for author mapping
         if (data.extracted_authors && data.existing_authors) {
-          showAuthorMappingModal(data.extracted_authors, data.existing_authors, function(selectedIds) {
+          showAuthorMappingModal(data.extracted_authors, data.existing_authors, function(selectedIds, relationship) {
             // Send mapping to backend (implement this route as needed)
             fetch(`/profile/${authorId}/map_chat_authors`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ mapping: selectedIds, extracted_authors: data.extracted_authors })
+              body: JSON.stringify({ mapping: selectedIds, extracted_authors: data.extracted_authors, relationship: relationship })
             }).then(r => {
               if (r.ok) {
                 location.reload();
