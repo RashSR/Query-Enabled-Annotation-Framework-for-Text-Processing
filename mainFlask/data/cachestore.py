@@ -18,7 +18,7 @@ class CacheStore:
                 raise ValueError("A SQLAlchemy instance must be provided on first initialization")
             cls._instance = cls(db, app)
         return cls._instance
-    
+
     #region GET
     
     #region Author
@@ -575,5 +575,17 @@ class CacheStore:
         return False
 
     # endregion
+
+    # endregion
+
+    #region Temporary
+
+    _temporary = None
+
+    def save_temporary_data(self, data):
+        self._temporary = data
+
+    def get_temporary_data(self):
+        return self._temporary 
 
     # endregion
