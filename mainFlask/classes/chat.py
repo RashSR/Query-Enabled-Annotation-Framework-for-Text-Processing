@@ -16,6 +16,7 @@ class Chat:
         self.messages.append(message)
         if all(participant.id != message.sender.id for participant in self.participants):
             self.participants.append(message.sender)
+            self._messages.sort(key=lambda m: m.timestamp)
 
     @property
     def chat_id(self):
@@ -51,6 +52,7 @@ class Chat:
 
     @property
     def messages(self) -> list[Message]:
+        self._messages.sort(key=lambda m: m.timestamp)
         return self._messages
 
     @messages.setter
