@@ -1,6 +1,7 @@
 import re
 import spacy
 import language_tool_python
+from datetime import datetime
 from mainFlask.classes.message import Message
 from mainFlask.classes.chat import Chat
 from mainFlask.classes.ltmatch import LTMatch
@@ -27,10 +28,8 @@ MESSAGE_REGEX_PATTERN = r'\[(\d{2}\.\d{2}\.\d{2}), (\d{2}:\d{2}:\d{2})\] ([^:]+)
 
 
 def load_single_chat_from_file(chat_text: str) -> Chat:
-    from datetime import datetime
-    # Pattern to match each message
-    # Find all matches
-    matches = re.findall(MESSAGE_REGEX_PATTERN, chat_text, re.DOTALL)
+    cleaned_text = clean_text(chat_text)
+    matches = re.findall(MESSAGE_REGEX_PATTERN, cleaned_text, re.DOTALL)
     for match in matches:
         print(match)
     return
@@ -52,6 +51,15 @@ def load_single_chat_from_file(chat_text: str) -> Chat:
         msg_id += 1
     
     return chat
+
+def clean_text(text: str) -> str:
+     # normalize line endings 
+    text = text.replace("\r\n", "\n")              
+    text = text.replace("\r", "\n")
+    # strip common invisibles
+    text = re.sub(r'[\u200e\u200f\uFEFF]', '', text)
+    return text
+
 
 def print_progress_bar(iteration, total, length=40):
     percent = (iteration / total)
