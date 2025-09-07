@@ -69,7 +69,9 @@ def add_chat(author_id):
     try:
         file_content = chat_file.read().decode('utf-8')
         msg_list: list[Message] = utils.get_messages_from_text(file_content)
-
+        distinct_senders = {msg.sender for msg in msg_list}
+        distinct_senders_list = list(distinct_senders)
+        print(distinct_senders_list)
         return jsonify({'success': True})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
