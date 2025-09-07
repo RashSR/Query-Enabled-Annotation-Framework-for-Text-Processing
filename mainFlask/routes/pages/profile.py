@@ -71,6 +71,7 @@ def add_chat(author_id):
     try:
         file_content = chat_file.read().decode('utf-8')
         msg_list: list[Message] = utils.get_messages_from_text(file_content)
+        CacheStore.Instance().save_temporary_data(msg_list)
         distinct_senders = {msg.sender for msg in msg_list}
         distinct_senders_list = list(distinct_senders)
         # Prepare extracted authors for frontend (as names)
@@ -98,16 +99,40 @@ def map_chat_authors(author_id):
         for extracted, mapped_id in zip(extracted_authors, mapped_author_ids)
     ]
 
-    author1_id = int(mapped_info[0]["mapped_id"])
-    author2_id = int(mapped_info[1]["mapped_id"])
-    author_1 = CacheStore.Instance().get_author_by_id(author1_id)
-    author_2 = CacheStore.Instance().get_author_by_id(author2_id)
+    author_1 = _get_author_by_id(mapped_info[0]["mapped_id"])
+    author_2= _get_author_by_id(mapped_info[1]["mapped_id"])
 
     chat_to_create: Chat = Chat(None)
     chat_to_create.participants.append(author_1)
     chat_to_create.participants.append(author_2)
     chat_to_create.relation = relationship
     created_chat = CacheStore.Instance().create_chat(chat_to_create)
-    IsCreatedSucessfully = created_chat is not None
+
+    temporary_messages: list[Message] = CacheStore.Instance().get_temporary_data()
+    messages_author_1 = _prepare_message_for_saving(author_1, created_chat, temporary_messages)
+    messages_author_2 = _prepare_message_for_saving(author_2, created_chat, temporary_messages)
+
+    created_msgs_author_1 = CacheStore.Instance().create_messages(messages_author_1)
+    created_msgs_author_2 = CacheStore.Instance().create_messages(messages_author_2)
+    CacheStore.Instance().clear_temporary_data()
+
+    IsCreatedSucessfully = created_chat is not None and created_msgs_author_1 is not None and created_msgs_author_2 is not None
     return jsonify({'success': IsCreatedSucessfully, 'mapped_info': mapped_info, 'relationship': relationship})
+
+def _get_author_by_id(author_id):
+    author_id = int(author_id)
+    author = CacheStore.Instance().get_author_by_id(author_id)
+    return author
+
+def _prepare_message_for_saving(author: Author, chat: Chat, msg_list: list[Message]):
+    messages_by_author = [msg for msg in msg_list if msg.sender == author.name]
+    for msg in messages_by_author:
+        msg.chat_id = chat.chat_id
+        msg.chat = chat
+        msg.sender = author
+    
+    return messages_by_author
+
+
+    
 

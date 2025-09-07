@@ -363,8 +363,20 @@ class CacheStore:
             self._messages = {}
 
         self._messages[generated_id] = message
+        self._chats[message.chat_id].add_message(message)
+
         return message
     
+    def create_messages(self, messages):
+        if messages is None or len(messages) == 0:
+            return None
+
+        created_messages = []
+        for msg in messages:
+            created_msg = self.create_message(msg)
+            created_messages.append(created_msg)
+
+        return created_messages
     # endregion
 
     #region LTM
@@ -587,5 +599,8 @@ class CacheStore:
 
     def get_temporary_data(self):
         return self._temporary 
+    
+    def clear_temporary_data(self):
+        self._temporary = None
 
     # endregion
