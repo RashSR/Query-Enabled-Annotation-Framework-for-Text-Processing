@@ -89,8 +89,10 @@ def add_chat(author_id):
 @profile_bp.route('/profile/<int:author_id>/map_chat_authors', methods=['POST'])
 def map_chat_authors(author_id):
     data = request.get_json()
-    mapped_author_ids = data.get('mapping', [])
-    extracted_authors = data.get('extracted_authors', [])
+    mapped_author_ids = data.get('mapping', []) # List of selected author IDs from modal
+    extracted_authors = data.get('extracted_authors', [])  # Names of extracted authors
+    relationship = data.get('relationship', '')  # Relationship between authors
+
     mapped_info = [
         {'extracted': extracted, 'mapped_id': mapped_id}
         for extracted, mapped_id in zip(extracted_authors, mapped_author_ids)
@@ -104,9 +106,11 @@ def map_chat_authors(author_id):
     chat_to_create: Chat = Chat(None)
     chat_to_create.participants.append(author_1)
     chat_to_create.participants.append(author_2)
+    chat_to_create.relation = relationship
+    print(relationship)
     created_chat = CacheStore.Instance().create_chat(chat_to_create)
     
     print(f"Received author mapping for chat upload: {mapped_info}")
-    # You can now use 'mapped_info' to link extracted chat participants to existing authors
-    return jsonify({'success': True, 'mapped_info': mapped_info})
+    print(f"Relationship between authors: {relationship}")
+    return jsonify({'success': True, 'mapped_info': mapped_info, 'relationship': relationship})
 

@@ -341,6 +341,7 @@ class CacheStore:
             self._chats = {}
 
         self._chats[generated_id] = chat
+        #TODO: update the authors
         return chat
     
     # endregion
