@@ -132,6 +132,20 @@ window.addEventListener('DOMContentLoaded', function() {
       card.appendChild(select);
     });
 
+    // Add a single relationship textbox for all authors
+    const relLabel = document.createElement('label');
+    relLabel.textContent = 'Beziehung zwischen den Autoren:';
+    relLabel.style.display = 'block';
+    relLabel.style.marginTop = '1.5rem';
+    card.appendChild(relLabel);
+
+    const relInput = document.createElement('input');
+    relInput.type = 'text';
+    relInput.name = 'relationship';
+    relInput.style.width = '100%';
+    relInput.style.marginTop = '0.2rem';
+    card.appendChild(relInput);
+
     const btnRow = document.createElement('div');
     btnRow.style.display = 'flex';
     btnRow.style.justifyContent = 'flex-end';
@@ -146,10 +160,11 @@ window.addEventListener('DOMContentLoaded', function() {
     confirmBtn.style.borderRadius = '4px';
     confirmBtn.style.cursor = 'pointer';
     confirmBtn.onclick = function() {
-      // Collect selected author IDs
+      // Collect selected author IDs and relationship
       const selected = Array.from(card.querySelectorAll('select')).map(sel => sel.value);
+      const relationship = relInput.value;
       document.body.removeChild(modal);
-      onConfirm(selected);
+      onConfirm(selected, relationship);
     };
     btnRow.appendChild(confirmBtn);
 
