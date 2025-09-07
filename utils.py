@@ -27,30 +27,22 @@ def get_active_author(session):
 MESSAGE_REGEX_PATTERN = r'\[(\d{2}\.\d{2}\.\d{2}), (\d{2}:\d{2}:\d{2})\] ([^:]+): (.*?)(?=\n\[\d{2}\.\d{2}\.\d{2}, \d{2}:\d{2}:\d{2}\] |$)'
 
 
-def load_single_chat_from_file(chat_text: str) -> Chat:
+def get_messages_from_text(chat_text: str) -> list[Message]:
     cleaned_text = clean_text(chat_text)
     matches = re.findall(MESSAGE_REGEX_PATTERN, cleaned_text, re.DOTALL)
-    for match in matches:
-        print(match)
-    return
-    chat = Chat(14)
-    msg_id = 0
     total = len(matches)
-    print(total)
-
+    msg_list: list[Message] = [] 
     # Iterate each message
     for date, time, sender, message in matches:
-        print_progress_bar(msg_id + 1, total)
+        print_progress_bar(len(msg_list) + 1, total)
 
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%y %H:%M:%S")
-        msg = Message(chat.chat_id, msg_id, sender, date_obj, message.strip())
+        msg = Message(None, None, sender, date_obj, message.strip())
         print(msg)
-        chat.add_message(msg)
-
-        msg_id += 1
+        msg_list.append(msg)
     
-    return chat
+    return msg_list
 
 def clean_text(text: str) -> str:
      # normalize line endings 

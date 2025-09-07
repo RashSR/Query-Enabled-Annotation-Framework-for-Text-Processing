@@ -29,16 +29,17 @@ class Message:
         self._annotations: list[Annotation] = []
 
     def __str__(self):
-        toString = f"""ChatId: {self.chat_id}, MessageId: {str(self._message_id)}
-        Sender: {self.sender.name}
-        Timestamp: {self.timestamp}
-        Content: {self.content}
-        MessageType: {self.message_type}
-        quotedMessage: {{ {self.quoted_message } }}
-        ErrorTypes: {len(self._error_list)}
-        """
-        return toString
-    
+        return (
+            f"ChatId: {getattr(self, 'chat_id', None)}\n"
+            f"MessageId: {getattr(self, '_message_id', None)}\n"
+            f"Sender: {getattr(getattr(self, 'sender', None), 'name', None)}\n"
+            f"Timestamp: {getattr(self, 'timestamp', None)}\n"
+            f"Content: {getattr(self, 'content', None)}\n"
+            f"MessageType: {getattr(self, 'message_type', None)}\n"
+            f"quotedMessage: {{ {getattr(self, 'quoted_message', None)} }}\n"
+            f"ErrorTypes: {len(getattr(self, '_error_list', []) or [])}"
+        )
+
     def hasQuote(self):
         if self.quoted_message == None:
             return True
