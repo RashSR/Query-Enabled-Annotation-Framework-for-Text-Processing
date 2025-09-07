@@ -32,12 +32,26 @@ window.addEventListener('DOMContentLoaded', function() {
 
   // Handles add chat button
   const addChatBtn = document.getElementById('add-chat-btn');
-  if (addChatBtn) {
+  const chatFileInput = document.getElementById('chat-file-input');
+  if (addChatBtn && chatFileInput) {
     addChatBtn.addEventListener('click', function() {
+      chatFileInput.value = '';
+      chatFileInput.click();
+    });
+
+    chatFileInput.addEventListener('change', function() {
+      const file = chatFileInput.files[0];
+      if (!file) return;
+      if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
+        alert('Bitte wählen Sie eine .txt Datei aus!');
+        return;
+      }
       const authorId = addChatBtn.getAttribute('data-author-id') || window.location.pathname.split('/').pop();
+      const formData = new FormData();
+      formData.append('chat_file', file);
       fetch(`/profile/${authorId}/add_chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        body: formData
       }).then(r => {
         if (r.ok) {
           location.reload();
