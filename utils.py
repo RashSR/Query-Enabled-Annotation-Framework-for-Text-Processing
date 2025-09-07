@@ -26,7 +26,6 @@ def get_active_author(session):
 
 MESSAGE_REGEX_PATTERN = r'\[(\d{2}\.\d{2}\.\d{2}), (\d{2}:\d{2}:\d{2})\] ([^:]+): (.*?)(?=\n\[\d{2}\.\d{2}\.\d{2}, \d{2}:\d{2}:\d{2}\] |$)'
 
-
 def get_messages_from_text(chat_text: str) -> list[Message]:
     cleaned_text = clean_text(chat_text)
     matches = re.findall(MESSAGE_REGEX_PATTERN, cleaned_text, re.DOTALL)
@@ -35,11 +34,9 @@ def get_messages_from_text(chat_text: str) -> list[Message]:
     # Iterate each message
     for date, time, sender, message in matches:
         print_progress_bar(len(msg_list) + 1, total)
-
         str_date = date + " " + time
         date_obj = datetime.strptime(str_date, "%d.%m.%y %H:%M:%S")
         msg = Message(None, None, sender, date_obj, message.strip())
-        print(msg)
         msg_list.append(msg)
     
     return msg_list
