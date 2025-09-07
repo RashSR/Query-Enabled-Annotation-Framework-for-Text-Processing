@@ -3,6 +3,7 @@ import utils
 from mainFlask.data.cachestore import CacheStore
 from mainFlask.classes.author import Author
 from mainFlask.classes.message import Message
+from mainFlask.classes.chat import Chat
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -22,7 +23,6 @@ def author_profile(author_id):
         selected_author = utils.get_active_author(session)
     return render_template("profile.html", author=selected_author, authors=all_authors)
 
-# AJAX endpoint to save annotation
 @profile_bp.route("/profile/<int:author_id>/annotation", methods=["POST"])
 def save_author_annotation(author_id):
     data = request.get_json()
@@ -57,6 +57,8 @@ def delete_author():
     if not author_id:
         return jsonify({'success': False})
     deleted = CacheStore.Instance().delete_author_by_id(author_id)
+    if deleted:
+        utils.set_active_author(session, None)
     return jsonify({'success': bool(deleted)})
 
 @profile_bp.route('/profile/<int:author_id>/add_chat', methods=['POST'])
@@ -87,13 +89,23 @@ def add_chat(author_id):
 @profile_bp.route('/profile/<int:author_id>/map_chat_authors', methods=['POST'])
 def map_chat_authors(author_id):
     data = request.get_json()
-    mapping = data.get('mapping', [])  # List of selected author IDs from modal
-    extracted_authors = data.get('extracted_authors', [])  # Names of extracted authors
-    # Combine mapping info: list of dicts {extracted: name, mapped_id: id}
+    mapped_author_ids = data.get('mapping', [])
+    extracted_authors = data.get('extracted_authors', [])
     mapped_info = [
         {'extracted': extracted, 'mapped_id': mapped_id}
-        for extracted, mapped_id in zip(extracted_authors, mapping)
+        for extracted, mapped_id in zip(extracted_authors, mapped_author_ids)
     ]
+
+    author1_id = int(mapped_info[0]["mapped_id"])
+    author2_id = int(mapped_info[1]["mapped_id"])
+    author_1 = CacheStore.Instance().get_author_by_id(author1_id)
+    author_2 = CacheStore.Instance().get_author_by_id(author2_id)
+
+    chat_to_create: Chat = Chat(None)
+    chat_to_create.participants.append(author_1)
+    chat_to_create.participants.append(author_2)
+    created_chat = CacheStore.Instance().create_chat(chat_to_create)
+    
     print(f"Received author mapping for chat upload: {mapped_info}")
     # You can now use 'mapped_info' to link extracted chat participants to existing authors
     return jsonify({'success': True, 'mapped_info': mapped_info})

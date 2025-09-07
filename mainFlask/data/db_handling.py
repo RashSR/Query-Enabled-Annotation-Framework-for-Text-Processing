@@ -289,7 +289,7 @@ def create_author(db: SQLAlchemy, app: Flask, author: Author):
         age = author.age
         gender = author.gender
         first_language = author.first_language
-        languages = ', '.join(author.languages)  # Store as comma-separated string
+        languages = ', '.join(author.languages)  # Store as comma-separated string, TODO: produces D,e,u,t,s,c,h
         region = author.region
         job = author.job
         annotation = author.annotation
@@ -302,6 +302,27 @@ def create_author(db: SQLAlchemy, app: Flask, author: Author):
         return new_id
 
 # endregion 
+
+# region Chat
+def create_chat(db: SQLAlchemy, app: Flask, chat: Chat):
+    with app.app_context():
+        group_name = chat.group_name
+        relation = chat.relation
+
+        sql_text = text("INSERT INTO chat VALUES (:id, :groupname, :relation)")
+        prepared_values = {'id': None, 'groupname': group_name, 'relation': relation}
+        result = db.session.execute(sql_text, prepared_values)
+        new_chat_id = result.lastrowid
+        
+        #also fill M:N chat_participants table
+        for author in chat.participants:
+            sql_text = text("INSERT INTO chat_participants VALUES(:chat_id, :author_id)")
+            prepared_values = {'chat_id': new_chat_id, 'author_id': author.id}
+            db.session.execute(sql_text, prepared_values)
+
+        db.session.commit()
+        return new_chat_id
+# endregion
 
 #TODO: Category own DB table? 
 def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
