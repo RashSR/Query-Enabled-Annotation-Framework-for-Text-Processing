@@ -66,7 +66,7 @@ window.addEventListener('DOMContentLoaded', function() {
             fetch(`/profile/${authorId}/map_chat_authors`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ mapping: selectedIds })
+              body: JSON.stringify({ mapping: selectedIds, extracted_authors: data.extracted_authors })
             }).then(r => {
               if (r.ok) {
                 location.reload();

@@ -84,3 +84,17 @@ def add_chat(author_id):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@profile_bp.route('/profile/<int:author_id>/map_chat_authors', methods=['POST'])
+def map_chat_authors(author_id):
+    data = request.get_json()
+    mapping = data.get('mapping', [])  # List of selected author IDs from modal
+    extracted_authors = data.get('extracted_authors', [])  # Names of extracted authors
+    # Combine mapping info: list of dicts {extracted: name, mapped_id: id}
+    mapped_info = [
+        {'extracted': extracted, 'mapped_id': mapped_id}
+        for extracted, mapped_id in zip(extracted_authors, mapping)
+    ]
+    print(f"Received author mapping for chat upload: {mapped_info}")
+    # You can now use 'mapped_info' to link extracted chat participants to existing authors
+    return jsonify({'success': True, 'mapped_info': mapped_info})
+
