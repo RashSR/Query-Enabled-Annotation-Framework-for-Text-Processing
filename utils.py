@@ -11,18 +11,7 @@ from mainFlask.data.cachestore import CacheStore
 from itertools import chain
 from collections import Counter
 
-#TODO: try nltk also
-
-# Load german spaCy model and initialize language tool -> only loaded once
-nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
-
-#only check for the websever if it will be used
-_tool_instance = None
-def get_tool():
-    global _tool_instance
-    if _tool_instance is None:
-        _tool_instance = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
-    return _tool_instance
+#region session objects
 
 # Store author_id in the session
 def set_active_author(session, author_id):
@@ -32,13 +21,9 @@ def set_active_author(session, author_id):
 def get_active_author(session):
     return CacheStore.Instance().get_author_by_id(session.get('author_id'))
 
-def load_all_chats_from_files(ids, isAnalyzing = False):
-    chats = []
-    for i in ids:
-        chat = load_single_chat_from_file(i, isAnalyzing)
-        chats.append(chat)
+# endregion
 
-    return chats
+#region chat loading
 
 def print_progress_bar(iteration, total, length=40):
     percent = (iteration / total)
@@ -77,6 +62,8 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
     
     return chat
 
+# endregion
+
 # region Spacy
 
 #https://spacy.io/usage/linguistic-features -> a lot more features to look at
@@ -90,7 +77,10 @@ def load_single_chat_from_file(id, isAnalyzing = False) -> Chat:
 #is alpha: Is the token an alpha character?
 #is stop: Is the token part of a stop list, i.e. the most common words of the language?
 
-#TODO look up lemmatizer
+#TODO: try nltk also, look up lemmatizer
+# Load german spaCy model and initialize language tool -> only loaded once
+nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
+
 def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
     #TODO: check for MessageType.TEXT
     doc = nlp(msg.content)
@@ -103,7 +93,6 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
         tense = person = verb_form = voice = mood = None
         degree = gram_case = number = gender = pron_type = None
 
-        #TODO: check if there are more pos than that
         if pos in ("VERB", "AUX"):
             tense = morph.get("Tense")[0] if morph.get("Tense") else None
             person = morph.get("Person")[0] if morph.get("Person") else None
@@ -157,17 +146,20 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
 
         CacheStore.Instance().create_spacy_match(spacy_match)
 
-#annotation code 
-        #annotated_text = ""
-        #if not token.pos_ == "PUNCT":
-            #annotated_text = annotated_text + " "
-        #annotated_token = f"<span data-error=\"{token.lemma_}\">{token.text}</span>"
-        #annotated_text = annotated_text + annotated_token
 # endregion 
 
 # region Language Tool
 
 #TODO: check if it is possible to start with more threads https://stackoverflow.com/questions/72500635/how-to-speed-up-language-tool-python-library-use-case
+
+#only check for the websever if it will be used
+_tool_instance = None
+def get_tool():
+    global _tool_instance
+    if _tool_instance is None:
+        _tool_instance = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
+    return _tool_instance
+
 def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
 
     if(msg is None):
@@ -215,6 +207,8 @@ def add_error_tags(ruleId, fehlertext, startPos, endPos, text_list):
 
 # endregion
 
+# region logic operations
+
 #return a combined list of all messages without duplicates
 def or_result_messages(lists: list[list[Message]]) -> list[Message]:
     flat = chain.from_iterable(lists)
@@ -242,4 +236,5 @@ def and_result_messages(lists: list[list[Message]]) -> list[Message]:
 
     return result
 
+# endregion
     
