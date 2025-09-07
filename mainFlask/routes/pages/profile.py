@@ -108,6 +108,6 @@ def map_chat_authors(author_id):
     chat_to_create.participants.append(author_2)
     chat_to_create.relation = relationship
     created_chat = CacheStore.Instance().create_chat(chat_to_create)
-    
-    return jsonify({'success': True, 'mapped_info': mapped_info, 'relationship': relationship})
+    IsCreatedSucessfully = created_chat is not None
+    return jsonify({'success': IsCreatedSucessfully, 'mapped_info': mapped_info, 'relationship': relationship})
 
