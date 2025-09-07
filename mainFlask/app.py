@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
@@ -9,7 +9,6 @@ import locale
 import utils
 locale.setlocale(locale.LC_TIME, 'German_Germany.1252') #This is for windows only -> mac/linux: locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 
-#Start application
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.jinja_env.globals.update(now=datetime.now, timedelta=timedelta)
@@ -26,10 +25,10 @@ db = SQLAlchemy(app)
 #intialize CacheStore
 CacheStore.Instance(db, app)
 
-@app.context_processor
-def inject_request():
-    active_author = utils.get_active_author(session)
-    return dict(request=request, active_author=active_author)
+
+@app.route('/')
+def landing_redirect():
+    return redirect('/profile')
 
 @app.route("/search")
 def search_view():
