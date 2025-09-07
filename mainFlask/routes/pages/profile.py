@@ -71,8 +71,16 @@ def add_chat(author_id):
         msg_list: list[Message] = utils.get_messages_from_text(file_content)
         distinct_senders = {msg.sender for msg in msg_list}
         distinct_senders_list = list(distinct_senders)
-        print(distinct_senders_list)
-        return jsonify({'success': True})
+        # Prepare extracted authors for frontend (as names)
+        extracted_authors = [str(sender) for sender in distinct_senders_list]
+        # Get all existing authors (id and name)
+        all_authors = CacheStore.Instance().get_all_authors()
+        existing_authors = [{'id': a.id, 'name': a.name} for a in all_authors]
+        return jsonify({
+            'success': True,
+            'extracted_authors': extracted_authors,
+            'existing_authors': existing_authors
+        })
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 

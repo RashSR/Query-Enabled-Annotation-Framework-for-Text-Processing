@@ -52,13 +52,129 @@ window.addEventListener('DOMContentLoaded', function() {
       fetch(`/profile/${authorId}/add_chat`, {
         method: 'POST',
         body: formData
-      }).then(r => {
-        if (r.ok) {
-          location.reload();
-        } else {
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (!data.success) {
           alert('Fehler beim Hinzufügen des Chats!');
+          return;
         }
+        // Show modal for author mapping
+        if (data.extracted_authors && data.existing_authors) {
+          showAuthorMappingModal(data.extracted_authors, data.existing_authors, function(selectedIds) {
+            // Send mapping to backend (implement this route as needed)
+            fetch(`/profile/${authorId}/map_chat_authors`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ mapping: selectedIds })
+            }).then(r => {
+              if (r.ok) {
+                location.reload();
+              } else {
+                alert('Fehler beim Zuordnen der Autoren!');
+              }
+            });
+          });
+        }
+      })
+      .catch(() => {
+        alert('Fehler beim Hinzufügen des Chats!');
       });
     });
   }
+
+  // Modal for author mapping
+  function showAuthorMappingModal(extractedAuthors, existingAuthors, onConfirm) {
+    // Remove any existing modal
+    document.getElementById('author-mapping-modal')?.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'author-mapping-modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,0.5)';
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    modal.style.zIndex = '9999';
+
+    const card = document.createElement('div');
+    card.style.background = '#fff';
+    card.style.padding = '2rem';
+    card.style.borderRadius = '8px';
+    card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+    card.style.minWidth = '320px';
+
+    const title = document.createElement('h3');
+    title.textContent = 'Teilnehmer zuordnen';
+    card.appendChild(title);
+
+    extractedAuthors.forEach((extracted, idx) => {
+      const label = document.createElement('label');
+      label.textContent = `Datei-Teilnehmer: ${extracted}`;
+      label.style.display = 'block';
+      label.style.marginTop = '1rem';
+      card.appendChild(label);
+
+      const select = document.createElement('select');
+      select.name = `author_map_${idx}`;
+      select.style.width = '100%';
+      select.style.marginTop = '0.5rem';
+      existingAuthors.forEach(author => {
+        const option = document.createElement('option');
+        option.value = author.id;
+        option.textContent = author.name;
+        select.appendChild(option);
+      });
+      card.appendChild(select);
+    });
+
+    const btnRow = document.createElement('div');
+    btnRow.style.display = 'flex';
+    btnRow.style.justifyContent = 'flex-end';
+    btnRow.style.marginTop = '2rem';
+
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = 'Bestätigen';
+    confirmBtn.style.padding = '0.5rem 1.5rem';
+    confirmBtn.style.background = '#0074D9';
+    confirmBtn.style.color = '#fff';
+    confirmBtn.style.border = 'none';
+    confirmBtn.style.borderRadius = '4px';
+    confirmBtn.style.cursor = 'pointer';
+    confirmBtn.onclick = function() {
+      // Collect selected author IDs
+      const selected = Array.from(card.querySelectorAll('select')).map(sel => sel.value);
+      document.body.removeChild(modal);
+      onConfirm(selected);
+    };
+    btnRow.appendChild(confirmBtn);
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = 'Abbrechen';
+    cancelBtn.style.marginLeft = '1rem';
+    cancelBtn.style.padding = '0.5rem 1.5rem';
+    cancelBtn.style.background = '#ccc';
+    cancelBtn.style.color = '#333';
+    cancelBtn.style.border = 'none';
+    cancelBtn.style.borderRadius = '4px';
+    cancelBtn.style.cursor = 'pointer';
+    cancelBtn.onclick = function() {
+      document.body.removeChild(modal);
+    };
+    btnRow.appendChild(cancelBtn);
+
+    card.appendChild(btnRow);
+    modal.appendChild(card);
+    document.body.appendChild(modal);
+  }
+
+  // Example usage after file upload and backend response:
+  // showAuthorMappingModal(['Alice', 'Bob'], [{id:1,name:'Anna'},{id:2,name:'Bernd'}], function(selectedIds) {
+  //   // selectedIds is an array of author IDs chosen by the user
+  //   // Send to backend for mapping
+  // });
 });
