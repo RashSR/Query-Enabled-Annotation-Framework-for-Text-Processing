@@ -6,6 +6,7 @@ from mainFlask.classes.message import Message
 from mainFlask.classes.chat import Chat
 import threading
 import uuid
+import time
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -13,24 +14,45 @@ analysis_progress = {}
 def analyze_with_progress(task_id, msgs_author_1: list[Message], msgs_author_2: list[Message]):
     global_count = 0
     total = len(msgs_author_1) + len(msgs_author_2)
-    analysis_progress[task_id] = {'step': 0, 'total': total, 'done': False, 'message': 'Starte Analyse...'} 
+    analysis_progress[task_id] = {
+        'step': 0,
+        'total': total,
+        'done': False,
+        'message': 'Starte Analyse...',
+        'eta': None
+    } 
 
-    for count, msg in enumerate(msgs_author_1, start=1):
-        analysis_progress[task_id]['message'] = f'Analysiere {count}/{len(msgs_author_1)} Nachrichten von {msgs_author_1[0].sender.name}'
-        utils.analyze_msg_with_language_tool(msg)
-        utils.analyze_msg_with_spacy(msg)
-        global_count = global_count + 1
-        analysis_progress[task_id]['step'] = global_count
-    
-    for count, msg in enumerate(msgs_author_2, start=1):
-        analysis_progress[task_id]['message'] = f'Analysiere {count}/{len(msgs_author_2)} Nachrichten von {msgs_author_2[0].sender.name}'
-        utils.analyze_msg_with_language_tool(msg)
-        utils.analyze_msg_with_spacy(msg)
-        global_count = global_count + 1
-        analysis_progress[task_id]['step'] = global_count
+    start_time = time.time()
 
-    analysis_progress[task_id]['message'] = 'Analyse abgeschlossen!'
-    analysis_progress[task_id]['done'] = True
+    def process_msgs(msgs, sender_name):
+        nonlocal global_count
+        for count, msg in enumerate(msgs, start=1):
+            # do work
+            utils.analyze_msg_with_language_tool(msg)
+            utils.analyze_msg_with_spacy(msg)
+
+            global_count += 1
+            elapsed = time.time() - start_time
+            avg_time = elapsed / global_count
+            remaining = total - global_count
+            eta_seconds = int(avg_time * remaining)
+            print(eta_seconds)
+            analysis_progress[task_id].update({
+                'step': global_count,
+                'message': f'Analysiere {count}/{len(msgs)} Nachrichten von {sender_name}',
+                'eta': eta_seconds
+            })
+
+    if msgs_author_1:
+        process_msgs(msgs_author_1, msgs_author_1[0].sender.name)
+    if msgs_author_2:
+        process_msgs(msgs_author_2, msgs_author_2[0].sender.name)
+
+    analysis_progress[task_id].update({
+        'message': 'Analyse abgeschlossen!',
+        'done': True,
+        'eta': 0
+    })
 
 @profile_bp.route("/profile")
 def profile():
