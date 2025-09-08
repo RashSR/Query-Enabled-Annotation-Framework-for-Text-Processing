@@ -129,20 +129,6 @@ class Chat:
                     msgs.append(msg)
 
         return msgs
-    
-    #TODO: if a author writes perfect this would empty, add this for ruleIds?
-    def has_analyzed_errors_for_author(self, author) -> bool:
-        if len(self.get_error_categories_by_author(author)) == 0:
-            return False
-        
-        return True
-    
-    #Every item is scanned, even it doesn't need it -> duration: around 1ms -> Is it worth the effort to increase performance here?
-    #was solved by loading preemptively the lt_match ids when a msg is loaded -> is checked with is_analyzable
-    def analyze_messages_from_author(self, author, force_analyze=False):
-        for msg in self.get_messages_by_author(author):
-            if msg.is_analyzable() and (not msg.has_analyzed_errors() or force_analyze):
-                msg.analyze_errors()
 
 
 

@@ -287,22 +287,6 @@ class Message:
             return chat_participants[0]
 
         return None
-    
-    def is_analyzable(self) -> bool:
-        if len(self._ltmatch_ids) == 0:
-            return False
-
-        return True
-
-    def has_analyzed_errors(self) -> bool:
-        if len(self.error_list) == 0:
-            return False
-        
-        return True
-
-    def analyze_errors(self):
-        import utils
-        utils.analyze_msg_with_language_tool(self)
 
     def __eq__(self, other):
         if not isinstance(other, Message):

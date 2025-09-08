@@ -153,13 +153,6 @@ class Author:
                 f"Region: {self.region}, Job: {self.job}, " 
                 f"Chatcount: {len(self.chats)}")
 
-    #could be improved by analyzing all msgs at once and make it parallel 
-    def analyze_all_own_messages(self, force_analyze=False):
-        for chat in self.chats:
-            if not chat.has_analyzed_errors_for_author(self) or force_analyze:
-                chat.analyze_messages_from_author(self, force_analyze)
-
-
     def get_messages_by_error_category(self, category):
         msgs = []
         if category in self.get_error_categories():
