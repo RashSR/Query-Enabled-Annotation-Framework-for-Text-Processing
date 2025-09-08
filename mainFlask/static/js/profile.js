@@ -204,10 +204,27 @@ window.addEventListener('DOMContentLoaded', function() {
           let percent = Math.round((data.step / data.total) * 100);
           bar.style.width = percent + '%';
           text.textContent = `${percent}% – ${data.message || ''}`;
+          // ETA formatting
+          const etaElem = document.getElementById('progress-eta');
+          if (typeof data.eta !== 'undefined' && !data.done) {
+            let eta = Math.round(data.eta);
+            let etaStr = '';
+            if (eta > 59) {
+              let min = Math.floor(eta / 60);
+              let sec = eta % 60;
+              etaStr = `${min}m${sec}s`;
+            } else {
+              etaStr = `${eta}s`;
+            }
+            etaElem.textContent = `Verbleibende Zeit: ${etaStr}`;
+          } else {
+            etaElem.textContent = '';
+          }
           if (!data.done) {
             setTimeout(poll, 1000);
           } else {
             text.textContent = data.message || 'Analyse abgeschlossen!';
+            etaElem.textContent = '';
             setTimeout(() => {
               modal.style.display = 'none';
               window.location.reload();
