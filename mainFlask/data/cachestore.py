@@ -394,6 +394,8 @@ class CacheStore:
             self._ltms = {}
 
         self._ltms[generated_id] = lt_match
+        self._messages[lt_match.message_id].ltmatch_ids.append(lt_match.id)
+        self._messages[lt_match.message_id].error_list.append(lt_match)
         return lt_match
     
     # endregion

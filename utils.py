@@ -159,27 +159,18 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
     if(msg is None):
         return None
     
-    #only analyse if needed -> TODO needs rework
-    if(msg.annotated_text is None or msg.annotated_text == ""):
-        text = msg.content
+    text = msg.content
 
-        #check the text
-        matches = get_tool().check(text)
+    #check the text
+    matches = get_tool().check(text)
 
-        #convert text to a list to change it easily
-        text_list = list(text)
-
-        #gather all found errors
-        for match in reversed(matches):
-            startPos = match.offset
-            endPos = match.offset + match.errorLength
-            errortext = text[startPos : endPos]
-            lt_match = LTMatch(msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
-            created_lt_match = CacheStore.Instance().create_lt_match(lt_match)
-            msg.add_error(created_lt_match)
-
-        modified_text = ''.join(text_list)
-        msg.annotated_text = modified_text
+    #gather all found errors
+    for match in reversed(matches):
+        startPos = match.offset
+        endPos = match.offset + match.errorLength
+        errortext = text[startPos : endPos]
+        lt_match = LTMatch(msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
+        created_lt_match = CacheStore.Instance().create_lt_match(lt_match)
 
 # endregion
 
