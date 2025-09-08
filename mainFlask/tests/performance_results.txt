@@ -1,3 +1,4 @@
+Loading messages just from file:
 Processed 10000 messages in 0.122920s (81354 msgs/sec)
 Processed 10000 messages in 0.122848s (81401 msgs/sec)
 Processed 10000 messages in 0.117841s (84860 msgs/sec)
@@ -8,3 +9,20 @@ Processed 10000 messages in 0.122548s (81601 msgs/sec)
 Processed 10000 messages in 0.123732s (80820 msgs/sec)
 Processed 10000 messages in 0.124974s (80016 msgs/sec)
 Processed 10000 messages in 0.129920s (76970 msgs/sec)
+
+result -> 0.124451s (80443 msgs/sec)
+------------------------------------------------------
+Loading messages and persisting them into DB:
+Processed 10000 messages in 35.85s (279 msgs/sec)
+Processed 10000 messages in 34.82s (287 msgs/sec)
+Processed 10000 messages in 34.69s (288 msgs/sec)
+Processed 10000 messages in 34.62s (289 msgs/sec)
+Processed 10000 messages in 34.39s (291 msgs/sec)
+Processed 10000 messages in 37.42s (267 msgs/sec)
+Processed 10000 messages in 35.64s (281 msgs/sec)
+Processed 10000 messages in 37.02s (270 msgs/sec)
+Processed 10000 messages in 33.92s (295 msgs/sec)
+Processed 10000 messages in 34.28s (292 msgs/sec)
+
+result -> 35.265s (283.9 msgs/sec)
+-------------------------------------------------------

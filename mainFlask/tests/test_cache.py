@@ -5,12 +5,6 @@ from mainFlask.classes.author import Author
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-def setup_method(self):
-    print("This runs before each test")
-
-def teardown_method(self):
-    print("This runs after each test")
-
 @pytest.fixture
 def establish_db_connection():
     app = Flask(__name__)
@@ -40,7 +34,7 @@ def test_CRUD_annotation(establish_db_connection):
 def test_get_all_annotations_by_msg_id(establish_db_connection):
 
     #arrange
-    msg_id: int = 1
+    msg_id: int = 1 #TODO: create message that this test runs again
     annotation1 = Annotation(None, msg_id, 3, 6, "RULE 43", "Das ist der Grund", "Mein Kommentar.")
     annotation2 = Annotation(None, msg_id, 9, 15, "RULE 5", "Ein anderer Grund", "Mein Kommentar hat sich verändert.")
     annotation3 = Annotation(None, msg_id+2, 9, 15, "RULE 45", "Ein Grund", "Kommentar")

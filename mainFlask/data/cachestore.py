@@ -350,6 +350,10 @@ class CacheStore:
     # endregion
 
     #region Message
+    def create_messages(self, msg_list):
+        for msg in msg_list:
+            self.create_message(msg)
+
     def create_message(self, message):
         if message is None:
             return None
