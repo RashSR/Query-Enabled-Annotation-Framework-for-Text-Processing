@@ -11,7 +11,7 @@ from mainFlask.classes.filter_type import FilterType
 def establish_db_connection():
     app = Flask(__name__)
     app.secret_key = 'your_secret_key'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_database.db'  #TODO: this needs own db
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_database.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
     CacheStore.Instance(db, app)
