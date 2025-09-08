@@ -150,11 +150,7 @@ def get_tool():
     return _tool_instance
 
 def analyze_messages_with_language_tool(msg_list: list[Message]):
-    total = len(msg_list)
-    count = 0 
     for msg in msg_list:
-        count = count + 1
-        print_progress_bar(count, total)
         analyze_msg_with_language_tool(msg)
 
 def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
@@ -171,12 +167,6 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
         errortext = text[startPos : endPos]
         lt_match = LTMatch(msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
         created_lt_match = CacheStore.Instance().create_lt_match(lt_match)
-
-def print_progress_bar(iteration, total, length=40):
-    percent = (iteration / total)
-    filled_length = int(length * percent)
-    bar = '█' * filled_length + '-' * (length - filled_length)
-    print(f'\rProcessing |{bar}| {percent*100:.1f}% complete', end='')
 
 # endregion
 

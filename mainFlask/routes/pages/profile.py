@@ -13,11 +13,18 @@ profile_bp = Blueprint('profile', __name__)
 analysis_progress = {}
 
 def analyze_with_progress(task_id, msgs_author_1, msgs_author_2):
-    analysis_progress[task_id] = {'step': 0, 'total': 2, 'done': False}
-    utils.analyze_messages_with_language_tool(msgs_author_1)
-    analysis_progress[task_id]['step'] = 1
-    utils.analyze_messages_with_language_tool(msgs_author_2)
-    analysis_progress[task_id]['step'] = 2
+    total = len(msgs_author_1) + len(msgs_author_2)
+    analysis_progress[task_id] = {'step': 0, 'total': total, 'done': False}
+    count = 0
+    for msg in msgs_author_1:
+        utils.analyze_msg_with_language_tool(msg)
+        count = count + 1
+        analysis_progress[task_id]['step'] = count
+    for msg in msgs_author_2: 
+        utils.analyze_msg_with_language_tool(msg)
+        count = count + 1
+        analysis_progress[task_id]['step'] = count
+    
     analysis_progress[task_id]['done'] = True
 
 @profile_bp.route("/profile")
