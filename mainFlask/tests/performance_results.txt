@@ -28,7 +28,18 @@ Processed 10000 messages in 0.133955s (74652 msgs/sec)
 result -> 0.132746s (754972 msgs/sec)
 
 LOW
+Processed 10000 messages in 0.312669s (31983 msgs/sec)
+Processed 10000 messages in 0.297668s (33594 msgs/sec)
+Processed 10000 messages in 0.297870s (33572 msgs/sec)
+Processed 10000 messages in 0.346376s (28870 msgs/sec)
+Processed 10000 messages in 0.305576s (32725 msgs/sec)
+Processed 10000 messages in 0.322684s (30990 msgs/sec)
+Processed 10000 messages in 0.300349s (33295 msgs/sec)
+Processed 10000 messages in 0.305301s (32755 msgs/sec)
+Processed 10000 messages in 0.309085s (32354 msgs/sec)
+Processed 10000 messages in 0.305045s (32782 msgs/sec)
 
+result ->0. s ( msgs/sec)
 ------------------------------------------------------
 Loading messages and persisting them into DB:
 HIGH
@@ -60,6 +71,17 @@ Processed 10000 messages in 152.83s (65 msgs/sec)
 result -> 174.70s (57.5 msgs/sec)
 
 LOW
+
+Processed 10000 messages in 67.97s (147 msgs/sec)
+Processed 10000 messages in 69.64s (144 msgs/sec)
+Processed 10000 messages in 69.55s (144 msgs/sec)
+Processed 10000 messages in 74.01s (135 msgs/sec)
+Processed 10000 messages in 86.41s (116 msgs/sec)
+Processed 10000 messages in 67.81s (147 msgs/sec)
+Processed 10000 messages in 69.47s (144 msgs/sec)
+Processed 10000 messages in 67.39s (148 msgs/sec)
+Processed 10000 messages in 69.22s (144 msgs/sec)
+Processed 10000 messages in 84.34s (119 msgs/sec)
+
+result -> s (msgs/sec)
 -------------------------------------------------------
-
-
