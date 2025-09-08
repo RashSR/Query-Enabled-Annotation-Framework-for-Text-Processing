@@ -1,4 +1,5 @@
 Loading messages just from file:
+HIGH
 Processed 10000 messages in 0.122920s (81354 msgs/sec)
 Processed 10000 messages in 0.122848s (81401 msgs/sec)
 Processed 10000 messages in 0.117841s (84860 msgs/sec)
@@ -11,8 +12,26 @@ Processed 10000 messages in 0.124974s (80016 msgs/sec)
 Processed 10000 messages in 0.129920s (76970 msgs/sec)
 
 result -> 0.124451s (80443 msgs/sec)
+
+MEDIUM
+Processed 10000 messages in 0.132611s (75409 msgs/sec)
+Processed 10000 messages in 0.136832s (73083 msgs/sec)
+Processed 10000 messages in 0.128176s (78018 msgs/sec)
+Processed 10000 messages in 0.132516s (75462 msgs/sec)
+Processed 10000 messages in 0.127976s (78140 msgs/sec)
+Processed 10000 messages in 0.131420s (76092 msgs/sec)
+Processed 10000 messages in 0.136785s (73107 msgs/sec)
+Processed 10000 messages in 0.139569s (71649 msgs/sec)
+Processed 10000 messages in 0.127616s (78360 msgs/sec)
+Processed 10000 messages in 0.133955s (74652 msgs/sec)
+
+result -> 0.132746s (754972 msgs/sec)
+
+LOW
+
 ------------------------------------------------------
 Loading messages and persisting them into DB:
+HIGH
 Processed 10000 messages in 35.85s (279 msgs/sec)
 Processed 10000 messages in 34.82s (287 msgs/sec)
 Processed 10000 messages in 34.69s (288 msgs/sec)
@@ -24,5 +43,23 @@ Processed 10000 messages in 37.02s (270 msgs/sec)
 Processed 10000 messages in 33.92s (295 msgs/sec)
 Processed 10000 messages in 34.28s (292 msgs/sec)
 
-result -> 35.265s (283.9 msgs/sec)
+result -> 35.27s (283.9 msgs/sec)
+
+MEDIUM
+Processed 10000 messages in 183.32s (55 msgs/sec)
+Processed 10000 messages in 176.76s (57 msgs/sec)
+Processed 10000 messages in 167.08s (60 msgs/sec)
+Processed 10000 messages in 170.54s (59 msgs/sec)
+Processed 10000 messages in 173.71s (58 msgs/sec)
+Processed 10000 messages in 184.00s (54 msgs/sec)
+Processed 10000 messages in 177.41s (56 msgs/sec)
+Processed 10000 messages in 183.21s (55 msgs/sec)
+Processed 10000 messages in 178.17s (56 msgs/sec)
+Processed 10000 messages in 152.83s (65 msgs/sec)
+
+result -> 174.70s (57.5 msgs/sec)
+
+LOW
 -------------------------------------------------------
+
+
