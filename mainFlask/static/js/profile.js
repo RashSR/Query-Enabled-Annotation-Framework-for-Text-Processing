@@ -126,7 +126,7 @@ window.addEventListener('DOMContentLoaded', function() {
       select.name = `author_map_${idx}`;
       select.style.width = '100%';
       select.style.marginTop = '0.5rem';
-      let matchedIdx = 0;
+      let matchedIdx = -1;
       existingAuthors.forEach((author, i) => {
         const option = document.createElement('option');
         option.value = author.id;
