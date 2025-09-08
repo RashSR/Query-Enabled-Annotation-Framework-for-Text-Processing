@@ -7,7 +7,6 @@ from mainFlask.classes.filter_type import FilterType
 konkordanz_bp = Blueprint('konkordanz', __name__)
 
 #TODO: the jump dont highlight case sensitiv, keyword gets multiple highlights
-#Dem Nutzer die Möglichkeit geben ob er e.g. Fehler in einer Nachricht suchen mag oder direktes Wort oder Nachfolger/Vorgänger
 @konkordanz_bp.route("/konkordanz")
 def konkordanz_view():
 
