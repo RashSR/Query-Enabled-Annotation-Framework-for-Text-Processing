@@ -10,50 +10,6 @@ import time
 
 profile_bp = Blueprint('profile', __name__)
 
-analysis_progress = {}
-def analyze_with_progress(task_id, msgs_author_1: list[Message], msgs_author_2: list[Message]):
-    global_count = 0
-    total = len(msgs_author_1) + len(msgs_author_2)
-    analysis_progress[task_id] = {
-        'step': 0,
-        'total': total,
-        'done': False,
-        'message': 'Starte Analyse...',
-        'eta': None
-    } 
-
-    start_time = time.time()
-
-    def process_msgs(msgs, sender_name):
-        nonlocal global_count
-        for count, msg in enumerate(msgs, start=1):
-            # do work
-            utils.analyze_msg_with_language_tool(msg)
-            utils.analyze_msg_with_spacy(msg)
-
-            global_count += 1
-            elapsed = time.time() - start_time
-            avg_time = elapsed / global_count
-            remaining = total - global_count
-            eta_seconds = int(avg_time * remaining)
-            print(eta_seconds)
-            analysis_progress[task_id].update({
-                'step': global_count,
-                'message': f'Analysiere {count}/{len(msgs)} Nachrichten von {sender_name}',
-                'eta': eta_seconds
-            })
-
-    if msgs_author_1:
-        process_msgs(msgs_author_1, msgs_author_1[0].sender.name)
-    if msgs_author_2:
-        process_msgs(msgs_author_2, msgs_author_2[0].sender.name)
-
-    analysis_progress[task_id].update({
-        'message': 'Analyse abgeschlossen!',
-        'done': True,
-        'eta': 0
-    })
-
 @profile_bp.route("/profile")
 def profile():
     all_authors = CacheStore.Instance().get_all_authors()
@@ -190,6 +146,49 @@ def _prepare_message_for_saving(author: Author, chat: Chat, msg_list: list[Messa
         msg.sender = author
     
     return messages_by_author
+
+analysis_progress = {}
+def analyze_with_progress(task_id, msgs_author_1: list[Message], msgs_author_2: list[Message]):
+    global_count = 0
+    total = len(msgs_author_1) + len(msgs_author_2)
+    analysis_progress[task_id] = {
+        'step': 0,
+        'total': total,
+        'done': False,
+        'message': 'Starte Analyse...',
+        'eta': None
+    } 
+
+    start_time = time.time()
+
+    def process_msgs(msgs, sender_name):
+        nonlocal global_count
+        for count, msg in enumerate(msgs, start=1):
+            # do work
+            utils.analyze_msg_with_language_tool(msg)
+            utils.analyze_msg_with_spacy(msg)
+
+            global_count += 1
+            elapsed = time.time() - start_time
+            avg_time = elapsed / global_count
+            remaining = total - global_count
+            eta_seconds = int(avg_time * remaining)
+            analysis_progress[task_id].update({
+                'step': global_count,
+                'message': f'Analysiere {count}/{len(msgs)} Nachrichten von {sender_name}',
+                'eta': eta_seconds
+            })
+
+    if msgs_author_1:
+        process_msgs(msgs_author_1, msgs_author_1[0].sender.name)
+    if msgs_author_2:
+        process_msgs(msgs_author_2, msgs_author_2[0].sender.name)
+
+    analysis_progress[task_id].update({
+        'message': 'Analyse abgeschlossen!',
+        'done': True,
+        'eta': 0
+    })
 
 
 

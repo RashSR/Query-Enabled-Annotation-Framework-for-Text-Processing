@@ -126,12 +126,17 @@ window.addEventListener('DOMContentLoaded', function() {
       select.name = `author_map_${idx}`;
       select.style.width = '100%';
       select.style.marginTop = '0.5rem';
-      existingAuthors.forEach(author => {
+      let matchedIdx = 0;
+      existingAuthors.forEach((author, i) => {
         const option = document.createElement('option');
         option.value = author.id;
         option.textContent = author.name;
+        if (author.name.trim().toLowerCase() === extracted.trim().toLowerCase()) {
+          matchedIdx = i;
+        }
         select.appendChild(option);
       });
+      select.selectedIndex = matchedIdx;
       card.appendChild(select);
     });
 
