@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Update the textfield with the current query string
+  function updateQueryStringTextfield() {
+    const form = document.querySelector('form');
+    const tf = document.getElementById('concordance-above-search');
+    if (form && tf) {
+      const params = new URLSearchParams(new FormData(form)).toString();
+      tf.value = params;
+    }
+  }
+
+  // Update on any change in the form
+  document.querySelector('form')?.addEventListener('input', updateQueryStringTextfield);
+  document.querySelector('form')?.addEventListener('change', updateQueryStringTextfield);
+  // Initial update on page load
+  updateQueryStringTextfield();
   // Show/hide custom number input for range dropdowns
   document.addEventListener('change', function(e) {
     if (e.target.matches('select.range-select')) {
