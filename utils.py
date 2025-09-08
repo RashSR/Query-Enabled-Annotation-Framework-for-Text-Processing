@@ -177,27 +177,9 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
             lt_match = LTMatch(msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
             created_lt_match = CacheStore.Instance().create_lt_match(lt_match)
             msg.add_error(created_lt_match)
-            add_error_tags(match.ruleId, errortext, startPos, endPos, text_list)
 
         modified_text = ''.join(text_list)
         msg.annotated_text = modified_text
-
-# print all usefull error informations
-def print_error(match, startPos, endPos, text):
-    fehlertext = text[startPos : endPos]
-    print(f"Gefundener Fehler: '{fehlertext}'")
-    print(f"Nachricht: {match.message}")
-    if(len(match.replacements) > 0):
-        print(f"Vorschlag: {match.replacements}")
-    print(f"Position: {startPos}-{endPos}")
-    print(f"Fehlerregel ID: {match.ruleId}")
-    print(f"Kategorie: {match.category}")
-    print(f"RuleIssueType: {match.ruleIssueType}")
-
-#add html style tags
-def add_error_tags(ruleId, fehlertext, startPos, endPos, text_list):
-    error_tag = f"<span data-error=\"{ruleId}\">{fehlertext}</span>"
-    text_list[startPos : endPos] = list(error_tag)
 
 # endregion
 
