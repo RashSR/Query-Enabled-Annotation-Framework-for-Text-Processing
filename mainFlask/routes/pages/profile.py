@@ -18,12 +18,14 @@ def analyze_with_progress(task_id, msgs_author_1: list[Message], msgs_author_2: 
     for count, msg in enumerate(msgs_author_1, start=1):
         analysis_progress[task_id]['message'] = f'Analysiere {count}/{len(msgs_author_1)} Nachrichten von {msgs_author_1[0].sender.name}'
         utils.analyze_msg_with_language_tool(msg)
+        utils.analyze_msg_with_spacy(msg)
         global_count = global_count + 1
         analysis_progress[task_id]['step'] = global_count
     
     for count, msg in enumerate(msgs_author_2, start=1):
         analysis_progress[task_id]['message'] = f'Analysiere {count}/{len(msgs_author_2)} Nachrichten von {msgs_author_2[0].sender.name}'
         utils.analyze_msg_with_language_tool(msg)
+        utils.analyze_msg_with_spacy(msg)
         global_count = global_count + 1
         analysis_progress[task_id]['step'] = global_count
 

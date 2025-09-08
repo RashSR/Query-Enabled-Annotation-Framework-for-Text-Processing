@@ -66,10 +66,6 @@ def clean_text(text: str) -> str:
 # Load german spaCy model and initialize language tool -> only loaded once
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 
-def analyze_messages_with_spacy(msg_list: list[Message]):
-    for msg in msg_list:
-        analyze_msg_with_spacy(msg)
-
 def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
     #TODO: check for MessageType.TEXT
     doc = nlp(msg.content)
@@ -103,12 +99,6 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
         if pos == "NUM":
             number = morph.get("Number")[0] if morph.get("Number") else number
             gram_case = morph.get("Case")[0] if morph.get("Case") else gram_case
-
-        if pos in ("CCONJ", "SCONJ", "PART", "ADP", "INTJ", "X"):
-            print(f"[Info] POS {pos} has minimal or no morphological features.")
-
-        if pos in ("PUNCT", "SPACE"):
-            print(f"[Skipping] POS {pos} (punctuation or space)")
 
         spacy_match = SpacyMatch(
             message_id=msg.message_id,
@@ -148,10 +138,6 @@ def get_tool():
     if _tool_instance is None:
         _tool_instance = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
     return _tool_instance
-
-def analyze_messages_with_language_tool(msg_list: list[Message]):
-    for msg in msg_list:
-        analyze_msg_with_language_tool(msg)
 
 def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
 

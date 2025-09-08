@@ -414,6 +414,8 @@ class CacheStore:
             self._spacy_matches = {}
 
         self._spacy_matches[generated_id] = spacy_match
+        self._messages[spacy_match.message_id].spacy_match_ids.append(spacy_match.id)
+        self._messages[spacy_match.message_id].spacy_matches.append(spacy_match)
         return spacy_match
 
     # endregion
