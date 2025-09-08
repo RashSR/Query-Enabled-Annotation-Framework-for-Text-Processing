@@ -4,8 +4,21 @@ from mainFlask.data.cachestore import CacheStore
 from mainFlask.classes.author import Author
 from mainFlask.classes.message import Message
 from mainFlask.classes.chat import Chat
+import threading
+import uuid
 
 profile_bp = Blueprint('profile', __name__)
+
+# Global progress store (for demo; use Redis/db for production)
+analysis_progress = {}
+
+def analyze_with_progress(task_id, msgs_author_1, msgs_author_2):
+    analysis_progress[task_id] = {'step': 0, 'total': 2, 'done': False}
+    utils.analyze_messages_with_language_tool(msgs_author_1)
+    analysis_progress[task_id]['step'] = 1
+    utils.analyze_messages_with_language_tool(msgs_author_2)
+    analysis_progress[task_id]['step'] = 2
+    analysis_progress[task_id]['done'] = True
 
 @profile_bp.route("/profile")
 def profile():
@@ -117,9 +130,18 @@ def map_chat_authors(author_id):
     CacheStore.Instance().clear_temporary_data()
 
     IsCreatedSucessfully = created_chat is not None and created_msgs_author_1 is not None and created_msgs_author_2 is not None
-    utils.analyze_messages_with_language_tool(created_msgs_author_1)
-    utils.analyze_messages_with_language_tool(created_msgs_author_2)
-    return jsonify({'success': IsCreatedSucessfully, 'mapped_info': mapped_info, 'relationship': relationship})
+    # Start analysis in background thread
+    task_id = str(uuid.uuid4())
+    thread = threading.Thread(target=analyze_with_progress, args=(task_id, created_msgs_author_1, created_msgs_author_2))
+    thread.start()
+    return jsonify({'success': IsCreatedSucessfully, 'mapped_info': mapped_info, 'relationship': relationship, 'task_id': task_id})
+
+@profile_bp.route('/progress/<task_id>')
+def get_progress(task_id):
+    progress = analysis_progress.get(task_id, None)
+    if not progress:
+        return jsonify({'step': 0, 'total': 2, 'done': False})
+    return jsonify(progress)
 
 def _get_author_by_id(author_id):
     author_id = int(author_id)
@@ -136,5 +158,5 @@ def _prepare_message_for_saving(author: Author, chat: Chat, msg_list: list[Messa
     return messages_by_author
 
 
-    
+
 

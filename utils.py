@@ -154,7 +154,7 @@ def analyze_messages_with_language_tool(msg_list: list[Message]):
     count = 0 
     for msg in msg_list:
         count = count + 1
-        print_progress_bar(count + 1, total)
+        print_progress_bar(count, total)
         analyze_msg_with_language_tool(msg)
 
 def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT

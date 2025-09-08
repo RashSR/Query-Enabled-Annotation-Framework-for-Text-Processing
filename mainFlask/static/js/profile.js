@@ -67,10 +67,13 @@ window.addEventListener('DOMContentLoaded', function() {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ mapping: selectedIds, extracted_authors: data.extracted_authors, relationship: relationship })
-            }).then(r => {
-              if (r.ok) {
-                location.reload();
-              } else {
+            })
+            .then(r => r.json())
+            .then(resp => {
+              if (resp.task_id) {
+                showProgressBar(resp.task_id);
+              }
+              if (!resp.success) {
                 alert('Fehler beim Zuordnen der Autoren!');
               }
             });
@@ -185,6 +188,34 @@ window.addEventListener('DOMContentLoaded', function() {
     card.appendChild(btnRow);
     modal.appendChild(card);
     document.body.appendChild(modal);
+  }
+
+  // Progress bar logic
+  function showProgressBar(taskId) {
+    const modal = document.getElementById('analysis-progress-modal');
+    const bar = document.getElementById('progress-bar');
+    const text = document.getElementById('progress-text');
+    modal.style.display = 'flex';
+
+    function poll() {
+      fetch('/progress/' + taskId)
+        .then(res => res.json())
+        .then(data => {
+          let percent = Math.round((data.step / data.total) * 100);
+          bar.style.width = percent + '%';
+          text.textContent = `Fortschritt: ${percent}%`;
+          if (!data.done) {
+            setTimeout(poll, 1000);
+          } else {
+            text.textContent = 'Analyse abgeschlossen!';
+            setTimeout(() => {
+              modal.style.display = 'none';
+              window.location.reload();
+            }, 1500);
+          }
+        });
+    }
+    poll();
   }
 
   // Example usage after file upload and backend response:
