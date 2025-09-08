@@ -75,6 +75,10 @@ def print_progress_bar(iteration, total, length=40):
 # Load german spaCy model and initialize language tool -> only loaded once
 nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 
+def analyze_messages_with_spacy(msg_list: list[Message]):
+    for msg in msg_list:
+        analyze_msg_with_spacy(msg)
+
 def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
     #TODO: check for MessageType.TEXT
     doc = nlp(msg.content)
@@ -154,17 +158,18 @@ def get_tool():
         _tool_instance = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
     return _tool_instance
 
+def analyze_messages_with_language_tool(msg_list: list[Message]):
+    for msg in msg_list:
+        analyze_msg_with_language_tool(msg)
+
 def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
 
     if(msg is None):
         return None
     
     text = msg.content
-
-    #check the text
     matches = get_tool().check(text)
 
-    #gather all found errors
     for match in reversed(matches):
         startPos = match.offset
         endPos = match.offset + match.errorLength

@@ -117,6 +117,8 @@ def map_chat_authors(author_id):
     CacheStore.Instance().clear_temporary_data()
 
     IsCreatedSucessfully = created_chat is not None and created_msgs_author_1 is not None and created_msgs_author_2 is not None
+    utils.analyze_messages_with_language_tool(created_msgs_author_1)
+    utils.analyze_messages_with_language_tool(created_msgs_author_2)
     return jsonify({'success': IsCreatedSucessfully, 'mapped_info': mapped_info, 'relationship': relationship})
 
 def _get_author_by_id(author_id):
