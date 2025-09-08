@@ -203,11 +203,11 @@ window.addEventListener('DOMContentLoaded', function() {
         .then(data => {
           let percent = Math.round((data.step / data.total) * 100);
           bar.style.width = percent + '%';
-          text.textContent = `Fortschritt: ${percent}%`;
+          text.textContent = `${percent}% – ${data.message || ''}`;
           if (!data.done) {
             setTimeout(poll, 1000);
           } else {
-            text.textContent = 'Analyse abgeschlossen!';
+            text.textContent = data.message || 'Analyse abgeschlossen!';
             setTimeout(() => {
               modal.style.display = 'none';
               window.location.reload();

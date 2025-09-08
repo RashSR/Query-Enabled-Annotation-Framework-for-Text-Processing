@@ -9,22 +9,25 @@ import uuid
 
 profile_bp = Blueprint('profile', __name__)
 
-# Global progress store (for demo; use Redis/db for production)
 analysis_progress = {}
-
-def analyze_with_progress(task_id, msgs_author_1, msgs_author_2):
+def analyze_with_progress(task_id, msgs_author_1: list[Message], msgs_author_2: list[Message]):
+    global_count = 0
     total = len(msgs_author_1) + len(msgs_author_2)
-    analysis_progress[task_id] = {'step': 0, 'total': total, 'done': False}
-    count = 0
-    for msg in msgs_author_1:
+    analysis_progress[task_id] = {'step': 0, 'total': total, 'done': False, 'message': 'Starte Analyse...'} 
+
+    for count, msg in enumerate(msgs_author_1, start=1):
+        analysis_progress[task_id]['message'] = f'Analysiere {count}/{len(msgs_author_1)} Nachrichten von {msgs_author_1[0].sender.name}'
         utils.analyze_msg_with_language_tool(msg)
-        count = count + 1
-        analysis_progress[task_id]['step'] = count
-    for msg in msgs_author_2: 
-        utils.analyze_msg_with_language_tool(msg)
-        count = count + 1
-        analysis_progress[task_id]['step'] = count
+        global_count = global_count + 1
+        analysis_progress[task_id]['step'] = global_count
     
+    for count, msg in enumerate(msgs_author_2, start=1):
+        analysis_progress[task_id]['message'] = f'Analysiere {count}/{len(msgs_author_2)} Nachrichten von {msgs_author_2[0].sender.name}'
+        utils.analyze_msg_with_language_tool(msg)
+        global_count = global_count + 1
+        analysis_progress[task_id]['step'] = global_count
+
+    analysis_progress[task_id]['message'] = 'Analyse abgeschlossen!'
     analysis_progress[task_id]['done'] = True
 
 @profile_bp.route("/profile")
