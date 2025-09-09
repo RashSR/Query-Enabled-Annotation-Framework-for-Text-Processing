@@ -1,16 +1,18 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, abort
 from mainFlask.data.cachestore import CacheStore
 
 metrics_bp = Blueprint('metrics', __name__)
 
 @metrics_bp.route("/metrics")
 def metrics_view():
-    authors = CacheStore.Instance().get_all_authors()
-    return render_template('metrics.html', authors=authors)
+    all_authors = CacheStore.Instance().get_all_authors()
+    return render_template('metrics.html', authors=all_authors)
 
 
 @metrics_bp.route("/metrics/<int:author_id>")
 def metrics_author(author_id):
-    authors = CacheStore.Instance().get_all_authors()
-    # You can add more logic here to show metrics for the selected author
-    return render_template('metrics.html', authors=authors, selected_author_id=author_id)
+    all_authors = CacheStore.Instance().get_all_authors()
+    selected_author = CacheStore.Instance().get_author_by_id(author_id)
+    if not selected_author:
+        abort(404)
+    return render_template('metrics.html', authors=all_authors, author=selected_author)
