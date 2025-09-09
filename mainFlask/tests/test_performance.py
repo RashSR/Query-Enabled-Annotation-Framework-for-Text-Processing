@@ -25,6 +25,8 @@ def establish_db_connection():
         #This code runs after test execution
         db.session.execute(text("DELETE FROM chat"))
         db.session.execute(text("DELETE FROM message"))
+        db.session.execute(text("DELETE FROM spacy_match"))
+        db.session.execute(text("DELETE FROM lt_match"))
         db.session.commit()
 
 def test_loading_messages_from_file():
@@ -91,6 +93,9 @@ def test_loading_and_persisting_and_analyzing_messages(establish_db_connection):
             msg.chat_id = creatd_chat.chat_id
             msg.sender = author
         CacheStore.Instance().create_messages(messages)
+        for msg in messages:
+            utils.analyze_msg_with_language_tool(msg)
+            utils.analyze_msg_with_spacy(msg)
 
     duration = time.perf_counter() - start
     msgs_per_sec = len(messages) / duration
@@ -104,3 +109,5 @@ def test_loading_and_persisting_and_analyzing_messages(establish_db_connection):
         )
 
     assert len(messages) > 0
+
+#TODO: compare LT analysis vs spacy analysis time
