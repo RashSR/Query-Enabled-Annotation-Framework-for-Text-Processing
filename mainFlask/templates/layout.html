@@ -68,7 +68,11 @@
         </div>
     {% endif %}
 
-    <!--TODO: add sidebar here for metrics view -->
+    {% if request.path.startswith(url_for('metrics.metrics_view')) %}
+        <div class="sidebar" >
+            {% include 'metrics_list.html' %}
+        </div>
+    {% endif %}
     
     <div class="main">
         {% block content %}{% endblock %}

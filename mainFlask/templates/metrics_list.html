@@ -1,0 +1,13 @@
+<ul class="elements-list">
+  {% for a in authors %}
+    <li style="display:flex; align-items:center; justify-content:space-between;">
+        <a href="{{ url_for('metrics.metrics_author', author_id=a.id) }}" style="display: flex; align-items: center; flex:1;">
+            <div class="avatar">{{ a.name[0] }}</div>
+            <div style="flex: 1;">
+              <strong>{{ a.name }}</strong>
+              <p>{{ a.job or "Beruf unbekannt" }}</p>
+            </div>
+        </a>
+    </li>
+  {% endfor %}
+</ul>

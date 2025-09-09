@@ -1,27 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div style="display: flex; flex-direction: row; height: 100%;">
-    <!-- Author list sidebar -->
-    <div style="width: 260px; min-width: 200px; background: #f7f7f7; border-right: 1px solid #ddd; padding: 1.5rem 1rem;">
-        <h3 style="margin-top:0; margin-bottom:1.2rem; font-size:1.1em; color:#075E54;">Autoren</h3>
-        <ul style="list-style:none; padding:0; margin:0;">
-            {% for a in authors %}
-            <li style="margin-bottom:0.7em;">
-                <a href="{{ url_for('metrics.metrics_author', author_id=a.id) }}" style="display:flex;align-items:center;text-decoration:none;color:#222;padding:0.5em 0.7em;border-radius:5px;transition:background 0.2s;">
-                    <div style="width:32px;height:32px;background:#25D366;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.1em;margin-right:0.7em;">{{ a.name[0] }}</div>
-                    <div style="flex:1;">
-                        <strong>{{ a.name }}</strong>
-                        <div style="font-size:0.95em;color:#888;">{{ a.job or "Beruf unbekannt" }}</div>
-                    </div>
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
     <!-- Metrics main content -->
     <div style="flex:1; padding:2rem; font-size:1.2rem;">
         Metriken folgen bald...
     </div>
-</div>
 {% endblock %}
