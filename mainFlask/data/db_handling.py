@@ -108,7 +108,6 @@ def get_messages_by_author_id(db: SQLAlchemy, app: Flask, author_id: int):
             messages.append(loaded_message)
 
     return messages
-        
 
 def get_messages_by_recipient_id(db: SQLAlchemy, app: Flask, recipient_id: int):
     with app.app_context():
@@ -350,6 +349,34 @@ def create_message(db: SQLAlchemy, app: Flask, message: Message):
         new_message_id = result.lastrowid
         db.session.commit()
         return new_message_id
+    
+
+def create_messages(db: SQLAlchemy, app: Flask, messages: list[Message]):
+    with app.app_context():
+        sql_text = text("""
+            INSERT INTO message (id, chat_id, sender_id, timestamp, content, quoted_message_id)
+            VALUES (:id, :chat_id, :sender_id, :timestamp, :content, :quoted_message_id)
+        """)
+
+        prepared_values = []
+        for message in messages:
+            prepared_values.append({
+                'id': None,
+                'chat_id': message.chat_id,
+                'sender_id': message.sender.id,
+                'timestamp': message.timestamp,
+                'content': message.content,
+                'quoted_message_id': None
+            })
+
+        # This executes the statement for all rows in one go (executemany)
+        result = db.session.execute(sql_text, prepared_values)
+        db.session.commit()
+
+        rowcount = result.rowcount
+        #TODO: Search for max(id) and set IDs with rowcount - maxID and iterate it
+
+        print(f"Das sind die IDS:{rowcount}")
 # endregion
 
 #TODO: Category own DB table? 

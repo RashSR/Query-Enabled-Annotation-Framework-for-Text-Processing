@@ -80,8 +80,8 @@ def test_loading_and_persisting_messages(establish_db_connection):
     assert len(messages) > 0
 
 def test_loop(establish_db_connection):
-    for i in range(3):
-        test_loading_and_persisting_and_analyzing_messages(establish_db_connection)
+    for i in range(10):
+        test_loading_and_persisting_messages(establish_db_connection)
 
 def test_loading_and_persisting_and_analyzing_messages(establish_db_connection):
     overall_start = time.perf_counter()

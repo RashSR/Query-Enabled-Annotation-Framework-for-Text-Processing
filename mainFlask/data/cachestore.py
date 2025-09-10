@@ -374,10 +374,6 @@ class CacheStore:
     # endregion
 
     #region Message
-    def create_messages(self, msg_list):
-        for msg in msg_list:
-            self.create_message(msg)
-
     def create_message(self, message):
         if message is None:
             return None
@@ -395,16 +391,16 @@ class CacheStore:
 
         return message
     
-    def create_messages(self, messages):
-        if messages is None or len(messages) == 0:
+    def create_messages(self, msg_list: list):
+        if len(msg_list) == 0:
             return None
-
-        created_messages = []
-        for msg in messages:
-            created_msg = self.create_message(msg)
-            created_messages.append(created_msg)
-
-        return created_messages
+        if len(msg_list) == 1:
+            return self.create_message(msg_list[0])
+        
+        from .db_handling import create_messages
+        create_messages(self._db, self._app, msg_list)
+        
+        return msg_list
     # endregion
 
     #region LTM
