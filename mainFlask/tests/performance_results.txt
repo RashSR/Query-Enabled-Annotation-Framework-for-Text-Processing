@@ -1,4 +1,5 @@
 Loading messages just from file:
+
 HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
 Processed 10000 messages in 0.122920s (81354 msgs/sec)
 Processed 10000 messages in 0.122848s (81401 msgs/sec)
@@ -43,6 +44,7 @@ result -> 0.3102623s (32292 msgs/sec)
 ------------------------------------------------------
 
 Loading messages and persisting them into DB:
+
 HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
 Processed 10000 messages in 35.85s (279 msgs/sec)
 Processed 10000 messages in 34.82s (287 msgs/sec)
@@ -87,57 +89,30 @@ result -> 72.58s (139 msgs/sec)
 -------------------------------------------------------
 
 Loading messages, persisting them into DB, and calcultaion spaCy/LT:
+
 HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
+Persisting: 40.67s (246 msgs/sec), LT: 7108.28s (1 msgs/sec), spaCy: 313.01s (32 msgs/sec), Total: 7462.14s (1 msgs/sec)
+Persisting: 35.12s (285 msgs/sec), LT: 6682.24s (1 msgs/sec), spaCy: 359.72s (28 msgs/sec), Total: 7077.23s (1 msgs/sec)
+Persisting: 32.41s (309 msgs/sec), LT: 6978.09s (1 msgs/sec), spaCy: 441.22s (23 msgs/sec), Total: 7451.86s (1 msgs/sec)
+Persisting: 35.08s (285 msgs/sec), LT: 7299.06s (1 msgs/sec), spaCy: 445.13s (22 msgs/sec), Total: 7779.44s (1 msgs/sec)
+Persisting: 38.91s (257 msgs/sec), LT: 6505.11s (2 msgs/sec), spaCy: 348.45s (29 msgs/sec), Total: 6892.64s (1 msgs/sec)
+Persisting: 31.24s (320 msgs/sec), LT: 6306.04s (2 msgs/sec), spaCy: 735.59s (14 msgs/sec), Total: 7073.09s (1 msgs/sec)
+Persisting: 32.37s (309 msgs/sec), LT: 6285.67s (2 msgs/sec), spaCy: 1041.91s (10 msgs/sec), Total: 7360.25s (1 msgs/sec)
+Persisting: 31.80s (314 msgs/sec), LT: 7115.45s (1 msgs/sec), spaCy: 418.24s (24 msgs/sec), Total: 7565.63s (1 msgs/sec)
+Persisting: 36.69s (273 msgs/sec), LT: 7921.23s (1 msgs/sec), spaCy: 970.35s (10 msgs/sec), Total: 8928.52s (1 msgs/sec)
+Persisting: 36.59s (273 msgs/sec), LT: 7752.76s (1 msgs/sec), spaCy: 1328.37s (8 msgs/sec), Total: 9118.06s (1 msgs/sec)
+
+-> result: Persiting: 35.09s (285 msgs/s), LT: 6995.39s (1.43 msgs/sec), spaCy: 640.20s (15.62 msgs/sec), Total: 7670.89s (1.30 msgs/sec)
 
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
-Processed 10000 messages in 27163.92s (0 msgs/sec)
+                                                                                           , Total: 27163.92s (0 msgs/sec)
+Persisting: 125.83s (79 msgs/sec), LT: 26383.92s (0 msgs/sec), spaCy: 818.07s (12 msgs/sec), Total: 27327.97s (0 msgs/sec)
+Persisting: 127.43s (78 msgs/sec), LT: 26384.79s (0 msgs/sec), spaCy: 1194.31s (8 msgs/sec), Total: 27706.75s (0 msgs/sec)
+Persisting: 127.18s (79 msgs/sec), LT: 26406.01s (0 msgs/sec), spaCy: 1526.03s (7 msgs/sec), Total: 28059.48s (0 msgs/sec)
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
+Persisting: 70.64s (142 msgs/sec), LT: 35027.60s (0 msgs/sec), spaCy: 774.63s (13 msgs/sec), Total: 35873.21s (0 msgs/sec)
+Persisting: 77.87s (128 msgs/sec), LT: 56486.43s (0 msgs/sec), spaCy: 832.12s (12 msgs/sec), Total: 57396.76s (0 msgs/sec)
 
 
-
-Persisted 10000 messages in 40.67s (246 msgs/sec)
-LanguageTool analyzed 10000 messages in 7108.28s (1 msgs/sec)
-spaCy analyzed 10000 messages in 313.01s (32 msgs/sec)
-TOTAL: 10000 messages in 7462.14s (1 msgs/sec)
-
-Persisted 10000 messages in 35.12s (285 msgs/sec)
-LanguageTool analyzed 10000 messages in 6682.24s (1 msgs/sec)
-spaCy analyzed 10000 messages in 359.72s (28 msgs/sec)
-TOTAL: 10000 messages in 7077.23s (1 msgs/sec)
-
-Persisted 10000 messages in 32.41s (309 msgs/sec)
-LanguageTool analyzed 10000 messages in 6978.09s (1 msgs/sec)
-spaCy analyzed 10000 messages in 441.22s (23 msgs/sec)
-TOTAL: 10000 messages in 7451.86s (1 msgs/sec)
-
-Persisted 10000 messages in 35.08s (285 msgs/sec)
-LanguageTool analyzed 10000 messages in 7299.06s (1 msgs/sec)
-spaCy analyzed 10000 messages in 445.13s (22 msgs/sec)
-TOTAL: 10000 messages in 7779.44s (1 msgs/sec)
-
-Persisted 10000 messages in 38.91s (257 msgs/sec)
-LanguageTool analyzed 10000 messages in 6505.11s (2 msgs/sec)
-spaCy analyzed 10000 messages in 348.45s (29 msgs/sec)
-TOTAL: 10000 messages in 6892.64s (1 msgs/sec)
-
-Persisted 10000 messages in 31.24s (320 msgs/sec)
-LanguageTool analyzed 10000 messages in 6306.04s (2 msgs/sec)
-spaCy analyzed 10000 messages in 735.59s (14 msgs/sec)
-TOTAL: 10000 messages in 7073.09s (1 msgs/sec)
-
-Persisted 10000 messages in 32.37s (309 msgs/sec)
-LanguageTool analyzed 10000 messages in 6285.67s (2 msgs/sec)
-spaCy analyzed 10000 messages in 1041.91s (10 msgs/sec)
-TOTAL: 10000 messages in 7360.25s (1 msgs/sec)
-
-Persisted 10000 messages in 31.80s (314 msgs/sec)
-LanguageTool analyzed 10000 messages in 7115.45s (1 msgs/sec)
-spaCy analyzed 10000 messages in 418.24s (24 msgs/sec)
-TOTAL: 10000 messages in 7565.63s (1 msgs/sec)
-
-Persisted 10000 messages in 36.69s (273 msgs/sec)
-LanguageTool analyzed 10000 messages in 7921.23s (1 msgs/sec)
-spaCy analyzed 10000 messages in 970.35s (10 msgs/sec)
-TOTAL: 10000 messages in 8928.52s (1 msgs/sec)
 
