@@ -3,6 +3,15 @@
 {% block content %}
     <!-- Metrics main content -->
     <div style="flex:1; padding:2rem; font-size:1.2rem;">
-        Metriken folgen bald...
+        {% if author %}
+        <div class="profile-card" style="max-width:400px; margin:auto; background:#fff; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:2rem 2.2rem 1.5rem 2.2rem;">
+            <div class="profile-avatar" style="width:60px; height:60px; background:#25D366; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2em; font-weight:bold; margin:auto;">{{ author.name[0] }}</div>
+            <h2 style="text-align:center; margin:1rem 0 0.5rem 0;">{{ author.name }}</h2>
+            <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">Fehlerrate: <strong>{{ author.get_error_rate() }}</strong> Fehler pro Nachricht</div>
+            <!-- Add more metrics here -->
+        </div>
+        {% else %}
+        <div style="text-align:center; color:#888; font-size:1.1em; margin-top:2em;">Wähle einen Autor aus der Liste links aus, um Metriken anzuzeigen.</div>
+        {% endif %}
     </div>
 {% endblock %}
