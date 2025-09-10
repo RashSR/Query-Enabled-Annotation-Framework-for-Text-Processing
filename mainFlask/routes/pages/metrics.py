@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, abort, session
+from flask import Blueprint, render_template, abort, session
 from mainFlask.data.cachestore import CacheStore
+from mainFlask.classes.author import Author
 import utils
 
 metrics_bp = Blueprint('metrics', __name__)
@@ -13,7 +14,8 @@ def metrics_view():
 @metrics_bp.route("/metrics/<int:author_id>")
 def metrics_author(author_id):
     all_authors = CacheStore.Instance().get_all_authors()
-    selected_author = CacheStore.Instance().get_author_by_id(author_id)
+    selected_author: Author = CacheStore.Instance().get_author_by_id(author_id)
+    print(f"LEN: {len(selected_author.get_all_own_messages())}")
     if not selected_author:
         abort(404)
     return render_template('metrics.html', authors=all_authors, author=selected_author)

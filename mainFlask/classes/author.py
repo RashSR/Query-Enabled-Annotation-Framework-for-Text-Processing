@@ -113,20 +113,13 @@ class Author:
                 return chat
             
         return None
-
+    
     def get_all_own_messages(self):
         msg_list = []
         for chat in self.chats:
             own_messages = chat.get_messages_by_author(self)
             msg_list.extend(own_messages)
         
-        return msg_list
-
-    def get_all_messages(self):
-        msg_list = []
-        for chat in self.chats:
-            msg_list.extend(chat.messages)
-
         return msg_list
     
     def get_error_categories(self):

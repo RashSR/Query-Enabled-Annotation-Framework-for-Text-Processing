@@ -99,6 +99,17 @@ def get_message_by_id(db: SQLAlchemy, app: Flask, id: int):
         
         #TODO: only load stuff that is not available
 
+def get_messages_by_author_id(db: SQLAlchemy, app: Flask, author_id: int):
+    with app.app_context():
+        messages = []
+        result = db.session.execute(text("SELECT * FROM message_with_ltm_and_spacy_ids WHERE sender_id = :author_id"), {'author_id': author_id})
+        for row in result:
+            loaded_message = _convert_db_row_to_message(row)
+            messages.append(loaded_message)
+
+    return messages
+        
+
 def get_messages_by_recipient_id(db: SQLAlchemy, app: Flask, recipient_id: int):
     with app.app_context():
         results = db.session.execute(
