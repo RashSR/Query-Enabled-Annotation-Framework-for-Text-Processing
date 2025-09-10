@@ -103,8 +103,10 @@ def map_chat_authors(author_id):
     ]
 
     author_1 = _get_author_by_id(mapped_info[0]["mapped_id"])
-    author_2= _get_author_by_id(mapped_info[1]["mapped_id"])
-
+    name_1 = mapped_info[0]["extracted"]
+    author_2 = _get_author_by_id(mapped_info[1]["mapped_id"])
+    name_2 = mapped_info[1]["extracted"]
+    
     chat_to_create: Chat = Chat(None)
     chat_to_create.participants.append(author_1)
     chat_to_create.participants.append(author_2)
@@ -112,8 +114,9 @@ def map_chat_authors(author_id):
     created_chat = CacheStore.Instance().create_chat(chat_to_create)
 
     temporary_messages: list[Message] = CacheStore.Instance().get_temporary_data()
-    messages_author_1 = _prepare_message_for_saving(author_1, created_chat, temporary_messages)
-    messages_author_2 = _prepare_message_for_saving(author_2, created_chat, temporary_messages)
+
+    messages_author_1 = _prepare_message_for_saving(author_1, name_1, created_chat, temporary_messages)
+    messages_author_2 = _prepare_message_for_saving(author_2, name_2, created_chat, temporary_messages)
 
     created_msgs_author_1 = CacheStore.Instance().create_messages(messages_author_1)
     created_msgs_author_2 = CacheStore.Instance().create_messages(messages_author_2)
@@ -138,8 +141,8 @@ def _get_author_by_id(author_id):
     author = CacheStore.Instance().get_author_by_id(author_id)
     return author
 
-def _prepare_message_for_saving(author: Author, chat: Chat, msg_list: list[Message]):
-    messages_by_author = [msg for msg in msg_list if msg.sender == author.name]
+def _prepare_message_for_saving(author: Author, mapping_name: str, chat: Chat, msg_list: list[Message]):
+    messages_by_author = [msg for msg in msg_list if msg.sender == mapping_name]
     for msg in messages_by_author:
         msg.chat_id = chat.chat_id
         msg.chat = chat

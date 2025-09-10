@@ -131,3 +131,13 @@ LanguageTool analyzed 10000 messages in 6285.67s (2 msgs/sec)
 spaCy analyzed 10000 messages in 1041.91s (10 msgs/sec)
 TOTAL: 10000 messages in 7360.25s (1 msgs/sec)
 
+Persisted 10000 messages in 31.80s (314 msgs/sec)
+LanguageTool analyzed 10000 messages in 7115.45s (1 msgs/sec)
+spaCy analyzed 10000 messages in 418.24s (24 msgs/sec)
+TOTAL: 10000 messages in 7565.63s (1 msgs/sec)
+
+Persisted 10000 messages in 36.69s (273 msgs/sec)
+LanguageTool analyzed 10000 messages in 7921.23s (1 msgs/sec)
+spaCy analyzed 10000 messages in 970.35s (10 msgs/sec)
+TOTAL: 10000 messages in 8928.52s (1 msgs/sec)
+
