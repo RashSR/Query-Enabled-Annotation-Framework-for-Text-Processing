@@ -120,6 +120,21 @@ class Author:
         self._messages = CacheStore.Instance().get_messages_by_author_id(self._id)
         return self._messages
     
+    def get_error_rate(self):
+        messages = self.messages
+        total_msgs = len(messages)
+
+        if total_msgs == 0:
+            return 0.0
+
+        total_errors = 0
+        for message in messages:
+            error_count_for_message = len(message.ltmatch_ids)
+            total_errors = total_errors + error_count_for_message
+
+        error_rate = total_errors / total_msgs
+        return round(error_rate, 2)
+
     def get_error_categories(self):
         all_categories = {
             category
