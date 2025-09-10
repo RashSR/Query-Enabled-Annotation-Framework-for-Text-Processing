@@ -80,7 +80,7 @@ def test_loading_and_persisting_messages(establish_db_connection):
     assert len(messages) > 0
 
 def test_loop(establish_db_connection):
-    for i in range(9):
+    for i in range(3):
         test_loading_and_persisting_and_analyzing_messages(establish_db_connection)
 
 def test_loading_and_persisting_and_analyzing_messages(establish_db_connection):

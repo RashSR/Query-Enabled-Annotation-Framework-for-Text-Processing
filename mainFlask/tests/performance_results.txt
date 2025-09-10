@@ -95,3 +95,39 @@ Processed 10000 messages in 27163.92s (0 msgs/sec)
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
 
 
+
+Persisted 10000 messages in 40.67s (246 msgs/sec)
+LanguageTool analyzed 10000 messages in 7108.28s (1 msgs/sec)
+spaCy analyzed 10000 messages in 313.01s (32 msgs/sec)
+TOTAL: 10000 messages in 7462.14s (1 msgs/sec)
+
+Persisted 10000 messages in 35.12s (285 msgs/sec)
+LanguageTool analyzed 10000 messages in 6682.24s (1 msgs/sec)
+spaCy analyzed 10000 messages in 359.72s (28 msgs/sec)
+TOTAL: 10000 messages in 7077.23s (1 msgs/sec)
+
+Persisted 10000 messages in 32.41s (309 msgs/sec)
+LanguageTool analyzed 10000 messages in 6978.09s (1 msgs/sec)
+spaCy analyzed 10000 messages in 441.22s (23 msgs/sec)
+TOTAL: 10000 messages in 7451.86s (1 msgs/sec)
+
+Persisted 10000 messages in 35.08s (285 msgs/sec)
+LanguageTool analyzed 10000 messages in 7299.06s (1 msgs/sec)
+spaCy analyzed 10000 messages in 445.13s (22 msgs/sec)
+TOTAL: 10000 messages in 7779.44s (1 msgs/sec)
+
+Persisted 10000 messages in 38.91s (257 msgs/sec)
+LanguageTool analyzed 10000 messages in 6505.11s (2 msgs/sec)
+spaCy analyzed 10000 messages in 348.45s (29 msgs/sec)
+TOTAL: 10000 messages in 6892.64s (1 msgs/sec)
+
+Persisted 10000 messages in 31.24s (320 msgs/sec)
+LanguageTool analyzed 10000 messages in 6306.04s (2 msgs/sec)
+spaCy analyzed 10000 messages in 735.59s (14 msgs/sec)
+TOTAL: 10000 messages in 7073.09s (1 msgs/sec)
+
+Persisted 10000 messages in 32.37s (309 msgs/sec)
+LanguageTool analyzed 10000 messages in 6285.67s (2 msgs/sec)
+spaCy analyzed 10000 messages in 1041.91s (10 msgs/sec)
+TOTAL: 10000 messages in 7360.25s (1 msgs/sec)
+

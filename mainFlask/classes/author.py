@@ -14,6 +14,7 @@ class Author:
         self._chats = chats if chats is not None else []
         self._chat_ids = []
         self._annotation = annotation
+        self._messages = []
 
     @property
     def id(self):
@@ -114,13 +115,10 @@ class Author:
             
         return None
     
-    def get_all_own_messages(self):
-        msg_list = []
-        for chat in self.chats:
-            own_messages = chat.get_messages_by_author(self)
-            msg_list.extend(own_messages)
-        
-        return msg_list
+    @property
+    def messages(self):
+        self._messages = CacheStore.Instance().get_messages_by_author_id(self._id)
+        return self._messages
     
     def get_error_categories(self):
         all_categories = {

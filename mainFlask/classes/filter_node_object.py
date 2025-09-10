@@ -165,7 +165,7 @@ class FilterNodeObject(FilterNode):
             case FilterNodeGroup.AUTHOR:
                 #TODO Maybe change result table? msg jump only works if active author is selected right
                 author = CacheStore.Instance().get_author_by_name(self._selected_value)
-                messages = author.get_all_own_messages()
+                messages = author.messages
                 self._convert_messages_into_search_results(messages)
                 return self._search_result_list
             case FilterNodeGroup.RECIPIENT:

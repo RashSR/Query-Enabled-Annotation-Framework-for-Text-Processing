@@ -15,7 +15,7 @@ def metrics_view():
 def metrics_author(author_id):
     all_authors = CacheStore.Instance().get_all_authors()
     selected_author: Author = CacheStore.Instance().get_author_by_id(author_id)
-    print(f"LEN: {len(selected_author.get_all_own_messages())}")
+    print(f"LEN: {len(selected_author.messages)}")
     if not selected_author:
         abort(404)
     return render_template('metrics.html', authors=all_authors, author=selected_author)
