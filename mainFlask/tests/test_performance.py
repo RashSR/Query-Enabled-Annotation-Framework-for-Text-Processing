@@ -28,6 +28,7 @@ def establish_db_connection():
         db.session.execute(text("DELETE FROM spacy_match"))
         db.session.execute(text("DELETE FROM lt_match"))
         db.session.commit()
+        CacheStore.Instance().empty_cache()
 
 def test_loading_messages_from_file():
     start = time.perf_counter()

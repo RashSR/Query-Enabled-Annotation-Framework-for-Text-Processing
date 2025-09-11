@@ -19,6 +19,16 @@ class CacheStore:
             cls._instance = cls(db, app)
         return cls._instance
 
+    def empty_cache(self):
+        self._authors = None
+        self._loaded_all_authors = False
+        self._chats = None
+        self._messages = None
+        self._loaded_all_messages = False
+        self._ltms = None
+        self._spacy_matches = None
+        self._annotations = None
+
     #region GET
     
     #region Author
