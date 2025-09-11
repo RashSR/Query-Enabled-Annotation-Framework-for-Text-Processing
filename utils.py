@@ -68,6 +68,7 @@ nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_ne
 
 def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
     #TODO: check for MessageType.TEXT
+    machtes_to_create: list[SpacyMatch] = []
     doc = nlp(msg.content)
 
     for token in doc:
@@ -122,8 +123,9 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
             mood=mood,
             pron_type=pron_type
         )
+        machtes_to_create.append(spacy_match)
 
-        CacheStore.Instance().create_spacy_match(spacy_match)
+    created_spacy_matches = CacheStore.Instance().create_spacy_matches(machtes_to_create)
 
 # endregion 
 
@@ -146,13 +148,16 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
     
     text = msg.content
     matches = get_tool().check(text)
+    machtes_to_create: list[LTMatch] = []
 
     for match in reversed(matches):
         startPos = match.offset
         endPos = match.offset + match.errorLength
         errortext = text[startPos : endPos]
         lt_match = LTMatch(msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
-        created_lt_match = CacheStore.Instance().create_lt_match(lt_match)
+        machtes_to_create.append(lt_match)
+    
+    created_lt_matches = CacheStore.Instance().create_lt_matches(machtes_to_create)
 
 # endregion
 

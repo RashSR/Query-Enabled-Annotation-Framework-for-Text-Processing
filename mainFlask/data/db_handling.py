@@ -288,6 +288,15 @@ def get_all_annotations_by_msg_id(db: SQLAlchemy, app: Flask, msg_id: int):
         return annotations 
 # endregion
 
+def _get_created_ids_from_table(table_name: str, rowcount: int, db: SQLAlchemy) -> list[int]:
+    result_row = db.session.execute(
+        text(f"SELECT MAX(id) FROM {table_name}")
+    ).fetchone()
+    max_id = result_row[0]
+    lowest_id = max_id - rowcount + 1
+    ids = list(range(lowest_id, max_id + 1))
+    return ids
+
 # endregion
 
 # region CREATE
@@ -372,14 +381,7 @@ def create_messages(db: SQLAlchemy, app: Flask, messages: list[Message]) -> list
         result = db.session.execute(sql_text, prepared_values)
         db.session.commit()
 
-        #get correct ids
-        rowcount = result.rowcount
-        result_row = db.session.execute(
-            text("SELECT MAX(id) FROM message")
-        ).fetchone()
-        max_id = result_row[0]
-        lowest_id = max_id - rowcount + 1
-        ids = list(range(lowest_id, max_id + 1))
+        ids = _get_created_ids_from_table('message', result.rowcount, db)
         return ids
 # endregion
 
@@ -402,6 +404,31 @@ def create_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch):
 
         new_id = result.lastrowid
         return new_id
+    
+def create_lt_matches(db: SQLAlchemy, app: Flask, lt_matches: list[LTMatch]) -> list[int]:
+    with app.app_context():
+        sql_text = text("""
+            INSERT INTO lt_match VALUES (:id, :message_id, :chat_id, :start_pos, :end_pos, :content, :category, :rule_id)
+        """)
+
+        prepared_values = []
+        for lt_match in lt_matches:
+            prepared_values.append({
+                'id': None,
+                'message_id': lt_match.message_id,
+                'chat_id': lt_match.chat_id,
+                'start_pos': lt_match.start_pos,
+                'end_pos': lt_match.end_pos,
+                'content': lt_match.text,
+                'category': lt_match.category,
+                'rule_id': lt_match.rule_id
+            })
+
+        result = db.session.execute(sql_text, prepared_values)
+        db.session.commit()
+
+        ids = _get_created_ids_from_table('lt_match', result.rowcount, db)
+        return ids
 
 def create_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch):
     with app.app_context():
@@ -448,6 +475,54 @@ def create_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch):
 
         new_id = result.lastrowid
         return new_id
+    
+def create_spacy_matches(db: SQLAlchemy, app: Flask, spacy_matches: list[SpacyMatch]) -> list[int]:
+    with app.app_context():
+        sql_text = text("""
+            INSERT INTO spacy_match (
+                id, message_id, chat_id, start_pos, end_pos, text,
+                lemma, pos, tag, is_alpha, is_stop,
+                tense, person, verb_form, voice, degree, gram_case,
+                number, gender, mood, pron_type
+            ) VALUES (
+                :id, :message_id, :chat_id, :start_pos, :end_pos, :text,
+                :lemma, :pos, :tag, :is_alpha, :is_stop,
+                :tense, :person, :verb_form, :voice, :degree, :gram_case,
+                :number, :gender, :mood, :pron_type
+            )
+        """)
+
+        prepared_values = []
+        for spacy_match in spacy_matches:
+            prepared_values.append({
+            'id': None,
+            'message_id': spacy_match.message_id,
+            'chat_id': spacy_match.chat_id,
+            'start_pos': spacy_match.start_pos,
+            'end_pos': spacy_match.end_pos,
+            'text': spacy_match.text,
+            'lemma': spacy_match.lemma,
+            'pos': spacy_match.pos,
+            'tag': spacy_match.tag,
+            'is_alpha': spacy_match.is_alpha,
+            'is_stop': spacy_match.is_stop,
+            'tense': spacy_match.tense,
+            'person': spacy_match.person,
+            'verb_form': spacy_match.verb_form,
+            'voice': spacy_match.voice,
+            'degree': spacy_match.degree,
+            'gram_case': spacy_match.gram_case,
+            'number': spacy_match.number,
+            'gender': spacy_match.gender,
+            'mood': spacy_match.mood,
+            'pron_type': spacy_match.pron_type
+        })
+
+        result = db.session.execute(sql_text, prepared_values)
+        db.session.commit()
+
+        ids = _get_created_ids_from_table('spacy_match', result.rowcount, db)
+        return ids
 
 #region Annotation
 def create_annotation(db: SQLAlchemy, app: Flask, annotation: Annotation):

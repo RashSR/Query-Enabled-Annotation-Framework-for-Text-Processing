@@ -423,7 +423,7 @@ class CacheStore:
 
     #region LTM
 
-    def create_lt_match(self, lt_match: LTMatch):
+    def create_lt_match(self, lt_match: LTMatch) -> LTMatch:
         if lt_match is None:
             return None
         
@@ -440,10 +440,30 @@ class CacheStore:
         self._messages[lt_match.message_id].error_list.append(lt_match)
         return lt_match
     
+    def create_lt_matches(self, lt_matches: list[LTMatch]) -> list[LTMatch]:
+        if len(lt_matches) == 0:
+            return None
+        if len(lt_matches) == 1:
+            return self.create_lt_match(lt_matches[0])
+        
+        from .db_handling import create_lt_matches
+        generated_ids: list[int] = create_lt_matches(self._db, self._app, lt_matches)
+        
+        if self._ltms is None and len(generated_ids) > 0:
+            self._ltms = {}
+
+        for i, lt_match in enumerate(lt_matches, start=0):
+            lt_match.id = generated_ids[i]
+            self._ltms[generated_ids[i]] = lt_match
+            self._messages[lt_match.message_id].ltmatch_ids.append(lt_match.id)
+            self._messages[lt_match.message_id].error_list.append(lt_match)
+
+        return lt_matches
+    
     # endregion
 
     #region SpacyMatch
-    def create_spacy_match(self, spacy_match: SpacyMatch):
+    def create_spacy_match(self, spacy_match: SpacyMatch) -> SpacyMatch:
         if spacy_match is None:
             return None
         
@@ -459,6 +479,27 @@ class CacheStore:
         self._messages[spacy_match.message_id].spacy_match_ids.append(spacy_match.id)
         self._messages[spacy_match.message_id].spacy_matches.append(spacy_match)
         return spacy_match
+    
+    def create_spacy_matches(self, spacy_matches: list[SpacyMatch]) -> list[SpacyMatch]:
+        if len(spacy_matches) == 0:
+            return None
+        if len(spacy_matches) == 1:
+            return self.create_spacy_match(spacy_matches[0])
+        
+        from .db_handling import create_spacy_matches
+        generated_ids: list[int] = create_spacy_matches(self._db, self._app, spacy_matches)
+        
+        if self._spacy_matches is None and len(generated_ids) > 0:
+            self._spacy_matches = {}
+
+        for i, spacy_match in enumerate(spacy_matches, start=0):
+            spacy_match.id = generated_ids[i]
+            self._spacy_matches[generated_ids[i]] = spacy_match
+            self._messages[spacy_match.message_id].spacy_match_ids.append(spacy_match.id)
+            self._messages[spacy_match.message_id].spacy_matches.append(spacy_match)
+
+        return spacy_matches
+
 
     # endregion
 
