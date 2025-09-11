@@ -167,6 +167,6 @@ Processed 10000 messages in 8.39s (1192 msgs/sec)
 Processed 10000 messages in 8.81s (1135 msgs/sec)
 Processed 10000 messages in 7.66s (1306 msgs/sec)
 
-result -> 0.898s (11219 msgs/sec)
+result -> 8.01s (1235 msgs/sec)
 
 -------------------------------------------------------
