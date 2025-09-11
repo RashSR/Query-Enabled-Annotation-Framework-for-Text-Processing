@@ -28,7 +28,6 @@ def establish_db_connection():
         db.session.execute(text("DELETE FROM spacy_match"))
         db.session.execute(text("DELETE FROM lt_match"))
         db.session.commit()
-        CacheStore.Instance().empty_cache()
 
 def test_loading_messages_from_file():
     start = time.perf_counter()
@@ -81,9 +80,9 @@ def test_loading_and_persisting_messages(establish_db_connection):
     assert len(messages) > 0
 
 def test_loop(establish_db_connection):
-    for i in range(10):
-        test_loading_and_persisting_messages(establish_db_connection)
-
+    for i in range(8):
+        test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection)
+ 
 def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):
     overall_start = time.perf_counter()
 
@@ -131,6 +130,7 @@ def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_c
             f"({total_throughput:.0f} msgs/sec)\n\n"
         )
 
+    CacheStore.Instance().empty_cache() #TODO: if i call the loop the fixture is only executed once
     assert len(messages) > 0
 
 def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establish_db_connection):
@@ -180,4 +180,5 @@ def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establ
             f"({total_throughput:.0f} msgs/sec)\n\n"
         )
 
+    CacheStore.Instance().empty_cache()
     assert len(messages) > 0

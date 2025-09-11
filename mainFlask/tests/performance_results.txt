@@ -176,3 +176,9 @@ Persisted 10000 messages in 4.33s (2309 msgs/sec)
 spaCy analyzed 10000 messages in 326.77s (31 msgs/sec)
 TOTAL: 10000 messages in 331.26s (30 msgs/sec)
 
+Persisted 10000 messages in 2.97s (3365 msgs/sec)
+spaCy analyzed 10000 messages in 315.95s (32 msgs/sec)
+TOTAL: 10000 messages in 319.07s (31 msgs/sec)
+
+
+
