@@ -408,8 +408,16 @@ class CacheStore:
             return self.create_message(msg_list[0])
         
         from .db_handling import create_messages
-        create_messages(self._db, self._app, msg_list)
+        generated_ids: list[int] = create_messages(self._db, self._app, msg_list)
         
+        if self._messages is None and len(generated_ids) > 0:
+            self._messages = {}
+
+        for i, message in enumerate(msg_list, start=0):
+            message.message_id = generated_ids[i]
+            self._messages[generated_ids[i]] = message
+            self._chats[message.chat_id].add_message(message)
+
         return msg_list
     # endregion
 

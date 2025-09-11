@@ -335,7 +335,7 @@ def create_chat(db: SQLAlchemy, app: Flask, chat: Chat):
 # endregion
 
 # region Message
-def create_message(db: SQLAlchemy, app: Flask, message: Message):
+def create_message(db: SQLAlchemy, app: Flask, message: Message) -> int:
     with app.app_context():
         chat_id = message.chat_id
         sender_id = message.sender.id
@@ -351,7 +351,7 @@ def create_message(db: SQLAlchemy, app: Flask, message: Message):
         return new_message_id
     
 
-def create_messages(db: SQLAlchemy, app: Flask, messages: list[Message]):
+def create_messages(db: SQLAlchemy, app: Flask, messages: list[Message]) -> list[int]:
     with app.app_context():
         sql_text = text("""
             INSERT INTO message (id, chat_id, sender_id, timestamp, content, quoted_message_id)
@@ -369,14 +369,18 @@ def create_messages(db: SQLAlchemy, app: Flask, messages: list[Message]):
                 'quoted_message_id': None
             })
 
-        # This executes the statement for all rows in one go (executemany)
         result = db.session.execute(sql_text, prepared_values)
         db.session.commit()
 
+        #get correct ids
         rowcount = result.rowcount
-        #TODO: Search for max(id) and set IDs with rowcount - maxID and iterate it
-
-        print(f"Das sind die IDS:{rowcount}")
+        result_row = db.session.execute(
+            text("SELECT MAX(id) FROM message")
+        ).fetchone()
+        max_id = result_row[0]
+        lowest_id = max_id - rowcount + 1
+        ids = list(range(lowest_id, max_id + 1))
+        return ids
 # endregion
 
 #TODO: Category own DB table? 
