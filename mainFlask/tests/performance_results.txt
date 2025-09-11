@@ -110,9 +110,12 @@ Persisting: 125.83s (79 msgs/sec), LT: 26383.92s (0 msgs/sec), spaCy: 818.07s (1
 Persisting: 127.43s (78 msgs/sec), LT: 26384.79s (0 msgs/sec), spaCy: 1194.31s (8 msgs/sec), Total: 27706.75s (0 msgs/sec)
 Persisting: 127.18s (79 msgs/sec), LT: 26406.01s (0 msgs/sec), spaCy: 1526.03s (7 msgs/sec), Total: 28059.48s (0 msgs/sec)
 
+
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
 Persisting: 70.64s (142 msgs/sec), LT: 35027.60s (0 msgs/sec), spaCy: 774.63s (13 msgs/sec), Total: 35873.21s (0 msgs/sec)
 Persisting: 77.87s (128 msgs/sec), LT: 56486.43s (0 msgs/sec), spaCy: 832.12s (12 msgs/sec), Total: 57396.76s (0 msgs/sec)
+Persisting: 70.21s (142 msgs/sec), LT: 35352.43s (0 msgs/sec), spaCy: 45328.19s (0 msgs/sec), Total: 80751.76s (0 msgs/sec)
+
 
 -------------------------------------------------------
 Loading messages and persisting them into DB WITH BULKINSERT:
@@ -129,8 +132,23 @@ Processed 10000 messages in 0.23s (42785 msgs/sec)
 Processed 10000 messages in 0.30s (33043 msgs/sec)
 Processed 10000 messages in 0.26s (38646 msgs/sec)
 
-result -> 0.254s (39,662 msgs/sec)
+result -> 0.254s (39662 msgs/sec)
 
 MEDIUM
+Processed 10000 messages in 0.48s (20948 msgs/sec)
+Processed 10000 messages in 0.25s (39607 msgs/sec)
+Processed 10000 messages in 0.28s (35287 msgs/sec)
+Processed 10000 messages in 0.26s (38643 msgs/sec)
+Processed 10000 messages in 0.29s (34706 msgs/sec)
+Processed 10000 messages in 0.24s (40953 msgs/sec)
+Processed 10000 messages in 0.25s (39798 msgs/sec)
+Processed 10000 messages in 0.26s (39044 msgs/sec)
+Processed 10000 messages in 0.32s (31398 msgs/sec)
+Processed 10000 messages in 0.28s (35987 msgs/sec)
+
+result -> 0.291s (35637 msgs/sec)
 
 LOW
+
+
+-------------------------------------------------------
