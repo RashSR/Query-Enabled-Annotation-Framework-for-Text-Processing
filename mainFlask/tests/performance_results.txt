@@ -156,19 +156,17 @@ Processed 10000 messages in 0.28s (35987 msgs/sec)
 result -> 0.291s (35637 msgs/sec)
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
-Processed 10000 messages in 0.78s (12886 msgs/sec)
-Processed 10000 messages in 0.96s (10407 msgs/sec)
-Processed 10000 messages in 0.89s (11174 msgs/sec)
-Processed 10000 messages in 0.90s (11165 msgs/sec)
-Processed 10000 messages in 1.00s (9972 msgs/sec)
-Processed 10000 messages in 0.78s (12798 msgs/sec)
-Processed 10000 messages in 0.90s (11117 msgs/sec)
-Processed 10000 messages in 0.85s (11728 msgs/sec)
-Processed 10000 messages in 0.94s (10692 msgs/sec)
-Processed 10000 messages in 0.98s (10256 msgs/sec)
+Processed 10000 messages in 7.84s (1275 msgs/sec)
+Processed 10000 messages in 8.06s (1241 msgs/sec)
+Processed 10000 messages in 7.96s (1257 msgs/sec)
+Processed 10000 messages in 8.73s (1145 msgs/sec)
+Processed 10000 messages in 7.97s (1254 msgs/sec)
+Processed 10000 messages in 7.81s (1280 msgs/sec)
+Processed 10000 messages in 7.88s (1269 msgs/sec)
+Processed 10000 messages in 8.39s (1192 msgs/sec)
+Processed 10000 messages in 8.81s (1135 msgs/sec)
+Processed 10000 messages in 7.66s (1306 msgs/sec)
 
 result -> 0.898s (11219 msgs/sec)
 
 -------------------------------------------------------
-
-
