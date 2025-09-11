@@ -149,6 +149,16 @@ Processed 10000 messages in 0.28s (35987 msgs/sec)
 result -> 0.291s (35637 msgs/sec)
 
 LOW
-
+Processed 10000 messages in 0.78s (12886 msgs/sec)
+Processed 10000 messages in 0.96s (10407 msgs/sec)
+Processed 10000 messages in 0.89s (11174 msgs/sec)
+Processed 10000 messages in 0.90s (11165 msgs/sec)
+Processed 10000 messages in 1.00s (9972 msgs/sec)
+Processed 10000 messages in 0.78s (12798 msgs/sec)
+Processed 10000 messages in 0.90s (11117 msgs/sec)
+Processed 10000 messages in 0.85s (11728 msgs/sec)
+Processed 10000 messages in 0.94s (10692 msgs/sec)
+Processed 10000 messages in 0.98s (10256 msgs/sec)
 
 -------------------------------------------------------
+
