@@ -142,18 +142,18 @@ Processed 10000 messages in 2.73s (3662 msgs/sec)
 result -> 2.79s (3625 msgs/sec)
 
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
-Processed 10000 messages in 0.48s (20948 msgs/sec)
-Processed 10000 messages in 0.25s (39607 msgs/sec)
-Processed 10000 messages in 0.28s (35287 msgs/sec)
-Processed 10000 messages in 0.26s (38643 msgs/sec)
-Processed 10000 messages in 0.29s (34706 msgs/sec)
-Processed 10000 messages in 0.24s (40953 msgs/sec)
-Processed 10000 messages in 0.25s (39798 msgs/sec)
-Processed 10000 messages in 0.26s (39044 msgs/sec)
-Processed 10000 messages in 0.32s (31398 msgs/sec)
-Processed 10000 messages in 0.28s (35987 msgs/sec)
+Processed 10000 messages in 3.35s (2982 msgs/sec)
+Processed 10000 messages in 3.17s (3154 msgs/sec)
+Processed 10000 messages in 3.09s (3239 msgs/sec)
+Processed 10000 messages in 3.04s (3291 msgs/sec)
+Processed 10000 messages in 3.01s (3318 msgs/sec)
+Processed 10000 messages in 3.02s (3317 msgs/sec)
+Processed 10000 messages in 3.13s (3197 msgs/sec)
+Processed 10000 messages in 3.02s (3308 msgs/sec)
+Processed 10000 messages in 3.08s (3250 msgs/sec)
+Processed 10000 messages in 3.16s (3166 msgs/sec)
 
-result -> 0.291s (35637 msgs/sec)
+result -> 3.11s (35637 msgs/sec)
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
 Processed 10000 messages in 7.84s (1275 msgs/sec)
@@ -170,3 +170,9 @@ Processed 10000 messages in 7.66s (1306 msgs/sec)
 result -> 8.01s (1235 msgs/sec)
 
 -------------------------------------------------------
+
+
+Persisted 10000 messages in 4.33s (2309 msgs/sec)
+spaCy analyzed 10000 messages in 326.77s (31 msgs/sec)
+TOTAL: 10000 messages in 331.26s (30 msgs/sec)
+

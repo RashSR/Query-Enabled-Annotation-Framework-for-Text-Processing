@@ -84,7 +84,56 @@ def test_loop(establish_db_connection):
     for i in range(10):
         test_loading_and_persisting_messages(establish_db_connection)
 
-def test_loading_and_persisting_and_analyzing_messages(establish_db_connection):
+def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):
+    overall_start = time.perf_counter()
+
+    # Load messages
+    file_path = Path(__file__).parent / "instance" / "test_messages.txt"
+    with open(file_path, "r", encoding="utf-8") as f:
+        file_content = f.read()
+    messages = utils.get_messages_from_text(file_content)
+
+    author = Author(70, 'Esther')
+    chat = Chat(None)
+    created_chat = CacheStore.Instance().create_chat(chat)
+    for msg in messages:
+        msg.chat_id = created_chat.chat_id
+        msg.sender = author
+
+    # Persist messages
+    start_persist = time.perf_counter()
+    CacheStore.Instance().create_messages(messages)
+    persist_duration = time.perf_counter() - start_persist
+
+    # spaCy analysis
+    start_spacy = time.perf_counter()
+    for msg in messages:
+        utils.analyze_msg_with_spacy(msg)
+    spacy_duration = time.perf_counter() - start_spacy
+
+    # Total duration
+    total_duration = time.perf_counter() - overall_start
+
+    # Throughput calculations
+    persist_throughput = len(messages) / persist_duration
+    spacy_throughput = len(messages) / spacy_duration
+    total_throughput = len(messages) / total_duration
+
+    # Write results to file
+    results_file = Path(__file__).parent / "performance_results.txt"
+    with open(results_file, "a", encoding="utf-8") as f:
+        f.write(
+            f"Persisted {len(messages)} messages in {persist_duration:.2f}s "
+            f"({persist_throughput:.0f} msgs/sec)\n"
+            f"spaCy analyzed {len(messages)} messages in {spacy_duration:.2f}s "
+            f"({spacy_throughput:.0f} msgs/sec)\n"
+            f"TOTAL: {len(messages)} messages in {total_duration:.2f}s "
+            f"({total_throughput:.0f} msgs/sec)\n\n"
+        )
+
+    assert len(messages) > 0
+
+def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establish_db_connection):
     overall_start = time.perf_counter()
 
     # Load messages
@@ -111,19 +160,12 @@ def test_loading_and_persisting_and_analyzing_messages(establish_db_connection):
         utils.analyze_msg_with_language_tool(msg)
     lang_duration = time.perf_counter() - start_lang
 
-    # spaCy analysis
-    start_spacy = time.perf_counter()
-    for msg in messages:
-        utils.analyze_msg_with_spacy(msg)
-    spacy_duration = time.perf_counter() - start_spacy
-
     # Total duration
     total_duration = time.perf_counter() - overall_start
 
     # Throughput calculations
     persist_throughput = len(messages) / persist_duration
     lang_throughput = len(messages) / lang_duration
-    spacy_throughput = len(messages) / spacy_duration
     total_throughput = len(messages) / total_duration
 
     # Write results to file
@@ -134,12 +176,8 @@ def test_loading_and_persisting_and_analyzing_messages(establish_db_connection):
             f"({persist_throughput:.0f} msgs/sec)\n"
             f"LanguageTool analyzed {len(messages)} messages in {lang_duration:.2f}s "
             f"({lang_throughput:.0f} msgs/sec)\n"
-            f"spaCy analyzed {len(messages)} messages in {spacy_duration:.2f}s "
-            f"({spacy_throughput:.0f} msgs/sec)\n"
             f"TOTAL: {len(messages)} messages in {total_duration:.2f}s "
             f"({total_throughput:.0f} msgs/sec)\n\n"
         )
 
     assert len(messages) > 0
-
-#TODO: compare LT analysis vs spacy analysis time
