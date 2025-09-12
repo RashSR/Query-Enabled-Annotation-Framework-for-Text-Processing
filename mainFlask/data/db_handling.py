@@ -616,6 +616,17 @@ def delete_annotation_by_id(db: SQLAlchemy, app: Flask, annotation_id: int) -> b
             return True
         
         return False
+    
+def empty_database(db: SQLAlchemy, app: Flask):
+    with app.app_context():
+        db.session.execute(text("DELETE FROM author"))
+        db.session.execute(text("DELETE FROM chat"))
+        db.session.execute(text("DELETE FROM chat_participants"))
+        db.session.execute(text("DELETE FROM message"))
+        db.session.execute(text("DELETE FROM spacy_match"))
+        db.session.execute(text("DELETE FROM lt_match"))
+        db.session.execute(text("DELETE FROM annotation"))
+        db.session.commit()
 # endregion
 
 # endregion

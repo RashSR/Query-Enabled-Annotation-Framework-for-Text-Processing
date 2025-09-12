@@ -675,6 +675,10 @@ class CacheStore:
 
     # endregion
 
+    def empty_database(self):
+        from .db_handling import empty_database
+        empty_database(self._db, self._app)
+
     # endregion
 
     #region Temporary

@@ -23,11 +23,7 @@ def establish_db_connection():
     with app.app_context():
         yield db
         #This code runs after test execution
-        db.session.execute(text("DELETE FROM chat"))
-        db.session.execute(text("DELETE FROM message"))
-        db.session.execute(text("DELETE FROM spacy_match"))
-        db.session.execute(text("DELETE FROM lt_match"))
-        db.session.commit()
+        CacheStore.Instance().empty_database()
 
 def test_loading_messages_from_file():
     start = time.perf_counter()
@@ -130,8 +126,10 @@ def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_c
             f"({total_throughput:.0f} msgs/sec)\n\n"
         )
 
-    CacheStore.Instance().empty_cache() #TODO: if i call the loop the fixture is only executed once
+    CacheStore.Instance().empty_database()
+    CacheStore.Instance().empty_cache()
     assert len(messages) > 0
+
 
 def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establish_db_connection):
     overall_start = time.perf_counter()
@@ -180,5 +178,6 @@ def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establ
             f"({total_throughput:.0f} msgs/sec)\n\n"
         )
 
+    CacheStore.Instance().empty_database()
     CacheStore.Instance().empty_cache()
     assert len(messages) > 0
