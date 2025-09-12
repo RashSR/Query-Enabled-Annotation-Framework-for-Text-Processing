@@ -205,11 +205,6 @@ Persiting: 6.57s (1522 msgs/sec), spaCy: 516.24s (19 msgs/sec), Total: 523.30s (
 
 result -> Persiting: 7.14s (1400 msgs/sec), spaCy: 502.18s (19.9 msgs/sec), Total: 509.73s (19.6 msgs/sec)
 
-
-Persisted 100 messages in 2.52s (40 msgs/sec)
-LanguageTool analyzed 100 messages in 27.26s (4 msgs/sec)
-TOTAL: 100 messages in 29.92s (3 msgs/sec)
-
 Persisted 10000 messages in 2.60s (3840 msgs/sec)
 LanguageTool analyzed 10000 messages in 1447.31s (7 msgs/sec)
 TOTAL: 10000 messages in 1450.06s (7 msgs/sec)

@@ -77,7 +77,7 @@ def test_loading_and_persisting_messages(establish_db_connection):
     assert len(messages) > 0
 
 def test_loop(establish_db_connection):
-    for i in range(3):
+    for i in range(9):
         test_loading_and_persisting_and_analyzing_messages_with_language_tool(establish_db_connection)
  
 def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):
@@ -171,6 +171,7 @@ def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establ
                 msg = futures[future]
                 print(f"Error analyzing message {msg.message_id}: {e}")
 
+    CacheStore.Instance().create_lt_matches(lt_results)
     lang_duration = time.perf_counter() - start_lang
 
     # Total duration
