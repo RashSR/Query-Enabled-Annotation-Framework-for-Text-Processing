@@ -158,7 +158,9 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
         lt_match = LTMatch(msg.message_id, msg.chat_id, startPos, endPos, errortext, match.category, match.ruleId)
         machtes_to_create.append(lt_match)
     
+    return machtes_to_create
     created_lt_matches = CacheStore.Instance().create_lt_matches(machtes_to_create)
+    
 
 # endregion
 
