@@ -153,8 +153,12 @@ def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establ
     persist_duration = time.perf_counter() - start_persist
 
     # --- Parallel LanguageTool analysis ---
+    #TODO: test with different cpu cores. 
+    #for workers in [1, get_num_workers(len(messages))]:
+    #with ProcessPoolExecutor(max_workers=workers) as executor:
+    #print(f"Finished with {workers} workers")
     start_lang = time.perf_counter()
-    workers = max(1, os.cpu_count() - 1)
+    workers = utils.get_optimal_worker_count()
     lt_results = []
 
     with ProcessPoolExecutor(max_workers=workers) as executor:

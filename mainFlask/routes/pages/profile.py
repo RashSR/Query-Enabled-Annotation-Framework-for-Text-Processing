@@ -201,7 +201,7 @@ def analyze_with_progress(task_id: str, msgs_author_1: list, msgs_author_2: list
     })
 
     # --- Phase 2: LanguageTool parallel across both authors ---
-    workers = max(1, os.cpu_count() - 1)
+    workers = utils.get_optimal_worker_count()
     author_done_count = defaultdict(int)
     lt_matches = []
 

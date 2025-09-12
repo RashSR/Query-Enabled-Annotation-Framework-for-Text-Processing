@@ -1,4 +1,5 @@
 import re
+import os
 import spacy
 import language_tool_python
 from datetime import datetime
@@ -195,3 +196,12 @@ def and_result_messages(lists: list[list[Message]]) -> list[Message]:
 
 # endregion
     
+SERVER_THREAD_LIMIT = 10
+THREAD_BUFFER = 2 
+
+#Calculate optimal number of workers for ProcessPoolExecutor
+#based on CPU Thread count and LT server capacity
+def get_optimal_worker_count() -> int:
+    cpu_threads = os.cpu_count() or 1
+    workers = min(cpu_threads, SERVER_THREAD_LIMIT + THREAD_BUFFER)
+    return max(1, workers)

@@ -210,3 +210,7 @@ Persisted 100 messages in 2.52s (40 msgs/sec)
 LanguageTool analyzed 100 messages in 27.26s (4 msgs/sec)
 TOTAL: 100 messages in 29.92s (3 msgs/sec)
 
+Persisted 10000 messages in 2.60s (3840 msgs/sec)
+LanguageTool analyzed 10000 messages in 1447.31s (7 msgs/sec)
+TOTAL: 10000 messages in 1450.06s (7 msgs/sec)
+
