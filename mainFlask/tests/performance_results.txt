@@ -102,7 +102,7 @@ Persisting: 31.80s (314 msgs/sec), LT: 7115.45s (1 msgs/sec), spaCy: 418.24s (24
 Persisting: 36.69s (273 msgs/sec), LT: 7921.23s (1 msgs/sec), spaCy: 970.35s (10 msgs/sec), Total: 8928.52s (1 msgs/sec)
 Persisting: 36.59s (273 msgs/sec), LT: 7752.76s (1 msgs/sec), spaCy: 1328.37s (8 msgs/sec), Total: 9118.06s (1 msgs/sec)
 
--> result: Persiting: 35.09s (285 msgs/s), LT: 6995.39s (1.43 msgs/sec), spaCy: 640.20s (15.62 msgs/sec), Total: 7670.89s (1.30 msgs/sec)
+result -> Persiting: 35.09s (285 msgs/s), LT: 6995.39s (1.43 msgs/sec), spaCy: 640.20s (15.62 msgs/sec), Total: 7670.89s (1.30 msgs/sec)
 
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
                                                                                            , Total: 27163.92s (0 msgs/sec)
@@ -113,7 +113,7 @@ Persisting: 126.87s (79 msgs/sec), LT: 26402.42s (0 msgs/sec), spaCy: 1856.49s (
 Persisting: 127.28s (79 msgs/sec), LT: 26402.22s (0 msgs/sec), spaCy: 2189.66s (5 msgs/sec), Total: 28719.27s (0 msgs/sec)
 Persisting: 128.14s (78 msgs/sec), LT: 26407.39s (0 msgs/sec), spaCy: 2526.51s (4 msgs/sec), Total: 29062.16s (0 msgs/sec)
 
--> result: Persiting: 127.12s (78.67 msgs/s), LT: 26397.79s (0.38 msgs/sec), spaCy: 1685.18s (5.93 msgs/sec), Total: 28060.78s (0.36 msgs/sec)
+result -> Persiting: 127.12s (78.67 msgs/s), LT: 26397.79s (0.38 msgs/sec), spaCy: 1685.18s (5.93 msgs/sec), Total: 28060.78s (0.36 msgs/sec)
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
 Persisting: 70.64s (142 msgs/sec), LT: 35027.60s (0 msgs/sec), spaCy: 774.63s (13 msgs/sec), Total: 35873.21s (0 msgs/sec)
@@ -123,7 +123,7 @@ Persisting: 73.12s (137 msgs/sec), LT: 35370.33s (0 msgs/sec), spaCy: 2222.37s (
 Persisting: 76.43s (131 msgs/sec), LT: 34177.33s (0 msgs/sec), spaCy: 1802.93s (0 msgs/sec), Total: 36056.69s (0 msgs/sec)
 Persisting: 71.20s (140 msgs/sec), LT: 35963.83s (0 msgs/sec), spaCy: 2659.85s (0 msgs/sec), Total: 38694.88s (0 msgs/sec)
 
--> result: Persiting: 73.58s (135.91 msgs/s), LT: 35270.50s (0.28 msgs/sec), spaCy: 1634.40s (6.12 msgs/sec), Total: 36979.74s (0.27 msgs/sec)
+result -> Persiting: 73.58s (135.91 msgs/s), LT: 35270.50s (0.28 msgs/sec), spaCy: 1634.40s (6.12 msgs/sec), Total: 36979.74s (0.27 msgs/sec)
 -------------------------------------------------------
 Loading messages and persisting them into DB WITH BULKINSERT:
 
@@ -174,18 +174,34 @@ result -> 8.01s (1235 msgs/sec)
 Analyzing spaCy with BULKINSERT
 
 HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
-Persisted 10000 messages in 3.03s (3305 msgs/sec)
-spaCy analyzed 10000 messages in 293.60s (34 msgs/sec)
-TOTAL: 10000 messages in 296.77s (34 msgs/sec)
+Persiting: 3.03s (3305 msgs/sec), spaCy: 293.60s (34 msgs/sec), Total: 296.77s (34 msgs/sec)
+Persiting: 3.60s (2777 msgs/sec), spaCy: 301.77s (33 msgs/sec), Total: 305.55s (33 msgs/sec)
+Persiting: 3.31s (3018 msgs/sec), spaCy: 296.10s (34 msgs/sec), Total: 299.61s (33 msgs/sec)
+Persiting: 4.15s (2407 msgs/sec), spaCy: 307.16s (33 msgs/sec), Total: 311.53s (32 msgs/sec)
+Persiting: 3.26s (3069 msgs/sec), spaCy: 296.19s (34 msgs/sec), Total: 299.63s (33 msgs/sec)
+Persiting: 4.33s (2310 msgs/sec), spaCy: 300.83s (33 msgs/sec), Total: 305.44s (33 msgs/sec)
+Persiting: 4.07s (2455 msgs/sec), spaCy: 303.74s (33 msgs/sec), Total: 308.01s (32 msgs/sec)
+Persiting: 4.48s (2230 msgs/sec), spaCy: 328.01s (30 msgs/sec), Total: 332.71s (30 msgs/sec)
+Persiting: 3.19s (3134 msgs/sec), spaCy: 319.71s (31 msgs/sec), Total: 323.11s (31 msgs/sec)
+Persiting: 4.68s (2135 msgs/sec), spaCy: 297.98s (34 msgs/sec), Total: 302.90s (33 msgs/sec)
+
+result -> Persiting: 3.81s (2684 msgs/sec), spaCy: 304.51s (32.9 msgs/sec), Total: 308.53s (32.4 msgs/sec)
 
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
-Persisted 10000 messages in 4.33s (2309 msgs/sec)
-spaCy analyzed 10000 messages in 326.77s (31 msgs/sec)
-TOTAL: 10000 messages in 331.26s (30 msgs/sec)
+Persiting: 4.33s (2309 msgs/sec), spaCy: 326.77s (31 msgs/sec), Total: 331.26s (30 msgs/sec)
+Persiting: 2.97s (3365 msgs/sec), spaCy: 315.95s (32 msgs/sec), Total: 319.07s (31 msgs/sec)
 
-Persisted 10000 messages in 2.97s (3365 msgs/sec)
-spaCy analyzed 10000 messages in 315.95s (32 msgs/sec)
-TOTAL: 10000 messages in 319.07s (31 msgs/sec)
+LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
+Persiting: 8.11s (1233 msgs/sec), spaCy: 547.64s (18 msgs/sec), Total: 556.12s (18 msgs/sec)
+Persiting: 7.19s (1390 msgs/sec), spaCy: 493.84s (20 msgs/sec), Total: 501.52s (20 msgs/sec)
+Persiting: 7.24s (1382 msgs/sec), spaCy: 495.05s (20 msgs/sec), Total: 502.75s (20 msgs/sec)
+Persiting: 6.99s (1430 msgs/sec), spaCy: 489.59s (20 msgs/sec), Total: 496.92s (20 msgs/sec)
+Persiting: 7.28s (1373 msgs/sec), spaCy: 517.70s (19 msgs/sec), Total: 525.35s (19 msgs/sec)
+Persiting: 7.43s (1347 msgs/sec), spaCy: 493.66s (20 msgs/sec), Total: 501.44s (20 msgs/sec)
+Persiting: 7.39s (1353 msgs/sec), spaCy: 498.99s (20 msgs/sec), Total: 506.75s (20 msgs/sec)
+Persiting: 6.53s (1530 msgs/sec), spaCy: 484.98s (21 msgs/sec), Total: 491.87s (20 msgs/sec)
+Persiting: 6.64s (1506 msgs/sec), spaCy: 484.08s (21 msgs/sec), Total: 491.29s (20 msgs/sec)
+Persiting: 6.57s (1522 msgs/sec), spaCy: 516.24s (19 msgs/sec), Total: 523.30s (19 msgs/sec)
 
-
+result -> Persiting: 7.14s (1400 msgs/sec), spaCy: 502.18s (19.9 msgs/sec), Total: 509.73s (19.6 msgs/sec)
 
