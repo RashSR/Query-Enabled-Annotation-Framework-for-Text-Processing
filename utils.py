@@ -64,7 +64,7 @@ def clean_text(text: str) -> str:
 
 #TODO: try nltk also, look up lemmatizer
 # Load german spaCy model and initialize language tool -> only loaded once
-nlp = spacy.load("de_core_news_lg") #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
+nlp = spacy.load("de_core_news_lg", disable=["ner", "parser"]) #possible values: de_core_news_sm de_core_news_md, de_core_news_lg (more powerful)
 
 def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
     #TODO: check for MessageType.TEXT
@@ -126,6 +126,7 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
         machtes_to_create.append(spacy_match)
 
     created_spacy_matches = CacheStore.Instance().create_spacy_matches(machtes_to_create)
+    return created_spacy_matches
 
 # endregion 
 
