@@ -154,10 +154,10 @@ def _prepare_message_for_saving(author: Author, mapping_name: str, chat: Chat, m
     return messages_by_author
 
 analysis_progress = {}
-def analyze_with_progress(task_id: str, msgs_author_1: list[Message], msgs_author_2: list[Message]):
+def analyze_with_progress(task_id: str, msgs_author_1: list, msgs_author_2: list):
     """
-    Analyze messages with spaCy sequentially per author first, then LanguageTool in parallel per author.
-    Shows progress per author.
+    Analyze messages with spaCy sequentially per author first, then LanguageTool in parallel across both authors.
+    Shows progress per author using real sender names.
     """
     all_messages = msgs_author_1 + msgs_author_2
     total_steps = len(all_messages) * 2  # spaCy + LT
@@ -173,8 +173,11 @@ def analyze_with_progress(task_id: str, msgs_author_1: list[Message], msgs_autho
     start_time = time.time()
     global_count = 0
 
-    # --- Phase 1: spaCy sequential ---
-    for msgs, sender_label in [(msgs_author_1, "Author 1"), (msgs_author_2, "Author 2")]:
+    # --- Phase 1: spaCy sequential per author ---
+    for msgs in [msgs_author_1, msgs_author_2]:
+        if not msgs:
+            continue
+        sender_label = msgs[0].sender.name
         for i, msg in enumerate(msgs, start=1):
             utils.analyze_msg_with_spacy(msg)
 
@@ -186,49 +189,56 @@ def analyze_with_progress(task_id: str, msgs_author_1: list[Message], msgs_autho
 
             analysis_progress[task_id].update({
                 'step': global_count,
-                'message': f'Sequential spaCy: Nachricht {i}/{len(msgs)} von {sender_label}',
+                'message': f'Attribut Analyse: Nachricht {i}/{len(msgs)} von {sender_label}',
                 'eta': eta_seconds
             })
 
-    # --- Phase 2: LanguageTool parallel ---
+    # --- Display preparing message before LT ---
+    analysis_progress[task_id].update({
+        'message': 'Bereite Fehleranalyse vor...',
+        'step': global_count,
+        'eta': None
+    })
+
+    # --- Phase 2: LanguageTool parallel across both authors ---
     workers = max(1, os.cpu_count() - 1)
     author_done_count = defaultdict(int)
     lt_matches = []
 
-    for msgs, sender_label in [(msgs_author_1, msgs_author_1[0].sender.name), (msgs_author_2, msgs_author_2[0].sender.name)]:
-        if not msgs:
-            continue
+    # Mapping each message to its actual sender for progress tracking
+    msg_to_author = {msg: msg.sender.name for msg in all_messages}
 
-        # Run LanguageTool in parallel per author
-        with ProcessPoolExecutor(max_workers=workers) as executor:
-            futures = {executor.submit(utils.analyze_msg_with_language_tool, msg): msg for msg in msgs}
-            for future in as_completed(futures):
-                msg = futures[future]
-                try:
-                    lt_result = future.result()  # get actual results
-                except Exception as e:
-                    print(f"Error processing message {msg.message_id}: {e}")
-                    lt_result = []
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        futures = {executor.submit(utils.analyze_msg_with_language_tool, msg): msg for msg in all_messages}
+        for future in as_completed(futures):
+            msg = futures[future]
+            try:
+                lt_result = future.result()
+            except Exception as e:
+                print(f"Error processing message {msg.message_id}: {e}")
+                lt_result = []
 
-                lt_matches.extend(lt_result)
+            lt_matches.extend(lt_result)
 
-                # Update per-author counter
-                author_done_count[sender_label] += 1
-                done_count = author_done_count[sender_label]
+            # Update per-author counter
+            sender_label = msg_to_author[msg]
+            author_done_count[sender_label] += 1
+            done_count = author_done_count[sender_label]
+            total_for_author = len([m for m in all_messages if m.sender.name == sender_label])
 
-                global_count += 1
-                elapsed = time.time() - start_time
-                avg_time = elapsed / global_count
-                remaining = total_steps - global_count
-                eta_seconds = int(avg_time * remaining)
+            global_count += 1
+            elapsed = time.time() - start_time
+            avg_time = elapsed / global_count
+            remaining = total_steps - global_count
+            eta_seconds = int(avg_time * remaining)
 
-                analysis_progress[task_id].update({
-                    'step': global_count,
-                    'message': f'Parallel LT: Nachricht {done_count}/{len(msgs)} von {sender_label}',
-                    'eta': eta_seconds
-                })
-    
-    # --- Save results and mark task done ---
+            analysis_progress[task_id].update({
+                'step': global_count,
+                'message': f'Fehler Analyse: Nachricht {done_count}/{total_for_author} von {sender_label}',
+                'eta': eta_seconds
+            })
+
+    # --- Save LT results and mark task done ---
     CacheStore.Instance().create_lt_matches(lt_matches)
 
     analysis_progress[task_id].update({
@@ -237,7 +247,6 @@ def analyze_with_progress(task_id: str, msgs_author_1: list[Message], msgs_autho
         'done': True,
         'eta': 0
     })
-
 
 
 
