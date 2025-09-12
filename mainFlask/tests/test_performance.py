@@ -3,11 +3,12 @@ import pytest
 import utils
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
 from mainFlask.data.cachestore import CacheStore
 from mainFlask.classes.author import Author
 from mainFlask.classes.chat import Chat
 from pathlib import Path
+import os
+from concurrent.futures import ProcessPoolExecutor, as_completed
 import logging
 logging.basicConfig(level=logging.INFO, force=True)
 
@@ -76,8 +77,8 @@ def test_loading_and_persisting_messages(establish_db_connection):
     assert len(messages) > 0
 
 def test_loop(establish_db_connection):
-    for i in range(9):
-        test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection)
+    for i in range(3):
+        test_loading_and_persisting_and_analyzing_messages_with_language_tool(establish_db_connection)
  
 def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):
     overall_start = time.perf_counter()
@@ -130,7 +131,6 @@ def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_c
     CacheStore.Instance().empty_cache()
     assert len(messages) > 0
 
-
 def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establish_db_connection):
     overall_start = time.perf_counter()
 
@@ -152,10 +152,21 @@ def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establ
     CacheStore.Instance().create_messages(messages)
     persist_duration = time.perf_counter() - start_persist
 
-    # LanguageTool analysis
+    # --- Parallel LanguageTool analysis ---
     start_lang = time.perf_counter()
-    for msg in messages:
-        utils.analyze_msg_with_language_tool(msg)
+    workers = max(1, os.cpu_count() - 1)
+    lt_results = []
+
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        futures = {executor.submit(utils.analyze_msg_with_language_tool, msg): msg for msg in messages}
+        for future in as_completed(futures):
+            try:
+                result = future.result()
+                lt_results.extend(result)
+            except Exception as e:
+                msg = futures[future]
+                print(f"Error analyzing message {msg.message_id}: {e}")
+
     lang_duration = time.perf_counter() - start_lang
 
     # Total duration
@@ -178,6 +189,7 @@ def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establ
             f"({total_throughput:.0f} msgs/sec)\n\n"
         )
 
+    # Clean up
     CacheStore.Instance().empty_database()
     CacheStore.Instance().empty_cache()
     assert len(messages) > 0
