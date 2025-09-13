@@ -291,17 +291,25 @@ class CacheStore:
         if self._ltms is None:
             self._ltms = {}
 
-        #TODO just testcode remove it afterwards
+        #TODO just testcode remove it afterwards -> Hier darf immer nur die richtige zurückkommen
         ids = [
             4235, 4237, 4238, 4239, 4240, 4242, 4243, 4244, 4245, 4246,
             4247, 4248, 4250, 4251, 4252, 4253, 4257, 4258, 4260, 4261,
             4265, 4266, 4267, 4268, 4269, 4271, 4272, 4273, 4274, 4275,
             4278, 4279, 4280, 4284, 4289, 4290, 4291
         ]
-        return [self._ltms[lid] for lid in ids if lid in self._ltms]
-    
+        allowed_ltms: list[LTMatch] = [self._ltms[lid] for lid in ids if lid in self._ltms]
+        returned_ltms = []
+        for ltm in allowed_ltms:
+            if ltm.message_id == msg_id:
+                returned_ltms.append(ltm)
+
+        return returned_ltms
+
         ltms: list[LTMatch] = get_all_ltms_by_msg_id_and_chat_id(self._db, self._app, msg_id, chat_id)
         return ltms
+
+    
     
     def get_all_distinct_categories_from_ltms(self):
         from .db_handling import get_all_distinct_categories_from_ltms
@@ -318,6 +326,14 @@ class CacheStore:
     #region Spacy Match
 
     _spacy_matches = None
+
+    def get_all_spacy_matches(self):
+        from .db_handling import get_all_spacy_matches
+        if self._spacy_matches is None:
+            spacy_matches = get_all_spacy_matches(self._db, self._app)
+            self._spacy_matches = {spm.id: spm for spm in spacy_matches}
+
+        return list(self._spacy_matches.values())
 
     def get_all_distinct_column_values_from_spacy_matches_by_column_name(self, column_name: str):
         from .db_handling import get_all_distinct_column_values_from_spacy_matches_by_column_name
