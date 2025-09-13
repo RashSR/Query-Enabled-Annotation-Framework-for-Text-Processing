@@ -117,7 +117,7 @@ def test_linguistic_analysis_with_full_db(establish_db_connection):
         )  
     assert len(messages) > 0
 
-def test_execute_simple_query(establish_db_connection):
+def test_execute_simple_query_empty_cache(establish_db_connection):
     #CacheStore.Instance().get_all_messages() -> comment out for preloaded messages in cache
     start_query = time.perf_counter()
     fno: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")
@@ -134,9 +134,25 @@ def test_execute_simple_query(establish_db_connection):
     CacheStore.Instance().empty_cache()
     assert len(result) >= 0
 
-def test_execute_complex_query(establish_db_connection):
+def test_execute_simple_query_full_cache(establish_db_connection):
+    CacheStore.Instance().get_all_messages()
     start_query = time.perf_counter()
+    fno: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")
+    result = fno.get_result()
+    query_duration = time.perf_counter() - start_query
 
+    # Write results to file
+    results_file = Path(__file__).parent / "performance_results.txt"
+    with open(results_file, "a", encoding="utf-8") as f:
+        f.write(
+            f"Collected {len(result)} results in {query_duration:.2f}s\n"
+        )
+
+    CacheStore.Instance().empty_cache()
+    assert len(result) >= 0
+
+def test_execute_complex_query_empty_cache(establish_db_connection):
+    start_query = time.perf_counter()
     root_node: FilterNode = FilterNode(FilterType.AND)
     fno_author: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")
     fno_pos: FilterNodeObject = FilterNodeObject(FilterNodeGroup.WORTART, None, selected_value="VERB")
@@ -156,11 +172,33 @@ def test_execute_complex_query(establish_db_connection):
 
     CacheStore.Instance().empty_cache()
     assert len(result) >= 0
-    assert True
+
+def test_execute_complex_query_full_cache(establish_db_connection):
+    CacheStore.Instance().get_all_messages()
+    start_query = time.perf_counter()
+    root_node: FilterNode = FilterNode(FilterType.AND)
+    fno_author: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")
+    fno_pos: FilterNodeObject = FilterNodeObject(FilterNodeGroup.WORTART, None, selected_value="VERB")
+    fno_error: FilterNodeObject = FilterNodeObject(FilterNodeGroup.CATEGORY, None, selected_value="CASING")
+    root_node.add_leaf(fno_author)
+    root_node.add_leaf(fno_pos)
+    root_node.add_leaf(fno_error)
+    result =  root_node.get_full_result()
+    query_duration = time.perf_counter() - start_query
+
+    # Write results to file
+    results_file = Path(__file__).parent / "performance_results.txt"
+    with open(results_file, "a", encoding="utf-8") as f:
+        f.write(
+            f"Collected {len(result)} results in {query_duration:.2f}s\n"
+        )
+
+    CacheStore.Instance().empty_cache()
+    assert len(result) >= 0
 
 def test_loop(establish_db_connection):
     for i in range(9):
-        test_execute_simple_query(establish_db_connection)
+        test_execute_complex_query_empty_cache(establish_db_connection)
  
 def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):
     overall_start = time.perf_counter()
