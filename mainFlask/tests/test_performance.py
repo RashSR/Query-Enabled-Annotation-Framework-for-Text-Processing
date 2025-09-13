@@ -6,8 +6,10 @@ from flask_sqlalchemy import SQLAlchemy
 from mainFlask.data.cachestore import CacheStore
 from mainFlask.classes.author import Author
 from mainFlask.classes.chat import Chat
+from mainFlask.classes.message import Message
+from mainFlask.classes.filter_node_object import FilterNodeObject
+from mainFlask.classes.filter_node_group import FilterNodeGroup
 from pathlib import Path
-import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import logging
 logging.basicConfig(level=logging.INFO, force=True)
@@ -24,7 +26,7 @@ def establish_db_connection():
     with app.app_context():
         yield db
         #This code runs after test execution
-        CacheStore.Instance().empty_database()
+        #CacheStore.Instance().empty_database()
 
 def test_loading_messages_from_file():
     start = time.perf_counter()
@@ -76,9 +78,62 @@ def test_loading_and_persisting_messages(establish_db_connection):
 
     assert len(messages) > 0
 
+def test_linguistic_analysis_with_full_db(establish_db_connection):
+    messages: list[Message] = CacheStore.Instance().get_all_messages()
+
+    # spaCy analysis
+    start_spacy = time.perf_counter()
+    for msg in messages:
+        utils.analyze_msg_with_spacy(msg)
+    spacy_duration = time.perf_counter() - start_spacy
+
+    # --- Parallel LanguageTool analysis ---
+    start_lang = time.perf_counter()
+    workers = utils.get_optimal_worker_count()
+    lt_results = []
+
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        futures = {executor.submit(utils.analyze_msg_with_language_tool, msg): msg for msg in messages}
+        for future in as_completed(futures):
+            try:
+                result = future.result()
+                lt_results.extend(result)
+            except Exception as e:
+                msg = futures[future]
+                print(f"Error analyzing message {msg.message_id}: {e}")
+
+    CacheStore.Instance().create_lt_matches(lt_results)
+    lang_duration = time.perf_counter() - start_lang
+
+    # Write results to file
+    results_file = Path(__file__).parent / "performance_results.txt"
+    with open(results_file, "a", encoding="utf-8") as f:
+        f.write(
+            
+            f"spaCy analyzed {len(messages)} messages in {spacy_duration:.2f}s "
+            f"LT analyzed {len(messages)} messages in {lang_duration:.2f}s \n"
+        )  
+    assert len(messages) > 0
+
+def test_execute_simple_query(establish_db_connection):
+    start_query = time.perf_counter()
+    fno: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")
+    result = fno.get_result()
+    query_duration = time.perf_counter() - start_query
+
+    # Write results to file
+    results_file = Path(__file__).parent / "performance_results.txt"
+    with open(results_file, "a", encoding="utf-8") as f:
+        f.write(
+            f"Collected {len(result)} results in {query_duration:.2f}s\n"
+        )
+
+    CacheStore.Instance().empty_cache()
+    assert len(result) >= 0
+
 def test_loop(establish_db_connection):
-    for i in range(9):
-        test_loading_and_persisting_and_analyzing_messages_with_language_tool(establish_db_connection)
+    for i in range(8):
+        test_execute_simple_query(establish_db_connection)
  
 def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):
     overall_start = time.perf_counter()
@@ -153,10 +208,6 @@ def test_loading_and_persisting_and_analyzing_messages_with_language_tool(establ
     persist_duration = time.perf_counter() - start_persist
 
     # --- Parallel LanguageTool analysis ---
-    #TODO: test with different cpu cores. 
-    #for workers in [1, get_num_workers(len(messages))]:
-    #with ProcessPoolExecutor(max_workers=workers) as executor:
-    #print(f"Finished with {workers} workers")
     start_lang = time.perf_counter()
     workers = utils.get_optimal_worker_count()
     lt_results = []

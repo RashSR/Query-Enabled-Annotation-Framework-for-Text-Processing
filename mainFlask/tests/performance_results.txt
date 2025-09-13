@@ -238,38 +238,38 @@ result -> Persiting: 7.65s (1307 msgs/sec), LT: 13139.08s (0.76 msgs/sec), Total
 -------------------------------------------------------
 Analyzing LT with Parallel Computing and decreasing number of workers
 
-workers: 12
-result -> Persiting: 2.53s (3947 msgs/sec), LT: 1422.51s (7 msgs/sec), Total: 1425.18s (7 msgs/sec)
+workers: 12: result -> Persiting: 2.53s (3947 msgs/sec), LT: 1422.51s (7 msgs/sec), Total: 1425.18s (7 msgs/sec)
+workers: 11: result -> Persiting: 2.79s (3590 msgs/sec), LT: 1403.50s (7 msgs/sec), Total: 1406.47s (7 msgs/sec)
+workers: 10: result -> Persiting: 2.70s (3701 msgs/sec), LT: 1419.24s (7 msgs/sec), Total: 1422.13s (7 msgs/sec)
+workers: 9: result -> Persiting: 2.84s (3518 msgs/sec), LT: 1478.34s (7 msgs/sec), Total: 1481.36s (7 msgs/sec)
+workers: 8: result -> Persiting: 2.84s (3517 msgs/sec), LT: 1561.25s (6 msgs/sec), Total: 1564.32s (6 msgs/sec)
+workers: 7: result -> Persiting: 2.93s (3417 msgs/sec), LT: 1693.93s (6 msgs/sec), Total: 1696.98s (6 msgs/sec)
+workers: 6: result -> Persiting: 2.78s (3604 msgs/sec), LT: 1899.17s (5 msgs/sec), Total: 1902.15s (5 msgs/sec)
+workers: 5: result -> Persiting: 3.02s (3311 msgs/sec), LT: 2151.58s (5 msgs/sec), Total: 2154.78s (5 msgs/sec)
+workers: 4: result -> Persiting: 3.08s (3248 msgs/sec), LT: 2538.20s (4 msgs/sec), Total: 2541.40s (4 msgs/sec)
+workers: 3: result -> Persiting: 2.79s (3586 msgs/sec), LT: 3041.54s (3 msgs/sec), Total: 3044.47s (3 msgs/sec)
+workers: 2: result -> Persiting: 2.95s (3393 msgs/sec), LT: 4407.22s (2 msgs/sec), Total: 4410.30s (2 msgs/sec)
+workers: 1: result -> Persiting: 3.20s (3120 msgs/sec), LT: 7227.02s (1 msgs/sec), Total: 7230.35s (1 msgs/sec)
 
-workers: 11
-result -> Persiting: 2.79s (3590 msgs/sec), LT: 1403.50s (7 msgs/sec), Total: 1406.47s (7 msgs/sec)
+-------------------------------------------------------
+Executing a simple query
 
-workers: 10
-result -> Persiting: 2.70s (3701 msgs/sec), LT: 1419.24s (7 msgs/sec), Total: 1422.13s (7 msgs/sec)
+HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
+Collected 10000 results in 45.95s 
+Collected 10000 results in 45.82s 
+Collected 10000 results in 41.65s 
+Collected 10000 results in 44.36s 
+Collected 10000 results in 44.51s 
+Collected 10000 results in 46.52s 
+Collected 10000 results in 47.41s 
+Collected 10000 results in 38.18s 
+Collected 10000 results in 43.43s 
+Collected 10000 results in 44.50s 
 
-workers: 9
-result -> Persiting: 2.84s (3518 msgs/sec), LT: 1478.34s (7 msgs/sec), Total: 1481.36s (7 msgs/sec)
+result -> 44.23s
 
-workers: 8
-result -> Persiting: 2.84s (3517 msgs/sec), LT: 1561.25s (6 msgs/sec), Total: 1564.32s (6 msgs/sec)
+MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
 
-workers: 7
-result -> Persiting: 2.93s (3417 msgs/sec), LT: 1693.93s (6 msgs/sec), Total: 1696.98s (6 msgs/sec)
+LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
 
-workers: 6
-result -> Persiting: 2.78s (3604 msgs/sec), LT: 1899.17s (5 msgs/sec), Total: 1902.15s (5 msgs/sec)
-
-workers: 5
-result -> Persiting: 3.02s (3311 msgs/sec), LT: 2151.58s (5 msgs/sec), Total: 2154.78s (5 msgs/sec)
-
-workers: 4
-result -> Persiting: 3.08s (3248 msgs/sec), LT: 2538.20s (4 msgs/sec), Total: 2541.40s (4 msgs/sec)
-
-workers: 3
-result -> Persiting: 2.79s (3586 msgs/sec), LT: 3041.54s (3 msgs/sec), Total: 3044.47s (3 msgs/sec)
-
-workers: 2
-result -> Persiting: 2.95s (3393 msgs/sec), LT: 4407.22s (2 msgs/sec), Total: 4410.30s (2 msgs/sec)
-
-workers: 1
-result -> Persiting: 3.20s (3120 msgs/sec), LT: 7227.02s (1 msgs/sec), Total: 7230.35s (1 msgs/sec)
+-------------------------------------------------------
