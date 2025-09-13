@@ -205,7 +205,71 @@ Persiting: 6.57s (1522 msgs/sec), spaCy: 516.24s (19 msgs/sec), Total: 523.30s (
 
 result -> Persiting: 7.14s (1400 msgs/sec), spaCy: 502.18s (19.9 msgs/sec), Total: 509.73s (19.6 msgs/sec)
 
-Persisted 10000 messages in 2.60s (3840 msgs/sec)
-LanguageTool analyzed 10000 messages in 1447.31s (7 msgs/sec)
-TOTAL: 10000 messages in 1450.06s (7 msgs/sec)
+-------------------------------------------------------
+Analyzing LT with Parallel Computing
 
+HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
+Persiting: 2.60s (3840 msgs/sec), LT: 1447.31s (6.91 msgs/sec), Total: 1450.06s (7 msgs/sec)
+Persiting: 2.47s (4054 msgs/sec), LT: 1395.68s (7.16 msgs/sec), Total: 1398.28s (7 msgs/sec)
+Persiting: 2.63s (3806 msgs/sec), LT: 1383.75s (7.23 msgs/sec), Total: 1386.57s (7 msgs/sec)
+Persiting: 3.01s (3319 msgs/sec), LT: 1437.32s (6.96 msgs/sec), Total: 1440.50s (7 msgs/sec)
+Persiting: 3.17s (3151 msgs/sec), LT: 1468.62s (6.81 msgs/sec), Total: 1472.00s (7 msgs/sec)
+Persiting: 3.27s (3061 msgs/sec), LT: 1446.38s (6.91 msgs/sec), Total: 1449.90s (7 msgs/sec)
+Persiting: 3.55s (2820 msgs/sec), LT: 1418.36s (7.05 msgs/sec), Total: 1422.07s (7 msgs/sec)
+Persiting: 2.91s (3435 msgs/sec), LT: 1397.57s (7.16 msgs/sec), Total: 1400.67s (7 msgs/sec)
+Persiting: 2.85s (3513 msgs/sec), LT: 1445.32s (6.92 msgs/sec), Total: 1448.38s (7 msgs/sec)
+Persiting: 2.90s (3444 msgs/sec), LT: 1466.26s (6.82 msgs/sec), Total: 1469.31s (7 msgs/sec)
+
+result -> Persiting: 2.94s (3443 msgs/sec), LT: 1430.66s (6.99 msgs/sec), Total: 1433.60s (6.98 msgs/sec)
+
+MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
+Persiting: 2.88s (3469 msgs/sec), LT: 2346.43s (4.26 msgs/sec), Total: 2349.46s (4 msgs/sec)
+Persiting: 2.96s (3382 msgs/sec), LT: 2327.08s (4.30 msgs/sec), Total: 2330.22s (4 msgs/sec)
+Persiting: 2.96s (3382 msgs/sec), LT: 2321.80s (4.31 msgs/sec), Total: 2324.91s (4 msgs/sec)
+
+result -> Persiting: 2.93s (3412.97 msgs/sec), LT: 2331.77s (4.29 msgs/sec), Total: 2334.7s (4.28 msgs/sec)
+
+LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
+Persiting: 9.05s (1105 msgs/sec), LT: 12932.61s (. msgs/sec), Total: 12942.61s (1 msgs/sec)
+Persiting: 6.24s (1603 msgs/sec), LT: 13345.55s (. msgs/sec), Total: 13352.12s (1 msgs/sec)
+
+result -> Persiting: 7.65s (1307 msgs/sec), LT: 13139.08s (0.76 msgs/sec), Total: 13147.38s (0.76 msgs/sec)
+
+-------------------------------------------------------
+Analyzing LT with Parallel Computing and decreasing number of workers
+
+workers: 12
+result -> Persiting: 2.53s (3947 msgs/sec), LT: 1422.51s (7 msgs/sec), Total: 1425.18s (7 msgs/sec)
+
+workers: 11
+result -> Persiting: 2.79s (3590 msgs/sec), LT: 1403.50s (7 msgs/sec), Total: 1406.47s (7 msgs/sec)
+
+workers: 10
+result -> Persiting: 2.70s (3701 msgs/sec), LT: 1419.24s (7 msgs/sec), Total: 1422.13s (7 msgs/sec)
+
+workers: 9
+result -> Persiting: 2.84s (3518 msgs/sec), LT: 1478.34s (7 msgs/sec), Total: 1481.36s (7 msgs/sec)
+
+workers: 8
+result -> Persiting: 2.84s (3517 msgs/sec), LT: 1561.25s (6 msgs/sec), Total: 1564.32s (6 msgs/sec)
+
+workers: 7
+result -> Persiting: 2.93s (3417 msgs/sec), LT: 1693.93s (6 msgs/sec), Total: 1696.98s (6 msgs/sec)
+
+workers: 6
+result -> Persiting: 2.78s (3604 msgs/sec), LT: 1899.17s (5 msgs/sec), Total: 1902.15s (5 msgs/sec)
+
+workers: 5
+result -> Persiting: 3.02s (3311 msgs/sec), LT: 2151.58s (5 msgs/sec), Total: 2154.78s (5 msgs/sec)
+
+workers: 4
+result -> Persiting: 3.08s (3248 msgs/sec), LT: 2538.20s (4 msgs/sec), Total: 2541.40s (4 msgs/sec)
+
+workers: 3
+result -> Persiting: 2.79s (3586 msgs/sec), LT: 3041.54s (3 msgs/sec), Total: 3044.47s (3 msgs/sec)
+
+workers: 2
+result -> Persiting: 2.95s (3393 msgs/sec), LT: 4407.22s (2 msgs/sec), Total: 4410.30s (2 msgs/sec)
+
+workers: 1
+result -> Persiting: 3.20s (3120 msgs/sec), LT: 7227.02s (1 msgs/sec), Total: 7230.35s (1 msgs/sec)
