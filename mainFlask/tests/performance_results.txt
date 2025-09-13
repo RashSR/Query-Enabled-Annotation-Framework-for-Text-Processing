@@ -232,8 +232,9 @@ result -> Persiting: 2.93s (3412.97 msgs/sec), LT: 2331.77s (4.29 msgs/sec), Tot
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
 Persiting: 9.05s (1105 msgs/sec), LT: 12932.61s (. msgs/sec), Total: 12942.61s (1 msgs/sec)
 Persiting: 6.24s (1603 msgs/sec), LT: 13345.55s (. msgs/sec), Total: 13352.12s (1 msgs/sec)
+Persiting: 6.18s (1618 msgs/sec), LT: 13134.36s (. msgs/sec), Total: 13140.87s (1 msgs/sec)
 
-result -> Persiting: 7.65s (1307 msgs/sec), LT: 13139.08s (0.76 msgs/sec), Total: 13147.38s (0.76 msgs/sec)
+result -> Persiting: 7.16s (1396 msgs/sec), LT: 13137.51s (0.76 msgs/sec), Total: 13145.20s (0.76 msgs/sec)
 
 -------------------------------------------------------
 Analyzing LT with Parallel Computing and decreasing number of workers
@@ -271,6 +272,18 @@ result -> 44.23s
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
+Collected 10000 results in 115.45s
+Collected 10000 results in 116.24s
+Collected 10000 results in 116.01s
+Collected 10000 results in 115.73s
+Collected 10000 results in 116.75s
+Collected 10000 results in 116.35s
+Collected 10000 results in 115.71s
+Collected 10000 results in 116.86s
+Collected 10000 results in 116.21s
+Collected 10000 results in 116.62s
+
+result -> 116.19s
 
 -------------------------------------------------------
 Executing a simple query with FULL CACHE
@@ -290,5 +303,29 @@ Collected 10000 results in 10.67s
 result -> 12.01s
 
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+Collected 10000 results in .s
+result -> .s
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
+Collected 10000 results in 39.78s
+Collected 10000 results in 40.95s
+Collected 10000 results in 39.28s
+Collected 10000 results in 38.79s
+Collected 10000 results in 38.58s
+Collected 10000 results in 38.94s
+Collected 10000 results in 37.97s
+Collected 10000 results in 39.35s
+Collected 10000 results in 40.04s
+Collected 10000 results in 38.80s
+
+result -> 39.25sCollected 0 results in 0.00s
+Collected 101 results in 357.97s
