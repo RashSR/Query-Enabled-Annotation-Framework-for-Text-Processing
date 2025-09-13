@@ -116,6 +116,7 @@ def test_linguistic_analysis_with_full_db(establish_db_connection):
     assert len(messages) > 0
 
 def test_execute_simple_query(establish_db_connection):
+    CacheStore.Instance().get_all_messages()
     start_query = time.perf_counter()
     fno: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")
     result = fno.get_result()
@@ -132,7 +133,7 @@ def test_execute_simple_query(establish_db_connection):
     assert len(result) >= 0
 
 def test_loop(establish_db_connection):
-    for i in range(8):
+    for i in range(9):
         test_execute_simple_query(establish_db_connection)
  
 def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):
