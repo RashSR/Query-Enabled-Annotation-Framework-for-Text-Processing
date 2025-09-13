@@ -175,6 +175,7 @@ def test_execute_complex_query_empty_cache(establish_db_connection):
 
 def test_execute_complex_query_full_cache(establish_db_connection):
     CacheStore.Instance().get_all_messages()
+    CacheStore.Instance().get_all_ltms()
     start_query = time.perf_counter()
     root_node: FilterNode = FilterNode(FilterType.AND)
     fno_author: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")

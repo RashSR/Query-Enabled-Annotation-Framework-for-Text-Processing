@@ -195,6 +195,20 @@ class CacheStore:
 
         if self._messages is None:
             self._messages = {}
+
+        #TODO remove, this is only test code
+        ids = [
+            1941964, 1941986, 1942315, 1942582, 1942630,
+            1942765, 1943007, 1943125, 1943294, 1943795,
+            1943925, 1943951, 1944011, 1944039, 1944255,
+            1944537, 1944546, 1944611, 1944626, 1944932,
+            1944979, 1945041, 1945072, 1945743, 1945758,
+            1946467, 1946500, 1947495, 1947726, 1947757,
+            1948386, 1948487, 1948820, 1948904, 1949142,
+            1949271, 1949347, 1949619, 1949771, 1949855,
+            1951009, 1951636, 1951649, 1951725
+        ]
+        return [self._messages[mid] for mid in ids if mid in self._messages]
         
         messages = get_messages_by_error_category(self._db, self._app, category)
         for msg in messages:
@@ -209,18 +223,6 @@ class CacheStore:
             self._messages = {}
 
         messages = get_messages_by_recipient_id(self._db, self._app, recipient_id)
-        for msg in messages:
-            self._messages[msg.message_id] = msg
-
-        return messages
-    
-    def get_messages_by_error_category(self, category: str):
-        from .db_handling import get_messages_by_error_category
-
-        if self._messages is None:
-            self._messages = {}
-        
-        messages = get_messages_by_error_category(self._db, self._app, category)
         for msg in messages:
             self._messages[msg.message_id] = msg
 
@@ -270,6 +272,15 @@ class CacheStore:
 
     _ltms = None
 
+    def get_all_ltms(self):
+        from .db_handling import get_all_ltms
+        if self._ltms is None:
+            ltms = get_all_ltms(self._db, self._app)
+            self._ltms = {ltm.id: ltm for ltm in ltms}
+
+        return list(self._ltms.values())
+
+
     def get_all_ltms_by_msg_id_and_chat_id(self, msg_id, chat_id):
         #TODO: is always loaded, maybe look up in store?
         if not isinstance(msg_id, int) or not isinstance(chat_id, int):
@@ -280,6 +291,15 @@ class CacheStore:
         if self._ltms is None:
             self._ltms = {}
 
+        #TODO just testcode remove it afterwards
+        ids = [
+            4235, 4237, 4238, 4239, 4240, 4242, 4243, 4244, 4245, 4246,
+            4247, 4248, 4250, 4251, 4252, 4253, 4257, 4258, 4260, 4261,
+            4265, 4266, 4267, 4268, 4269, 4271, 4272, 4273, 4274, 4275,
+            4278, 4279, 4280, 4284, 4289, 4290, 4291
+        ]
+        return [self._ltms[lid] for lid in ids if lid in self._ltms]
+    
         ltms: list[LTMatch] = get_all_ltms_by_msg_id_and_chat_id(self._db, self._app, msg_id, chat_id)
         return ltms
     

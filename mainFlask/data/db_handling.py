@@ -198,6 +198,16 @@ def get_messages_from_spacy_matches_by_column_and_value(db: SQLAlchemy, app: Fla
 
 #region LTM
 
+def get_all_ltms(db: SQLAlchemy, app: Flask):
+    with app.app_context():
+        result = db.session.execute(text("SELECT * FROM lt_match"))
+        ltms = []
+        for row in result:
+            loaded_ltm = _convert_db_row_to_ltm(row)
+            ltms.append(loaded_ltm)
+
+        return ltms
+
 def get_all_ltms_by_msg_id_and_chat_id(db:SQLAlchemy, app: Flask, msg_id: int, chat_id: int):
     with app.app_context():
         ltms: list[LTMatch] = []
