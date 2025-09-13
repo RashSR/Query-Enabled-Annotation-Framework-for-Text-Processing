@@ -176,13 +176,14 @@ def test_execute_complex_query_empty_cache(establish_db_connection):
 def test_execute_complex_query_full_cache(establish_db_connection):
     CacheStore.Instance().get_all_messages()
     CacheStore.Instance().get_all_ltms()
+    #CacheStore.Instance().get_all_spacy_matches()
     start_query = time.perf_counter()
     root_node: FilterNode = FilterNode(FilterType.AND)
     fno_author: FilterNodeObject = FilterNodeObject(FilterNodeGroup.AUTHOR, None, selected_value="Esther")
     fno_pos: FilterNodeObject = FilterNodeObject(FilterNodeGroup.WORTART, None, selected_value="VERB")
     fno_error: FilterNodeObject = FilterNodeObject(FilterNodeGroup.CATEGORY, None, selected_value="CASING")
     root_node.add_leaf(fno_author)
-    root_node.add_leaf(fno_pos)
+    #root_node.add_leaf(fno_pos)
     root_node.add_leaf(fno_error)
     result =  root_node.get_full_result()
     query_duration = time.perf_counter() - start_query

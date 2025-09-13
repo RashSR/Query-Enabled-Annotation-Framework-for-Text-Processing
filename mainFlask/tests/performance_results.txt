@@ -361,12 +361,28 @@ Collected 101 results in .s
 result -> .s
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
-
 Collected 101 results in 897.01s
 Collected 101 results in 876.53s
 Collected 101 results in 878.78s
 Collected 101 results in 878.69s
 Collected 101 results in 877.59s
+Collected 101 results in 879.57s
+Collected 101 results in 878.90s
+Collected 101 results in 880.39s
+Collected 101 results in 878.36s
+Collected 101 results in .s
+
+result -> .s
+
+-------------------------------------------------------
+Executing a complex query with FULL CACHE
+
+HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
 Collected 101 results in .s
 Collected 101 results in .s
 Collected 101 results in .s
@@ -375,6 +391,31 @@ Collected 101 results in .s
 
 result -> .s
 
--------------------------------------------------------
-Executing a complex query with FULL CACHE
+MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+
+result -> .s
+
+LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+Collected 101 results in .s
+
+result -> .s
 
