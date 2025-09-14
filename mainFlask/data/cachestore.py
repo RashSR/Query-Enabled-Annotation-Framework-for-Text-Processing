@@ -26,7 +26,9 @@ class CacheStore:
         self._messages = None
         self._loaded_all_messages = False
         self._ltms = None
+        self._loaded_all_ltms = False
         self._spacy_matches = None
+        self._loaded_all_spacy_matches = False
         self._annotations = None
 
     #region GET
@@ -193,6 +195,17 @@ class CacheStore:
     def get_messages_by_error_category(self, category: str):
         from .db_handling import get_messages_by_error_category
 
+        #if all ltms and messages present -> return messages with them quickly
+        if self._loaded_all_messages and self._loaded_all_ltms:
+            searched_messages = []
+            seen_ids = set()
+            for ltm in self._ltms.values():
+                if ltm.category == category and ltm.message_id not in seen_ids:
+                    searched_message = self._messages[ltm.message_id]
+                    searched_messages.append(searched_message)
+                    seen_ids.add(ltm.message_id)
+            return searched_messages
+        
         if self._messages is None:
             self._messages = {}
         
@@ -243,6 +256,17 @@ class CacheStore:
     def get_messages_from_spacy_matches_by_column_and_value(self, column_name: str, value: str):
         from .db_handling import get_messages_from_spacy_matches_by_column_and_value
         
+        #if all spacy_matches and messages present -> return messages with them quickly
+        if self._loaded_all_messages and self._loaded_all_spacy_matches:
+            searched_messages = []
+            seen_ids = set()
+            for spacy_match in self._spacy_matches.values():
+                if spacy_match.pos == value and spacy_match.message_id not in seen_ids:
+                    searched_message = self._messages[spacy_match.message_id]
+                    searched_messages.append(searched_message)
+                    seen_ids.add(spacy_match.message_id)
+            return searched_messages
+
         if self._messages is None:
             self._messages = {}
         
@@ -257,12 +281,14 @@ class CacheStore:
     #region LTM
 
     _ltms = None
+    _loaded_all_ltms = False
 
     def get_all_ltms(self):
         from .db_handling import get_all_ltms
         if self._ltms is None:
             ltms = get_all_ltms(self._db, self._app)
             self._ltms = {ltm.id: ltm for ltm in ltms}
+            self._loaded_all_ltms = True
 
         return list(self._ltms.values())
 
@@ -272,6 +298,14 @@ class CacheStore:
         if not isinstance(msg_id, int) or not isinstance(chat_id, int):
             return None
         
+        #if all ltms present -> return them quickly
+        if self._loaded_all_ltms:
+            searched_ltms = []
+            for ltm in self._ltms.values():
+                if ltm.message_id == msg_id:
+                    searched_ltms.append(ltm)
+            return searched_ltms
+
         from .db_handling import get_all_ltms_by_msg_id_and_chat_id
         
         if self._ltms is None:
@@ -279,8 +313,6 @@ class CacheStore:
 
         ltms: list[LTMatch] = get_all_ltms_by_msg_id_and_chat_id(self._db, self._app, msg_id, chat_id)
         return ltms
-
-    
     
     def get_all_distinct_categories_from_ltms(self):
         from .db_handling import get_all_distinct_categories_from_ltms
@@ -297,6 +329,7 @@ class CacheStore:
     #region Spacy Match
 
     _spacy_matches = None
+    _loaded_all_spacy_matches = False
 
     def get_all_spacy_matches(self):
         from .db_handling import get_all_spacy_matches
@@ -312,6 +345,15 @@ class CacheStore:
         return column_values
     
     def get_all_spacy_matches_by_msg_id(self, msg_id: int):
+
+        #if all spacy matches present -> return them quickly
+        if self._loaded_all_spacy_matches:
+            searched_spacy_matches = []
+            for spacy_match in self._spacy_matches.values():
+                if spacy_match.message_id == msg_id:
+                    searched_spacy_matches.append(spacy_match)
+            return searched_spacy_matches
+
         from .db_handling import get_all_spacy_matches_by_msg_id
         
         if self._spacy_matches is None:

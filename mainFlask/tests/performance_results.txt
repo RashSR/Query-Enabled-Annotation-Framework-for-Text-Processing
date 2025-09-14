@@ -437,3 +437,7 @@ Collected 101 results in .s
 Collected 101 results in .s
 
 result -> .s
+Collected 44 results in 16.09s
+Collected 101 results in 384.27s
+Collected 101 results in 379.77s
+Collected 101 results in 369.12s
