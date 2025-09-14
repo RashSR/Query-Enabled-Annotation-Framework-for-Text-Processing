@@ -411,33 +411,29 @@ Collected 101 results in .s
 result -> .s
 
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
+Collected 101 results in 369.12s
+Collected 101 results in 372.24s
+Collected 101 results in 369.07s
+Collected 101 results in 367.07s
+Collected 101 results in 364.94s
+Collected 101 results in 364.77s
+Collected 101 results in 364.89s
+Collected 101 results in 365.12s
+Collected 101 results in 365.93s
+Collected 101 results in 365.19s
 
-result -> .s
+result -> 366.83s
 
 LOW(2 Cores 4 Threads, 10 GB RAM, Intel i7-3517U)
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
+Collected 101 results in 774.36s
+Collected 101 results in 773.89s
+Collected 101 results in 772.58s
+Collected 101 results in 772.93s
+Collected 101 results in 773.76s
+Collected 101 results in 772.43s
+Collected 101 results in 773.72s
+Collected 101 results in 774.06s
+Collected 101 results in 772.41s
+Collected 101 results in 773.75s
 
-result -> .s
-Collected 44 results in 16.09s
-Collected 101 results in 384.27s
-Collected 101 results in 379.77s
-Collected 101 results in 369.12s
+result -> 773.39s
