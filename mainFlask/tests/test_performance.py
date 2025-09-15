@@ -198,7 +198,7 @@ def test_execute_complex_query_full_cache(establish_db_connection):
     assert len(result) >= 0
 
 def test_loop(establish_db_connection):
-    for i in range(9):
+    for i in range(10):
         test_execute_complex_query_full_cache(establish_db_connection)
  
 def test_loading_and_persisting_and_analyzing_messages_with_spacy(establish_db_connection):

@@ -397,18 +397,18 @@ result -> 880.85s
 Executing a complex query with FULL CACHE
 
 HIGH(8 cores 16 Threads, 64 GB RAM, Intel W-11955M)
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
-Collected 101 results in .s
+Collected 101 results in 373.85s
+Collected 101 results in 398.22s
+Collected 101 results in 378.61s
+Collected 101 results in 410.42s
+Collected 101 results in 493.24s
+Collected 101 results in 449.15s
+Collected 101 results in 380.95s
+Collected 101 results in 454.32s
+Collected 101 results in 397.45s
+Collected 101 results in 346.88s
 
-result -> .s
+result -> 346.88s
 
 MEDIUM(6 Cores 12 Threads, 32GB RAM, Intel i7-8700)
 Collected 101 results in 369.12s
@@ -437,3 +437,4 @@ Collected 101 results in 772.41s
 Collected 101 results in 773.75s
 
 result -> 773.39s
+

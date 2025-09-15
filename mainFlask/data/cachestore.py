@@ -256,17 +256,6 @@ class CacheStore:
     def get_messages_from_spacy_matches_by_column_and_value(self, column_name: str, value: str):
         from .db_handling import get_messages_from_spacy_matches_by_column_and_value
         
-        #if all spacy_matches and messages present -> return messages with them quickly
-        if self._loaded_all_messages and self._loaded_all_spacy_matches:
-            searched_messages = []
-            seen_ids = set()
-            for spacy_match in self._spacy_matches.values():
-                if spacy_match.pos == value and spacy_match.message_id not in seen_ids:
-                    searched_message = self._messages[spacy_match.message_id]
-                    searched_messages.append(searched_message)
-                    seen_ids.add(spacy_match.message_id)
-            return searched_messages
-
         if self._messages is None:
             self._messages = {}
         
