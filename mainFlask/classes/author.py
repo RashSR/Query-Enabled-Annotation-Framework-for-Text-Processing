@@ -1,5 +1,7 @@
 from mainFlask.data.cachestore import CacheStore
 from .chat import Chat
+import emoji
+from collections import Counter
 
 class Author:
     def __init__(self, id, name, age = None, gender = None, first_language = None, languages = None, region = None, job = None, annotation = None, chats = None):
@@ -134,6 +136,31 @@ class Author:
 
         error_rate = total_errors / total_msgs
         return round(error_rate, 2)
+    
+    def get_emoji_rate(self):
+        messages = self.messages
+        total_msgs = len(messages)
+
+        if total_msgs == 0:
+            return 0.0
+
+        count = 0
+        for msg in messages:
+            count += sum(1 for char in msg.content if emoji.is_emoji(char))
+        
+        emoji_rate = count / total_msgs
+        return round(emoji_rate, 2)
+    
+    def get_most_used_emoji(self):
+        all_emojis = []
+        for msg in self.messages:
+            all_emojis.extend([char for char in msg.content if emoji.is_emoji(char)])
+        
+        if not all_emojis:
+            return None  # No emojis present
+        
+        counter = Counter(all_emojis)
+        return counter.most_common(1)[0][0]
 
     def get_error_categories(self):
         all_categories = {
