@@ -161,7 +161,24 @@ The searched keyword is highlighted in yellow in the results. Each result shows 
 
 Lets you create complex search queries and view the results in a concordance view.
 
-At first there is only two buttons in the view, which can create a complex or a simple search. 
+### Complex and Simple Search
+At first, the view displays only two buttons: one to create a **complex search** and one to create a **simple search**.
+
+#### Complex Search
+A complex search can use one of three operations: **AND**, **OR**, or **NOT**. Additionally, you can select a **scope**, which determines the range in which the found tokens are considered valid and displayed in the results list.  
+
+Each complex search has three buttons:  
+- **Green plus (+)**: adds another complex query within this one  
+- **Blue plus (+)**: adds a simple query within this complex query  
+- **Red cross (×)**: deletes the complex query
+
+#### Simple Search
+A simple search consists of a **search category** and a **search value**.  
+
+- The value can be entered in a text field, for example for a word search. Word searches have additional parameters: **substring search**, **case-sensitive**, and **regular expression**.  
+- Alternatively, the value can be selected from a drop-down menu containing specific options for the chosen search category.  
+
+A simple search can also be deleted by clicking the **cross button** on the right. All the discussed elements can be seen in the following image.
 
 ![Konkordanz View](images/konkordanz_view.png)
 
@@ -197,6 +214,7 @@ Similar to the Profile view, you can select each author individually to view the
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
