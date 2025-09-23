@@ -89,7 +89,7 @@ This project uses **LanguageTool version 6.6**.
 LanguageTool can be downloaded from the official website:  
 [https://languagetool.org/download/](https://languagetool.org/download/)
 
-After downloading and extracting the archive, navigate into the extracted directory:
+After downloading and extracting the archive, navigate into the extracted directory with the commandline:
 
 ```bash
 cd LanguageTool-6.6
@@ -183,6 +183,7 @@ Displays basic author metrics such as emoji usage and error rate. These can be s
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
