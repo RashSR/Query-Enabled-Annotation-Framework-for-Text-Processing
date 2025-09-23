@@ -210,12 +210,15 @@ Displays basic author metrics such as emoji usage and error rate. These can be s
 
 Similar to the Profile view, you can select each author individually to view their collected metrics.
 
+A toggle is available to switch how metrics are displayed, either per message or normalized per 100 words.
+
 ![Metrics View](images/metrics_view.png)
 
 ### Settings
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
