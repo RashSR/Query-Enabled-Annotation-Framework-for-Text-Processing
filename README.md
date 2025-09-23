@@ -179,10 +179,15 @@ Clicking the **'Löschen'** button on an element removes it from the list and de
 
 Displays basic author metrics such as emoji usage and error rate. These can be shown relative to every 100 words or per message.
 
+Similar to the Profile view, you can select each author individually to view their collected metrics.
+
+![Metrics View](images/metrics_view.png)
+
 ### Settings
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
