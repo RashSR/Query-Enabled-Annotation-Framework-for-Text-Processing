@@ -161,7 +161,15 @@ The searched keyword is highlighted in yellow in the results. Each result shows 
 
 Lets you create complex search queries and view the results in a concordance view.
 
+At first there is only two buttons in the view, which can create a complex or a simple search. 
 
+![Konkordanz View](images/konkordanz_view.png)
+
+After creating a query and clicking on the **'Suchen'** button, the results are calculated and displayed in a concordance view, as illustrated in the image below. The results are displayed in a numbered list. Each result has a left context, the matched part, a left context, the name of the sender, and the name of the recipient. In addition, there are icons which trigger different actions. Right to the matched word is an icon to jump into the chat view and an icon to jump into the annotation view. It is also possible to jump to the authors or recipients profile card, by clicking on the icon on the right side of the name. 
+
+Below the results list, the exectuted query is displayed , along with the result count for each simple query. You can modify and re-execute the query here without reconstructing it from scratch.  
+
+![Konkordanz View Results](images/konkordanz_view_result.png)
 
 ### Annotation
 *Route: `/annotation`*
@@ -189,6 +197,7 @@ Similar to the Profile view, you can select each author individually to view the
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
