@@ -1,7 +1,7 @@
 # Query-Enabled Annotation Framework for Text Processing
 
 This project provides a lightweight framework for the automatic and manual annotation of text data, with a focus on instant messaging corpora (e.g., WhatsApp).  
-It integrates **spaCy** for linguistic annotation, **LanguageTool** for error detection, and a **Flask web interface** for exploration.  
+It integrates **[spaCy](https://spacy.io/)** for linguistic annotation, **[LanguageTool](https://languagetool.org/)** for error detection, and a **[Flask](https://flask.palletsprojects.com/) web interface** for exploration.  
 Unlike standalone NLP tools, the framework includes a **query-enabled design** that allows researchers to filter, analyze, and retrieve annotations efficiently.
 
 ---
@@ -91,4 +91,5 @@ Once the server is running, open your browser and go to:
 http://localhost:5000
 
 You will be automatically redirected to the `/profile` route, which acts as the entry point to this application.
+
 
