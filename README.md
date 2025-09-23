@@ -1,8 +1,19 @@
 # Query-Enabled Annotation Framework for Text Processing
 
+## Table of Contents
+- [About](#about)
+- [Features](#features)
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Running the LanguageTool Server](#running-the-languagetool-server)
+- [Running the Flask Application](#running-the-flask-application)
+- [Usage](#usage)
+
+
+## About
 This project provides a lightweight framework for the automatic and manual annotation of text data, with a focus on instant messaging corpora (e.g., WhatsApp).  
 It integrates **[spaCy](https://spacy.io/)** for linguistic annotation, **[LanguageTool](https://languagetool.org/)** for error detection, and a **[Flask](https://flask.palletsprojects.com/) web interface** for exploration.  
-Unlike standalone NLP tools, the framework includes a **query-enabled design** that allows researchers to filter, analyze, and retrieve annotations efficiently.
+Unlike standalone NLP tools, the framework includes a **query-enabled design** that allows researchers to filter, analyze, and retrieve text and annotations efficiently.
 
 ---
 
@@ -116,5 +127,6 @@ Once the Flask app is running, the navigation bar contains the following views:
 
 - **Settings** (`/settings`)  
   Currently in development. In the future, this will allow customization of font and color. 
+
 
 
