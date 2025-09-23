@@ -122,35 +122,41 @@ class Author:
         self._messages = CacheStore.Instance().get_messages_by_author_id(self._id)
         return self._messages
     
-    def get_error_rate(self):
-        messages = self.messages
-        total_msgs = len(messages)
+    def get_message_count(self):
+        return len(self.messages)
 
+    def get_word_count(self):
+        return sum(len(msg.content.split()) for msg in self.messages)
+
+    def get_error_count(self):
+        return sum(len(msg.ltmatch_ids) for msg in self.messages)
+
+    def get_error_rate_per_message(self):
+        total_msgs = self.get_message_count()
         if total_msgs == 0:
             return 0.0
+        return round(self.get_error_count() / total_msgs, 2)
 
-        total_errors = 0
-        for message in messages:
-            error_count_for_message = len(message.ltmatch_ids)
-            total_errors = total_errors + error_count_for_message
+    def get_error_rate_per_100_words(self):
+        total_words = self.get_word_count()
+        if total_words == 0:
+            return 0.0
+        return round((self.get_error_count() / total_words) * 100, 2)
 
-        error_rate = total_errors / total_msgs
-        return round(error_rate, 2)
-    
-    def get_emoji_rate(self):
-        messages = self.messages
-        total_msgs = len(messages)
-
+    def get_emoji_rate_per_message(self):
+        total_msgs = self.get_message_count()
         if total_msgs == 0:
             return 0.0
+        count = sum(sum(1 for char in msg.content if emoji.is_emoji(char)) for msg in self.messages)
+        return round(count / total_msgs, 2)
 
-        count = 0
-        for msg in messages:
-            count += sum(1 for char in msg.content if emoji.is_emoji(char))
-        
-        emoji_rate = count / total_msgs
-        return round(emoji_rate, 2)
-    
+    def get_emoji_rate_per_100_words(self):
+        total_words = self.get_word_count()
+        if total_words == 0:
+            return 0.0
+        count = sum(sum(1 for char in msg.content if emoji.is_emoji(char)) for msg in self.messages)
+        return round((count / total_words) * 100, 2)
+
     def get_most_used_emoji(self):
         all_emojis = []
         for msg in self.messages:
