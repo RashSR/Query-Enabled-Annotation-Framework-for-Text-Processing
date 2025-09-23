@@ -7,16 +7,7 @@
         <div class="profile-card" style="max-width:400px; margin:auto; background:#fff; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:2rem 2.2rem 1.5rem 2.2rem;">
             <div class="profile-avatar" style="width:60px; height:60px; background:#25D366; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2em; font-weight:bold; margin:auto;">{{ author.name[0] }}</div>
             <h2 style="text-align:center; margin:1rem 0 0.5rem 0;">{{ author.name }}</h2>
-                        <div style="text-align:center; margin-bottom:1.2rem;">
-                                <div style="display:inline-block;">
-                                    <label class="switch">
-                                        <input type="checkbox" id="toggle-metric-view">
-                                        <span class="slider"></span>
-                                    </label>
-                                    <span id="toggle-label-left" style="margin-left:0.7em; margin-right:0.7em; font-weight:bold; color:#25D366;">Pro Nachricht</span>
-                                    <span id="toggle-label-right" style="margin-left:0.7em; margin-right:0.7em; font-weight:bold; color:#888;">Pro 100 Wörter</span>
-                                </div>
-                        </div>
+            <!-- Toggle moved to bottom -->
             <div id="metrics-per-message">
                 <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">
                     Fehlerrate: <strong>{{ author.get_error_rate_per_message() }}</strong> Fehler pro Nachricht
@@ -33,7 +24,17 @@
                     Emoji-Rate: <strong>{{ author.get_emoji_rate_per_100_words() }}</strong> Emojis pro 100 Wörter
                 </div>
             </div>
-            <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">Meistgenutztes Emoji: <strong>{% if author.get_most_used_emoji() %}{{ author.get_most_used_emoji() }}{% else %}Keine Emojis verwendet{% endif %}</strong></div>
+                        <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">Meistgenutztes Emoji: <strong>{% if author.get_most_used_emoji() %}{{ author.get_most_used_emoji() }}{% else %}Keine Emojis verwendet{% endif %}</strong></div>
+                                    <div style="text-align:center; margin-top:2rem;">
+                                            <div style="display:inline-flex; align-items:center; gap:0.7em;">
+                                                <span id="toggle-label-left" style="font-weight:bold; color:#25D366;">Pro Nachricht</span>
+                                                <label class="switch" style="margin:0 0.2em;">
+                                                    <input type="checkbox" id="toggle-metric-view">
+                                                    <span class="slider"></span>
+                                                </label>
+                                                <span id="toggle-label-right" style="font-weight:bold; color:#888;">Pro 100 Wörter</span>
+                                            </div>
+                                    </div>
         </div>
                 <style>
                 .switch {
