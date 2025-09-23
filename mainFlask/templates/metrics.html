@@ -72,38 +72,7 @@
                     transform: translateX(20px);
                 }
                 </style>
-                        <script>
-                        const toggleSwitch = document.getElementById('toggle-metric-view');
-                        const perMsg = document.getElementById('metrics-per-message');
-                        const per100 = document.getElementById('metrics-per-100words');
-                        const labelLeft = document.getElementById('toggle-label-left');
-                        const labelRight = document.getElementById('toggle-label-right');
-                        // Use localStorage to persist toggle state
-                        function updateToggleUI() {
-                            if (!toggleSwitch.checked) {
-                                perMsg.style.display = '';
-                                per100.style.display = 'none';
-                                labelLeft.style.color = '#25D366';
-                                labelRight.style.color = '#888';
-                                localStorage.setItem('metricsToggle', 'perMessage');
-                            } else {
-                                perMsg.style.display = 'none';
-                                per100.style.display = '';
-                                labelLeft.style.color = '#888';
-                                labelRight.style.color = '#25D366';
-                                localStorage.setItem('metricsToggle', 'per100');
-                            }
-                        }
-                        // On load, restore toggle state
-                        const savedToggle = localStorage.getItem('metricsToggle');
-                        if (savedToggle === 'per100') {
-                            toggleSwitch.checked = true;
-                        } else {
-                            toggleSwitch.checked = false;
-                        }
-                        updateToggleUI();
-                        toggleSwitch.addEventListener('change', updateToggleUI);
-                        </script>
+                                <script src="{{ url_for('static', filename='js/metrics.js') }}"></script>
         {% else %}
         <div style="text-align:center; color:#888; font-size:1.1em; margin-top:2em;">Wähle einen Autor aus der Liste links aus, um Metriken anzuzeigen.</div>
         {% endif %}
