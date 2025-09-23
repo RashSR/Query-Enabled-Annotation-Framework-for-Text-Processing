@@ -8,6 +8,14 @@
 - [Running the LanguageTool Server](#running-the-languagetool-server)
 - [Running the Flask Application](#running-the-flask-application)
 - [Usage](#usage)
+  - [Profile](#profile)
+  - [Chats](#chats)
+  - [Search](#search)
+  - [Konkordanz](#konkordanz)
+  - [Annotation](#annotation)
+  - [Metrics](#metrics)
+  - [Settings](#settings)
+
 
 
 ## About
@@ -107,26 +115,28 @@ You will be automatically redirected to the `/profile` route, which acts as the 
 
 Once the Flask app is running, the navigation bar contains the following views:
 
-- **Profile** (`/profile`)  
-  Displays profile information for imported authors. Lets you import chats and select an author.
+### Profile (`/profile`)
+Displays profile information for imported authors. Lets you import chats and select an author.
 
-- **Chats** (`/chat`)  
-  Shows the imported chats from the perspective of the selected author. 
+### Chats (`/chat`)
+Shows the imported chats from the perspective of the selected author.
 
-- **Search** (`/search`)  
-  Provides a simple search to find substrings in messages. You can choose the author whose messages you want to search.
+### Search (`/search`)
+Provides a simple search to find substrings in messages. You can choose the author whose messages you want to search.
 
-- **Konkordanz** (`/konkordanz`)  
-  Lets you create complex search queries and view the results in a concordance view
+### Konkordanz (`/konkordanz`)
+Lets you create complex search queries and view the results in a concordance view.
 
-- **Annotation** (`/annotation`)  
-  Enables adding or updating annotations for selected messages.
+### Annotation (`/annotation`)
+Enables adding or updating annotations for selected messages.
 
-- **Metrics** (`/metrics`)  
-  Displays basic author metrics such as emoji usage and error rate. These can be shown relative to every 100 words or per message.
+### Metrics (`/metrics`)
+Displays basic author metrics such as emoji usage and error rate. These can be shown relative to every 100 words or per message.
 
-- **Settings** (`/settings`)  
-  Currently in development. In the future, this will allow customization of font and color. 
+### Settings (`/settings`)
+Currently in development. In the future, this will allow customization of font and color.
+
+
 
 
 
