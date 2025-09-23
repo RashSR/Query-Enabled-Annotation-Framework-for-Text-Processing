@@ -161,12 +161,14 @@ The searched keyword is highlighted in yellow in the results. Each result shows 
 
 Lets you create complex search queries and view the results in a concordance view.
 
+
+
 ### Annotation
 *Route: `/annotation`*
 
 Enables adding or updating annotations for selected messages.  
 
-Annotations are divided into three groups: **manual**, **error**, and **linguistic**. Each group can be expanded to show individual elements. Clicking on a chat box highlights the corresponding text in the textbox above, as shown in the image below. Additionally, hovering over the highlighted text displays a tooltip with the annotation reason.
+Annotations are divided into three groups: **manual**, **error**, and **linguistic**. Each group can be expanded to show individual elements. Clicking on a checkbox highlights the corresponding text in the textbox above, as shown in the image below. Additionally, hovering over the highlighted text displays a tooltip with the annotation reason.
 
 ![Annotation View](images/annotation_view.png)
 
@@ -187,6 +189,7 @@ Similar to the Profile view, you can select each author individually to view the
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
