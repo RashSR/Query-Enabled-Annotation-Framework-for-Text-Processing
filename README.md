@@ -117,31 +117,50 @@ Once the Flask app is running, the navigation bar contains the following views:
 
 ### Profile 
 *Route (`/profile`)*
+
 Displays profile information for imported authors. Lets you import chats and select an author.
+After clicking on an author in the sidebar the profile card for this author is displayed, which can be seen in the image below. Additionally, this selects the author and is important for the chat view.
+
+![Profile View](images/profile_view.png)
+
+Clicking on the 'Autor hinzufügen' button opens a form where the user can type in basic information about an author, such as name, age, gender, primary and additional languages, region, and profession. 
+Clicking on the 'Zeige Statistik' button jumps to the route `/metrics/author_id` and shows the metrics to the selected author.
+To import a chat the user has to click on the 'Chat hinzufügen' button. After selecting a txt-file, which should contain the chat, the following form opens.
+
+![Author Allocation](images/author_allocation.png)
+
+The application extracts the authors from the imported chat. If the author is already known and could be identified the program automatically assings it, otherwise the user has to select an author from the drop down menu to assign it manually. The relationship between the authors can be specified in this form as well. After hitting 'Bestätigen' the program saves the messages and starts to analyze them and shows the progress in a loading bar. After it is finished the user gets informed.
 
 ### Chats
 *Route (`/chat`)*
+
 Shows the imported chats from the perspective of the selected author.
 
 ### Search
 *Route (`/search`)*
+
 Provides a simple search to find substrings in messages. You can choose the author whose messages you want to search.
 
 ### Konkordanz
 *Route (`/konkordanz`)*
+
 Lets you create complex search queries and view the results in a concordance view.
 
 ### Annotation
 *Route (`/annotation`)*
+
 Enables adding or updating annotations for selected messages.
 
 ### Metrics
 *Route (`/metrics`)*
+
 Displays basic author metrics such as emoji usage and error rate. These can be shown relative to every 100 words or per message.
 
 ### Settings
 *Route (`/settings`)*
+
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
