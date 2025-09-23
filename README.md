@@ -115,26 +115,34 @@ You will be automatically redirected to the `/profile` route, which acts as the 
 
 Once the Flask app is running, the navigation bar contains the following views:
 
-### Profile (`/profile`)
+### Profile 
+*Route (`/profile`)*
 Displays profile information for imported authors. Lets you import chats and select an author.
 
-### Chats (`/chat`)
+### Chats
+*Route (`/chat`)*
 Shows the imported chats from the perspective of the selected author.
 
-### Search (`/search`)
+### Search
+*Route (`/search`)*
 Provides a simple search to find substrings in messages. You can choose the author whose messages you want to search.
 
-### Konkordanz (`/konkordanz`)
+### Konkordanz
+*Route (`/konkordanz`)*
 Lets you create complex search queries and view the results in a concordance view.
 
-### Annotation (`/annotation`)
+### Annotation
+*Route (`/annotation`)*
 Enables adding or updating annotations for selected messages.
 
-### Metrics (`/metrics`)
+### Metrics
+*Route (`/metrics`)*
 Displays basic author metrics such as emoji usage and error rate. These can be shown relative to every 100 words or per message.
 
-### Settings (`/settings`)
+### Settings
+*Route (`/settings`)*
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
