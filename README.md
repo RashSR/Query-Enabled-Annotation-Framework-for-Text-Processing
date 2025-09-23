@@ -119,13 +119,17 @@ Once the Flask app is running, the navigation bar contains the following views:
 *Route (`/profile`)*
 
 Displays profile information for imported authors. Allows you to import chats and select an author.
+
 After clicking on an author in the sidebar, the profile card for that author is displayed, which can be seen in the image below. Additionally, this selects the author and is important for the chat view.
 
 ![Profile View](images/profile_view.png)
 
 Clicking on the **'Autor hinzufügen'** button opens a form where the user can type in basic information about an author, such as name, age, gender, primary and additional languages, region, and profession. 
+
 Clicking on the **'Zeige Statistik'** button jumps to the route `/metrics/author_id` and shows the metrics to the selected author.
+
 To import a chat the user has to click on the **'Chat hinzufügen'** button. After selecting a txt-file, which should contain the chat, the following form opens.
+
 The author can be annotated as well. Just type in the textfield and leave it to save the author annotation.
 
 ![Author Allocation](images/author_allocation.png)
@@ -136,7 +140,9 @@ The application extracts the authors from the imported chat. If the author is al
 *Route: (`/chat`)*
 
 Shows the imported chats from the perspective of the selected author.
+
 In this view, you can select chats belonging to the active author. Each chat displays the initial of the chat partner, the beginning of the latest message, and its timestamp. 
+
 Clicking on a chat allows you to view all messages from the corresponding chat, and the banner shows the relationship between the authors. 
 
 ![Chat View](images/chat_view.png)
@@ -156,9 +162,17 @@ The searched keyword is highlighted in yellow in the results. Each result shows 
 Lets you create complex search queries and view the results in a concordance view.
 
 ### Annotation
-*Route: (`/annotation`)*
+*Route: `/annotation`*
 
-Enables adding or updating annotations for selected messages.
+Enables adding or updating annotations for selected messages.  
+
+Annotations are divided into three groups: **manual**, **error**, and **linguistic**. Each group can be expanded to show individual elements. Clicking on a chat box highlights the corresponding text in the textbox above, as shown in the image below. Additionally, hovering over the highlighted text displays a tooltip with the annotation reason.
+
+![Annotation View](images/annotation_view.png)
+
+Clicking the **'Hinzufügen'** button opens a form where you can add an annotation with attributes such as the text segment, annotation type, reason, and an optional comment. The position can be filled automatically by highlighting the part of the message with the mouse. After clicking **'Speichern'**, the annotation is saved.
+
+Clicking the **'Löschen'** button on an element removes it from the list and deletes the annotation.
 
 ### Metrics
 *Route: (`/metrics`)*
@@ -169,6 +183,7 @@ Displays basic author metrics such as emoji usage and error rate. These can be s
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
