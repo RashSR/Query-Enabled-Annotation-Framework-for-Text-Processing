@@ -58,6 +58,8 @@ Unlike standalone NLP tools, the framework includes a **query-enabled design** t
 
 ## Installation
 
+Navigate in the main project and execute the following commands:
+
 Install `virtualenv`
 
     pip3 install virtualenv
@@ -214,6 +216,7 @@ Similar to the Profile view, you can select each author individually to view the
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
