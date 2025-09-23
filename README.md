@@ -1,3 +1,42 @@
+# Query-Enabled Annotation Framework for Text Processing
+
+This project provides a lightweight framework for the automatic and manual annotation of text data, with a focus on instant messaging corpora (e.g., WhatsApp).  
+It integrates **spaCy** for linguistic annotation, **LanguageTool** for error detection, and a **Flask web interface** for exploration.  
+Unlike standalone NLP tools, the framework includes a **query-enabled design** that allows researchers to filter, analyze, and retrieve annotations efficiently.
+
+---
+
+## Features
+
+- **Automatic annotation**  
+  - Part-of-speech, morphology, syntax (via spaCy)  
+  - Error detection (via LanguageTool)  
+
+- **Manual annotation**  
+  - Researchers can refine or correct automatic annotations  
+  - Supports scope, reason, and comments  
+
+- **Query-enabled interface**  
+  - Retrieve all messages with errors  
+  - Filter by author  
+  - Count emoji or punctuation usage  
+  - SQL-like queries without requiring deep SQL knowledge  
+
+- **Performance optimizations**  
+  - In-memory caching for faster repeated queries  
+  - Parallel processing for annotation tasks  
+
+- **Lightweight deployment**  
+  - SQLite backend (no separate DB server required)  
+  - Flask-based UI
+ 
+- **Offline operation**  
+  - All annotation and querying is done locally  
+  - No internet connection or external APIs required  
+  - Suitable for sensitive or private data (e.g., chat corpora)
+
+---
+
 ## Installation
 
 Install `virtualenv`
@@ -52,3 +91,4 @@ Once the server is running, open your browser and go to:
 http://localhost:5000
 
 You will be automatically redirected to the `/profile` route, which acts as the entry point to this application.
+
