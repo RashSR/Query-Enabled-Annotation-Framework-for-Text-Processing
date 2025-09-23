@@ -136,8 +136,8 @@ The application extracts the authors from the imported chat. If the author is al
 *Route: (`/chat`)*
 
 Shows the imported chats from the perspective of the selected author.
-In this view chats can be selected of the active author. The Chat shows the initial of the chat partner and the start of the latest message and its timestamp. 
-Inside the chat the messages can be looked at and in the banner the relationship between the authors can be seen. 
+In this view, you can select chats belonging to the active author. Each chat displays the initial of the chat partner, the beginning of the latest message, and its timestamp. 
+Clicking on a chat allows you to view all messages from the corresponding chat, and the banner shows the relationship between the authors. 
 
 ![Chat View](images/chat_view.png)
 
@@ -145,6 +145,10 @@ Inside the chat the messages can be looked at and in the banner the relationship
 *Route: (`/search`)*
 
 Provides a simple search to find substrings in messages. You can choose the author whose messages you want to search.
+
+![Search View](images/search_view.png)
+
+The searched keyword is highlighted in yellow in the results. Each result shows who wrote the message, who it was sent to, and two icons. The first icon lets you jump to the chat view to see the message in context. The second icon takes you to the annotation view, where you can manage the annotations for that message.
 
 ### Konkordanz
 *Route: (`/konkordanz`)*
@@ -165,6 +169,7 @@ Displays basic author metrics such as emoji usage and error rate. These can be s
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
