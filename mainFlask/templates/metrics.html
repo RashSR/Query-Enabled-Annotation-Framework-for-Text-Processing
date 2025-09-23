@@ -7,16 +7,46 @@
         <div class="profile-card" style="max-width:400px; margin:auto; background:#fff; border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:2rem 2.2rem 1.5rem 2.2rem;">
             <div class="profile-avatar" style="width:60px; height:60px; background:#25D366; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2em; font-weight:bold; margin:auto;">{{ author.name[0] }}</div>
             <h2 style="text-align:center; margin:1rem 0 0.5rem 0;">{{ author.name }}</h2>
-            <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">
-                Fehlerrate pro Nachricht: <strong>{{ author.get_error_rate_per_message() }}</strong> Fehler pro Nachricht
+            <div style="text-align:center; margin-bottom:1.2rem;">
+                <button id="toggle-metric-view" style="padding:0.4em 1.2em; background:#25D366; color:#fff; border:none; border-radius:4px; font-size:1em; font-weight:bold; cursor:pointer;">Pro Nachricht</button>
             </div>
-            <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">
-                Fehlerrate pro 100 Wörter: <strong>{{ author.get_error_rate_per_100_words() }}</strong> Fehler pro 100 Wörter
+            <div id="metrics-per-message">
+                <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">
+                    Fehlerrate: <strong>{{ author.get_error_rate_per_message() }}</strong> Fehler pro Nachricht
+                </div>
+                <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">
+                    Emoji-Rate: <strong>{{ author.get_emoji_rate_per_message() }}</strong> Emojis pro Nachricht
+                </div>
             </div>
-            <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">Emoji-Rate: <strong>{{ author.get_emoji_rate_per_message() }}</strong> Emojis pro Nachricht</div>
-            <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">Emoji-Rate pro 100 Wörter: <strong>{{ author.get_emoji_rate_per_100_words() }}</strong> Emojis pro 100 Wörter</div>
+            <div id="metrics-per-100words" style="display:none;">
+                <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">
+                    Fehlerrate: <strong>{{ author.get_error_rate_per_100_words() }}</strong> Fehler pro 100 Wörter
+                </div>
+                <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">
+                    Emoji-Rate: <strong>{{ author.get_emoji_rate_per_100_words() }}</strong> Emojis pro 100 Wörter
+                </div>
+            </div>
+            <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">Meistgenutztes Emoji: <strong>{% if author.get_most_used_emoji() %}{{ author.get_most_used_emoji() }}{% else %}Keine Emojis verwendet{% endif %}</strong></div>
             <div style="text-align:center; margin-bottom:1.2rem; color:#888; font-size:1em;">Meistgenutztes Emoji: <strong>{% if author.get_most_used_emoji() %}{{ author.get_most_used_emoji() }}{% else %}Keine Emojis verwendet{% endif %}</strong></div>
         </div>
+        <script>
+        const toggleBtn = document.getElementById('toggle-metric-view');
+        const perMsg = document.getElementById('metrics-per-message');
+        const per100 = document.getElementById('metrics-per-100words');
+        let showPerMsg = true;
+        toggleBtn.addEventListener('click', function() {
+            showPerMsg = !showPerMsg;
+            if (showPerMsg) {
+                perMsg.style.display = '';
+                per100.style.display = 'none';
+                toggleBtn.textContent = 'Pro Nachricht';
+            } else {
+                perMsg.style.display = 'none';
+                per100.style.display = '';
+                toggleBtn.textContent = 'Pro 100 Wörter';
+            }
+        });
+        </script>
         {% else %}
         <div style="text-align:center; color:#888; font-size:1.1em; margin-top:2em;">Wähle einen Autor aus der Liste links aus, um Metriken anzuzeigen.</div>
         {% endif %}
