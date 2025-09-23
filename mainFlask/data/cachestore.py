@@ -177,15 +177,6 @@ class CacheStore:
         if self._messages is None:
             self._messages = {}
 
-        #TODO remove, this is only test code
-        if self._loaded_all_messages:
-            return list(self._messages.values())
-
-        #TODO: add caching logic -> look up which IDs are needed and then load them in bulk
-        #if id in self._messages:
-            #return self._messages[id]
-
-
         messages = get_messages_by_author_id(self._db, self._app, author_id)
         for msg in messages:
             self._messages[msg.message_id] = msg
