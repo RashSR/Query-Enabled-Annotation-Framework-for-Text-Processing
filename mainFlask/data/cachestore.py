@@ -659,7 +659,7 @@ class CacheStore:
                 if(msg.sender.id == author_id):
                     ids_to_delete.append(msg.message_id)
             for id in ids_to_delete:
-                self._remove_all_spacy_matches_from_message(id)
+                self._remove_all_cached_annotations_for_message(id)
                 del self._messages[id]
     # endregion
 
@@ -683,12 +683,17 @@ class CacheStore:
         from .db_handling import delete_message_by_id
         if delete_message_by_id(self._db, self._app, id):
             if self._messages is not None and id in self._messages:
-                self._remove_all_spacy_matches_from_message(id)
+                self._remove_all_cached_annotations_for_message(id)
                 del self._messages[id]
             return True
         return False
     
-    #TODO: can be improved if spacy_matches_ids is properly used
+    def _remove_all_cached_annotations_for_message(self, message_id: int):
+        self._remove_all_spacy_matches_from_message(message_id)
+        self._remove_all_annotations_from_message(message_id)
+        self._remove_all_lt_matches_from_message(message_id)
+
+    #TODO: can be improved if spacy_match_ids is properly used
     def _remove_all_spacy_matches_from_message(self, msg_id):
         if self._spacy_matches is not None:
             spacy_ids_to_delete = []
@@ -697,8 +702,25 @@ class CacheStore:
                     spacy_ids_to_delete.append(sm.id)
             for id in spacy_ids_to_delete:
                 del self._spacy_matches[id]
-                print(f"Deleted id: {id}, len dict: {len(self._spacy_matches)}")
+    
+    #TODO: can be improved if ltmatch_ids is properly used
+    def _remove_all_lt_matches_from_message(self, msg_id):
+        if self._ltms is not None:
+            ltm_ids_to_delete = []
+            for ltm in self._ltms.values():
+                if(ltm.message_id == msg_id):
+                    ltm_ids_to_delete.append(ltm.id)
+            for id in ltm_ids_to_delete:
+                del self._ltms[id]
 
+    def _remove_all_annotations_from_message(self, msg_id):
+        if self._annotations is not None:
+            annotation_ids_to_delete = []
+            for annotation in self._annotations.values():
+                if(annotation.message_id == msg_id):
+                    annotation_ids_to_delete.append(annotation.id)
+            for id in annotation_ids_to_delete:
+                del self._annotations[id]
     
     # endregion
     
