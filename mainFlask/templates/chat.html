@@ -2,15 +2,27 @@
 
 {% block content %}
 {% if chat %}
-    {% set chat_partner = (chat.get_participant_names() | reject('equalto', author.name) | list)[0] %}
-    {% set name_parts = chat_partner.split(' ') %}
-    {% set initials = name_parts[0][0] ~ (name_parts[-1][0] if name_parts | length > 1 else '') %}
+
+    {# Robustly get chat_partner, handle missing second participant #}
+    {% set chat_partners = chat.get_participant_names() | reject('equalto', author.name) | list %}
+    {% if chat_partners and chat_partners[0] %}
+        {% set chat_partner = chat_partners[0] %}
+        {% set name_parts = chat_partner.split(' ') %}
+        {% set initials = name_parts[0][0] ~ (name_parts[-1][0] if name_parts | length > 1 else '') %}
+    {% else %}
+        {% set chat_partner = 'Unbekannt' %}
+        {% set initials = '?' %}
+    {% endif %}
+
 
     <div class="chat-header">
         <div class="avatar">{{ initials }}</div>
         <div class="chat-partner-info">
             <strong>{{ chat_partner }}</strong>
             Bekanntheitsgrad: {{ chat.relation }}
+            {% if chat_partner == 'Unbekannt' %}
+                <span style="color: #b00; font-size: 0.95em;">(Teilnehmer gelöscht)</span>
+            {% endif %}
         </div>
     </div>
 
