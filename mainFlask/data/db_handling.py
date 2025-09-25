@@ -336,6 +336,7 @@ def create_author(db: SQLAlchemy, app: Flask, author: Author):
         sql_text = text("INSERT INTO author VALUES (:id, :name, :age, :gender, :first_language, :languages, :region, :job, :annotation)")
         prepared_values = {'id': None, 'name': name, 'age': age, 'gender': gender, 'first_language': first_language, 'languages': languages, 'region': region, 'job': job, 'annotation': annotation}
         result = db.session.execute(sql_text, prepared_values)
+        new_id = result.lastrowid
         db.session.commit()
         new_id = result.lastrowid
         return new_id

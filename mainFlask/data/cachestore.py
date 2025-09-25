@@ -41,10 +41,10 @@ class CacheStore:
     def get_all_authors(self):
         from .db_handling import get_all_authors
 
-        if self._authors is None or self._loaded_all_authors is False:
+        if self._authors is None:
             authors = get_all_authors(self._db, self._app)
             self._authors = {author.id: author for author in authors}
-            self._loaded_all_authors = True
+            #self._loaded_all_authors = True
 
         return list(self._authors.values())
     
@@ -62,7 +62,8 @@ class CacheStore:
             return self._authors[id]
         
         author = get_author_by_id(self._db, self._app, id) #db_handling function
-        self._authors[id] = author
+        if author is not None:
+            self._authors[id] = author
         return author
     
     def get_author_by_name(self, name: str):
@@ -76,7 +77,8 @@ class CacheStore:
                 return author
             
         author = get_author_by_name(self._db, self._app, name)
-        self._authors[author.id] = author
+        if author is not None:
+            self._authors[author.id] = author
         return author
         
     

@@ -9,7 +9,6 @@ import threading
 import uuid
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
-import os
 
 profile_bp = Blueprint('profile', __name__)
 

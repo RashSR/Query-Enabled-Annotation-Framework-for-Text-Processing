@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from markupsafe import Markup, escape
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
+import sqlite3
 from .data.cachestore import CacheStore
 from .routes import blueprints
 import re
@@ -21,6 +24,13 @@ for bp in blueprints:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'  # This creates the DB file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    if isinstance(dbapi_connection, sqlite3.Connection):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON;")
+        cursor.close()
 
 #intialize CacheStore
 CacheStore.Instance(db, app)
