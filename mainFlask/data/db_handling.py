@@ -205,6 +205,20 @@ def get_messages_from_annotations_by_category(db: SQLAlchemy, app: Flask, catego
         
         return messages
 
+def get_messages_from_annotations_by_value(db: SQLAlchemy, app: Flask, value: str):
+    with app.app_context():
+        results = db.session.execute(
+            text("SELECT * FROM message_join_annotation WHERE reason = :value"),
+            {'value': value}
+        )
+
+        messages = []
+        for row in results:
+            msg = _convert_db_row_to_message(row, tableHasLTMIds=False, tableHasSpacyIds=False)
+            messages.append(msg)
+        
+        return messages
+
 
 # endregion
 

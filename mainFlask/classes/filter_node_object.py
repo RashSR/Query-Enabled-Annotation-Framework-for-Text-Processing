@@ -164,10 +164,9 @@ class FilterNodeObject(FilterNode):
                 return self._search_result_list
             case FilterNodeGroup.MANUAL_CATEGORY:
                 messages: list[Message] = CacheStore.Instance().get_messages_from_annotations_by_category(self._selected_value)
-                for msg in messages:
-                    print(msg)
                 return []
             case FilterNodeGroup.MANUAL_VALUE:
+                messages: list[Message] = CacheStore.Instance().get_messages_from_annotations_by_value(self._selected_value)
                 return []
             case FilterNodeGroup.RULE_ID:
                 return self._filter_by_error_attr('rule_id')
