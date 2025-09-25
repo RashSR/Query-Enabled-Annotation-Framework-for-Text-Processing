@@ -94,7 +94,6 @@
                 <li class="selectable spacy-item" style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b; cursor:pointer; display:flex; align-items:center; gap:1em;">
                     <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="display:flex; flex-direction:column; gap:0.2em;">
-                        <span><strong>ID:</strong> {{ match.id if match.id is defined else '-' }}</span>
                         <span><strong>Start Pos:</strong> {{ match.start_pos if match.start_pos is defined else '-' }}</span>
                         <span><strong>End Pos:</strong> {{ match.end_pos if match.end_pos is defined else '-' }}</span>
                         <span><strong>Text:</strong> {{ match.text if match.text is defined else '-' }}</span>
