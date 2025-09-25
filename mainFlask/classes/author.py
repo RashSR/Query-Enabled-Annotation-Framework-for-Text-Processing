@@ -10,7 +10,7 @@ class Author:
         self._age = age
         self._gender = gender
         self._first_language = first_language
-        self._languages = languages if languages is not None else []
+        self._languages = languages
         self._region = region
         self._job = job
         self._chats = chats if chats is not None else []
@@ -188,7 +188,7 @@ class Author:
         return (f"Author({self._id}): {self.name}, "
                 f"Age: {self.age}, Gender: {self.gender}, "
                 f"First Language: {self.first_language}, "
-                f"Other Languages: {', '.join(self.languages)}, "
+                f"Other Languages: {self.languages}, "
                 f"Region: {self.region}, Job: {self.job}, " 
                 f"Chatcount: {len(self.chats)}")
 

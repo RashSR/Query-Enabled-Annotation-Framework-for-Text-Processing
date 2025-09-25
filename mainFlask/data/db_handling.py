@@ -328,7 +328,7 @@ def create_author(db: SQLAlchemy, app: Flask, author: Author):
         age = author.age
         gender = author.gender
         first_language = author.first_language
-        languages = ', '.join(author.languages)  # Store as comma-separated string, TODO: produces D,e,u,t,s,c,h
+        languages = author.languages
         region = author.region
         job = author.job
         annotation = author.annotation
@@ -663,7 +663,7 @@ def _convert_db_row_to_author(row) -> Author:
     age = row[2]
     gender = row[3]
     first_language = row[4]
-    languages = [lang.strip() for lang in (row[5] or "").split(",") if lang.strip()] #at this time the languages are stored in the DB like 'Language1, Language2, ...'
+    languages = row[5]
     region = row[6]
     job = row[7]
     annotation = row[8]

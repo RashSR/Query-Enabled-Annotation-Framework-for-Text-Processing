@@ -9,7 +9,7 @@
     <p><strong>Alter:</strong> {{ author.age or "Unbekannt" }}</p>
     <p><strong>Geschlecht:</strong> {{ author.gender or "Nicht angegeben" }}</p>
     <p><strong>Muttersprache:</strong> {{ author.first_language or "Nicht angegeben" }}</p>
-    <p><strong>Weitere Sprachen:</strong> {{ author.languages | join(', ') if author.languages else "Keine" }}</p>
+    <p><strong>Weitere Sprachen:</strong> {{ author.languages or "Nicht angegeben" }}</p>
     <p><strong>Region:</strong> {{ author.region or "Nicht angegeben" }}</p>
     <p><strong>Beruf:</strong> {{ author.job or "Nicht angegeben" }}</p>
     <p><strong>Anzahl Chats: </strong> {{ author.chat_ids | length }}</p>
