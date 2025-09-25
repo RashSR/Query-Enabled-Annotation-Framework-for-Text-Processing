@@ -100,8 +100,10 @@ class FilterNodeObject(FilterNode):
             case (FilterNodeGroup.WORD):
                 #enables textfield
                 return []
-            case FilterNodeGroup.MANUAL:
+            case FilterNodeGroup.MANUAL_CATEGORY:
                 return CacheStore.Instance().get_all_distinct_annotation_categories()
+            case FilterNodeGroup.MANUAL_VALUE:
+                return CacheStore.Instance().get_all_distinct_annotation_values()
             case FilterNodeGroup.RULE_ID:
                 return CacheStore.Instance().get_all_distinct_rule_ids_from_ltms()
             case FilterNodeGroup.CATEGORY:

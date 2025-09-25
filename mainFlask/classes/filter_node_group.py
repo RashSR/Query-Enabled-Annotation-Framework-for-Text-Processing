@@ -23,7 +23,8 @@ class FilterNodeGroup(Enum):
     MOUDS = "mood"
     PRONOMENTYP = "pron_type"
     TAG = "tag"
-    MANUAL = "manual"
+    MANUAL_CATEGORY = "manual_category"
+    MANUAL_VALUE = "manual_value"
 
     @classmethod
     def is_spacy_filter_group(cls, filter_node_group):

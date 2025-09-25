@@ -380,6 +380,11 @@ class CacheStore:
         from .db_handling import get_all_distinct_annotation_categories
         annotation_categories = get_all_distinct_annotation_categories(self._db, self._app)
         return annotation_categories
+    
+    def get_all_distinct_annotation_values(self):
+        from .db_handling import get_all_distinct_annotation_values
+        annotation_values = get_all_distinct_annotation_values(self._db, self._app)
+        return annotation_values
 
     # endregion
 

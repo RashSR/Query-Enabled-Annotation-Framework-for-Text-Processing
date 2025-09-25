@@ -314,6 +314,15 @@ def get_all_distinct_annotation_categories(db: SQLAlchemy, app: Flask):
 
         return annotation_categories
 
+def get_all_distinct_annotation_values(db: SQLAlchemy, app: Flask):
+    with app.app_context():
+        annotation_values: list[str] = []
+        result = db.session.execute(text("SELECT DISTINCT reason FROM annotation"))
+        for row in result:
+            annotation_value = row[0]
+            annotation_values.append(annotation_value)
+
+        return annotation_values
 # endregion
 
 def _get_created_ids_from_table(table_name: str, rowcount: int, db: SQLAlchemy) -> list[int]:
