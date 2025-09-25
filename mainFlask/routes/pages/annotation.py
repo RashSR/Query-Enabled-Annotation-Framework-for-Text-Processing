@@ -69,5 +69,28 @@ def delete_error():
     success = CacheStore.Instance().delete_lt_match_by_id(lt_match_id)
     return jsonify({'success': bool(success)})
 
+# Update a Fehlerliste (error list) entry (e.g., category)
+@annotation_bp.route('/update_error', methods=['POST'])
+def update_error_route():
+    error_id = request.form.get('id', type=int)
+    new_category = request.form.get('category', type=str)
+    start_pos = request.form.get('start_pos', type=int)
+    end_pos = request.form.get('end_pos', type=int)
+    rule_id = request.form.get('rule_id', type=str)
+    print(f"values: {error_id},{new_category},{start_pos},{end_pos},{rule_id}")
+    success = True#update_error(error_id, new_category, start_pos, end_pos, rule_id)
+    return jsonify({'success': bool(success)})
+
+def update_error(error_id: int, new_category: str, start_pos: int, end_pos: int, rule_id: str):
+    error_to_update = CacheStore.Instance().get_lt_match_by_id(error_id)
+    if not error_to_update:
+        return False
+    error_to_update.category = new_category
+    error_to_update.start_pos = start_pos
+    error_to_update.end_pos = end_pos
+    error_to_update.rule_id = rule_id
+    isUpdated = CacheStore.Instance().update_lt_match(error_to_update)
+    return isUpdated
+
 
 
