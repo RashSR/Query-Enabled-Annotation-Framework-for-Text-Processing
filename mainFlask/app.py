@@ -35,6 +35,11 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
 #intialize CacheStore
 CacheStore.Instance(db, app)
 
+@app.context_processor
+def inject_active_author():
+    from flask import session
+    import utils
+    return {'active_author': utils.get_active_author(session)}
 
 @app.route('/')
 def landing_redirect():
@@ -68,13 +73,3 @@ def search_view():
         selected_sender=sender,
         query=query, author=utils.get_active_author(session)
     )
-
-#TODO: HTML wird nur generiert wonach auch gesucht wird? CSS ein und ausschalten?
-
-#TODO:
-# überprüfen lohnt es sich alles mit spacy zu analysieren und jedes einzelen Wort danach noch in Language tool zu packen? bzw anders rum mit langauge tool und falls Fehler -> nicht in spacy 
-# Nur Wert in Dropdown anzeigen die es gibt? 
-# Wie bei CompOV linke und rechte seite auswählbar
-
-
-#TODO: Maybe add a performance analysis at the end python vs DB call. Is the DB in some ways faster even with the overhead to make the SQL call

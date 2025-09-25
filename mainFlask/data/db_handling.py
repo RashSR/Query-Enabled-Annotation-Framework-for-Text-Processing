@@ -49,9 +49,6 @@ def get_author_by_name(db: SQLAlchemy, app: Flask, name: str):
 
 def get_chat_by_ids(db: SQLAlchemy, app: Flask, ids: list[int]):
      with app.app_context():
-        #TODO: make one command to get this
-        #sql = text("SELECT * FROM chat WHERE id IN :ids") #for groupname
-        #result = db.session.execute(sql, {'ids': tuple(ids)})
         chats = []
         for id in ids:
             chat = get_chat_by_id(db, app, id)
@@ -689,7 +686,7 @@ def _convert_db_row_to_message(row, tableHasLTMIds: bool = True, tableHasSpacyId
     message_id = row[0]
     chat_id = row[1]
     sender_id = row[2]
-    sender = CacheStore.Instance().get_author_by_id(sender_id) #TODO: sender does not to be set!
+    sender = CacheStore.Instance().get_author_by_id(sender_id) #TODO: sender does not need to be set!
     timestamp = datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S") 
     content = row[4]
     #quoted_msg is in row[5]

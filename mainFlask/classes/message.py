@@ -6,10 +6,6 @@ from .message_token import MessageToken
 from .annotation import Annotation
 import re
 
-#TODO:  Klasse e.g. message_element und hier wird jedes einzelne Element aus einer Nachricht erstellt hinzu kommen eine Liste an lt_matches und spacy_matches hinzu. 
-# Diese können beim annotieren bearbeitet werden
-# Für aufeinanderfolgende Suche praktisch -> iteriere über alle und falls zwei hintereinander richtig sind -> hinzufügen
-
 class Message:
     def __init__(self, chat_id, message_id, sender, timestamp, content, message_type = MessageType.TEXT, quoted_message = None, chat = None):
         self.chat_id = chat_id
