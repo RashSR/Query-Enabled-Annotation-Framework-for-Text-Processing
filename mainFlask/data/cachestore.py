@@ -375,6 +375,11 @@ class CacheStore:
 
         annotations: list[Annotation] = get_all_annotations_by_msg_id(self._db, self._app, msg_id)
         return annotations
+    
+    def get_all_distinct_annotation_categories(self):
+        from .db_handling import get_all_distinct_annotation_categories
+        annotation_categories = get_all_distinct_annotation_categories(self._db, self._app)
+        return annotation_categories
 
     # endregion
 

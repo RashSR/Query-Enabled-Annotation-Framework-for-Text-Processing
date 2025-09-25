@@ -303,6 +303,17 @@ def get_all_annotations_by_msg_id(db: SQLAlchemy, app: Flask, msg_id: int):
             annotations.append(loaded_annotation)
 
         return annotations 
+    
+def get_all_distinct_annotation_categories(db: SQLAlchemy, app: Flask):
+    with app.app_context():
+        annotation_categories: list[str] = []
+        result = db.session.execute(text("SELECT DISTINCT annotation FROM annotation"))
+        for row in result:
+            annotation_category = row[0]
+            annotation_categories.append(annotation_category)
+
+        return annotation_categories
+
 # endregion
 
 def _get_created_ids_from_table(table_name: str, rowcount: int, db: SQLAlchemy) -> list[int]:
