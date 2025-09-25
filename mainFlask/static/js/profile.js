@@ -248,10 +248,4 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     poll();
   }
-
-  // Example usage after file upload and backend response:
-  // showAuthorMappingModal(['Alice', 'Bob'], [{id:1,name:'Anna'},{id:2,name:'Bernd'}], function(selectedIds) {
-  //   // selectedIds is an array of author IDs chosen by the user
-  //   // Send to backend for mapping
-  // });
 });
