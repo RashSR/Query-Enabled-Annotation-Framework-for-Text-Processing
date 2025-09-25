@@ -229,11 +229,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Selectable list items logic with checkbox (multi-select)
+    // Selectable list items logic with checkbox (multi-select), but ignore dropdown interaction
     document.querySelectorAll('.selectable').forEach(function(item) {
         var checkbox = item.querySelector('.select-checkbox');
         item.addEventListener('click', function(e) {
-            if (e.target.tagName === 'BUTTON') return;
+            // Prevent toggle if clicking a button or a dropdown/select
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') return;
             var isSelected = item.classList.contains('selected');
             if (isSelected) {
                 item.classList.remove('selected');
