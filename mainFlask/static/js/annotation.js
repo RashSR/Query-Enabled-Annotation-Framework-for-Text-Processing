@@ -1,3 +1,66 @@
+    // Delete button logic for spaCy matches
+    document.querySelectorAll('.delete-spacy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var li = btn.closest('li');
+            // Assume each spaCy match li has data-id attribute with the match id
+            var spacyId = li.getAttribute('data-id');
+            if (!spacyId) {
+                alert('spaCy-Match ID fehlt!');
+                return;
+            }
+            btn.disabled = true;
+            fetch('/delete_spacy_match', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'id=' + encodeURIComponent(spacyId)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    li.remove();
+                } else {
+                    btn.textContent = 'Fehler!';
+                    setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
+                }
+            })
+            .catch(() => {
+                btn.textContent = 'Fehler!';
+                setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
+            });
+        });
+    });
+
+    // Delete button logic for Fehlerliste (error list) elements
+    document.querySelectorAll('.delete-error-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var li = btn.closest('li');
+            // Assume each error li has data-id attribute with the lt_match id
+            var errorId = li.getAttribute('data-id');
+            if (!errorId) {
+                alert('Fehler-ID fehlt!');
+                return;
+            }
+            btn.disabled = true;
+            fetch('/delete_error', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'id=' + encodeURIComponent(errorId)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    li.remove();
+                } else {
+                    btn.textContent = 'Fehler!';
+                    setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
+                }
+            })
+            .catch(() => {
+                btn.textContent = 'Fehler!';
+                setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
+            });
+        });
+    });
 document.addEventListener('DOMContentLoaded', function() {
     // Open 'Manuelle Annotationen' list if flag is set
     if (localStorage.getItem('openAnnotationListAfterReload')) {

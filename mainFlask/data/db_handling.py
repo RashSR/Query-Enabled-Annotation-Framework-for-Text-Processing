@@ -671,6 +671,34 @@ def delete_author_by_id(db: SQLAlchemy, app: Flask, author_id: int) -> bool:
         return False
 # endregion
 
+#region LTM
+def delete_lt_match_by_id(db: SQLAlchemy, app: Flask, id: int) -> bool:
+    with app.app_context():
+        result = db.session.execute(
+            text("DELETE FROM lt_match WHERE id = :id"),
+            {'id': id}
+        )
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+        
+        return False
+# endregion
+
+#region Spacy Matches
+def delete_spacy_match_by_id(db: SQLAlchemy, app: Flask, id: int) -> bool:
+    with app.app_context():
+        result = db.session.execute(
+            text("DELETE FROM spacy_match WHERE id = :id"),
+            {'id': id}
+        )
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+        
+        return False
+# endregion
+
 #region Annotation
 def delete_annotation_by_id(db: SQLAlchemy, app: Flask, annotation_id: int) -> bool:
     with app.app_context():

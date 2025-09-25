@@ -65,7 +65,7 @@
             <ul style="padding-left:1.2em; max-height:14em; overflow-y:auto; resize:vertical; min-height:3em; scrollbar-width:thick;">
             {% for err in message.error_list %}
                 {# Expecting err to be a dict/object with keys: start_pos, end_pos, category, rule_id, message #}
-                <li class="selectable error-item" style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em; color:#b30000; cursor:pointer;">
+                <li class="selectable error-item" data-id="{{ err.id }}" style="margin-bottom:0.7em; background:#ffecec; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em; color:#b30000; cursor:pointer;">
                     <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="flex:1;">
                         <div><strong>Position:</strong> <span class="error-start">{{ err.start_pos }}</span> - <span class="error-end">{{ err.end_pos }}</span></div>
@@ -91,7 +91,7 @@
         {% if message.spacy_matches and message.spacy_matches|length > 0 %}
             <ul style="padding-left:1.2em; max-height:30em; overflow-y:auto; resize:vertical; min-height:3em; scrollbar-width:thick;">
             {% for match in message.spacy_matches %}
-                <li class="selectable spacy-item" style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b; cursor:pointer; display:flex; align-items:center; gap:0.7em;">
+                <li class="selectable spacy-item" data-id="{{ match.id }}" style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b; cursor:pointer; display:flex; align-items:center; gap:0.7em;">
                     <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="flex:1; display:flex; flex-direction:column; gap:0.2em;">
                         <span><strong>Start Pos:</strong> {{ match.start_pos if match.start_pos is defined else '-' }}</span>

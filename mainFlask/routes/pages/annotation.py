@@ -61,14 +61,14 @@ def delete_annotation_route():
 def delete_spacy_match():
     spacy_match_id = request.form.get('id', type=int)
     print(f"spacy_id: {spacy_match_id}")
-    success = True#CacheStore.Instance().delete_spacy_match_by_id(spacy_match_id)
+    success = CacheStore.Instance().delete_spacy_match_by_id(spacy_match_id)
     return jsonify({'success': bool(success)})
 
 @annotation_bp.route('/delete_error', methods=['POST'])
 def delete_error():
     lt_match_id = request.form.get('id', type=int)
     print(f"lt_id: {lt_match_id}")
-    success = True#CacheStore.Instance().delete_lt_match_by_id(lt_match_id)
+    success = CacheStore.Instance().delete_lt_match_by_id(lt_match_id)
     return jsonify({'success': bool(success)})
 
 
