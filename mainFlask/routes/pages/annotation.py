@@ -77,8 +77,7 @@ def update_error_route():
     start_pos = request.form.get('start_pos', type=int)
     end_pos = request.form.get('end_pos', type=int)
     rule_id = request.form.get('rule_id', type=str)
-    print(f"values: {error_id},{new_category},{start_pos},{end_pos},{rule_id}")
-    success = True#update_error(error_id, new_category, start_pos, end_pos, rule_id)
+    success = update_error(error_id, new_category, start_pos, end_pos, rule_id)
     return jsonify({'success': bool(success)})
 
 def update_error(error_id: int, new_category: str, start_pos: int, end_pos: int, rule_id: str):

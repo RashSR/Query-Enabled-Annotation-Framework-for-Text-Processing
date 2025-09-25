@@ -1,3 +1,56 @@
+    // Save button logic for Fehlerliste (error list) elements
+    document.querySelectorAll('.save-error-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var li = btn.closest('li');
+            var errorId = li.getAttribute('data-id');
+            if (!errorId) {
+                alert('Fehler-ID fehlt!');
+                return;
+            }
+            var categorySelect = li.querySelector('.error-category-dropdown');
+            var category = categorySelect ? categorySelect.value : '';
+            var startSpan = li.querySelector('.error-start');
+            var endSpan = li.querySelector('.error-end');
+            var ruleSpan = li.querySelector('.error-rule');
+            var start_pos = startSpan ? startSpan.textContent.trim() : '';
+            var end_pos = endSpan ? endSpan.textContent.trim() : '';
+            var rule_id = ruleSpan ? ruleSpan.textContent.trim() : '';
+            btn.disabled = true;
+            fetch('/update_error', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'id=' + encodeURIComponent(errorId) +
+                      '&category=' + encodeURIComponent(category) +
+                      '&start_pos=' + encodeURIComponent(start_pos) +
+                      '&end_pos=' + encodeURIComponent(end_pos) +
+                      '&rule_id=' + encodeURIComponent(rule_id)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    btn.textContent = 'Gespeichert!';
+                    btn.style.background = '#28a745';
+                } else {
+                    btn.textContent = 'Fehler!';
+                    btn.style.background = '#dc3545';
+                }
+                setTimeout(function() {
+                    btn.textContent = 'Speichern';
+                    btn.style.background = '#0074D9';
+                    btn.disabled = false;
+                }, 1200);
+            })
+            .catch(() => {
+                btn.textContent = 'Fehler!';
+                btn.style.background = '#dc3545';
+                setTimeout(function() {
+                    btn.textContent = 'Speichern';
+                    btn.style.background = '#0074D9';
+                    btn.disabled = false;
+                }, 1200);
+            });
+        });
+    });
     // Dynamically populate Kategorie dropdowns for Fehlerliste
     document.querySelectorAll('.error-category-dropdown').forEach(function(select) {
         var current = select.getAttribute('data-current');

@@ -634,6 +634,23 @@ def update_author(db: SQLAlchemy, app: Flask, author_id: int, column_name: str, 
 
 # endregion
 
+# region LTM
+def update_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch) -> bool:
+    with app.app_context():
+        start_pos = lt_match.start_pos
+        end_pos = lt_match.end_pos
+        category =  f"'{lt_match.category}'"
+        rule_id =  f"'{lt_match.rule_id}'"
+
+        sql_text = f"UPDATE annotation SET start_pos = {start_pos}, end_pos ={end_pos}, category = {category}, rule_id = {rule_id}, WHERE id = {lt_match.id}"
+        result = db.session.execute(text(sql_text))
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+        
+        return False
+# endregion
+
 #region Annotation
 def update_annotation(db: SQLAlchemy, app: Flask, annotation: Annotation) -> bool:
     with app.app_context():
