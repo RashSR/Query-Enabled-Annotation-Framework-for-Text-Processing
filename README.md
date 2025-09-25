@@ -199,7 +199,9 @@ Annotations are divided into three groups: **manual**, **error**, and **linguist
 
 ![Annotation View](images/annotation_view.png)
 
-Clicking the **'Hinzufügen'** button opens a form where you can add an annotation with attributes such as the text segment, annotation type, reason, and an optional comment. The position can be filled automatically by highlighting the part of the message with the mouse. After clicking **'Speichern'**, the annotation is saved.
+Clicking the **'Hinzufügen'** button opens a form where you can add an annotation with attributes such as the text segment, annotation type, reason, and an optional comment. The position can be filled automatically by highlighting the part of the message with the mouse. After clicking **'Speichern'**, the annotation is saved. The text field **'annotation'** can be used to categorise the manual annotation, and the reason can be a value for this category. Both of these parameters can be searched for. 
+
+![Annotation ADD](images/add_annotation.png)
 
 Clicking the **'Löschen'** button on an element removes it from the list and deletes the annotation.
 
@@ -218,6 +220,7 @@ A toggle is available to switch how metrics are displayed, either per message or
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
