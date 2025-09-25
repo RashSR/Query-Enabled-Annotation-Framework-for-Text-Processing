@@ -33,7 +33,7 @@ class Message:
             f"Content: {getattr(self, 'content', None)}\n"
             f"MessageType: {getattr(self, 'message_type', None)}\n"
             f"quotedMessage: {{ {getattr(self, 'quoted_message', None)} }}\n"
-            f"ErrorTypes: {len(getattr(self, '_error_list', []) or [])}"
+            f"ErrorTypes: {len(getattr(self, '_error_list', []) or [])}\n"
         )
 
     def hasQuote(self):

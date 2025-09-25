@@ -190,6 +190,21 @@ def get_messages_from_spacy_matches_by_column_and_value(db: SQLAlchemy, app: Fla
                 messages.append(msg)
         
         return messages
+    
+def get_messages_from_annotations_by_category(db: SQLAlchemy, app: Flask, category: str):
+    with app.app_context():
+        results = db.session.execute(
+            text("SELECT * FROM message_join_annotation WHERE annotation = :category"),
+            {'category': category}
+        )
+
+        messages = []
+        for row in results:
+            msg = _convert_db_row_to_message(row, tableHasLTMIds=False, tableHasSpacyIds=False)
+            messages.append(msg)
+        
+        return messages
+
 
 # endregion
 

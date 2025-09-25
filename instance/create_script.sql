@@ -4,6 +4,7 @@ DROP VIEW IF EXISTS author_with_chat_ids;
 DROP VIEW IF EXISTS message_join_lt_match;
 DROP VIEW IF EXISTS message_join_spacy_match;
 DROP VIEW IF EXISTS message_with_ltm_and_spacy_ids;
+DROP VIEW IF EXISTS message_join_annotation;
 DROP TABLE IF EXISTS annotation;
 DROP TABLE IF EXISTS lt_match;
 DROP TABLE IF EXISTS spacy_match;
@@ -125,6 +126,10 @@ JOIN lt_match lm ON m.id = lm.message_id;
 CREATE VIEW message_join_spacy_match AS
 SELECT * FROM message m
 JOIN spacy_match sm ON m.id = sm.message_id;
+
+CREATE VIEW message_join_annotation AS
+SELECT * FROM message m
+JOIN annotation an ON m.id = an.message_id;
 
 CREATE VIEW message_with_ltm_and_spacy_ids AS
 SELECT
