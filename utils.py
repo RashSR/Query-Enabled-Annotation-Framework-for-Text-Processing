@@ -133,15 +133,19 @@ def analyze_msg_with_spacy(msg: Message) -> list[SpacyMatch]:
 
 # region Language Tool
 
-#TODO: check if it is possible to start with more threads https://stackoverflow.com/questions/72500635/how-to-speed-up-language-tool-python-library-use-case
-
-#only check for the websever if it will be used
 _tool_instance = None
 def get_tool():
     global _tool_instance
     if _tool_instance is None:
         _tool_instance = language_tool_python.LanguageTool('de-DE', remote_server='http://localhost:8081')
     return _tool_instance
+
+def is_LT_server_running() -> bool:
+    try:
+        get_tool().check("Test")
+    except Exception as e:
+        return False
+    return True
 
 def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.TEXT
 
@@ -161,7 +165,6 @@ def analyze_msg_with_language_tool(msg: Message): #TODO: check for MessageType.T
     
     return machtes_to_create
     #created_lt_matches = CacheStore.Instance().create_lt_matches(machtes_to_create)
-    
 
 # endregion
 

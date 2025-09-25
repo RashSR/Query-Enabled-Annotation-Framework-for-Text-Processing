@@ -200,52 +200,59 @@ def analyze_with_progress(task_id: str, msgs_author_1: list, msgs_author_2: list
     })
 
     # --- Phase 2: LanguageTool parallel across both authors ---
-    workers = utils.get_optimal_worker_count()
-    author_done_count = defaultdict(int)
-    lt_matches = []
+    if utils.is_LT_server_running():
+        workers = utils.get_optimal_worker_count()
+        author_done_count = defaultdict(int)
+        lt_matches = []
 
-    # Mapping each message to its actual sender for progress tracking
-    msg_to_author = {msg: msg.sender.name for msg in all_messages}
+        # Mapping each message to its actual sender for progress tracking
+        msg_to_author = {msg: msg.sender.name for msg in all_messages}
 
-    with ProcessPoolExecutor(max_workers=workers) as executor:
-        futures = {executor.submit(utils.analyze_msg_with_language_tool, msg): msg for msg in all_messages}
-        for future in as_completed(futures):
-            msg = futures[future]
-            try:
-                lt_result = future.result()
-            except Exception as e:
-                print(f"Error processing message {msg.message_id}: {e}")
-                lt_result = []
+        with ProcessPoolExecutor(max_workers=workers) as executor:
+            futures = {executor.submit(utils.analyze_msg_with_language_tool, msg): msg for msg in all_messages}
+            for future in as_completed(futures):
+                msg = futures[future]
+                try:
+                    lt_result = future.result()
+                except Exception as e:
+                    print(f"Error processing message {msg.message_id}: {e}")
+                    lt_result = []
 
-            lt_matches.extend(lt_result)
+                lt_matches.extend(lt_result)
 
-            # Update per-author counter
-            sender_label = msg_to_author[msg]
-            author_done_count[sender_label] += 1
-            done_count = author_done_count[sender_label]
-            total_for_author = len([m for m in all_messages if m.sender.name == sender_label])
+                # Update per-author counter
+                sender_label = msg_to_author[msg]
+                author_done_count[sender_label] += 1
+                done_count = author_done_count[sender_label]
+                total_for_author = len([m for m in all_messages if m.sender.name == sender_label])
 
-            global_count += 1
-            elapsed = time.time() - start_time
-            avg_time = elapsed / global_count
-            remaining = total_steps - global_count
-            eta_seconds = int(avg_time * remaining)
+                global_count += 1
+                elapsed = time.time() - start_time
+                avg_time = elapsed / global_count
+                remaining = total_steps - global_count
+                eta_seconds = int(avg_time * remaining)
 
-            analysis_progress[task_id].update({
-                'step': global_count,
-                'message': f'Fehler Analyse: Nachricht {done_count}/{total_for_author} von {sender_label}',
-                'eta': eta_seconds
-            })
+                analysis_progress[task_id].update({
+                    'step': global_count,
+                    'message': f'Fehler Analyse: Nachricht {done_count}/{total_for_author} von {sender_label}',
+                    'eta': eta_seconds
+                })
 
-    # --- Save LT results and mark task done ---
-    CacheStore.Instance().create_lt_matches(lt_matches)
+        # --- Save LT results and mark task done ---
+        CacheStore.Instance().create_lt_matches(lt_matches)
 
-    analysis_progress[task_id].update({
-        'step': global_count,
-        'message': 'Analyse abgeschlossen!',
-        'done': True,
-        'eta': 0
-    })
-
+        analysis_progress[task_id].update({
+            'step': global_count,
+            'message': 'Analyse abgeschlossen!',
+            'done': True,
+            'eta': 0
+        })
+    else:
+        analysis_progress[task_id].update({
+            'step': global_count,
+            'message': 'LT Server nicht erreichbar! Bitte starte den Server auf Port 8081 um Fehler zu analysieren.',
+            'done': True,
+            'eta': 0
+        })
 
 
