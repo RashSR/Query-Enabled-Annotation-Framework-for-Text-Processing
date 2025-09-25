@@ -54,9 +54,22 @@ def update_annotation(annotation_id: int, new_comment: str, grund: str, annotati
 @annotation_bp.route('/delete_annotation', methods=['POST'])
 def delete_annotation_route():
     annotation_id = request.form.get('annotation_id', type=int)
-    success = delete_annotation(annotation_id)
+    success = CacheStore.Instance().delete_annotation_by_id(annotation_id)
     return jsonify({'success': bool(success)})
 
-def delete_annotation(annotation_id: int):
-    return CacheStore.Instance().delete_annotation_by_id(annotation_id)
+@annotation_bp.route('/delete_spacy_match', methods=['POST'])
+def delete_spacy_match():
+    spacy_match_id = request.form.get('id', type=int)
+    print(f"spacy_id: {spacy_match_id}")
+    success = True#CacheStore.Instance().delete_spacy_match_by_id(spacy_match_id)
+    return jsonify({'success': bool(success)})
+
+@annotation_bp.route('/delete_error', methods=['POST'])
+def delete_error():
+    lt_match_id = request.form.get('id', type=int)
+    print(f"lt_id: {lt_match_id}")
+    success = True#CacheStore.Instance().delete_lt_match_by_id(lt_match_id)
+    return jsonify({'success': bool(success)})
+
+
 
