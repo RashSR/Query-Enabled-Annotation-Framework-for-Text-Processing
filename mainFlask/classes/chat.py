@@ -50,6 +50,7 @@ class Chat:
     def participants(self, value):
         self._participants = value
 
+    #TODO: Get Messages from Cache
     @property
     def messages(self) -> list[Message]:
         self._messages.sort(key=lambda m: m.timestamp)
