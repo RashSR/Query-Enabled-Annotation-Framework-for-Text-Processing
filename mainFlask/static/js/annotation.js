@@ -1,3 +1,19 @@
+    // Dynamically populate Regel-ID dropdowns for Fehlerliste
+    document.querySelectorAll('.error-ruleid-dropdown').forEach(function(select) {
+        var current = select.getAttribute('data-current');
+        fetch('/api/filter-values?type=error-ruleId')
+            .then(r => r.json())
+            .then(function(options) {
+                select.innerHTML = '';
+                options.forEach(function(opt) {
+                    var option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    if (opt === current) option.selected = true;
+                    select.appendChild(option);
+                });
+            });
+    });
     // Save button logic for Fehlerliste (error list) elements
     document.querySelectorAll('.save-error-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -11,10 +27,10 @@
             var category = categorySelect ? categorySelect.value : '';
             var startSpan = li.querySelector('.error-start');
             var endSpan = li.querySelector('.error-end');
-            var ruleSpan = li.querySelector('.error-rule');
+            var ruleSelect = li.querySelector('.error-ruleid-dropdown');
             var start_pos = startSpan ? startSpan.textContent.trim() : '';
             var end_pos = endSpan ? endSpan.textContent.trim() : '';
-            var rule_id = ruleSpan ? ruleSpan.textContent.trim() : '';
+            var rule_id = ruleSelect ? ruleSelect.value : '';
             btn.disabled = true;
             fetch('/update_error', {
                 method: 'POST',
