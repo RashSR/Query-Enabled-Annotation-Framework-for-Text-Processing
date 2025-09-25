@@ -22,6 +22,7 @@ class FilterNodeGroup(Enum):
     GENUS = "gender"
     MOUDS = "mood"
     PRONOMENTYP = "pron_type"
+    TAG = "tag"
 
     @classmethod
     def is_spacy_filter_group(cls, filter_node_group):
@@ -38,6 +39,7 @@ class FilterNodeGroup(Enum):
             FilterNodeGroup.NUMERUS,
             FilterNodeGroup.GENUS,
             FilterNodeGroup.MOUDS,
+            FilterNodeGroup.TAG,
         }
         return filter_node_group in SPACY_FILTER_GROUPS
 
