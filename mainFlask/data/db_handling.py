@@ -224,6 +224,16 @@ def get_messages_from_annotations_by_value(db: SQLAlchemy, app: Flask, value: st
 
 #region LTM
 
+def get_lt_match_by_id(db: SQLAlchemy, app: Flask, id: int):
+    with app.app_context():
+        result_row = db.session.execute(
+            text("SELECT * FROM lt_match WHERE id = :id"),
+            {'id': id}
+        ).fetchone()
+
+        loaded_lt_match = _convert_db_row_to_ltm(result_row)
+        return loaded_lt_match
+
 def get_all_ltms(db: SQLAlchemy, app: Flask):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM lt_match"))
@@ -642,7 +652,7 @@ def update_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch) -> bool:
         category =  f"'{lt_match.category}'"
         rule_id =  f"'{lt_match.rule_id}'"
 
-        sql_text = f"UPDATE annotation SET start_pos = {start_pos}, end_pos ={end_pos}, category = {category}, rule_id = {rule_id}, WHERE id = {lt_match.id}"
+        sql_text = f"UPDATE lt_match SET start_pos = {start_pos}, end_pos ={end_pos}, category = {category}, rule_id = {rule_id} WHERE id = {lt_match.id}"
         result = db.session.execute(text(sql_text))
         if result.rowcount > 0:
             db.session.commit()

@@ -298,6 +298,24 @@ class CacheStore:
 
         return list(self._ltms.values())
 
+    def get_lt_match_by_id(self, id):
+        if not isinstance(id, int):
+            return None
+
+        from .db_handling import get_lt_match_by_id
+
+        if self._ltms is None:
+            self._ltms = {}
+
+        if id in self._ltms:
+            return self._ltms[id]
+        
+        lt_match = get_lt_match_by_id(self._db, self._app, id) #db_handling function
+        
+        if lt_match is not None:
+            self._messages[id] = lt_match
+
+        return lt_match
 
     def get_all_ltms_by_msg_id_and_chat_id(self, msg_id, chat_id):
         #TODO: is always loaded, maybe look up in store?
