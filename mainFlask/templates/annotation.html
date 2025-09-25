@@ -91,9 +91,9 @@
         {% if message.spacy_matches and message.spacy_matches|length > 0 %}
             <ul style="padding-left:1.2em; max-height:30em; overflow-y:auto; resize:vertical; min-height:3em; scrollbar-width:thick;">
             {% for match in message.spacy_matches %}
-                <li class="selectable spacy-item" style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b; cursor:pointer; display:flex; align-items:center; gap:1em;">
+                <li class="selectable spacy-item" style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b; cursor:pointer; display:flex; align-items:center; gap:0.7em;">
                     <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
-                    <div style="display:flex; flex-direction:column; gap:0.2em;">
+                    <div style="flex:1; display:flex; flex-direction:column; gap:0.2em;">
                         <span><strong>Start Pos:</strong> {{ match.start_pos if match.start_pos is defined else '-' }}</span>
                         <span><strong>End Pos:</strong> {{ match.end_pos if match.end_pos is defined else '-' }}</span>
                         <span><strong>Text:</strong> {{ match.text if match.text is defined else '-' }}</span>
@@ -113,6 +113,7 @@
                         <span><strong>Mood:</strong> {{ match.mood if match.mood is defined else '-' }}</span>
                         <span><strong>PronType:</strong> {{ match.pron_type if match.pron_type is defined else '-' }}</span>
                     </div>
+                    <button type="button" class="delete-spacy-btn" style="margin-left:auto; padding:0.2em 0.7em; background:#dc3545; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Löschen</button>
                 </li>
             {% endfor %}
             </ul>
