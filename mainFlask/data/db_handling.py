@@ -662,7 +662,7 @@ def _convert_db_row_to_author(row) -> Author:
     age = row[2]
     gender = row[3]
     first_language = row[4]
-    languages = [lang.strip() for lang in row[5].split(',')] #at this time the languages are stored in the DB like 'Language1, Language2, ...'
+    languages = [lang.strip() for lang in (row[5] or "").split(",") if lang.strip()] #at this time the languages are stored in the DB like 'Language1, Language2, ...'
     region = row[6]
     job = row[7]
     annotation = row[8]
