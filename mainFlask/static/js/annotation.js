@@ -1,3 +1,19 @@
+    // Dynamically populate Kategorie dropdowns for Fehlerliste
+    document.querySelectorAll('.error-category-dropdown').forEach(function(select) {
+        var current = select.getAttribute('data-current');
+        fetch('/api/filter-values?type=error-category')
+            .then(r => r.json())
+            .then(function(options) {
+                select.innerHTML = '';
+                options.forEach(function(opt) {
+                    var option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    if (opt === current) option.selected = true;
+                    select.appendChild(option);
+                });
+            });
+    });
 
     // Helper to update header count and empty message for a list
     function updateHeaderCountAndEmpty(listId, headerSelector, itemClass, emptyMsg) {

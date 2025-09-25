@@ -69,7 +69,11 @@
                     <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="flex:1;">
                         <div><strong>Position:</strong> <span class="error-start">{{ err.start_pos }}</span> - <span class="error-end">{{ err.end_pos }}</span></div>
-                        <div><strong>Kategorie:</strong> <span class="error-category">{{ err.category }}</span></div>
+                        <div><strong>Kategorie:</strong>
+                            <select class="error-category-dropdown search-konkordanz-dropdown" data-current="{{ err.category }}" style="min-width: 110px; max-width: 180px; padding: 0.3rem 0.6rem; border: 1px solid #ced4da; border-radius: 4px; background: #fff;">
+                                <option value="{{ err.category }}" selected>{{ err.category }}</option>
+                            </select>
+                        </div>
                         <div><strong>Regel-ID:</strong> <span class="error-rule">{{ err.rule_id }}</span></div>
                     </div>
                     <button type="button" class="delete-error-btn" style="padding:0.2em 0.7em; background:#dc3545; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Löschen</button>
