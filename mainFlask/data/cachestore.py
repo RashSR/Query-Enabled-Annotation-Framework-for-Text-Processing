@@ -653,12 +653,14 @@ class CacheStore:
         return False
     
     def _remove_all_cached_messages_from_author(self, author_id: int):
-        ids_to_delete = []
-        for msg in self._messages.values():
-            if(msg.sender.id == author_id):
-                ids_to_delete.append(msg.message_id)
-        for id in ids_to_delete:
-            del self._messages[id]
+        if self._messages is not None:
+            ids_to_delete = []
+            for msg in self._messages.values():
+                if(msg.sender.id == author_id):
+                    ids_to_delete.append(msg.message_id)
+            for id in ids_to_delete:
+                self._remove_all_spacy_matches_from_message(id)
+                del self._messages[id]
     # endregion
 
     #region Chat
@@ -681,9 +683,22 @@ class CacheStore:
         from .db_handling import delete_message_by_id
         if delete_message_by_id(self._db, self._app, id):
             if self._messages is not None and id in self._messages:
+                self._remove_all_spacy_matches_from_message(id)
                 del self._messages[id]
             return True
         return False
+    
+    #TODO: can be improved if spacy_matches_ids is properly used
+    def _remove_all_spacy_matches_from_message(self, msg_id):
+        if self._spacy_matches is not None:
+            spacy_ids_to_delete = []
+            for sm in self._spacy_matches.values():
+                if(sm.message_id == msg_id):
+                    spacy_ids_to_delete.append(sm.id)
+            for id in spacy_ids_to_delete:
+                del self._spacy_matches[id]
+                print(f"Deleted id: {id}, len dict: {len(self._spacy_matches)}")
+
     
     # endregion
     
