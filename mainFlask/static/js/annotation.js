@@ -1,8 +1,23 @@
+
+    // Helper to update header count and empty message for a list
+    function updateHeaderCountAndEmpty(listId, headerSelector, itemClass, emptyMsg) {
+        var list = document.getElementById(listId);
+        var headerSpan = document.querySelector(headerSelector);
+        var items = list ? list.querySelectorAll('.' + itemClass) : [];
+        if (headerSpan) {
+            // Extract label text before count
+            var label = headerSpan.textContent.replace(/\(.*\).*/, '').trim();
+            headerSpan.textContent = label + ' (' + items.length + ') ▶';
+        }
+        if (list && items.length === 0) {
+            list.innerHTML = '<p style="color:#888;">' + emptyMsg + '</p>';
+        }
+    }
+
     // Delete button logic for spaCy matches
     document.querySelectorAll('.delete-spacy-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var li = btn.closest('li');
-            // Assume each spaCy match li has data-id attribute with the match id
             var spacyId = li.getAttribute('data-id');
             if (!spacyId) {
                 alert('spaCy-Match ID fehlt!');
@@ -18,6 +33,7 @@
             .then(data => {
                 if (data.success) {
                     li.remove();
+                    updateHeaderCountAndEmpty('spacy-list', '#spacy-header span', 'spacy-item', 'Keine linguistischen Attribute vorhanden.');
                 } else {
                     btn.textContent = 'Fehler!';
                     setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
@@ -34,7 +50,6 @@
     document.querySelectorAll('.delete-error-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var li = btn.closest('li');
-            // Assume each error li has data-id attribute with the lt_match id
             var errorId = li.getAttribute('data-id');
             if (!errorId) {
                 alert('Fehler-ID fehlt!');
@@ -50,6 +65,7 @@
             .then(data => {
                 if (data.success) {
                     li.remove();
+                    updateHeaderCountAndEmpty('error-list', '#error-header span', 'error-item', 'Keine Fehler vorhanden.');
                 } else {
                     btn.textContent = 'Fehler!';
                     setTimeout(function() { btn.textContent = 'Löschen'; btn.disabled = false; }, 1200);
