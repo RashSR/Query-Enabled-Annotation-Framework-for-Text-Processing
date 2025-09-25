@@ -115,6 +115,9 @@ window.addEventListener('DOMContentLoaded', function() {
     title.textContent = 'Teilnehmer zuordnen';
     card.appendChild(title);
 
+
+    // Store all select elements for cross-updating
+    const selects = [];
     extractedAuthors.forEach((extracted, idx) => {
       const label = document.createElement('label');
       label.textContent = `Datei-Teilnehmer: ${extracted}`;
@@ -137,8 +140,28 @@ window.addEventListener('DOMContentLoaded', function() {
         select.appendChild(option);
       });
       select.selectedIndex = matchedIdx;
+      selects.push(select);
       card.appendChild(select);
     });
+
+    // Function to update options in all selects to prevent duplicate selection
+    function updateSelectOptions() {
+      // Get selected values from all selects
+      const selectedValues = selects.map(sel => sel.value);
+      selects.forEach((sel, idx) => {
+        Array.from(sel.options).forEach(opt => {
+          // Disable option if selected in another select
+          opt.disabled = selectedValues.includes(opt.value) && sel.value !== opt.value;
+        });
+      });
+    }
+
+    // Add event listeners to update options on change
+    selects.forEach(sel => {
+      sel.addEventListener('change', updateSelectOptions);
+    });
+    // Initial update
+    updateSelectOptions();
 
     // Add a single relationship textbox for all authors
     const relLabel = document.createElement('label');
