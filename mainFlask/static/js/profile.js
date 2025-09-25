@@ -227,11 +227,11 @@ window.addEventListener('DOMContentLoaded', function() {
           }
           if (data.error && data.error === 'LT_SERVER_DOWN') {
             // Show error, require user to click OK before reload
-            text.textContent = 'Fehler: LanguageTool-Server nicht erreichbar!';
+            text.textContent = data.message || 'Fehler: LanguageTool-Server nicht erreichbar!';
             etaElem.textContent = '';
             setTimeout(() => {
               modal.style.display = 'none';
-              alert('Der LanguageTool-Server ist nicht erreichbar. Bitte stelle sicher, dass der Server läuft und versuche es erneut.');
+              alert(data.error_message || 'Der LanguageTool-Server ist nicht erreichbar. Bitte stelle sicher, dass der Server läuft und versuche es erneut.');
               window.location.reload();
             }, 100);
           } else if (!data.done) {

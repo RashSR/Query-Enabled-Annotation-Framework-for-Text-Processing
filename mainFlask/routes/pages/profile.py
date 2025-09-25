@@ -248,12 +248,14 @@ def analyze_with_progress(task_id: str, msgs_author_1: list, msgs_author_2: list
             'eta': 0
         })
     else:
+        error_msg = 'LanguageTool-Server nicht erreichbar! Starte bitte den Server auf Port 8081 für die Fehleranalyse.'
         analysis_progress[task_id].update({
             'step': global_count,
-            'message': 'LT Server nicht erreichbar! Bitte starte den Server auf Port 8081 um Fehler zu analysieren.',
+            'message': error_msg,
             'done': True,
             'eta': 0,
-            'error': 'LT_SERVER_DOWN'
+            'error': 'LT_SERVER_DOWN',
+            'error_message': error_msg
         })
 
 
