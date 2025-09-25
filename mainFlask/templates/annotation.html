@@ -33,9 +33,14 @@
                 <li class="selectable annotation-item" style="margin-bottom:0.7em; background:#f1f1f1; border-radius:4px; padding:0.5em; display:flex; align-items:center; gap:0.7em; cursor:pointer;" data-annotation-id="{{ ann.id }}">
                     <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="flex:1;">
-                        <strong>Position:</strong> <span class="annotation-start">{{ ann.start_pos }}</span> - <span class="annotation-end">{{ ann.end_pos }}</span><br>
-                        <strong>Annotation:</strong> <span class="annotation-text">{{ ann.annotation }}</span><br>
-                        <strong>Grund:</strong> <span class="annotation-grund">{{ ann.reason }}</span><br>
+                        <strong>Position:</strong>
+                        <input type="number" class="annotation-start" value="{{ ann.start_pos }}" style="width:4em; padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em;" min="0" />
+                        -
+                        <input type="number" class="annotation-end" value="{{ ann.end_pos }}" style="width:4em; padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em;" min="0" /><br>
+                        <strong>Annotation:</strong>
+                        <input type="text" class="annotation-text" value="{{ ann.annotation }}" style="padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em; width:auto; min-width:2em;" /><br>
+                        <strong>Grund:</strong>
+                        <input type="text" class="annotation-grund" value="{{ ann.reason }}" style="padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em; width:auto; min-width:2em;" /><br>
                         <strong>Kommentar:</strong>
                         <input type="text" name="comment_{{ loop.index0 }}" value="{{ ann.comment }}" style="padding:0.2em; border:1px solid #ccc; border-radius:3px; font-size:1em; width:auto; min-width:2em;" oninput="this.style.width = ((this.value.length + 1) * 0.7) + 'em';" />
                     </div>

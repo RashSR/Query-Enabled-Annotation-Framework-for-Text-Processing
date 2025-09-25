@@ -45,12 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
             var li = btn.closest('li');
             var input = li.querySelector('input[type="text"][name^="comment_"]');
             var comment = input ? input.value : '';
-            // Get annotation_id from a data attribute (add this to your li in the template)
             var annotationId = li.getAttribute('data-annotation-id');
-            var grund = li.querySelector('.annotation-grund') ? li.querySelector('.annotation-grund').textContent.trim() : '';
-            var annotationText = li.querySelector('.annotation-text') ? li.querySelector('.annotation-text').textContent.trim() : '';
-            var startPos = li.querySelector('.annotation-start') ? li.querySelector('.annotation-start').textContent.trim() : '';
-            var endPos = li.querySelector('.annotation-end') ? li.querySelector('.annotation-end').textContent.trim() : '';
+            // Now get editable values from input fields
+            var grundInput = li.querySelector('input.annotation-grund');
+            var grund = grundInput ? grundInput.value : '';
+            var annotationTextInput = li.querySelector('input.annotation-text');
+            var annotationText = annotationTextInput ? annotationTextInput.value : '';
+            var startPosInput = li.querySelector('input.annotation-start');
+            var startPos = startPosInput ? startPosInput.value : '';
+            var endPosInput = li.querySelector('input.annotation-end');
+            var endPos = endPosInput ? endPosInput.value : '';
             btn.disabled = true;
             fetch('/update_annotation', {
                 method: 'POST',
