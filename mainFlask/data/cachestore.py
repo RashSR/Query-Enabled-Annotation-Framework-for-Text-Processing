@@ -647,9 +647,18 @@ class CacheStore:
         from .db_handling import delete_author_by_id
         if delete_author_by_id(self._db, self._app, id):
             if self._authors is not None and id in self._authors:
+                self._remove_all_cached_messages_from_author(id)
                 del self._authors[id]
             return True
         return False
+    
+    def _remove_all_cached_messages_from_author(self, author_id: int):
+        ids_to_delete = []
+        for msg in self._messages.values():
+            if(msg.sender.id == author_id):
+                ids_to_delete.append(msg.message_id)
+        for id in ids_to_delete:
+            del self._messages[id]
     # endregion
 
     #region Chat
