@@ -252,7 +252,8 @@ def analyze_with_progress(task_id: str, msgs_author_1: list, msgs_author_2: list
             'step': global_count,
             'message': 'LT Server nicht erreichbar! Bitte starte den Server auf Port 8081 um Fehler zu analysieren.',
             'done': True,
-            'eta': 0
+            'eta': 0,
+            'error': 'LT_SERVER_DOWN'
         })
 
 
