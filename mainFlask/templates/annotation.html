@@ -108,7 +108,11 @@
                         <span><strong>Text:</strong> {{ match.text if match.text is defined else '-' }}</span>
                         <span><strong>Lemma:</strong> {{ match.lemma if match.lemma is defined else '-' }}</span>
                         <span><strong>POS:</strong> {{ match.pos if match.pos is defined else '-' }}</span>
-                        <span><strong>Tag:</strong> {{ match.tag if match.tag is defined else '-' }}</span>
+                        <span><strong>Tag:</strong>
+                            <select class="spacy-tag-dropdown search-konkordanz-dropdown" data-current="{{ match.tag if match.tag is defined else '' }}" style="min-width: 110px; max-width: 180px; padding: 0.3rem 0.6rem; border: 1px solid #ced4da; border-radius: 4px; background: #fff;">
+                                <option value="{{ match.tag if match.tag is defined else '' }}" selected>{{ match.tag if match.tag is defined else '-' }}</option>
+                            </select>
+                        </span>
                         <span><strong>Alpha:</strong> {{ match.is_alpha if match.is_alpha is defined else '-' }}</span>
                         <span><strong>Stopwort:</strong> {{ match.is_stop if match.is_stop is defined else '-' }}</span>
                         <span><strong>Tense:</strong> {{ match.tense if match.tense is defined else '-' }}</span>

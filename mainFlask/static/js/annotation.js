@@ -1,3 +1,19 @@
+    // Dynamically populate spaCy TAG dropdowns
+    document.querySelectorAll('.spacy-tag-dropdown').forEach(function(select) {
+        var current = select.getAttribute('data-current');
+        fetch('/api/filter-values?type=tag')
+            .then(r => r.json())
+            .then(function(options) {
+                select.innerHTML = '';
+                options.forEach(function(opt) {
+                    var option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    if (opt === current) option.selected = true;
+                    select.appendChild(option);
+                });
+            });
+    });
     // Dynamically populate Regel-ID dropdowns for Fehlerliste
     document.querySelectorAll('.error-ruleid-dropdown').forEach(function(select) {
         var current = select.getAttribute('data-current');
