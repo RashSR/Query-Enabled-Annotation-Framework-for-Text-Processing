@@ -14,7 +14,6 @@ class Settings:
     def Instance(cls):
         return cls()
     
-    #TODO: maybe let the user choose color ins settings menu
     highlight_colors = [
     "#0074D9",  # Teal
     "#e6194b",  # Red

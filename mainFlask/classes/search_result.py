@@ -1,7 +1,6 @@
 from .message import Message
 import re
 
-#TODO: maybe connect with lt_match, spacy_match
 class SearchResult:
     def __init__(
         self, 
