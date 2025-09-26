@@ -10,7 +10,7 @@ class FilterNodeGroup(Enum):
     LEMMA = "lemma"
     WORTART = "pos"
     #FEINTAG = "feintag"
-    #BUCHSTABEN = "nurbuchstaben" -> isAlpha
+    ALPHA = "is_alpha"
     #FUNKTIONSWORT = "funktionswort"
     TEMPUS = "tense"
     PERSON = "person"
@@ -42,6 +42,7 @@ class FilterNodeGroup(Enum):
             FilterNodeGroup.GENUS,
             FilterNodeGroup.MOUDS,
             FilterNodeGroup.TAG,
+            FilterNodeGroup.ALPHA,
         }
         return filter_node_group in SPACY_FILTER_GROUPS
 

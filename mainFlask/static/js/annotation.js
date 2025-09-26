@@ -95,7 +95,7 @@
     // Populate all spaCy dropdowns
     populateDropdown('.spacy-tag-dropdown', 'tag');
     populateDropdown('.spacy-pos-dropdown', 'pos');
-    populateDropdown('.spacy-alpha-dropdown', 'alpha');
+    populateDropdown('.spacy-alpha-dropdown', 'is_alpha');
     populateDropdown('.spacy-stop-dropdown', 'stop');
     populateDropdown('.spacy-tense-dropdown', 'tense');
     populateDropdown('.spacy-person-dropdown', 'person');
