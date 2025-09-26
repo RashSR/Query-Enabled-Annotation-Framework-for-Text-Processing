@@ -207,7 +207,7 @@ Clicking the **'Löschen'** button on an element removes it from the list and de
 
 Each element of a linguistic annotation can be changed, except for the position and the lemma. Once all changes have been made, click on the 'Speichern' button to save them to the database.
 
-![Annotation UPDATE](images/update_annotation..png)
+![Annotation UPDATE](images/update_annotation.png)
 
 ### Metrics
 *Route: (`/metrics`)*
@@ -224,6 +224,7 @@ A toggle is available to switch how metrics are displayed, either per message or
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
