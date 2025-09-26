@@ -164,10 +164,12 @@ class FilterNodeObject(FilterNode):
                 return self._search_result_list
             case FilterNodeGroup.MANUAL_CATEGORY:
                 messages: list[Message] = CacheStore.Instance().get_messages_from_annotations_by_category(self._selected_value)
-                return []
+                self._convert_manual_annotation_into_search_result(messages, 'annotation')
+                return self._search_result_list
             case FilterNodeGroup.MANUAL_VALUE:
                 messages: list[Message] = CacheStore.Instance().get_messages_from_annotations_by_value(self._selected_value)
-                return []
+                self._convert_manual_annotation_into_search_result(messages, 'reason')
+                return self._search_result_list
             case FilterNodeGroup.RULE_ID:
                 return self._filter_by_error_attr('rule_id')
             case FilterNodeGroup.CATEGORY:
@@ -189,6 +191,15 @@ class FilterNodeObject(FilterNode):
             case _: 
                 #default case
                 raise ValueError(f"Unknown filter type: {self._filter_node_group}")
+
+    def _convert_manual_annotation_into_search_result(self, messages: list[Message], key: str):
+        for msg in messages:
+            for annotation in msg.annotations:
+                if getattr(annotation, key, None) == self._selected_value:
+                    msg.set_found_flag_for_token(annotation.start_pos, annotation.end_pos)
+                    hit_word = msg.content[annotation.start_pos:annotation.end_pos]
+                    sr = SearchResult(message=msg, keyword=hit_word, matched_word=hit_word, selected_color=self._selected_color, start_pos=annotation.start_pos, end_pos=annotation.end_pos)
+                    self._add_search_results_messages(sr)
 
     def _convert_spacy_match_into_search_results(self, group: str) -> list[SearchResult]:
         messages: list[Message] = CacheStore.Instance().get_messages_from_spacy_matches_by_column_and_value(group, self._selected_value)
