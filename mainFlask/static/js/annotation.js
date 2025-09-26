@@ -99,14 +99,14 @@
     populateDropdown('.spacy-stop-dropdown', 'stop');
     populateDropdown('.spacy-tense-dropdown', 'tense');
     populateDropdown('.spacy-person-dropdown', 'person');
-    populateDropdown('.spacy-verbform-dropdown', 'verbform');
+    populateDropdown('.spacy-verbform-dropdown', 'verb_form');
     populateDropdown('.spacy-voice-dropdown', 'voice');
     populateDropdown('.spacy-degree-dropdown', 'degree');
-    populateDropdown('.spacy-case-dropdown', 'case');
+    populateDropdown('.spacy-case-dropdown', 'gram_case');
     populateDropdown('.spacy-number-dropdown', 'number');
     populateDropdown('.spacy-gender-dropdown', 'gender');
     populateDropdown('.spacy-mood-dropdown', 'mood');
-    populateDropdown('.spacy-prontype-dropdown', 'prontype');
+    populateDropdown('.spacy-prontype-dropdown', 'pron_type');
     // Dynamically populate Regel-ID dropdowns for Fehlerliste
     document.querySelectorAll('.error-ruleid-dropdown').forEach(function(select) {
         var current = select.getAttribute('data-current');
