@@ -73,22 +73,40 @@
             });
         });
     });
-    // Dynamically populate spaCy TAG dropdowns
-    document.querySelectorAll('.spacy-tag-dropdown').forEach(function(select) {
-        var current = select.getAttribute('data-current');
-        fetch('/api/filter-values?type=tag')
-            .then(r => r.json())
-            .then(function(options) {
-                select.innerHTML = '';
-                options.forEach(function(opt) {
-                    var option = document.createElement('option');
-                    option.value = opt;
-                    option.textContent = opt;
-                    if (opt === current) option.selected = true;
-                    select.appendChild(option);
+    // Helper to populate a dropdown from the API
+    function populateDropdown(selector, apiType) {
+        document.querySelectorAll(selector).forEach(function(select) {
+            var current = select.getAttribute('data-current');
+            fetch('/api/filter-values?type=' + apiType)
+                .then(r => r.json())
+                .then(function(options) {
+                    select.innerHTML = '';
+                    options.forEach(function(opt) {
+                        var option = document.createElement('option');
+                        option.value = opt;
+                        option.textContent = opt;
+                        if (opt == current) option.selected = true;
+                        select.appendChild(option);
+                    });
                 });
-            });
-    });
+        });
+    }
+
+    // Populate all spaCy dropdowns
+    populateDropdown('.spacy-tag-dropdown', 'tag');
+    populateDropdown('.spacy-pos-dropdown', 'pos');
+    populateDropdown('.spacy-alpha-dropdown', 'alpha');
+    populateDropdown('.spacy-stop-dropdown', 'stop');
+    populateDropdown('.spacy-tense-dropdown', 'tense');
+    populateDropdown('.spacy-person-dropdown', 'person');
+    populateDropdown('.spacy-verbform-dropdown', 'verbform');
+    populateDropdown('.spacy-voice-dropdown', 'voice');
+    populateDropdown('.spacy-degree-dropdown', 'degree');
+    populateDropdown('.spacy-case-dropdown', 'case');
+    populateDropdown('.spacy-number-dropdown', 'number');
+    populateDropdown('.spacy-gender-dropdown', 'gender');
+    populateDropdown('.spacy-mood-dropdown', 'mood');
+    populateDropdown('.spacy-prontype-dropdown', 'prontype');
     // Dynamically populate Regel-ID dropdowns for Fehlerliste
     document.querySelectorAll('.error-ruleid-dropdown').forEach(function(select) {
         var current = select.getAttribute('data-current');

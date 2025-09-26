@@ -107,24 +107,50 @@
                         <span><strong>End Pos:</strong> <span class="spacy-end">{{ match.end_pos if match.end_pos is defined else '-' }}</span></span>
                         <span><strong>Text:</strong> <span class="spacy-text" data-text="{{ match.text|e if match.text is defined else '' }}">{{ match.text if match.text is defined else '-' }}</span></span>
                         <span><strong>Lemma:</strong> <span class="spacy-lemma">{{ match.lemma if match.lemma is defined else '-' }}</span></span>
-                        <span><strong>POS:</strong> <span class="spacy-pos">{{ match.pos if match.pos is defined else '-' }}</span></span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>POS:</strong>
+                            <select class="spacy-pos-dropdown spacy-dropdown" data-current="{{ match.pos|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
                         <span><strong>Tag:</strong>
                             <select class="spacy-tag-dropdown search-konkordanz-dropdown" data-current="{{ match.tag if match.tag is defined else '' }}" style="min-width: 110px; max-width: 180px; padding: 0.3rem 0.6rem; border: 1px solid #ced4da; border-radius: 4px; background: #fff;">
                                 <option value="{{ match.tag if match.tag is defined else '' }}" selected>{{ match.tag if match.tag is defined else '-' }}</option>
                             </select>
                         </span>
-                        <span><strong>Alpha:</strong> <span class="spacy-alpha">{{ match.is_alpha if match.is_alpha is defined else '-' }}</span></span>
-                        <span><strong>Stopwort:</strong> <span class="spacy-stop">{{ match.is_stop if match.is_stop is defined else '-' }}</span></span>
-                        <span><strong>Tense:</strong> <span class="spacy-tense">{{ match.tense if match.tense is defined else '-' }}</span></span>
-                        <span><strong>Person:</strong> <span class="spacy-person">{{ match.person if match.person is defined else '-' }}</span></span>
-                        <span><strong>Verbform:</strong> <span class="spacy-verbform">{{ match.verb_form if match.verb_form is defined else '-' }}</span></span>
-                        <span><strong>Voice:</strong> <span class="spacy-voice">{{ match.voice if match.voice is defined else '-' }}</span></span>
-                        <span><strong>Degree:</strong> <span class="spacy-degree">{{ match.degree if match.degree is defined else '-' }}</span></span>
-                        <span><strong>Case:</strong> <span class="spacy-case">{{ match.gram_case if match.gram_case is defined else '-' }}</span></span>
-                        <span><strong>Number:</strong> <span class="spacy-number">{{ match.number if match.number is defined else '-' }}</span></span>
-                        <span><strong>Gender:</strong> <span class="spacy-gender">{{ match.gender if match.gender is defined else '-' }}</span></span>
-                        <span><strong>Mood:</strong> <span class="spacy-mood">{{ match.mood if match.mood is defined else '-' }}</span></span>
-                        <span><strong>PronType:</strong> <span class="spacy-prontype">{{ match.pron_type if match.pron_type is defined else '-' }}</span></span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Alpha:</strong>
+                            <select class="spacy-alpha-dropdown spacy-dropdown" data-current="{{ match.is_alpha|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Stopwort:</strong>
+                            <select class="spacy-stop-dropdown spacy-dropdown" data-current="{{ match.is_stop|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Tense:</strong>
+                            <select class="spacy-tense-dropdown spacy-dropdown" data-current="{{ match.tense|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Person:</strong>
+                            <select class="spacy-person-dropdown spacy-dropdown" data-current="{{ match.person|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Verbform:</strong>
+                            <select class="spacy-verbform-dropdown spacy-dropdown" data-current="{{ match.verb_form|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Voice:</strong>
+                            <select class="spacy-voice-dropdown spacy-dropdown" data-current="{{ match.voice|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Degree:</strong>
+                            <select class="spacy-degree-dropdown spacy-dropdown" data-current="{{ match.degree|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Case:</strong>
+                            <select class="spacy-case-dropdown spacy-dropdown" data-current="{{ match.gram_case|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Number:</strong>
+                            <select class="spacy-number-dropdown spacy-dropdown" data-current="{{ match.number|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Gender:</strong>
+                            <select class="spacy-gender-dropdown spacy-dropdown" data-current="{{ match.gender|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Mood:</strong>
+                            <select class="spacy-mood-dropdown spacy-dropdown" data-current="{{ match.mood|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>PronType:</strong>
+                            <select class="spacy-prontype-dropdown spacy-dropdown" data-current="{{ match.pron_type|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
+                        </span>
                     </div>
                     <button type="button" class="save-spacy-btn" style="padding:0.2em 0.7em; background:#0074D9; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Speichern</button>
                     <button type="button" class="delete-spacy-btn" style="margin-left:auto; padding:0.2em 0.7em; background:#dc3545; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Löschen</button>
