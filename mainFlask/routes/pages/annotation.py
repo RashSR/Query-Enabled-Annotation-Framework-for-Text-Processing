@@ -91,5 +91,64 @@ def update_error(error_id: int, new_category: str, start_pos: int, end_pos: int,
     isUpdated = CacheStore.Instance().update_lt_match(error_to_update)
     return isUpdated
 
+# Update a spaCy match entry (e.g., tag and all other values)
+@annotation_bp.route('/update_spacy_match', methods=['POST'])
+def update_spacy_match_route():
+    spacy_id = request.form.get('id', type=int)
+    tag = request.form.get('tag', type=str)
+    start_pos = request.form.get('start_pos', type=int)
+    end_pos = request.form.get('end_pos', type=int)
+    text = request.form.get('text', type=str)
+    lemma = request.form.get('lemma', type=str)
+    pos = request.form.get('pos', type=str)
+    is_alpha = request.form.get('is_alpha', type=str)
+    is_stop = request.form.get('is_stop', type=str)
+    tense = request.form.get('tense', type=str)
+    person = request.form.get('person', type=str)
+    verb_form = request.form.get('verb_form', type=str)
+    voice = request.form.get('voice', type=str)
+    degree = request.form.get('degree', type=str)
+    gram_case = request.form.get('gram_case', type=str)
+    number = request.form.get('number', type=str)
+    gender = request.form.get('gender', type=str)
+    mood = request.form.get('mood', type=str)
+    pron_type = request.form.get('pron_type', type=str)
+    print(
+    f"spacy_id={spacy_id}, tag={tag}, start_pos={start_pos}, end_pos={end_pos}, "
+    f"text='{text[start_pos:end_pos] if text else ''}', lemma={lemma}, pos={pos}, "
+    f"is_alpha={is_alpha}, is_stop={is_stop}, tense={tense}, person={person}, "
+    f"verb_form={verb_form}, voice={voice}, degree={degree}, gram_case={gram_case}, "
+    f"number={number}, gender={gender}, mood={mood}, pron_type={pron_type}"
+    )
+    success = True#update_spacy_match(
+        #spacy_id, tag, start_pos, end_pos, text, lemma, pos, is_alpha, is_stop, tense, person, verb_form, voice, degree, gram_case, number, gender, mood, pron_type
+    #)
+    return jsonify({'success': bool(success)})
+
+def update_spacy_match(spacy_id, tag, start_pos, end_pos, text, lemma, pos, is_alpha, is_stop, tense, person, verb_form, voice, degree, gram_case, number, gender, mood, pron_type):
+    match = CacheStore.Instance().get_spacy_match_by_id(spacy_id)
+    if not match:
+        return False
+    match.tag = tag
+    match.start_pos = start_pos
+    match.end_pos = end_pos
+    match.text = text
+    match.lemma = lemma
+    match.pos = pos
+    match.is_alpha = is_alpha
+    match.is_stop = is_stop
+    match.tense = tense
+    match.person = person
+    match.verb_form = verb_form
+    match.voice = voice
+    match.degree = degree
+    match.gram_case = gram_case
+    match.number = number
+    match.gender = gender
+    match.mood = mood
+    match.pron_type = pron_type
+    isUpdated = CacheStore.Instance().update_spacy_match(match)
+    return isUpdated
+
 
 
