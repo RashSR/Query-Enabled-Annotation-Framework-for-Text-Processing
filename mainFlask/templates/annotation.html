@@ -110,10 +110,8 @@
                         <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>POS:</strong>
                             <select class="spacy-pos-dropdown spacy-dropdown" data-current="{{ match.pos|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
                         </span>
-                        <span><strong>Tag:</strong>
-                            <select class="spacy-tag-dropdown search-konkordanz-dropdown" data-current="{{ match.tag if match.tag is defined else '' }}" style="min-width: 110px; max-width: 180px; padding: 0.3rem 0.6rem; border: 1px solid #ced4da; border-radius: 4px; background: #fff;">
-                                <option value="{{ match.tag if match.tag is defined else '' }}" selected>{{ match.tag if match.tag is defined else '-' }}</option>
-                            </select>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Tag:</strong>
+                            <select class="spacy-tag-dropdown spacy-dropdown" data-current="{{ match.tag|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
                         </span>
                         <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Alpha:</strong>
                             <select class="spacy-alpha-dropdown spacy-dropdown" data-current="{{ match.is_alpha|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
