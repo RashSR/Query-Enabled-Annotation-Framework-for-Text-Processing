@@ -11,7 +11,7 @@ class FilterNodeGroup(Enum):
     WORTART = "pos"
     #FEINTAG = "feintag"
     ALPHA = "is_alpha"
-    #FUNKTIONSWORT = "funktionswort"
+    STOP = "is_stop"
     TEMPUS = "tense"
     PERSON = "person"
     VERBFORM = "verb_form"
@@ -43,6 +43,7 @@ class FilterNodeGroup(Enum):
             FilterNodeGroup.MOUDS,
             FilterNodeGroup.TAG,
             FilterNodeGroup.ALPHA,
+            FilterNodeGroup.STOP,
         }
         return filter_node_group in SPACY_FILTER_GROUPS
 

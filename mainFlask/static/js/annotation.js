@@ -96,7 +96,7 @@
     populateDropdown('.spacy-tag-dropdown', 'tag');
     populateDropdown('.spacy-pos-dropdown', 'pos');
     populateDropdown('.spacy-alpha-dropdown', 'is_alpha');
-    populateDropdown('.spacy-stop-dropdown', 'stop');
+    populateDropdown('.spacy-stop-dropdown', 'is_stop');
     populateDropdown('.spacy-tense-dropdown', 'tense');
     populateDropdown('.spacy-person-dropdown', 'person');
     populateDropdown('.spacy-verbform-dropdown', 'verb_form');
