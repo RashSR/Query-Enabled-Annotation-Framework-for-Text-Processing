@@ -106,7 +106,9 @@
                         <span><strong>Start Pos:</strong> <span class="spacy-start">{{ match.start_pos if match.start_pos is defined else '-' }}</span></span>
                         <span><strong>End Pos:</strong> <span class="spacy-end">{{ match.end_pos if match.end_pos is defined else '-' }}</span></span>
                         <span><strong>Text:</strong> <span class="spacy-text" data-text="{{ match.text|e if match.text is defined else '' }}">{{ match.text if match.text is defined else '-' }}</span></span>
-                        <span><strong>Lemma:</strong> <span class="spacy-lemma">{{ match.lemma if match.lemma is defined else '-' }}</span></span>
+                        <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>Lemma:</strong>
+                            <input type="text" class="spacy-lemma-input" value="{{ match.lemma|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;" />
+                        </span>
                         <span style="display:inline-flex; align-items:center; margin-right:0.7em;"><strong>POS:</strong>
                             <select class="spacy-pos-dropdown spacy-dropdown" data-current="{{ match.pos|default('') }}" style="margin-left:0.5em; min-width:6em; border-radius:4px; padding:0.2em 0.5em; border:1px solid #bbb; background:#f8f8ff; font-size:1em; height:2em;"></select>
                         </span>

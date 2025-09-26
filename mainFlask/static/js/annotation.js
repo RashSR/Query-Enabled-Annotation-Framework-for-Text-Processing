@@ -22,20 +22,23 @@
                     // Always use the data-text attribute for the true value
                     return el.getAttribute('data-text') || '';
                 })(),
-                lemma: li.querySelector('.spacy-lemma') ? li.querySelector('.spacy-lemma').textContent.trim() : '',
-                pos: li.querySelector('.spacy-pos') ? li.querySelector('.spacy-pos').textContent.trim() : '',
-                is_alpha: li.querySelector('.spacy-alpha') ? li.querySelector('.spacy-alpha').textContent.trim() : '',
-                is_stop: li.querySelector('.spacy-stop') ? li.querySelector('.spacy-stop').textContent.trim() : '',
-                tense: li.querySelector('.spacy-tense') ? li.querySelector('.spacy-tense').textContent.trim() : '',
-                person: li.querySelector('.spacy-person') ? li.querySelector('.spacy-person').textContent.trim() : '',
-                verb_form: li.querySelector('.spacy-verbform') ? li.querySelector('.spacy-verbform').textContent.trim() : '',
-                voice: li.querySelector('.spacy-voice') ? li.querySelector('.spacy-voice').textContent.trim() : '',
-                degree: li.querySelector('.spacy-degree') ? li.querySelector('.spacy-degree').textContent.trim() : '',
-                gram_case: li.querySelector('.spacy-case') ? li.querySelector('.spacy-case').textContent.trim() : '',
-                number: li.querySelector('.spacy-number') ? li.querySelector('.spacy-number').textContent.trim() : '',
-                gender: li.querySelector('.spacy-gender') ? li.querySelector('.spacy-gender').textContent.trim() : '',
-                mood: li.querySelector('.spacy-mood') ? li.querySelector('.spacy-mood').textContent.trim() : '',
-                pron_type: li.querySelector('.spacy-prontype') ? li.querySelector('.spacy-prontype').textContent.trim() : ''
+                lemma: (function() {
+                    var input = li.querySelector('.spacy-lemma-input');
+                    return input ? input.value.trim() : '';
+                })(),
+                pos: li.querySelector('.spacy-pos-dropdown') ? li.querySelector('.spacy-pos-dropdown').value : '',
+                is_alpha: li.querySelector('.spacy-alpha-dropdown') ? li.querySelector('.spacy-alpha-dropdown').value : '',
+                is_stop: li.querySelector('.spacy-stop-dropdown') ? li.querySelector('.spacy-stop-dropdown').value : '',
+                tense: li.querySelector('.spacy-tense-dropdown') ? li.querySelector('.spacy-tense-dropdown').value : '',
+                person: li.querySelector('.spacy-person-dropdown') ? li.querySelector('.spacy-person-dropdown').value : '',
+                verb_form: li.querySelector('.spacy-verbform-dropdown') ? li.querySelector('.spacy-verbform-dropdown').value : '',
+                voice: li.querySelector('.spacy-voice-dropdown') ? li.querySelector('.spacy-voice-dropdown').value : '',
+                degree: li.querySelector('.spacy-degree-dropdown') ? li.querySelector('.spacy-degree-dropdown').value : '',
+                gram_case: li.querySelector('.spacy-case-dropdown') ? li.querySelector('.spacy-case-dropdown').value : '',
+                number: li.querySelector('.spacy-number-dropdown') ? li.querySelector('.spacy-number-dropdown').value : '',
+                gender: li.querySelector('.spacy-gender-dropdown') ? li.querySelector('.spacy-gender-dropdown').value : '',
+                mood: li.querySelector('.spacy-mood-dropdown') ? li.querySelector('.spacy-mood-dropdown').value : '',
+                pron_type: li.querySelector('.spacy-prontype-dropdown') ? li.querySelector('.spacy-prontype-dropdown').value : ''
             };
 
             btn.disabled = true;
