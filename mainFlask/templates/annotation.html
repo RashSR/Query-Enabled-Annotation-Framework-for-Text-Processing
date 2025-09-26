@@ -103,28 +103,28 @@
                 <li class="selectable spacy-item" data-id="{{ match.id }}" style="margin-bottom:0.7em; background:#e0f7fa; border-radius:4px; padding:0.5em; color:#00796b; cursor:pointer; display:flex; align-items:center; gap:0.7em;">
                     <input type="checkbox" class="select-checkbox" style="margin-right:0.7em;" />
                     <div style="flex:1; display:flex; flex-direction:column; gap:0.2em;">
-                        <span><strong>Start Pos:</strong> {{ match.start_pos if match.start_pos is defined else '-' }}</span>
-                        <span><strong>End Pos:</strong> {{ match.end_pos if match.end_pos is defined else '-' }}</span>
-                        <span><strong>Text:</strong> {{ match.text if match.text is defined else '-' }}</span>
-                        <span><strong>Lemma:</strong> {{ match.lemma if match.lemma is defined else '-' }}</span>
-                        <span><strong>POS:</strong> {{ match.pos if match.pos is defined else '-' }}</span>
+                        <span><strong>Start Pos:</strong> <span class="spacy-start">{{ match.start_pos if match.start_pos is defined else '-' }}</span></span>
+                        <span><strong>End Pos:</strong> <span class="spacy-end">{{ match.end_pos if match.end_pos is defined else '-' }}</span></span>
+                        <span><strong>Text:</strong> <span class="spacy-text">{{ match.text if match.text is defined else '-' }}</span></span>
+                        <span><strong>Lemma:</strong> <span class="spacy-lemma">{{ match.lemma if match.lemma is defined else '-' }}</span></span>
+                        <span><strong>POS:</strong> <span class="spacy-pos">{{ match.pos if match.pos is defined else '-' }}</span></span>
                         <span><strong>Tag:</strong>
                             <select class="spacy-tag-dropdown search-konkordanz-dropdown" data-current="{{ match.tag if match.tag is defined else '' }}" style="min-width: 110px; max-width: 180px; padding: 0.3rem 0.6rem; border: 1px solid #ced4da; border-radius: 4px; background: #fff;">
                                 <option value="{{ match.tag if match.tag is defined else '' }}" selected>{{ match.tag if match.tag is defined else '-' }}</option>
                             </select>
                         </span>
-                        <span><strong>Alpha:</strong> {{ match.is_alpha if match.is_alpha is defined else '-' }}</span>
-                        <span><strong>Stopwort:</strong> {{ match.is_stop if match.is_stop is defined else '-' }}</span>
-                        <span><strong>Tense:</strong> {{ match.tense if match.tense is defined else '-' }}</span>
-                        <span><strong>Person:</strong> {{ match.person if match.person is defined else '-' }}</span>
-                        <span><strong>Verbform:</strong> {{ match.verb_form if match.verb_form is defined else '-' }}</span>
-                        <span><strong>Voice:</strong> {{ match.voice if match.voice is defined else '-' }}</span>
-                        <span><strong>Degree:</strong> {{ match.degree if match.degree is defined else '-' }}</span>
-                        <span><strong>Case:</strong> {{ match.gram_case if match.gram_case is defined else '-' }}</span>
-                        <span><strong>Number:</strong> {{ match.number if match.number is defined else '-' }}</span>
-                        <span><strong>Gender:</strong> {{ match.gender if match.gender is defined else '-' }}</span>
-                        <span><strong>Mood:</strong> {{ match.mood if match.mood is defined else '-' }}</span>
-                        <span><strong>PronType:</strong> {{ match.pron_type if match.pron_type is defined else '-' }}</span>
+                        <span><strong>Alpha:</strong> <span class="spacy-alpha">{{ match.is_alpha if match.is_alpha is defined else '-' }}</span></span>
+                        <span><strong>Stopwort:</strong> <span class="spacy-stop">{{ match.is_stop if match.is_stop is defined else '-' }}</span></span>
+                        <span><strong>Tense:</strong> <span class="spacy-tense">{{ match.tense if match.tense is defined else '-' }}</span></span>
+                        <span><strong>Person:</strong> <span class="spacy-person">{{ match.person if match.person is defined else '-' }}</span></span>
+                        <span><strong>Verbform:</strong> <span class="spacy-verbform">{{ match.verb_form if match.verb_form is defined else '-' }}</span></span>
+                        <span><strong>Voice:</strong> <span class="spacy-voice">{{ match.voice if match.voice is defined else '-' }}</span></span>
+                        <span><strong>Degree:</strong> <span class="spacy-degree">{{ match.degree if match.degree is defined else '-' }}</span></span>
+                        <span><strong>Case:</strong> <span class="spacy-case">{{ match.gram_case if match.gram_case is defined else '-' }}</span></span>
+                        <span><strong>Number:</strong> <span class="spacy-number">{{ match.number if match.number is defined else '-' }}</span></span>
+                        <span><strong>Gender:</strong> <span class="spacy-gender">{{ match.gender if match.gender is defined else '-' }}</span></span>
+                        <span><strong>Mood:</strong> <span class="spacy-mood">{{ match.mood if match.mood is defined else '-' }}</span></span>
+                        <span><strong>PronType:</strong> <span class="spacy-prontype">{{ match.pron_type if match.pron_type is defined else '-' }}</span></span>
                     </div>
                     <button type="button" class="save-spacy-btn" style="padding:0.2em 0.7em; background:#0074D9; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Speichern</button>
                     <button type="button" class="delete-spacy-btn" style="margin-left:auto; padding:0.2em 0.7em; background:#dc3545; color:white; border:none; border-radius:3px; font-size:1em; cursor:pointer;">Löschen</button>

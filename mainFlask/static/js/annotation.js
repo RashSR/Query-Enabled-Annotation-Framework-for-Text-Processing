@@ -1,3 +1,73 @@
+    // Save button logic for spaCy match (Linguistische Attribute) elements
+
+    document.querySelectorAll('.save-spacy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var li = btn.closest('li');
+            var spacyId = li.getAttribute('data-id');
+            if (!spacyId) {
+                alert('spaCy-Match ID fehlt!');
+                return;
+            }
+            // Collect all relevant fields using class selectors
+            var tagSelect = li.querySelector('.spacy-tag-dropdown');
+            var tag = tagSelect ? tagSelect.value : '';
+            var data = {
+                id: spacyId,
+                tag: tag,
+                start_pos: li.querySelector('.spacy-start') ? li.querySelector('.spacy-start').textContent.trim() : '',
+                end_pos: li.querySelector('.spacy-end') ? li.querySelector('.spacy-end').textContent.trim() : '',
+                text: li.querySelector('.spacy-text') ? li.querySelector('.spacy-text').textContent.trim() : '',
+                lemma: li.querySelector('.spacy-lemma') ? li.querySelector('.spacy-lemma').textContent.trim() : '',
+                pos: li.querySelector('.spacy-pos') ? li.querySelector('.spacy-pos').textContent.trim() : '',
+                is_alpha: li.querySelector('.spacy-alpha') ? li.querySelector('.spacy-alpha').textContent.trim() : '',
+                is_stop: li.querySelector('.spacy-stop') ? li.querySelector('.spacy-stop').textContent.trim() : '',
+                tense: li.querySelector('.spacy-tense') ? li.querySelector('.spacy-tense').textContent.trim() : '',
+                person: li.querySelector('.spacy-person') ? li.querySelector('.spacy-person').textContent.trim() : '',
+                verb_form: li.querySelector('.spacy-verbform') ? li.querySelector('.spacy-verbform').textContent.trim() : '',
+                voice: li.querySelector('.spacy-voice') ? li.querySelector('.spacy-voice').textContent.trim() : '',
+                degree: li.querySelector('.spacy-degree') ? li.querySelector('.spacy-degree').textContent.trim() : '',
+                gram_case: li.querySelector('.spacy-case') ? li.querySelector('.spacy-case').textContent.trim() : '',
+                number: li.querySelector('.spacy-number') ? li.querySelector('.spacy-number').textContent.trim() : '',
+                gender: li.querySelector('.spacy-gender') ? li.querySelector('.spacy-gender').textContent.trim() : '',
+                mood: li.querySelector('.spacy-mood') ? li.querySelector('.spacy-mood').textContent.trim() : '',
+                pron_type: li.querySelector('.spacy-prontype') ? li.querySelector('.spacy-prontype').textContent.trim() : ''
+            };
+
+            btn.disabled = true;
+            var formBody = Object.keys(data).map(function(key) {
+                return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+            }).join('&');
+            fetch('/update_spacy_match', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formBody
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    btn.textContent = 'Gespeichert!';
+                    btn.style.background = '#28a745';
+                } else {
+                    btn.textContent = 'Fehler!';
+                    btn.style.background = '#dc3545';
+                }
+                setTimeout(function() {
+                    btn.textContent = 'Speichern';
+                    btn.style.background = '#0074D9';
+                    btn.disabled = false;
+                }, 1200);
+            })
+            .catch(() => {
+                btn.textContent = 'Fehler!';
+                btn.style.background = '#dc3545';
+                setTimeout(function() {
+                    btn.textContent = 'Speichern';
+                    btn.style.background = '#0074D9';
+                    btn.disabled = false;
+                }, 1200);
+            });
+        });
+    });
     // Dynamically populate spaCy TAG dropdowns
     document.querySelectorAll('.spacy-tag-dropdown').forEach(function(select) {
         var current = select.getAttribute('data-current');
