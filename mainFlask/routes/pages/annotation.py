@@ -115,7 +115,7 @@ def update_spacy_match_route():
     pron_type = request.form.get('pron_type', type=str)
     print(
     f"spacy_id={spacy_id}, tag={tag}, start_pos={start_pos}, end_pos={end_pos}, "
-    f"text='{text[start_pos:end_pos] if text else ''}', lemma={lemma}, pos={pos}, "
+    f"text='{text}', lemma={lemma}, pos={pos}, "
     f"is_alpha={is_alpha}, is_stop={is_stop}, tense={tense}, person={person}, "
     f"verb_form={verb_form}, voice={voice}, degree={degree}, gram_case={gram_case}, "
     f"number={number}, gender={gender}, mood={mood}, pron_type={pron_type}"

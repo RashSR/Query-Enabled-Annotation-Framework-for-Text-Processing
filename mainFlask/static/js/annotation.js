@@ -16,7 +16,12 @@
                 tag: tag,
                 start_pos: li.querySelector('.spacy-start') ? li.querySelector('.spacy-start').textContent.trim() : '',
                 end_pos: li.querySelector('.spacy-end') ? li.querySelector('.spacy-end').textContent.trim() : '',
-                text: li.querySelector('.spacy-text') ? li.querySelector('.spacy-text').textContent.trim() : '',
+                text: (function() {
+                    var el = li.querySelector('.spacy-text');
+                    if (!el) return '';
+                    // Always use the data-text attribute for the true value
+                    return el.getAttribute('data-text') || '';
+                })(),
                 lemma: li.querySelector('.spacy-lemma') ? li.querySelector('.spacy-lemma').textContent.trim() : '',
                 pos: li.querySelector('.spacy-pos') ? li.querySelector('.spacy-pos').textContent.trim() : '',
                 is_alpha: li.querySelector('.spacy-alpha') ? li.querySelector('.spacy-alpha').textContent.trim() : '',

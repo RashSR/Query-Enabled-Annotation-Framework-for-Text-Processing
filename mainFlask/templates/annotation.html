@@ -105,7 +105,7 @@
                     <div style="flex:1; display:flex; flex-direction:column; gap:0.2em;">
                         <span><strong>Start Pos:</strong> <span class="spacy-start">{{ match.start_pos if match.start_pos is defined else '-' }}</span></span>
                         <span><strong>End Pos:</strong> <span class="spacy-end">{{ match.end_pos if match.end_pos is defined else '-' }}</span></span>
-                        <span><strong>Text:</strong> <span class="spacy-text">{{ match.text if match.text is defined else '-' }}</span></span>
+                        <span><strong>Text:</strong> <span class="spacy-text" data-text="{{ match.text|e if match.text is defined else '' }}">{{ match.text if match.text is defined else '-' }}</span></span>
                         <span><strong>Lemma:</strong> <span class="spacy-lemma">{{ match.lemma if match.lemma is defined else '-' }}</span></span>
                         <span><strong>POS:</strong> <span class="spacy-pos">{{ match.pos if match.pos is defined else '-' }}</span></span>
                         <span><strong>Tag:</strong>
