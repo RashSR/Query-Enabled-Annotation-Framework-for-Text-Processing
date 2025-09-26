@@ -310,10 +310,10 @@ class CacheStore:
         if id in self._ltms:
             return self._ltms[id]
         
-        lt_match = get_lt_match_by_id(self._db, self._app, id) #db_handling function
+        lt_match = get_lt_match_by_id(self._db, self._app, id)
         
         if lt_match is not None:
-            self._messages[id] = lt_match
+            self._ltms[id] = lt_match
 
         return lt_match
 
@@ -362,6 +362,25 @@ class CacheStore:
             self._spacy_matches = {spm.id: spm for spm in spacy_matches}
 
         return list(self._spacy_matches.values())
+    
+    def get_spacy_match_by_id(self, id):
+        if not isinstance(id, int):
+            return None
+
+        from .db_handling import get_spacy_match_by_id
+
+        if self._spacy_matches is None:
+            self._spacy_matches = {}
+
+        if id in self._spacy_matches:
+            return self._spacy_matches[id]
+        
+        spacy_match = get_spacy_match_by_id(self._db, self._app, id)
+        
+        if spacy_match is not None:
+            self._spacy_matches[id] = spacy_match
+
+        return spacy_match
 
     def get_all_distinct_column_values_from_spacy_matches_by_column_name(self, column_name: str):
         from .db_handling import get_all_distinct_column_values_from_spacy_matches_by_column_name

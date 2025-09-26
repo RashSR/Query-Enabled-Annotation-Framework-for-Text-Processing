@@ -94,11 +94,13 @@ def update_error(error_id: int, new_category: str, start_pos: int, end_pos: int,
 # Update a spaCy match entry (e.g., tag and all other values)
 @annotation_bp.route('/update_spacy_match', methods=['POST'])
 def update_spacy_match_route():
-    spacy_id = request.form.get('id', type=int)
-    tag = request.form.get('tag', type=str)
+    #are not needed for the update because these values should not be changed
     start_pos = request.form.get('start_pos', type=int)
     end_pos = request.form.get('end_pos', type=int)
     text = request.form.get('text', type=str)
+
+    spacy_id = request.form.get('id', type=int)
+    tag = request.form.get('tag', type=str)
     lemma = request.form.get('lemma', type=str)
     pos = request.form.get('pos', type=str)
     is_alpha = request.form.get('is_alpha', type=str)
@@ -113,26 +115,16 @@ def update_spacy_match_route():
     gender = request.form.get('gender', type=str)
     mood = request.form.get('mood', type=str)
     pron_type = request.form.get('pron_type', type=str)
-    print(
-    f"spacy_id={spacy_id}, tag={tag}, start_pos={start_pos}, end_pos={end_pos}, "
-    f"text='{text}', lemma={lemma}, pos={pos}, "
-    f"is_alpha={is_alpha}, is_stop={is_stop}, tense={tense}, person={person}, "
-    f"verb_form={verb_form}, voice={voice}, degree={degree}, gram_case={gram_case}, "
-    f"number={number}, gender={gender}, mood={mood}, pron_type={pron_type}"
+    success = update_spacy_match(
+        spacy_id, tag, lemma, pos, is_alpha, is_stop, tense, person, verb_form, voice, degree, gram_case, number, gender, mood, pron_type
     )
-    success = True#update_spacy_match(
-        #spacy_id, tag, start_pos, end_pos, text, lemma, pos, is_alpha, is_stop, tense, person, verb_form, voice, degree, gram_case, number, gender, mood, pron_type
-    #)
     return jsonify({'success': bool(success)})
 
-def update_spacy_match(spacy_id, tag, start_pos, end_pos, text, lemma, pos, is_alpha, is_stop, tense, person, verb_form, voice, degree, gram_case, number, gender, mood, pron_type):
+def update_spacy_match(spacy_id, tag, lemma, pos, is_alpha, is_stop, tense, person, verb_form, voice, degree, gram_case, number, gender, mood, pron_type):
     match = CacheStore.Instance().get_spacy_match_by_id(spacy_id)
     if not match:
         return False
     match.tag = tag
-    match.start_pos = start_pos
-    match.end_pos = end_pos
-    match.text = text
     match.lemma = lemma
     match.pos = pos
     match.is_alpha = is_alpha

@@ -281,6 +281,16 @@ def get_all_distinct_rule_ids_from_ltms(db:SQLAlchemy, app: Flask):
 
 #region Spacy Matches
 
+def get_spacy_match_by_id(db: SQLAlchemy, app: Flask, id: int):
+    with app.app_context():
+        result_row = db.session.execute(
+            text("SELECT * FROM spacy_match WHERE id = :id"),
+            {'id': id}
+        ).fetchone()
+
+        loaded_spacy_match = _convert_db_row_to_spacy_match(result_row)
+        return loaded_spacy_match
+
 def get_all_spacy_matches(db: SQLAlchemy, app: Flask):
     with app.app_context():
         result = db.session.execute(text("SELECT * FROM spacy_match"))
@@ -659,6 +669,56 @@ def update_lt_match(db: SQLAlchemy, app: Flask, lt_match: LTMatch) -> bool:
             return True
         
         return False
+# endregion
+
+# region Spacy Matches
+from sqlalchemy import text
+
+def update_spacy_match(db: SQLAlchemy, app: Flask, spacy_match: SpacyMatch) -> bool:
+    with app.app_context():
+        tag = f"'{spacy_match.tag}'"
+        lemma = f"'{spacy_match.lemma}'"
+        pos = f"'{spacy_match.pos}'"
+        is_alpha = f"'{spacy_match.is_alpha}'"
+        is_stop = f"'{spacy_match.is_stop}'"
+        tense = f"'{spacy_match.tense}'"
+        person = f"'{spacy_match.person}'"
+        verb_form = f"'{spacy_match.verb_form}'"
+        voice = f"'{spacy_match.voice}'"
+        degree = f"'{spacy_match.degree}'"
+        gram_case = f"'{spacy_match.gram_case}'"
+        number = f"'{spacy_match.number}'"
+        gender = f"'{spacy_match.gender}'"
+        mood = f"'{spacy_match.mood}'"
+        pron_type = f"'{spacy_match.pron_type}'"
+
+        sql_text = f"""
+            UPDATE spacy_match 
+            SET tag = {tag},
+                lemma = {lemma},
+                pos = {pos},
+                is_alpha = {is_alpha},
+                is_stop = {is_stop},
+                tense = {tense},
+                person = {person},
+                verb_form = {verb_form},
+                voice = {voice},
+                degree = {degree},
+                gram_case = {gram_case},
+                number = {number},
+                gender = {gender},
+                mood = {mood},
+                pron_type = {pron_type}
+            WHERE id = {spacy_match.id}
+        """
+
+        result = db.session.execute(text(sql_text))
+        if result.rowcount > 0:
+            db.session.commit()
+            return True
+
+        return False
+
 # endregion
 
 #region Annotation
