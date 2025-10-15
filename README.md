@@ -96,7 +96,7 @@ After downloading and extracting the archive, navigate into the extracted direct
 ```bash
 cd LanguageTool-6.6
 ```
-After downloading the `languagetool-server.jar`, you can start the server with:
+The server can be started with the `languagetool-server.jar`:
 
 ```bash
 java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8081
@@ -224,6 +224,7 @@ A toggle is available to switch how metrics are displayed, either per message or
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
