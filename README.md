@@ -80,6 +80,8 @@ Install python libs
 
     pip install -r requirements.txt
 
+These steps can all be performed automatically on Windows using the batch script `start_application.bat`. 
+
 ## Requirements
 
 - **Java 17** is required to run the LanguageTool server. LanguageTool analyses the errors from the inputed text and annotates them. 
@@ -226,6 +228,7 @@ A toggle is available to switch how metrics are displayed, either per message or
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
