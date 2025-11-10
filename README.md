@@ -102,6 +102,8 @@ The server can be started with the `languagetool-server.jar`:
 java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8081
 ```
 
+Alternatively, you can use the batch script `run-languagetool-server.bat` on Windows. This must be moved to the Language Tool folder and double-clicked there.
+
 ## Running the Flask Application
 
 In the main project directory, start the Flask application by running:
@@ -224,6 +226,7 @@ A toggle is available to switch how metrics are displayed, either per message or
 *Route: (`/settings`)*
 
 Currently in development. In the future, this will allow customization of font and color.
+
 
 
 
